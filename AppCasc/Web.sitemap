@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode roles="*">
+    <siteMapNode roles="*" title="_hide">
+      <siteMapNode url="~/Default.aspx" title="Bienvenido"  description="Inicio" />
+      <siteMapNode url="~/catalog/frmAduana.aspx" title="Aduana"  description="Aduana" />
+      <siteMapNode url="~/catalog/frmBodega.aspx" title="Bodega"  description="Bodega" />
+      <siteMapNode url="~/catalog/frmCortina.aspx" title="Cortina"  description="Cortina" />
+      <siteMapNode url="~/catalog/frmCuentaTipo.aspx" title="Tipo de Cuenta"  description="Tipo de Cuenta" />
+      <siteMapNode url="~/catalog/frmClienteGrupo.aspx" title="Grupo de Cliente"  description="Grupo de Cliente" />
+      <siteMapNode url="~/catalog/frmCliente.aspx" title="Cliente"  description="Cliente" />
+      <siteMapNode url="~/catalog/frmDocumento.aspx" title="Documento"  description="Documento" />
+      <siteMapNode url="~/catalog/frmCustodia.aspx" title="Custodia"  description="Custodia" />
+      <siteMapNode url="~/catalog/frmTransporte.aspx" title="Transporte"  description="Transporte" />
+      <siteMapNode url="~/catalog/frmTransporteTipo.aspx" title="Tipo de Transporte"  description="Tipo de Transporte" />
+      <siteMapNode url="~/catalog/frmTipoCarga.aspx" title="Tipo de Carga"  description="Tipo de Carga" />
+      <siteMapNode url="~/catalog/frmUsuario.aspx" title="Usuario"  description="Usuario" />
+      <siteMapNode url="~/catalog/frmUbicacion.aspx" title="Ubicación"  description="Ubicación" />
+      <siteMapNode url="~/catalog/frmNom.aspx" title="NOM"  description="NOM" />
+      <siteMapNode url="~/catalog/frmClienteVendorLst.aspx" title="Lista de Vendor"  description="Lista de Vendor" />
+      <siteMapNode url="~/catalog/frmClienteVendor.aspx" title="Vendor"  description="Vendor" />
+      <siteMapNode url="~/catalog/frmClienteMercanciaLst.aspx" title="Lista Mercancia"  description="Lista Mercancia" />
+      <siteMapNode url="~/catalog/frmClienteMercancia.aspx" title="Mercancia"  description="Mercancia" />
+      <siteMapNode url="~/catalog/frmClienteCodigo.aspx" title="Código por cliente"  description="Código por cliente" />
+      <siteMapNode url="~/operation/frmCancelDoc.aspx" title="Cancelar Movimientos"  description="Cancelar Movimientos" />
+    </siteMapNode>
+    <siteMapNode roles="Administrador" title="Catálogos">
+      <siteMapNode url="~/catalog/frmAduanaLst.aspx" title="Aduanas"  description="Aduanas" />
+      <siteMapNode url="~/catalog/frmBodegaLst.aspx" title="Bodegas"  description="Bodegas" />
+      <siteMapNode url="~/catalog/frmCortinaLst.aspx" title="Cortinas"  description="Cortinas" />
+      <siteMapNode url="~/catalog/frmCuentaTipoLst.aspx" title="Tipos de Cuenta"  description="Tipos de Cuenta" />
+      <siteMapNode url="~/catalog/frmClienteGrupoLst.aspx" title="Grupos de Clientes"  description="Grupos de Clientes" />
+      <siteMapNode url="~/catalog/frmClienteLst.aspx" title="Clientes"  description="Clientes" />
+      <siteMapNode url="~/catalog/frmDocumentoLst.aspx" title="Documentos"  description="Documentos" />
+      <siteMapNode url="~/catalog/frmCustodiaLst.aspx" title="Custodias"  description="Custodias" />
+      <siteMapNode url="~/catalog/frmTransporteLst.aspx" title="Transportes"  description="Transportes" />
+      <siteMapNode url="~/catalog/frmTransporteTipoLst.aspx" title="Tipos de Transportes"  description="Tipos de Transportes" />
+      <siteMapNode url="~/catalog/frmTransporteTipoTransporte.aspx" title="Asociación de Transportes"  description="Asociación de Transportes" />
+      <siteMapNode url="~/catalog/frmTipoCargaLst.aspx" title="Tipos de Carga"  description="Tipos de Carga" />
+      <siteMapNode url="~/catalog/frmUsuarioLst.aspx" title="Usuarios"  description="Usuarios" />
+      <siteMapNode url="~/catalog/frmUbicacionLst.aspx" title="Ubicaciones"  description="Ubicaciones" />
+      <siteMapNode url="~/catalog/frmNomLst.aspx" title="NOM"  description="NOM" />
+    </siteMapNode>
+    <siteMapNode roles="Administrador, Operador" title="Operación">
+      <!--<siteMapNode roles="*" title="Arribos">
+        <siteMapNode url="~/operation/arribos/frmAvon.aspx" title="Arribos de Avon"  description="Arribos Avon" />
+        <siteMapNode url="~/operation/arribos/frmArribo.aspx" title="Arribos"  description="Arribos" />
+        <siteMapNode url="~/operation/frmEntradas.aspx" title="Entradas"  description="Entradas" />
+      </siteMapNode>-->
+      <siteMapNode url="~/operation/arribos/frmArribo.aspx" title="Arribos"  description="Arribos" />
+      <siteMapNode url="~/operation/frmSalidas.aspx" title="Embarques"  description="Embarques" />
+      <!--<siteMapNode url="~/operation/frmReingreso.aspx" title="Reingresos"  description="Reingresos" />-->
+      <siteMapNode url="~/operation/frmRelEntSal.aspx" title="Relación de Movimientos"  description="Relación de Movimientos" />
+    </siteMapNode>
+    <siteMapNode roles="Inventario" title="Inventario">
+      <siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
+      <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
+      <siteMapNode url="~/operation/frmOrdenTrabajo.aspx" title="Ord. Trabajo"  description="Orden de Trabajo" />
+      <siteMapNode url="~/operation/frmRemision.aspx" title="Remisión"  description="Remisión" />
+      <siteMapNode url="~/operation/frmOrdenCarga.aspx" title="Orden de Carga"  description="Orden de Carga" />
+      <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
+    </siteMapNode>
+    <siteMapNode roles="Ejecutivo" title="Procesos">
+      <siteMapNode url="~/processStatus/frmProcess.aspx" title="Procesos"  description="Procesos" />
+    </siteMapNode>
+    <siteMapNode roles="*" title="Reportes" >
+      <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
+      <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />
+      <siteMapNode url="~/report/frmTransporteChart.aspx" title="Gráfica Movimientos"  description="Gráfica Movimientos" />
+      <siteMapNode url="~/report/frmMaquila.aspx" title="Maquila"  description="Maquila" />
+      <siteMapNode url="~/report/frmCancelMov.aspx" title="Cancelaciones"  description="Cancelaciones" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

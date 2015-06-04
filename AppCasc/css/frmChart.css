@@ -1,0 +1,34 @@
+﻿label { 
+    float: left;
+    width: 200px;
+    border-bottom: solid 1px #fda100;
+    margin-right: 5px;
+}
+
+.rot90 {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	rotation: 90deg;
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+.lnkChart 
+{
+    color: #fda100;
+    text-decoration: underline;
+}
+
+select
+{
+    width: 200px;
+}
+
+div
+{
+    margin-bottom: 5px;
+}
+
+#divFileChartMovAnt
+{
+    margin-top: 50px;
+}

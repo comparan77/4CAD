@@ -1,0 +1,102 @@
+﻿.hidden 
+{
+    display: none;
+}
+
+.error 
+{
+    color: Red;
+}
+
+input[type=text], textarea, select, input[type=password]
+{
+    border-color: #0d5fb3;
+    border-top: solid 1px #0d5fb3;
+    border-left: solid 1px #0d5fb3;
+}
+
+.icon-button-action
+{
+    cursor: pointer;
+}
+
+.icon-button-search
+{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#div_entrada label, #div_salida label, #dsiv_EntSal label, .divForm div label
+{
+    float: left;
+    width: 200px;
+    border-bottom: solid 1px #fda100;
+    margin-right: 5px;
+}
+
+.selectLink 
+{
+    color: #fda100!important;
+}
+
+.divForm div
+{
+    clear: left;
+}
+
+.contentSection
+{
+    padding: 15px 0 15px 3px;
+    font-family: segoe ui,Arial,sans-serif;
+}
+
+.odd 
+{
+    background: #fff;
+}
+
+/*Roles*/
+#ctl00_body_chkLstRol tbody tr td label
+{
+    border: none!important;
+}
+
+/*gridview ini*/
+.grdCasc
+{
+    font-size: .9em;
+    width: 100%;
+}
+
+.grdCasc tbody tr td.number
+{
+    padding-right: 10px;
+}
+/*gridview fin*/
+
+h5 
+{
+    margin: 0;
+    padding: 0;
+}
+
+.floatRight
+{
+    float: right;
+}
+
+.floatLeft
+{
+    float: left;
+}
+
+.tblItems 
+{
+    border-collapse: collapse;
+}
+
+.tblItems tr td, .tblItems tr th
+{
+    border: 1px solid #0d5fb3;
+}

@@ -1,0 +1,137 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MstCasc.master.cs" Inherits="AppCasc.MstCasc" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>CASC</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <link href="/css/excite-bike/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/MstCasc.css?v1.1.150427_2252" rel="stylesheet" type="text/css" />
+    <link href="/css/common.css?v1.1.150427_2252" rel="stylesheet" type="text/css" />
+
+    <script src="/js/jquery.js" type="text/javascript"></script>
+    <script src="/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.corner.js" type="text/javascript"></script>
+    <script src="/js/jquery.updatepanel.js" type="text/javascript"></script>
+    <script src="/js/Master.js?v1.1.150427_2252" type="text/javascript"></script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+<form id="form1" runat="server">
+<asp:ScriptManager ID="scrManager" runat="server"></asp:ScriptManager>
+
+<div id="mainContent">
+    
+        <div id="mainHeader" class="generalHeader">
+
+        <%--<label id="lblTimeInPage"><%= DateTime.Now.ToString("hh:mm tt") %></label>--%>
+
+        <img alt="CASC" id="logo" src="/images/logo.png" width="70" />
+
+       <%-- <asp:LoginView runat="server" ID="logivw">
+            <LoggedInTemplate>--%>
+        <div id="div_title_option">
+            <asp:Label ID="lbl_title_option" runat="server"></asp:Label>
+            
+        </div>
+
+        <div id="loginContent">
+            Usuari@:
+            <asp:Label runat="server" ID="lbl_UserName"></asp:Label>
+            <asp:LoginStatus LogoutText="Salir" CssClass="ui-icon ui-icon-power" LogoutAction="Redirect" LogoutPageUrl="~/Default.aspx" ToolTip="Salir de la aplicación" OnLoggedOut="logStatus_LoggedOut" LoginText="Entrar" runat="server" ID="logStatus" />
+        </div>
+            <%--</LoggedInTemplate>
+        </asp:LoginView>--%>
+        
+        </div>
+
+        <div style="clear: both;"></div>
+
+    <asp:SiteMapDataSource runat="server" ID="siteMapData" ShowStartingNode="false" />
+    
+    <asp:Menu runat="server" ID="menu" Orientation="Horizontal" DataSourceID="siteMapData" MaximumDynamicDisplayLevels="2" OnDataBound="Menu_DataBound">
+        
+        <staticmenustyle CssClass="ui-menu ui-widget ui-widget-content ui-corner-all"/>
+        <StaticHoverStyle CssClass="ui-corner-all ui-state-focus" />
+        <StaticMenuItemStyle CssClass="ui-menu-item" />
+
+        <DynamicMenuStyle CssClass="ui-menu ui-widget ui-widget-content ui-corner-all" BackColor="#fbfbfb" />
+        <DynamicHoverStyle CssClass="ui-corner-all ui-state-focus" />
+        <DynamicMenuItemStyle CssClass="ui-menu-item" />
+        
+    </asp:Menu>
+
+    <%--<div class="topMenu">
+    <asp:Panel runat="server" CssClass="mainMenu" ID="pnlMenu">
+    <ul id="menu-horizontal">
+    <li runat="server" id="li_Reportes" visible="false">
+        <a href="#" >Reportes</a>
+        <ul>
+            <li><asp:HyperLink ID="lnkChart" Visible="false" runat="server" NavigateUrl="~/report/frmChart.aspx" Text="Chart."></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkGeneral" Visible="false" runat="server" NavigateUrl="~/report/frmGeneralChart.aspx" Text="Gráfica Gral."></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkMovimientos" Visible="false" runat="server" NavigateUrl="~/report/frmTransporteChart.aspx" Text="Gráfica Mov."></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkCanceladas" Visible="false" runat="server" NavigateUrl="~/report/frmCancelMov.aspx" Text="Cancelaciones"></asp:HyperLink></li>
+        </ul>
+    </li>
+    <li runat="server" id="li_Catalogos" visible="false">
+        <a href="#" >Cat&aacute;logos</a>
+        <ul>
+            <li><asp:HyperLink ID="lnkBodega" runat="server" NavigateUrl="~/catalog/frmBodegaLst.aspx" Text="Bodegas"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkCortina" runat="server" NavigateUrl="~/catalog/frmCortinaLst.aspx" Text="Cortinas"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkCuentaTipo" runat="server" NavigateUrl="~/catalog/frmCuentaTipoLst.aspx" Text="Cuentas Tipo"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkClienteGrupo" runat="server" NavigateUrl="~/catalog/frmClienteGrupoLst.aspx" Text="Cliente Grupos"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkCliente" runat="server" NavigateUrl="~/catalog/frmClienteLst.aspx" Text="Clientes"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkDocumento" runat="server" NavigateUrl="~/catalog/frmDocumentoLst.aspx" Text="Documentos"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkCustodia" runat="server" NavigateUrl="~/catalog/frmCustodiaLst.aspx" Text="Custodía"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkTransporte" runat="server" NavigateUrl="~/catalog/frmTransporteLst.aspx" Text="Transporte"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkTransporteTipo" runat="server" NavigateUrl="~/catalog/frmTransporteTipoLst.aspx" Text="Transporte Tipo"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkTransTipTrans" runat="server" NavigateUrl="~/catalog/frmTransporteTipoTransporte.aspx" Text="Asociar Transportes"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkUsuario" runat="server" NavigateUrl="~/catalog/frmUsuarioLst.aspx" Text="Usuarios"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkVigilante" runat="server" NavigateUrl="~/catalog/frmVigilante.aspx" Text="Vigilantes"></asp:HyperLink></li>
+        </ul>
+    </li>
+    <li runat="server" id="li_Operacion" visible="false">
+        <a href="#" >Operaci&oacute;n</a>
+        <ul>
+            <li><asp:HyperLink ID="lnkEntradas" Visible="false" runat="server" NavigateUrl="~/operation/frmEntradas.aspx" Text="Entradas"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkSalidas" Visible="false" runat="server" NavigateUrl="~/operation/frmSalidas.aspx" Text="Salidas"></asp:HyperLink></li>
+            <li><asp:HyperLink ID="lnkRelEntSal" Visible="false" runat="server" NavigateUrl="~/operation/frmRelEntSal.aspx" Text="Ent/Sal"></asp:HyperLink></li>
+        </ul>
+    </li>
+
+    <li><asp:LinkButton runat="server" ID="lnk_login" OnClick="lnk_login_click" Text="Salir" CausesValidation="false"></asp:LinkButton></li>
+</ul>
+</asp:Panel>
+    </div>--%>
+
+    <div style="clear: both; height: 4px;"></div>
+
+    <div class="center">
+
+    <asp:UpdatePanel runat="server" ID="up_wucErrMsg" UpdateMode="Always">
+    <ContentTemplate>
+        <div class="divError" title="Error">
+            <asp:Label runat="server" ID="lblError"></asp:Label>
+        </div>
+    </ContentTemplate>
+    </asp:UpdatePanel>
+
+    <asp:ContentPlaceHolder ID="body" runat="server">
+    </asp:ContentPlaceHolder>
+
+    </div>
+
+</div>
+
+</form>
+
+<%--div id="errorMsgs" title="Problema">
+    <p id="errorMsg"></p>
+</div>--%>
+</body>
+</html>

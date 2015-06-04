@@ -1,0 +1,101 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using ModelCasc.catalog;
+using System.Data;
+using Model;
+
+namespace ModelCasc.operation
+{
+    public class FolioCtrl
+    {
+        private static string addZero(int numDigitos, int folio, int anioDB)
+        {
+            string dfolio = string.Empty;
+            int numZero = numDigitos - folio.ToString().Length;
+            for (int i = 0; i < numZero; i++)
+            {
+                dfolio += "0";
+            }
+            try
+            {
+                dfolio = "-" + dfolio + folio.ToString() + "-" + anioDB.ToString().Substring(2, 2);
+            }
+            catch { }
+
+            return dfolio;
+        }
+
+        public static string getFolio(enumTipo tipo, IDbTransaction trans)
+        {
+            string folio = string.Empty;
+            string errMsg = string.Empty;
+
+            FolioMng oMng = new FolioMng();
+            Folio o = new Folio();
+
+            try
+            {
+                //o.Anio_actual = id_bodega;
+                o.Tipo = tipo.ToString();
+                oMng.O_Folio = o;
+                oMng.getFolio(trans);
+                folio = addZero(o.Digitos, o.Actual, o.Anio_actual);
+                folio = o.Tipo + folio;
+            }
+            catch (Exception)
+            {
+                switch (tipo)
+                {
+                    case enumTipo.E:
+                        errMsg = "La bodega no tiene asignación de folios para la Entrada";
+                        break;
+                    case enumTipo.S:
+                        errMsg = "La bodega no tiene asignación de folios para la Salida";
+                        break;
+                    default:
+                        break;
+                }
+                throw new Exception(errMsg);
+            }
+
+            return folio;
+        }
+
+        public static string ClienteReferenciaGet(int id_cliente, enumTipo tipo, IDbTransaction trans)
+        {
+            string referencia = string.Empty;
+            string errMsg = string.Empty;
+
+            Cliente_codigoMng oMng = new Cliente_codigoMng();
+            Cliente_codigo o = new Cliente_codigo();
+            o.Id_cliente_grupo = id_cliente; //El procedimiento usará el parametro para asignar el id del cliente
+            oMng.O_Cliente_codigo = o;
+
+            try
+            {
+                
+                switch (tipo)
+                {
+                    case enumTipo.E:
+                        oMng.getRefEntByCliente(trans);
+                        referencia = o.Clave + addZero(o.Digitos, o.Consec_arribo, o.Anio_actual);
+                        break;
+                    case enumTipo.S:
+                        break;
+                    default:
+                        break;
+                }
+                //referencia = addZero(o.Digitos, o.Actual, o.Id_bodega);
+                //referencia = o.Tipo + referencia;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return referencia;
+        }
+    }
+}

@@ -1,0 +1,278 @@
+﻿legend
+{
+    color: Gray;
+    font-weight: bold;
+}
+/*
+#cantidadesNormal
+{
+    float: left;
+    width: 390px;
+}
+
+#cantidadesProblema
+{
+    float: right;
+    width: 290px;
+}*/
+
+#ctl00_body_up_documento_recibido div, #ctl00_body_up_documento_enviado div
+{
+    clear: left;
+}
+
+#div_entrada, #div_salida
+{
+    width: 700px;
+    float: left;
+}
+
+.div_inventario
+{
+    width: 800px!important;
+}
+
+#div_entrada div, #div_salida div
+{
+    margin-bottom: 5px;
+}
+
+#div_entrada input[type="text"], #div_salida input[type="text"]
+{
+    text-align: right;
+    padding-right: 5px;
+    width: 100px;
+}
+
+#div_tipo_entrada, #div_tipo_salida
+{
+    position: relative;
+}
+
+#div_no_entrada, #div_no_salida
+{
+    position: absolute;
+    right: 30px;
+    top: 10px;
+}
+
+#div_no_entrada span, #div_no_salida span
+{
+    color: Gray;
+    font-size: 1.2em;
+}
+
+.txtLarge
+{
+    width: 400px!important;
+}
+
+.txtMedium
+{
+    width: 200px!important;
+}
+
+.txtSmall
+{
+    width: 100px!important;
+}
+
+textarea
+{
+    width: 194px;
+}
+
+select
+{
+    width: 350px;
+}
+
+select option
+{
+    text-align: right;
+}
+
+fieldset
+{
+    background-color: White;
+    padding: 1%;
+    border: solid 1px #e69700;
+}
+
+.txtNumber
+{
+    width: 50px!important;
+    text-align: center!important;
+}
+
+.txtCurrency
+{
+    text-align: right!important;
+}
+
+.txtNumberLarge
+{
+    width: 80px!important;
+    text-align: center!important;
+}
+
+#div_panel
+{
+    float: right;
+    padding-right: 10px;
+}
+
+#div_panel div
+{
+    margin-bottom: 10px;
+}
+
+#divPnlActions 
+{
+    display: none;
+}
+
+ul
+{
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+.ajaxLoading
+{
+    background: RGB(128,128,128) url(../images/ajax-loader.gif) center no-repeat;
+	height: 100%;
+	width: 100%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}
+
+/*Inventario <<ini>>*/
+#tr_input_piso td input {
+    width: 150px;
+}
+
+#div-codigos
+{
+    float: left!important;
+}
+
+#div-info-codigo 
+{
+    float: left!important;
+    width: auto;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+/*Inventario <<fin>>*/
+
+/*OrdenTrabajo <<ini>>*/
+ul.diasTrabajados li
+{
+    float: left;
+    margin-right: 10px;
+}
+
+#up_cantidades, #div-control
+{
+    position: relative;
+}
+
+#diferencias-fecha, #diferencias-total
+{
+    position: absolute;
+    width: 300px;
+    right: 50px;
+    top: 10px;
+}
+
+.t_border_br
+{
+    border-bottom: solid 1px gray;
+    border-right: solid 1px gray;
+}
+
+.t_border_tl
+{
+    border-top: solid 1px gray;
+    border-left: solid 1px gray;
+}
+
+.t_border_t
+{
+    border-top: solid 1px gray;
+}
+
+.t_border_l
+{
+    border-left: solid 1px gray;
+}
+
+.rv_ordenTrabajo
+{
+    position: absolute;
+    left: 270px;
+}
+
+/*OrdenTrabajo <<fin>>*/
+
+/*Remision <<ini>>*/
+.spn_title
+{
+    font-style: italic;
+}
+
+#div_cantidades_remision
+{
+    position: absolute;
+    width: 300px;
+    right: 10px;
+    top: 10px;
+    font-size: .7em!important;
+}
+
+#tbl_cantidades_salida tbody tr td label
+{
+    float: none!important;
+    border: none!important;
+}
+
+#tbl_cantidades_salida tbody tr td input
+{
+    border: none;
+    background: transparent;
+    border-bottom: #0d5fb3 1px solid;
+    text-align: center;
+}
+
+.tdCantSalidaTotalPieza
+{
+    border: #0d5fb3 1px solid;
+    background: transparent;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#div-danada
+{
+    margin-top: 20px;
+}
+
+ul.diasRemision li
+{
+    float: left;
+    margin-right: 10px;
+}
+
+/*Remision <<fin>>*/
+
+/*Arribo <<ini>>*/
+#radioTipoEntrada span
+{
+    float: left;
+}
+/*Arribo <<fin>>*/
+
+/*RR <<ini>>*/
+/*RR <<fin>>*/

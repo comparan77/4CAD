@@ -1,0 +1,174 @@
+﻿body
+{
+    background-color: #fff;
+    background-image: url('../images/fondo.jpg');
+    background-repeat: repeat;
+}
+
+* html body
+{
+    background-color: #fff;
+}
+
+#mainContent
+{
+    width: 1050px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#mainHeader 
+{
+    background-color: #fbfbfb;
+    margin-bottom: 5px;
+    border: solid 1px #cecece;
+    position: relative;
+}
+
+#div_title_option
+{
+    position: absolute;
+    top: 25px;
+    left: 100px;
+}
+
+#div_title_option span
+{
+    font-size: 1.5em;
+    font-style: normal;
+    font-variant: small-caps;
+    letter-spacing: .3em;
+    color: #e69700 ;
+}
+
+#loginContent
+{
+    margin-top: 20px;
+    margin-right: 10px;
+    float: right;
+    font-family: segoe ui,Arial,sans-serif;
+}
+
+#lblTimeInPage
+{
+    color: #fda100 ;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+.center
+{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.topMenu
+{
+    float: right;
+    margin-bottom: 5px;
+    position: relative;
+    height: 25px;
+    right: 5px;
+}
+
+.mainMenu
+{
+    position: absolute;
+    right: 5px;
+    z-index: 1;
+}
+
+a:link, a:visited
+{
+    text-decoration: none;
+    color: #0d5fb3;
+}
+
+a:hover 
+{
+    color: #fda100;
+}
+
+.topMenu a
+{
+    margin-right: 10px;
+}
+
+/*
+.divError
+{
+    text-align: center; 
+    border: solid 1px #424242; 
+    background-color:Red; 
+    width: 300px; 
+    padding: 3px; 
+    margin-left: auto; 
+    margin-right: auto;
+}*/
+
+/*Menu*/
+.topMenu a 
+{
+    color: White;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#menu-horizontal 
+{
+    width:700px;
+    margin:0 auto;
+}
+
+#menu-horizontal li 
+{
+    float: left;
+    display: inline;
+    position: relative;
+    margin:0 1px;
+    width:120px;
+    min-height:19px;
+    text-align:center;
+    background:#BBB;
+    list-style:none;
+    padding:2px 0;
+    background-image: url('../images/btnMenuNormal.png');
+    background-repeat: repeat-y;
+}
+
+#menu-horizontal ul 
+{
+    display: none;
+    position: relative;
+    top: 24;
+    left:0;
+    margin:0;
+    padding:0;
+    background:#FFFFFF;
+}
+ 
+#menu-horizontal ul li 
+{
+    display: block !important;
+    text-align:left !important;
+    padding-left: 5px;
+}
+
+#menu-horizontal li:hover
+{
+    background-image: url('../images/btnMenuActive.png');
+    background-repeat: repeat-y;
+}
+ 
+#menu-horizontal li:hover ul
+{
+    display: block;
+}
+
+.dataTables_wrapper table tbody tr:hover 
+{
+    background: url("excite-bike/images/ui-bg_diagonals-thick_26_2293f7_40x40.png") repeat scroll 50% 50% #2293F7!important;
+    border: 1px solid #2293F7;
+    color: #FFFFFF;
+}

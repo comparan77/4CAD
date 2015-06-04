@@ -1,0 +1,84 @@
+﻿textarea 
+{
+    width: 350px;
+}
+
+/*
+#frmCatalog label
+{
+    float: left;
+    width: 200px;
+    border-bottom: solid 1px #fda100;
+    margin-right: 5px;
+}*/
+
+#frmCatalog div
+{
+    margin-bottom: 5px;
+}
+
+.spnIcon 
+{
+    width: 15px;
+    display: block;
+    cursor: pointer;
+}
+
+.columnAction
+{
+    width: 80px;
+}
+
+#div_catalog 
+{
+    width: 100%;
+}
+
+#frmCatalog 
+{
+    padding: 10px;
+    width: 700px;
+}
+
+#divActions 
+{
+    float: right;
+}
+
+fieldset
+{
+    background-color: White;
+    padding: 1%;
+    width: inherit;
+}
+
+/*
+table tbody tr.even
+{
+    background-color: #ffce7d;
+}*/
+
+/*frmTransporteTipoTransporte*/
+
+#div_TransporteTipoTransporte div label
+{
+    float: left;
+    width: 250px;
+    border-bottom: solid 1px #fda100;
+    margin-right: 5px;
+}
+
+#div_TransporteTipoTransporte div
+{
+    margin-bottom: 5px;
+}
+
+#ctl00_body_btnMove
+{
+    margin-left: 255px;
+}
+
+#divBtnMove 
+{
+    height: 30px;
+}

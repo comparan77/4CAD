@@ -1,0 +1,1567 @@
+﻿using System;
+using System.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using ModelCasc.catalog;
+using Model;
+using System.Data;
+using System.IO;
+using ModelCasc.exception;
+using System.Reflection;
+using System.Text.RegularExpressions;
+
+namespace ModelCasc.operation
+{
+    public class EntradaCtrl
+    {
+        public static bool EntradaEsCompartida(string referencia, int IdCliente)
+        {
+            bool EsCompartida = false;
+            try
+            {
+                Entrada_compartida oEC = new Entrada_compartida();
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                oEC.Capturada = false;
+                oEC.Referencia = referencia.Trim();
+                oECMng.O_Entrada_compartida = oEC;
+                EsCompartida = oECMng.Exists();
+            }
+            catch
+            {
+                throw;
+            }
+            return EsCompartida;
+        }
+
+        private static void ReferenciaCompartidaValida(string referencia, int IdCliente)
+        {
+            try
+            {
+                Entrada_compartida oEC = new Entrada_compartida();
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                oEC.Capturada = false;
+                oEC.Referencia = referencia.Trim();
+                oECMng.O_Entrada_compartida = oEC;
+                if (oECMng.Exists())
+                    throw new Exception("La referencia: " + referencia + ", pertenece a una entrada compartida del folio: " + oEC.Folio);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static void ReferenciaNuevaValida(string referencia, int IdCliente)
+        {
+            try
+            {
+                Entrada oE = new Entrada();
+                EntradaMng oEMng = new EntradaMng();
+                oE.Referencia = referencia.Trim();
+                oE.Id_cliente = IdCliente;
+                oEMng.O_Entrada = oE;
+                if (oEMng.Exists())
+                    throw new Exception("La referencia: " + referencia + ", ya ha sido agregada con el folio: " + oE.FolioEntrada);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static bool EsReferenciaParcial(string referencia, int IdCliente)
+        {
+            bool EsParcial;
+            try
+            {
+                Entrada oE = new Entrada();
+                EntradaMng oEMng = new EntradaMng();
+                oE.Referencia = referencia.Trim();
+                oE.Id_cliente = IdCliente;
+                oEMng.O_Entrada = oE;
+                EsParcial = oEMng.IsPartial();
+            }
+            catch
+            {
+                throw;
+            }
+            return EsParcial;
+        }
+
+        public static void ReferenciaValida(string referencia, int IdCliente)
+        {
+            try
+            {
+                ReferenciaNuevaValida(referencia, IdCliente);
+                ReferenciaCompartidaValida(referencia, IdCliente);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los valores de una entrada compartida
+        /// </summary>
+        /// <param name="folio"></param>
+        /// <returns></returns>
+        public static Entrada getEntradaCompartida(string folio)
+        {
+            Entrada oE = null;
+            try
+            {
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                Entrada_compartida oEC = new Entrada_compartida();
+
+                oEC.Folio = folio;
+                oECMng.O_Entrada_compartida = oEC;
+                oECMng.SelByFolio();
+
+                if (oECMng.Lst.Count > 0)
+                {
+                    EntradaMng oEMng = new EntradaMng();
+                    Entrada_documentoMng oEDocMng = new Entrada_documentoMng();
+                    Entrada_documento oEDoc = new Entrada_documento();
+
+                    oE = new Entrada();
+                    oE.Id = (int)oECMng.Lst.FindAll(p => p.Capturada == true).First().Id_entrada;
+                    oE.PLstEntComp = oECMng.Lst;
+                    oEMng.O_Entrada = oE;
+                    oEMng.selByIdEvenInactive();
+
+                    oEDoc.Id_entrada = oE.Id;
+                    oEDocMng.O_Entrada_documento = oEDoc;
+                    oEDocMng.SelByIdEntrada();
+                    oE.PLstEntDoc = oEDocMng.Lst;
+
+                    Entrada_transporte oET = new Entrada_transporte();
+                    Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                    oET.Id_entrada = oE.Id;
+                    oETMng.O_Entrada_transporte = oET;
+                    oETMng.selByIdEntrada();
+                    oE.PLstEntTrans = oETMng.Lst;
+
+                    foreach (Entrada_transporte itemET in oETMng.Lst)
+                    {
+                        Transporte_tipo oTT = new Transporte_tipo();
+                        Transporte_tipoMng oTTMng = new Transporte_tipoMng();
+                        oTT.Id = itemET.Id_transporte_tipo;
+                        oTTMng.O_Transporte_tipo = oTT;
+                        oTTMng.selById();
+                        itemET.Transporte_tipo = oTT.Nombre;
+                    }
+
+                    oE.Folio = folio;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return oE;
+        }
+
+        /// <summary>
+        /// Obtiene los valores de una entrada parcial
+        /// </summary>
+        /// <param name="IdEntrada"></param>
+        /// <returns></returns>
+        public static Entrada getEntradaParcial(int IdEntrada)
+        {
+            Entrada oE = null;
+            try
+            {
+                EntradaMng oEMng = new EntradaMng();
+                oE = new Entrada();
+                oE.Id = IdEntrada;
+                oEMng.O_Entrada = oE;
+                oEMng.selById();
+
+                Entrada_documentoMng oEDMng = new Entrada_documentoMng();
+                Entrada_documento oED = new Entrada_documento();
+                oED.Id_entrada = IdEntrada;
+                oEDMng.O_Entrada_documento = oED;
+                oEDMng.SelByIdEntrada();
+                oE.PLstEntDoc = oEDMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return oE;
+        }
+
+        private static bool EsConsolidada(Entrada oE)
+        {
+            bool EsConsolidada = false;
+            if (oE.PLstEntComp != null)
+                EsConsolidada = (oE.PLstEntComp.Count > 0);
+            return EsConsolidada;
+        }
+
+        public static void AddEntrada(Entrada oE)
+        {
+            IDbTransaction trans = null;
+            Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+            Entrada_compartida oECFI = new Entrada_compartida();
+            string folioIndice = string.Empty;
+            try
+            {
+                //Verifica la referencia sea valida (No se puede repetir la referencia a menos que sea parcial)
+                if (!EsReferenciaParcial(oE.Referencia, oE.Id_cliente))
+                {
+                    ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
+                }
+
+                //Verifica las referencias de las compartidas
+                foreach (Entrada_compartida oEC in oE.PLstEntComp)
+                {
+                    ReferenciaValida(oEC.Referencia, oE.Id_cliente);
+                }
+
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+                oE.Folio = FolioCtrl.getFolio(enumTipo.E, trans);
+
+                if (EsConsolidada(oE))
+                {
+                    oECFI.Folio = oE.Folio;
+                    oECMng.O_Entrada_compartida = oECFI;
+                    folioIndice = oECMng.GetIndice(trans);
+                    oE.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();//System.Text.Encoding.ASCII.GetChars(new byte[] { Convert.ToByte(folioIndice) }).ToString();
+                }
+
+                //obtiene la referencia de acuerdo al cliente
+                oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
+                oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
+
+                //Entrada de mercancia al almacen
+                EntradaMng oMng = new EntradaMng();
+                oMng.O_Entrada = oE;
+                oMng.add(trans);
+
+                //Usuario que captura la entrada
+                Entrada_usuarioMng oEUMng = new Entrada_usuarioMng();
+                Entrada_usuario oEU = new Entrada_usuario();
+                oEU.Id_entrada = oE.Id;
+                oEU.Id_usuario = oE.PUsuario.Id;
+                oEU.Folio = oE.Folio + oE.Folio_indice;
+                oEUMng.O_Entrada_usuario = oEU;
+                oEUMng.add(trans);
+
+                //Documentos asociados a la entrada
+                Entrada_documentoMng oEdMng = new Entrada_documentoMng();
+                foreach (Entrada_documento oED in oE.PLstEntDoc)
+                {
+                    oED.Id_entrada = oE.Id;
+                    oEdMng.O_Entrada_documento = oED;
+                    oEdMng.add(trans);
+                }
+
+                //Entrada compartida, por el momento comparten pedimentos
+                oECMng = new Entrada_compartidaMng();
+                if (EsConsolidada(oE))
+                {
+                    Entrada_compartida oECA = new Entrada_compartida();
+                    oECA.Referencia = oE.Referencia;
+                    oECA.Folio = oE.Folio;
+                    oECA.Id_entrada = oE.Id;
+                    oECA.Id_usuario = oE.PUsuario.Id;
+                    oECA.Capturada = true;
+                    oECMng.O_Entrada_compartida = oECA;
+                    oECMng.add(trans);
+                    foreach (Entrada_compartida oEC in oE.PLstEntComp)
+                    {
+                        oEC.Folio = oE.Folio;
+                        oECMng.O_Entrada_compartida = oEC;
+                        oECMng.add(trans);
+                    }
+                }
+
+                //Entrada transportes
+                Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                if (oE.PLstEntTrans.Count < 1)
+                    throw new Exception("Es necesario agregar por lo menos un transporte");
+                foreach (Entrada_transporte oET in oE.PLstEntTrans)
+                {
+                    oET.Id_entrada = oE.Id;
+                    oETMng.O_Entrada_transporte = oET;
+                    oETMng.add(trans);
+                }
+
+                //Parcial
+                if (oE.PEntPar != null)
+                {
+                    Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                    oE.PEntPar.Id_entrada = oE.Id;
+                    oEPMng.O_Entrada_parcial = oE.PEntPar;
+                    oEPMng.add(trans);
+                    oE.Es_unica = false;
+                }
+
+                if (oE.Referencia.Length == 0)
+                    oE.Referencia = oE.Folio + oE.Folio_indice;
+
+                oE.IsActive = true;
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans !=null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+
+        }
+
+        public static void AddEntradaCompartida(Entrada oE)
+        {
+            IDbTransaction trans = null;
+            Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+            Entrada_compartida oECFI = new Entrada_compartida();
+            string folioIndice = string.Empty;
+            try
+            {
+                //Verifica la referencia sea valida (No se puede repetir la referencia)
+                ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
+
+                //Comienza la transaccion
+                trans = GenericDataAccess.BeginTransaction();
+
+                //Se obtiene el folio
+                oECFI.Folio = oE.Folio;
+                oECMng.O_Entrada_compartida = oECFI;
+                folioIndice = oECMng.GetIndice(trans);
+                oE.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();
+
+                //obtiene la referencia de acuerdo al cliente
+                if (oE.PEntPar == null)
+                {
+                    oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
+                    oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
+                }
+
+                //Entrada de mercancia al almacen
+                EntradaMng oMng = new EntradaMng();
+                oMng.O_Entrada = oE;
+                oMng.add(trans);
+
+                //Usuario que captura la entrada
+                Entrada_usuarioMng oEUMng = new Entrada_usuarioMng();
+                Entrada_usuario oEU = new Entrada_usuario();
+                oEU.Id_entrada = oE.Id;
+                oEU.Id_usuario = oE.PUsuario.Id;
+                oEU.Folio = oE.Folio + oE.Folio_indice;
+                oEUMng.O_Entrada_usuario = oEU;
+                oEUMng.add(trans);
+
+                //Documentos asociados a la entrada
+                Entrada_documentoMng oEdMng = new Entrada_documentoMng();
+                foreach (Entrada_documento oED in oE.PLstEntDoc)
+                {
+                    oED.Id_entrada = oE.Id;
+                    oEdMng.O_Entrada_documento = oED;
+                    oEdMng.add(trans);
+                }
+
+                //Entrada compartida, por el momento comparten pedimentos
+                oECMng = new Entrada_compartidaMng();
+                Entrada_compartida oECA = new Entrada_compartida();
+                oECA.Referencia = oE.Referencia;
+                oECA.Id_entrada = oE.Id;
+                oECA.Folio = oE.Folio;
+                oECMng.O_Entrada_compartida = oECA;
+                oECMng.udtEntradaCompartida(trans);
+
+                //Entrada transportes
+                Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                foreach (Entrada_transporte oET in oE.PLstEntTrans)
+                {
+                    oET.Id_entrada = oE.Id;
+                    oETMng.O_Entrada_transporte = oET;
+                    oETMng.add(trans);
+                }
+
+                //Parcial
+                if (oE.PEntPar != null)
+                {
+                    Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                    oE.PEntPar.Id_entrada = oE.Id;
+                    oEPMng.O_Entrada_parcial = oE.PEntPar;
+                    oEPMng.add(trans);
+                    oE.Es_unica = false;
+                }
+
+                oE.IsActive = true;
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Obtiene toda la información referente a una entrada
+        /// entrada_compartida
+        /// entrada_documento
+        /// entrada_parcial
+        /// entrada_usuario
+        /// </summary>
+        /// <param name="IdEntrada"></param>
+        /// <returns></returns>
+        public static Entrada EntradaGetAllDataById(int IdEntrada)
+        {
+            Entrada oE = new Entrada();
+            try
+            {
+                Entrada_documento oED = new Entrada_documento();
+                Entrada_compartida oEC = new Entrada_compartida();
+
+                EntradaMng oEMng = new EntradaMng();
+                oE.Id = IdEntrada;
+                oEMng.O_Entrada = oE;
+                oEMng.selByIdEvenInactive();
+
+                Bodega oB = new Bodega();
+                oB.Id = oE.Id_bodega;
+                BodegaMng oBMng = new BodegaMng();
+                oBMng.O_Bodega = oB;
+                oBMng.selById();
+                oE.PBodega = oB;
+
+                CortinaMng oCorMng = new CortinaMng();
+                Cortina oCor = new Cortina();
+                oCor.Id = oE.Id_cortina;
+                oCorMng.O_Cortina = oCor;
+                oCorMng.selById();
+                oE.PCortina = oCor;
+
+                oE.Ubicacion = oE.PBodega.Nombre + " " + oE.PCortina.Nombre;
+
+                Cliente oC = new Cliente();
+                ClienteMng oCMng = new ClienteMng();
+                oC.Id = oE.Id_cliente;
+                oCMng.O_Cliente = oC;
+                oCMng.selById();
+                oE.PCliente = oC;
+                oE.ClienteNombre = oC.Nombre;
+
+                Entrada_documentoMng oEDMng = new Entrada_documentoMng();
+                oED.Id_entrada = oE.Id;
+                oEDMng.O_Entrada_documento = oED;
+                oEDMng.SelByIdEntrada();
+                oE.PLstEntDoc = oEDMng.Lst;
+
+                DocumentoMng oDocMng = new DocumentoMng();
+                foreach (Entrada_documento itemED in oE.PLstEntDoc)
+                {
+                    Documento oDoc = new Documento();
+                    oDoc.Id = itemED.Id_documento;
+                    oDocMng.O_Documento = oDoc;
+                    oDocMng.selById();
+                    itemED.PDocumento = oDoc;
+                }
+
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                oEC.Folio = oE.Folio;
+                oECMng.O_Entrada_compartida = oEC;
+                oECMng.SelByFolio();
+                oE.PLstEntComp = oECMng.Lst;
+
+                Entrada_transporte oET = new Entrada_transporte();
+                Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                oET.Id_entrada = oE.Id;
+                oETMng.O_Entrada_transporte = oET;
+                oETMng.selByIdEntrada();
+                oE.PLstEntTrans = oETMng.Lst;
+
+                CustodiaMng oCdiaMng = new CustodiaMng();
+                Custodia oCdia = new Custodia();
+                oCdia.Id = oE.Id_custodia;
+                oCdiaMng.O_Custodia = oCdia;
+                oCdiaMng.selById();
+                oE.PCustodia = oCdia;
+
+                Entrada_usuarioMng oEUMng = new Entrada_usuarioMng();
+                Entrada_usuario oEU = new Entrada_usuario();
+                oEU.Id_entrada = IdEntrada;
+                oEUMng.O_Entrada_usuario = oEU;
+                oEUMng.selByIdEnt();
+
+                Entrada_parcial oEP = new Entrada_parcial();
+                Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                oEP.Id_entrada = oE.Id;
+                oEPMng.O_Entrada_parcial = oEP;
+                oEPMng.selByIdEntrada();
+                oE.PEntPar = oEP;
+
+                Usuario oU = new Usuario();
+                UsuarioMng oUMng = new UsuarioMng();
+                oU.Id = oEU.Id_usuario;
+                oUMng.O_Usuario = oU;
+                oUMng.selById();
+
+                Tipo_carga oTC = new Tipo_carga();
+                Tipo_cargaMng oTCMng = new Tipo_cargaMng();
+                oTC.Id = oE.Id_tipo_carga;
+                oTCMng.O_Tipo_carga = oTC;
+                oTCMng.selById();
+                oE.PTipoCarga = oTC;
+
+                oE.PUsuario = oU;
+            }
+            catch
+            {
+                throw;
+            }
+            return oE;
+        }
+
+        /// <summary>
+        /// Cancela de manera parcial el folio
+        /// </summary>
+        /// <param name="oE"></param>
+        public static void PartialCancel(Entrada oE)
+        {
+            try
+            {
+                EntradaMng oEMng = new EntradaMng();
+                oEMng.O_Entrada = oE;
+                oEMng.PartialCancel();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public static List<Entrada> searchByFolioPedimento(string dato)
+        {
+            List<Entrada> lst = new List<Entrada>();
+            EntradaMng oMng = new EntradaMng();
+            Entrada o = new Entrada();
+            o.Folio = dato;
+            oMng.O_Entrada = o;
+            oMng.searchByFolioPedimento();
+            lst = oMng.Lst;
+            return lst;
+        }
+
+        #region Compartidas
+
+        public static List<Entrada_compartida> getEntradaCompartidaByFolioNoCapturada(Entrada_compartida oEC)
+        {
+            List<Entrada_compartida> lst = new List<Entrada_compartida>();
+            try
+            {
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                oECMng.O_Entrada_compartida = oEC;
+                oECMng.SelByFolio();
+                lst = oECMng.Lst.FindAll(p => p.Capturada == false);
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<Entrada_compartida> getEntradaCompartidaByUser(int IdUsuario, bool ConFondeo = false)
+        {
+            List<Entrada_compartida> lst = new List<Entrada_compartida>();
+            try
+            {
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                Entrada_compartida oEC = new Entrada_compartida();
+
+                oEC.Id_usuario = IdUsuario;
+                oEC.Capturada = false;
+
+                oECMng.O_Entrada_compartida = oEC;
+                oECMng.fillLstEntradaCompartida(ConFondeo);
+                lst = oECMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Parciales
+
+        public static Entrada_parcial ParcialGetByReferencia(string referencia, bool EvenLast = false)
+        {
+            Entrada_parcial o = new Entrada_parcial();
+            try
+            {
+                Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                Entrada_parcial oEP = new Entrada_parcial();
+                oEP.Referencia = referencia;
+                oEPMng.O_Entrada_parcial = oEP;
+                oEPMng.getByReferencia(EvenLast);
+                o = oEP;
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static List<Entrada_parcial> ParcialgetByUser(int IdUsuario)
+        {
+            List<Entrada_parcial> lst = new List<Entrada_parcial>();
+            try
+            {
+                Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                Entrada_parcial oEP = new Entrada_parcial();
+                oEP.Id_usuario = IdUsuario;
+                oEPMng.O_Entrada_parcial = oEP;
+                oEPMng.fillLstByUsuario();
+                lst = oEPMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<Entrada_parcial> ParcialGetAllByReferencia(string referencia)
+        {
+            List<Entrada_parcial> lst = new List<Entrada_parcial>();
+            try
+            {
+                Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                Entrada_parcial oEP = new Entrada_parcial();
+                oEP.Referencia = referencia;
+                oEPMng.O_Entrada_parcial = oEP;
+                oEPMng.getAllByReferencia();
+                lst = oEPMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Entrada Usuario
+
+        public static List<Entrada_usuario> getTodayEntradaByUser(int IdUsuario)
+        {
+            List<Entrada_usuario> lst = new List<Entrada_usuario>();
+            try
+            {
+                Entrada_usuario oEU = new Entrada_usuario();
+                oEU.Id_usuario = IdUsuario;
+                Entrada_usuarioMng oEUMng = new Entrada_usuarioMng();
+                oEUMng.O_Entrada_usuario = oEU;
+                oEUMng.fillLstEntradasHoy();
+                lst = oEUMng.Lst;
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Actualizar datos
+        public static void actualizaDatos(Entrada oE)
+        {
+            try
+            {
+                EntradaMng oEMng = new EntradaMng();
+                oEMng.O_Entrada = oE;
+                oEMng.udt();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        #endregion
+
+        #region Entrada Estatus
+
+        public static void EntradaEstatusAdd(int idEntradaInventario, int idEstatusProceso, int idUsuario, int? idEntradaMaquila = null, int? idSalidaRemision = null, IDbTransaction trans = null)
+        {
+            Entrada_estatusMng oEEMng = new Entrada_estatusMng() { 
+                O_Entrada_estatus = new Entrada_estatus() { 
+                    Id_entrada_inventario = idEntradaInventario, 
+                    Id_entrada_maquila = idEntradaMaquila,
+                    Id_salida_remision = idSalidaRemision,
+                    Id_estatus_proceso = idEstatusProceso, 
+                    Id_usuario = idUsuario } };
+            oEEMng.add(trans);
+        }
+
+        public static void EntradaEstatusCloseMaquila(int idEntradaInventario, int idEstatusProceso, int idUsuario, int? idEntradaMaquila = null, IDbTransaction trans = null)
+        {
+            Entrada_estatusMng oEEMng = new Entrada_estatusMng()
+            {
+                O_Entrada_estatus = new Entrada_estatus()
+                {
+                    Id_entrada_inventario = idEntradaInventario,
+                    Id_entrada_maquila = idEntradaMaquila,
+                    Id_estatus_proceso = idEstatusProceso,
+                    Id_usuario = idUsuario
+                }
+            };
+            oEEMng.closeMaquila(trans);
+        }
+
+        #endregion
+
+        #region Entrada Fondeo - Control piso
+        private static string validaDato(object dato, string tipo, bool IsRequired)
+        {
+            string valido = string.Empty;
+            try
+            {
+                if (IsRequired && dato.ToString().Length == 0)
+                    throw new ImportException("Este dato no puede estar vacío.");
+                switch (tipo)
+                {
+                    case "cadena":
+                        break;
+                    case "entero":
+                        if (dato.ToString().Length == 0)
+                            dato = "0";
+                        dato = dato.ToString().Replace("$", "").Replace(",", "");
+                        Convert.ToInt32(dato);
+                        break;
+                    case "doble":
+                        if (dato.ToString().Length == 0)
+                            dato = "0";
+                        dato = dato.ToString().Replace("$", "").Replace(",", "");
+                        Convert.ToDouble(dato);
+                        break;
+                    case "fecha":
+                        DateTime fecha = default(DateTime);
+                        if (dato.ToString().Length > 0)
+                        {
+                            if (!DateTime.TryParse(dato.ToString(), out fecha))
+                            {
+                                double dTime = double.Parse(dato.ToString());
+                                DateTime.FromOADate(dTime);
+                            }
+                        }
+                        break;
+                }
+            }
+            catch (ImportException iex)
+            {
+                valido = "<span class='errTipoDato'>" + iex.Message + "</span>";
+            }
+            catch (Exception)
+            {
+                switch (tipo)
+                {
+                    case "cadena":
+                        valido = "<span class='errTipoDato'>Cadena no válida</span>";
+                        break;
+                    case "numero":
+                        valido = "<span class='errTipoDato'>Número no válido</span>";
+                        break;
+                    case "fecha":
+                        valido = "<span class='errTipoDato'>Fecha no válida</span>";
+                        break;
+                }
+            }
+            return valido;
+        }
+
+        private static List<Pivote> readColumnNames(string[] columnNames)
+        {
+            List<Pivote> lst = CatalogCtrl.PivoteGetColumnNames();
+            try
+            {
+                lst = lst.FindAll(p => p.Campoxls.Length > 0);
+                foreach (Pivote oP in lst)
+                {
+                    oP.NumeroCampo = Array.IndexOf(columnNames, oP.Campoxls.ToLower());
+                    oP.ExisteCampo = (oP.NumeroCampo >= 0);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        private static DataTable UpLoadData(string path, DataTable dtImport)
+        {
+            DataTable dtReviewFile = new DataTable();
+            try
+            {
+                List<string> colNames = new List<string>();
+                foreach (DataColumn dc in dtImport.Columns)
+                    colNames.Add(dc.ColumnName.ToLower());
+                List<Pivote> lst = readColumnNames(colNames.ToArray());
+
+                DataColumn dcIndex = new DataColumn("No", typeof(int));
+                dcIndex.AutoIncrement = true;
+                dcIndex.AutoIncrementStep = 1;
+                dcIndex.AutoIncrementSeed = 1;
+                dtReviewFile.Columns.Add(dcIndex);
+
+                foreach (Pivote itemP in lst)
+                    dtReviewFile.Columns.Add(new DataColumn(itemP.Campoxls));
+                
+                dtReviewFile.Columns.Add(new DataColumn("HasError", typeof(bool)));
+
+                string valido = string.Empty;
+
+                foreach (DataRow dr in dtImport.Rows)
+                {
+                    DataRow dtNew = dtReviewFile.NewRow();
+                    dtNew["HasError"] = false;
+                    foreach (Pivote oP in lst)
+                    {
+                        if (oP.NumeroCampo == -1)
+                            throw new Exception("El campo '" + (oP.Campoxls) + "' no existe en el csv");
+
+                        valido = validaDato(dr[oP.NumeroCampo].ToString(), oP.Tipo, oP.Requerido);
+
+                        if (valido.Length > 0)
+                        {
+                            dtNew["HasError"] = true;
+                            dtNew[oP.Campoxls] = dr[oP.NumeroCampo].ToString() + "-" + valido;
+                        }
+                        else
+                            dtNew[oP.Campoxls] = dr[oP.NumeroCampo].ToString();
+                    }
+
+                    dtReviewFile.Rows.Add(dtNew);
+                    valido = string.Empty;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+            return dtReviewFile;
+        }
+
+        public static DataTable FondeoUpLoadData(string path, DateTime fecha, string importador, string aduana)
+        {
+            DataTable dtReviewFile = new DataTable();
+            try
+            {
+                DataTable dtImport = Model.CommonFunctions.ImportXls(path, " where " + Globals.REFERENCIA_NAME_XLS_FONDEO + " is not null");
+                dtImport.Columns.Add("fecha", typeof(DateTime));
+                dtImport.Columns.Add("importador", typeof(string));
+                dtImport.Columns.Add("aduana", typeof(string));
+                dtImport.AsEnumerable().ToList().ForEach(p => p.SetField("fecha", fecha.ToString("dd/MM/yyyy")));
+                dtImport.AsEnumerable().ToList().ForEach(p => p.SetField("importador", importador));
+                dtImport.AsEnumerable().ToList().ForEach(p => p.SetField("aduana", aduana));
+                dtReviewFile = UpLoadData(path, dtImport);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                //fileStream.Close();
+                File.Delete(path);
+            }
+
+            return dtReviewFile;
+        }
+
+        public static DataTable FondeoGetInsideErr(DataTable dt)
+        {
+            DataTable dtInsideErr = new DataTable();
+            try
+            {
+                var error = from row in dt.AsEnumerable()
+                            where row.Field<bool>("HasError") == true
+                            select row;
+
+                if (error.Count() > 0)
+                {
+                    dtInsideErr = error.CopyToDataTable();
+                    dtInsideErr.Columns.Remove("HasError");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return dtInsideErr;
+        }
+
+        public static List<Entrada_fondeo> FondeoFillFromDT(DataTable dt)
+        {
+            List<Entrada_fondeo> lstEntFondeo = new List<Entrada_fondeo>();
+            try
+            {
+                List<Pivote> lstPivote = CatalogCtrl.PivoteGetColumnNames();
+
+                Pivote oPiv;
+                string colPuName = string.Empty;
+                object dato;
+                foreach (DataRow drPU in dt.Rows)
+                {
+                    Entrada_fondeo oEF = new Entrada_fondeo();
+                    foreach (DataColumn dcEF in dt.Columns)
+                    {
+                        oPiv = lstPivote.Find(p => p.Campoxls == dcEF.ColumnName);
+
+                        if (oPiv != null)
+                        {
+                            colPuName = Model.CommonFunctions.UppercaseFirst(oPiv.Campotbl);
+                            PropertyInfo oPInfo = oEF.GetType().GetProperty(colPuName);
+                            dato = drPU[dcEF.ColumnName];
+
+                            Regex rgx = new Regex("[^-0-9.]");
+                            if (dato.ToString().Length > 0)
+                            {
+                                switch (oPiv.Tipo)
+                                {
+                                    case "cadena":
+                                        oPInfo.SetValue(oEF, dato.ToString().Trim(), null);
+                                        break;
+                                    case "entero":
+                                        dato = rgx.Replace(dato.ToString(), string.Empty);
+                                        oPInfo.SetValue(oEF, Convert.ToInt32(dato), null);
+                                        break;
+                                    case "doble":
+                                        dato = rgx.Replace(dato.ToString(), string.Empty);
+                                        oPInfo.SetValue(oEF, Convert.ToDouble(dato), null);
+                                        break;
+                                    case "fecha":
+                                        DateTime fecha = default(DateTime);
+                                        if (!DateTime.TryParse(dato.ToString(), out fecha))
+                                        {
+                                            double dTime = double.Parse(dato.ToString());
+                                            dato = DateTime.FromOADate(dTime);
+                                        }
+                                        oPInfo.SetValue(oEF, Convert.ToDateTime(dato), null);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    lstEntFondeo.Add(oEF);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return lstEntFondeo;
+        }
+
+        public static int FondeoPasoInsertData(List<Entrada_fondeo> lst, ref string folioFondeo)
+        {
+            int rowInserted = 0;
+            int indEF = 0;
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+
+                Entrada_fondeoMng oEFMng = new Entrada_fondeoMng();
+                oEFMng = new Entrada_fondeoMng(new StringBuilder("set names utf8;"));
+                oEFMng.InitializeInsert();
+
+                folioFondeo = FolioCtrl.getFolio(enumTipo.FND, trans);
+
+                for (; indEF < lst.Count; indEF++)
+                {
+                    Entrada_fondeo itemEF = lst[indEF];
+                    itemEF.Folio = folioFondeo;
+                    oEFMng.O_Entrada_fondeo = itemEF;
+
+                    //if (indWF == 1000)
+                    //indWF = indWF;
+
+                    oEFMng.AddValuesInsert(indEF + 1 == lst.Count);
+
+                    //if (indWF % 1000 == 0 && indWF > 0)
+                    //{
+                    //    rowInserted += oEFMng.execInserts();
+                    //    oEFMng = new Entrada_fondeoMng(new StringBuilder("set names utf8;"));
+                    //}
+                }
+                rowInserted += oEFMng.execInserts(trans);
+
+            }
+            catch (Exception e)
+            {
+                indEF++;
+                throw new Exception("Registro Número: " + indEF.ToString() + e.Message);
+            }
+            return rowInserted;
+        }
+
+        public static List<Entrada_fondeo> FondeoValidaCodigos()
+        {
+            List<Entrada_fondeo> lst = new List<Entrada_fondeo>();
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                oMng.validaCodigos();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<Entrada_fondeo> FondeoValidaVendors()
+        {
+            List<Entrada_fondeo> lst = new List<Entrada_fondeo>();
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                oMng.validaVendors();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static int FondeoInsertData()
+        {
+            int rowInserted = 0;
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                rowInserted = oMng.insertFromFondeoPaso();
+            }
+            catch
+            {
+                throw;
+            }
+            return rowInserted;
+        }
+
+        public static List<Entrada_fondeo> FondeoGetByReferencia(string referencia, bool withDetail = true)
+        {
+            List<Entrada_fondeo> lst = new List<Entrada_fondeo>();
+            try
+            {
+                Entrada_fondeo o = new Entrada_fondeo();
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                o.Referencia = referencia.Trim();
+                o.Folio = referencia.Trim();
+                oMng.O_Entrada_fondeo = o;
+                oMng.selByReferencia(withDetail);
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        public static Entrada_fondeo FondeoGetById(int id)
+        {
+            Entrada_fondeo o = new Entrada_fondeo() { Id = id };
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = o };
+                oMng.selById();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return o;
+        }
+
+        public static bool FondeoExisteEntradaPrevia()
+        {
+            bool ExisteEntradaPrevia = false;
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                ExisteEntradaPrevia = oMng.ExisxteEntradaPrevia();
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return ExisteEntradaPrevia;
+        }
+        #endregion
+
+        #region Entrada Inventario - Control piso
+
+        public static void InventarioSave(Entrada_inventario o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = o };
+                Entrada_inventario_detailMng oEIDMng = new Entrada_inventario_detailMng();
+                Entrada_inventario_loteMng oEILMng = new Entrada_inventario_loteMng();
+
+                if (o.Id > 0)
+                {
+                    Entrada_inventario_detail oEID = new Entrada_inventario_detail() { Id_entrada_inventario = o.Id };
+                    oEIDMng.O_Entrada_inventario_detail = oEID;
+                    oEIDMng.dltByIdEntInv(trans);
+                    oMng.udt(trans);
+                }
+                else
+                    oMng.add(trans);
+
+                foreach (Entrada_inventario_detail oDet in o.LstEntInvDet)
+                {
+                    oDet.Id_entrada_inventario = o.Id;
+                    oEIDMng.O_Entrada_inventario_detail = oDet;
+                    oEIDMng.add(trans);
+                }
+
+                oEILMng.O_Entrada_inventario_lote = new Entrada_inventario_lote() { Id_entrada_inventario = o.Id };
+                oEILMng.dltByIdEntradaInventario(trans);
+
+                foreach (Entrada_inventario_lote oLote in o.LstEntInvLote)
+                {
+                    oLote.Id_entrada_inventario = o.Id;
+                    oEILMng.O_Entrada_inventario_lote = oLote;
+                    oEILMng.add(trans);
+                }
+
+                EntradaEstatusAdd(o.Id, o.Id_estatus, o.Id_usuario, null, null, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void InventarioAdd(List<Entrada_inventario> lst)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+
+                //se eliminan todas las relaciones de entrada inventario de una entrada
+                //Entrada_inventario o = new Entrada_inventario();
+                //if (lst.Count > 0)
+                //{
+                //    o.Id_entrada = lst.First().Id_entrada;
+                //    oMng.O_Entrada_inventario = o;
+                //    oMng.dlt(trans);
+                //}
+
+                foreach (Entrada_inventario item in lst)
+                {
+                    oMng.O_Entrada_inventario = item;
+                    oMng.add(trans);
+                }
+                   
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch (Exception)
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static List<Entrada_inventario> InventarioGetByStatus(int id_estatus)
+        {
+            List<Entrada_inventario> lst = new List<Entrada_inventario>();
+
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = new Entrada_inventario() { Id = id_estatus } };
+                oMng.getByIdEstatus();
+                lst = oMng.Lst;
+            }
+            catch { throw; }
+
+            return lst;
+        }
+
+        public static List<Entrada_inventario> InventarioGetBy(int id_entrada, bool withDetail = true)
+        {
+            List<Entrada_inventario> lst = new List<Entrada_inventario>();
+
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+                Entrada_inventario o = new Entrada_inventario();
+
+                //Se verifica que sea única o compartida
+                Entrada oE = EntradaCtrl.EntradaGetAllDataById(id_entrada);
+                if (!oE.Es_unica)
+                {
+                    List<Entrada_parcial> lstPartial = EntradaCtrl.ParcialGetAllByReferencia(oE.Referencia);
+                    oE = EntradaCtrl.EntradaGetAllDataById(lstPartial.First().Id_entrada);
+                    id_entrada = oE.Id;
+                }
+
+                o.Id_entrada = id_entrada;
+                oMng.O_Entrada_inventario = o;
+                oMng.getByIdEntrada(withDetail);
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+
+            return lst;
+        }
+
+        public static Entrada_inventario InvetarioGetById(int Id)
+        {
+            Entrada_inventario o = new Entrada_inventario();
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+                o.Id = Id;
+                oMng.O_Entrada_inventario = o;
+                oMng.selById();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static void InventarioDlt(int id)
+        {
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+                Entrada_inventario o = new Entrada_inventario();
+                o.Id = id;
+                oMng.O_Entrada_inventario = o;
+                oMng.dlt();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static List<Entrada_inventario> InventarioGetByFechaMaquila(DateTime day)
+        {
+            List<Entrada_inventario> lst = new List<Entrada_inventario>();
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = new Entrada_inventario() { Fecha_maquila = day } };
+                oMng.selByIdFechaMaquila();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Entrada Inventario Detalle - Control Piso
+
+        public static List<Entrada_inventario_detail> InventarioDetGetByInvId(int IdEntradaInventario)
+        {
+            List<Entrada_inventario_detail> lst = new List<Entrada_inventario_detail>();
+            try
+            {
+                Entrada_inventario_detail o = new Entrada_inventario_detail() { Id_entrada_inventario = IdEntradaInventario };
+                Entrada_inventario_detailMng oMng = new Entrada_inventario_detailMng() { O_Entrada_inventario_detail = o };
+                oMng.selByIdInventario();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Entrada Inventario Lote - Control Piso
+
+        public static void InventarioLoteAdd(int Id_entrada_inventario, string lote, int piezas, IDbTransaction trans = null)
+        {
+            try
+            {
+                Entrada_inventario_loteMng oMng = new Entrada_inventario_loteMng()
+                {
+                    O_Entrada_inventario_lote = new Entrada_inventario_lote()
+                    {
+                        Id_entrada_inventario = Id_entrada_inventario,
+                        Lote = lote,
+                        Piezas = piezas
+                    }
+
+                };
+                oMng.addByInventario();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+
+        public static List<Entrada_inventario_lote> InventarioLoteGetDistinctByInvId(int IdEntradaInventario)
+        {
+            List<Entrada_inventario_lote> lst = new List<Entrada_inventario_lote>();
+            try
+            {
+                Entrada_inventario_lote o = new Entrada_inventario_lote() { Id_entrada_inventario = IdEntradaInventario };
+                Entrada_inventario_loteMng oMng = new Entrada_inventario_loteMng() { O_Entrada_inventario_lote = o };
+                oMng.selDistinctLote();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Entrada Maquila - Control piso
+
+        public static void MaquilaAdd(Entrada_maquila o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng();
+                oMng.O_Entrada_maquila = o;
+                oMng.add(trans);
+
+                Entrada_maquila_detailMng oEMDMng = new Entrada_maquila_detailMng() { O_Entrada_maquila_detail = new Entrada_maquila_detail() { Id_entrada_maquila = o.Id } };
+                oEMDMng.dltByEntMaq(trans);
+
+                foreach (Entrada_maquila_detail itemMD in o.LstEntMaqDet)
+                {
+                    itemMD.Id_entrada_maquila = o.Id;
+                    oEMDMng.O_Entrada_maquila_detail = itemMD;
+                    oEMDMng.add(trans);
+                    if (itemMD.Lote.Trim().Length > 0)
+                    {
+                        itemMD.PiezasTotales = itemMD.Bultos * itemMD.Piezasxbulto;
+                        InventarioLoteAdd(o.Id_entrada_inventario, itemMD.Lote, itemMD.PiezasTotales, trans);
+                    }
+                }
+
+                EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void MaquilaUdt(Entrada_maquila o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng();
+                oMng.O_Entrada_maquila = o;
+                oMng.udt(trans);
+
+                Entrada_maquila_detailMng oEMDMng = new Entrada_maquila_detailMng() { O_Entrada_maquila_detail = new Entrada_maquila_detail() { Id_entrada_maquila = o.Id } };
+                oEMDMng.dltByEntMaq(trans);
+
+                foreach (Entrada_maquila_detail itemMD in o.LstEntMaqDet)
+                {
+                    itemMD.Id_entrada_maquila = o.Id;
+                    oEMDMng.O_Entrada_maquila_detail = itemMD;
+                    oEMDMng.add(trans);
+                }
+
+                EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static Entrada_maquila MaquilaSelBy(int IdEntradaInventario, DateTime FechaTrabajo)
+        {
+            Entrada_maquila o = new Entrada_maquila();
+            try
+            {
+                o.Id_entrada_inventario = IdEntradaInventario;
+                o.Fecha_trabajo = FechaTrabajo;
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng();
+                oMng.O_Entrada_maquila = o;
+                oMng.selBy();
+            }
+            catch 
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static Entrada_maquila MaquilaGetSum(int IdEntradaInventario = 0, int IdEntrada = 0)
+        {
+            Entrada_maquila o = new Entrada_maquila();
+            try
+            {
+                o.Id_entrada_inventario = IdEntradaInventario;
+                o.Id_entrada = IdEntrada;
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng();
+                oMng.O_Entrada_maquila = o;
+                oMng.sumByEntradaInventario();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static List<Entrada_maquila> MaquilaSelByInventario(int IdEntradaInventario)
+        {
+            List<Entrada_maquila> lst = new List<Entrada_maquila>();
+            Entrada_maquila o = new Entrada_maquila();
+            o.Id_entrada_inventario = IdEntradaInventario;
+            Entrada_maquilaMng oMng = new Entrada_maquilaMng();
+            oMng.O_Entrada_maquila = o;
+            try
+            {
+                oMng.selByInventario();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+
+            return lst;
+        }
+
+        public static void MaquilaClose(Entrada_maquila o, bool ConIncidencia, Entrada oE, string mailFrom)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng() { O_Entrada_maquila = o };
+                //o.Id_estatus = Globals.EST_MAQ_PAR_CERRADA;
+                o.Id_estatus = Globals.EST_MAQ_TOT_CERRADA;
+                oMng.O_Entrada_maquila = o;
+
+                trans = GenericDataAccess.BeginTransaction();
+
+                EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, null, null, trans);
+                EntradaEstatusCloseMaquila(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, null, trans);
+                if (ConIncidencia)
+                {
+                    IncidenciaCtrl.OrdenTrabajo(oE, o, mailFrom);
+                }
+                trans.Commit();
+            }
+            catch
+            {
+                if (trans != null)
+                    trans.Rollback();
+                throw;
+            }
+        }
+
+        public static Entrada_maquila MaquilaGetDetail(int IdEntradaInventario)
+        {
+            Entrada_maquila o = new Entrada_maquila();
+            try
+            {
+                o.Id_entrada_inventario = IdEntradaInventario;
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng();
+                oMng.O_Entrada_maquila = o;
+                oMng.selDetail();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
+        }
+
+        #endregion
+
+        #region Entrada Maquila Detalle - Control piso
+
+        public static List<Entrada_maquila_detail> MaquilaDetGetByInvId(int IdEntradaMaquila)
+        {
+            List<Entrada_maquila_detail> lst = new List<Entrada_maquila_detail>();
+            try
+            {
+                Entrada_maquila_detail o = new Entrada_maquila_detail() { Id_entrada_maquila = IdEntradaMaquila};
+                Entrada_maquila_detailMng oMng = new Entrada_maquila_detailMng() { O_Entrada_maquila_detail = o };
+                oMng.selByIdMaquila();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        public static int indEF { get; set; }
+    }
+}
