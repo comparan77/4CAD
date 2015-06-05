@@ -11,7 +11,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Text;
-using Model;
 
 
 namespace AppCasc
@@ -42,7 +41,7 @@ namespace AppCasc
             {
                 get
                 {
-                    return CommonFunctions.FormatDate(daySel, "dddd dd \\de MMMM \\de yyyy");
+                    return ModelCasc.CommonCasc.FormatDate(daySel, "dddd dd \\de MMMM \\de yyyy");
                 }
             }
         }

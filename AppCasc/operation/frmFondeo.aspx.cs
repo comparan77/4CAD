@@ -8,7 +8,6 @@ using ModelCasc.webApp;
 using System.Data;
 using ModelCasc.exception;
 using ModelCasc.operation;
-using Model;
 
 namespace AppCasc.operation
 {
@@ -208,7 +207,7 @@ namespace AppCasc.operation
         {
             try
             {
-                hf_MaxRequestLen.Value = CommonFunctions.GetMaxRequestLength().ToString();
+                hf_MaxRequestLen.Value = ModelCasc.CommonCasc.GetMaxRequestLength().ToString();
                 if(!IsPostBack)
                     loadFirsTime();
             }
