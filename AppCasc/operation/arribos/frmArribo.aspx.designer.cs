@@ -220,22 +220,13 @@ namespace AppCasc.operation.arribos {
         protected global::System.Web.UI.WebControls.Panel pnl_busqueda;
         
         /// <summary>
-        /// txt_dato control.
+        /// txt_referencia control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_referencia;
-        
-        /// <summary>
-        /// rfv_dato control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_dato;
         
         /// <summary>
         /// btn_buscar control.

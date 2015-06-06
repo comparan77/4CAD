@@ -238,10 +238,17 @@ var MngArribo = function () {
             lstDoc.push(oEntDoc);
         var tr = '';
         $('#tbody_documentos').html('');
+
         for (var iDoc in lstDoc) {
             tr = '<tr id="' + lstDoc[iDoc].Id_documento + '">';
             var td = '<td>' + lstDoc[iDoc].PDocumento.Nombre + '</td>';
-            td += '<td>' + lstDoc[iDoc].Referencia + '</td>';
+            var arrRefs = [];
+            var tdHtmlRef = '';
+            arrRefs = lstDoc[iDoc].Referencia.split(',');
+            $.each(arrRefs, function (i, j) {
+                tdHtmlRef += arrRefs[i] + '<br />';
+            });
+            td += '<td>' + tdHtmlRef + '</td>';
             td += '<td><button class="rem_documento" id="btn_rem_documento"><span class="ui-icon ui-icon-trash"></button></td>';
             tr += td;
             tr += '</tr>';
