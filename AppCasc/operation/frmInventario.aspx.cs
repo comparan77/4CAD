@@ -412,7 +412,7 @@ namespace AppCasc.operation
                 List<Entrada_inventario_lote> lstEntInvLote = JsonConvert.DeserializeObject<List<Entrada_inventario_lote>>(hf_entrada_inventario_lote.Value);
 
                 if (lstEntInvDet == null || lstEntInvDet.Count == 0)
-                    throw new Exception("Es necesario agregar bultos y piezas por bulto");
+                    throw new Exception("Es necesario desglosar bultos y piezas por bulto");
 
                 oEI.LstEntInvDet = lstEntInvDet;
 

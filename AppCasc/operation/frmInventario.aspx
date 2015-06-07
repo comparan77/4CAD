@@ -78,7 +78,7 @@
             <tr>
                 <th>&nbsp;</th>
                 <th>Entrada</th>
-                <th>Inventario</th>
+                <th>Desglosado</th>
                 <th>Maquilado</th>
             </tr>
         </thead>
@@ -434,12 +434,12 @@
         <input type="text" disabled="disabled" id="piezasdeclaradas" />
     </div>
     <div>
-        <label for="piezasrecibidas">Piezas Recibidas:</label>
+        <label for="piezasrecibidas">Piezas Totales:</label>
         <input type="text" id="piezasrecibidas" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_piezasrecibidas" ControlToValidate="piezasrecibidas" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>
     <div>
-        <label for="bultosrecibidos">Bultos Recibidos:</label>
+        <label for="bultosrecibidos">Bultos Totales:</label>
         <input type="text" id="bultosrecibidos" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_bultosrecibidos" ControlToValidate="bultosrecibidos" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>

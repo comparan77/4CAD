@@ -566,7 +566,10 @@ var MngInventario = function () {
 
             $('#ctl00_body_btnSaveCodigo').unbind('click').button().click(function () {
                 var oCommon = new Common();
-
+                if (lstEntInvDet.length < 1) {
+                    alert('Es necesario desglosar bultos y piezas por bulto');
+                    return false;
+                }
                 var oBEI = new BeanEntradaInventario(
                                     $('#idEntInv').val(),
                                     $('#ctl00_body_hf_id_entrada').val(),
