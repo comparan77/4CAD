@@ -1,15 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmRelEntSal.aspx.cs" Inherits="AppCasc.operation.frmRelEntSal" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%--<link href="../css/common.css" rel="stylesheet" type="text/css" />
-    <link href="../css/redmond/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />--%>
-    <%--<link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />--%>
-    <%--<link href="../css/frmChart.css" rel="stylesheet" type="text/css" />--%>
-
-    <%--<script src="../js/jquery.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>--%>
     <script src="../js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="../js/catalog/frmLst.js" type="text/javascript"></script>
-    <script src="../js/operation/frmRelEntSal.js" type="text/javascript"></script>
+    <script src="../js/catalog/frmLst.js?v1.1.150427_2252" type="text/javascript"></script>
+    <script src="../js/operation/frmRelEntSal.js?v1.1.150427_2252" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -52,6 +45,7 @@
             <th class="bodega">Bodega</th>
             <th>Fecha</th>
             <th>Folio</th>
+            <th>Referencia</th>
             <th class="cliente">Cliente</th>
             <th>Mercanc&iacute;a</th>
             <th align="center" class="columnAction">Imprimir</th>
@@ -67,6 +61,7 @@
                     <td class="bodega"><%# Eval("BODEGA")%></td>
                     <td class="fecha"><%# Eval("FECHA DE OPERACION", "{0:dd/MM/yyyy}")%></td>
                     <td class="folio"><%# Eval("FOLIO E/S")%></td>
+                    <td class="referencia"><%# Eval("REFERENCIA")%></td>
                     <td class="cliente"><%# Eval("CUENTA") %></td>
                     <td class="mercancia"><%# Eval("MERCANCIA") %></td>
                     <td align="center"><asp:LinkButton runat="server" CommandArgument='<%# Eval("MOVIMIENTO") %>' CommandName='<%# Eval("id") %>' ID="lnk_change_status" CssClass="ui-icon ui-icon-print spnIcon" OnCommand="lnk_print_click"></asp:LinkButton> </td>
