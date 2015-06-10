@@ -24,6 +24,24 @@ namespace AppCasc.operation.arribos
             }
         }
 
+        /// <summary>
+        /// Llena los documentos pertenecientes al pedimento
+        /// </summary>
+        /// <param name="lstEntFo"></param>
+        private void fillEntradaDocumento(List<Entrada_fondeo> lstEntFo)
+        {
+            //Documentos del pedimento
+
+            IEnumerable<Entrada_fondeo> lstEntDoc = lstEntFo.Distinct(new Entrada_fondeoFacturaComparer());
+            string facturas = string.Empty;
+            foreach (Entrada_fondeo iEF in lstEntDoc)
+            {
+                facturas += iEF.Factura + ",";
+            }
+            facturas = facturas.Substring(0, facturas.Length - 1);
+            hf_facturasAvon.Value = facturas;
+        }
+
         private void fillEntradaParcial(Entrada oE, Entrada_parcial oEP)
         {
             if (oE != null)
@@ -92,6 +110,8 @@ namespace AppCasc.operation.arribos
                     ddlCustodia.SelectedValue = oE.Id_custodia.ToString();
                     txt_operador.Text = oE.Operador;
                     txt_vigilante.Text = oE.Vigilante;
+
+                    fillEntradaDocumento(lstEntFo);
 
                     pnl_infoArribo.Visible = true;
                 }
@@ -504,14 +524,7 @@ namespace AppCasc.operation.arribos
                     txt_origen.Text = oAduana.Nombre;
                     txt_no_pieza_declarada.Text = lstEntFo.Sum(p => p.Piezas).ToString();
 
-                    List<Entrada_documento> lstEntDoc = new List<Entrada_documento>();
-                    string facturas = string.Empty;
-                    foreach (Entrada_fondeo iEF in lstEntFo)
-                    {
-                        facturas += iEF.Factura + ",";
-                    }
-                    facturas = facturas.Substring(0, facturas.Length - 1);
-                    hf_facturasAvon.Value = facturas;
+                    fillEntradaDocumento(lstEntFo);
                     //txt_origen.Text = oAduana.Nombre;
                     //ddlCliente.SelectedValue = ;
                 }
