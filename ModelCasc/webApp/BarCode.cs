@@ -30,7 +30,7 @@ namespace ModelCasc.webApp
             }
             else
             {
-                b.Encode(TYPE.CODE128, StringToEncode, Color.Black, Color.White, 120, 30);
+                b.Encode(TYPE.CODE128, StringToEncode, Color.Black, Color.White, 130, 40);
                 result = b.GetImageData(SaveTypes.BMP);
             }
             return result;
