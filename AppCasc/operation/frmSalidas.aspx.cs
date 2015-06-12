@@ -845,41 +845,40 @@ namespace AppCasc.operation
         {
             CustomValidator cv = (CustomValidator)sender;
             cv.ErrorMessage = string.Empty;
+
             try
             {
-                
+
                 TextBox tb = cv.Parent.FindControl(cv.ControlToValidate) as TextBox;
                 int id_cliente = 0;
                 int.TryParse(ddlCliente.SelectedValue, out id_cliente);
                 Salida oSalidaRemision = null;
-
-                clearControlbyReferencia();
-
-                if (id_cliente == 1 || id_cliente == 23)//TEMPORL PARA AVON
-                {
-                    oSalidaRemision = SalidaCtrl.SalidaRefValida(tb.Text, id_cliente);
-                    setEnabledControls(false, new WebControl[] { txt_destino, txt_mercancia, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
-                    txt_destino.Text = oSalidaRemision.Destino;
-                    txt_mercancia.Text = oSalidaRemision.Mercancia;
-                    ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
-                    ddlTransporte_changed(null, null);
-                    ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
-                    txt_no_bulto.Text = oSalidaRemision.No_bulto.ToString();
-                    txt_no_pieza.Text = oSalidaRemision.No_pieza.ToString();
-
-                    //Verifica si se trata de salida única, parcial o ultima
-                    if (SalidaCtrl.SalidaPiezasInventario(tb.Text) > 0)
+                if (!Page.IsValid)
+                    if (id_cliente == 1 || id_cliente == 23)//TEMPORL PARA AVON
                     {
-                        chk_tipo_salida.Checked = false;
-                        chk_tipo_salida_checked(chk_tipo_salida, null);
+                        clearControlbyReferencia();
+                        oSalidaRemision = SalidaCtrl.SalidaRefValida(tb.Text, id_cliente);
+                        setEnabledControls(false, new WebControl[] { txt_destino, txt_mercancia, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
+                        txt_destino.Text = oSalidaRemision.Destino;
+                        txt_mercancia.Text = oSalidaRemision.Mercancia;
+                        ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
+                        ddlTransporte_changed(null, null);
+                        ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
+                        txt_no_bulto.Text = oSalidaRemision.No_bulto.ToString();
+                        txt_no_pieza.Text = oSalidaRemision.No_pieza.ToString();
+
+                        //Verifica si se trata de salida única, parcial o ultima
+                        if (SalidaCtrl.SalidaPiezasInventario(tb.Text) > 0)
+                        {
+                            chk_tipo_salida.Checked = false;
+                            chk_tipo_salida_checked(chk_tipo_salida, null);
+                        }
                     }
-                }
                 //SalidaCtrl.ReferenciaUnicaValida(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
                 //SalidaCtrl.ReferenciaIngresada(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
                 //SalidaCtrl.ReferenciaCompartidaValida(tb.Text);
                 //if(string.Compare("cvPedimentoConsolidado", cv.ID)!=0)
                 //    SalidaCtrl.ReferenciaParcial(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
-
             }
             catch (Exception ex)
             {

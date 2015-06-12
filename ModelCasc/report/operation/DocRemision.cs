@@ -75,13 +75,12 @@ namespace ModelCasc.report.operation
 
         public static void getRemision(string FilePath, string TemplatePath, Salida_remision oSR)
         {
+            PdfReader reader = new PdfReader(TemplatePath);
+            PdfStamper stamper = new PdfStamper(reader, new FileStream(FilePath, FileMode.Create));
             try
             {
-                PdfReader reader = new PdfReader(TemplatePath);
-                PdfStamper stamper = new PdfStamper(reader, new FileStream(FilePath, FileMode.Create));
-                AcroFields fields = stamper.AcroFields;
                 
-
+                AcroFields fields = stamper.AcroFields;
                 // set form fields
 
                 fields.SetField("folioRemision", oSR.Folio_remision);
@@ -161,8 +160,7 @@ namespace ModelCasc.report.operation
                 fields.SetField("autorizo", oSR.Autorizo);
 
                 stamper.FormFlattening = true;
-                stamper.Close();
-                reader.Close();
+                
 
                 //addBarCodes(FilePath, oSR1);
             }
@@ -170,6 +168,11 @@ namespace ModelCasc.report.operation
             {
 
                 throw;
+            }
+            finally
+            {
+                stamper.Close();
+                reader.Close();
             }
         }
     }
