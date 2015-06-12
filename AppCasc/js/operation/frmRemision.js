@@ -297,15 +297,17 @@ var MngRemision = function () {
         var piezas;
         var totalPiezas;
 
-        bultos = $('#ctl00_body_txt_bulto').val() * 1;
-        piezasXbulto = $('#ctl00_body_txt_piezasXbulto').val() * 1;
+        var oCommon = new Common();
+
+        bultos = oCommon.GetOnlyDecimal($('#ctl00_body_txt_bulto').val()) * 1;
+        piezasXbulto = oCommon.GetOnlyDecimal($('#ctl00_body_txt_piezasXbulto').val()) * 1;
         piezas = bultos * piezasXbulto;
         totalPiezas = piezas;
         $('#ctl00_body_txt_piezas').val(piezas);
 
         //Incidencias
-        bultos = $('#ctl00_body_txt_bultoInc').val() * 1;
-        piezasXbulto = $('#ctl00_body_txt_piezasXbultoInc').val() * 1;
+        bultos = oCommon.GetOnlyDecimal($('#ctl00_body_txt_bultoInc').val()) * 1;
+        piezasXbulto = oCommon.GetOnlyDecimal($('#ctl00_body_txt_piezasXbultoInc').val()) * 1;
         piezas = bultos * piezasXbulto;
         totalPiezas = totalPiezas + piezas;
         $('#ctl00_body_txt_piezasInc').val(piezas);
