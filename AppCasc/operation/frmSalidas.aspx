@@ -191,6 +191,7 @@
 <asp:UpdatePanel runat="server" ID="upTipoTransporte" UpdateMode="Conditional">
 <Triggers>
 <asp:AsyncPostBackTrigger ControlID="ddlTransporte" EventName="SelectedIndexChanged" />
+<asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
 </Triggers>
 <ContentTemplate>
         <asp:DropDownList runat="server" ID="ddlTipo_Transporte" AutoPostBack="true" OnSelectedIndexChanged="ddlTipo_Transporte_changed"></asp:DropDownList>

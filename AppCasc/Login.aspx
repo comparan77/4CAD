@@ -6,12 +6,12 @@
 <head id="Head1" runat="server">
     <title>Login</title>
     <link href="css/excite-bike/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" />
-    <link href="css/common.css?v1.1.150611_1234" rel="stylesheet" type="text/css" />
-    <link href="css/frmLogin.css?v1.1.150611_1234" rel="stylesheet" type="text/css" />
+    <link href="css/common.css?v1.1.150611_1926" rel="stylesheet" type="text/css" />
+    <link href="css/frmLogin.css?v1.1.150611_1926" rel="stylesheet" type="text/css" />
 
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
-    <script src="js/frmLogin.js?v1.1.150611_1234" type="text/javascript"></script>
+    <script src="js/frmLogin.js?v1.1.150611_1926" type="text/javascript"></script>
 
 </head>
 <body>

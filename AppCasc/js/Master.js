@@ -14,7 +14,7 @@
 
                 obj.Init();
 
-                setHeartbeat();
+                //setHeartbeat();
             });
         } // Init <<fin>>
     }

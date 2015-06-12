@@ -99,13 +99,12 @@ namespace AppCasc.operation
                 List<Entrada_fondeo> lst = EntradaCtrl.FondeoFillFromDT(dt);
                 string folioFondeo = string.Empty;
                 int rowAffected = EntradaCtrl.FondeoPasoInsertData(lst, ref folioFondeo);
-                if (EntradaCtrl.FondeoExisteEntradaPrevia())
-                {
-                    throw new Exception("El pedimento proporcionado ya tiene una entrada, deberá ser capturado manualmente por el área de sistemas");
-                }
-                else 
-                    validaCodigos(folioFondeo);
-                //lbl_NoFolios.Text = "No de Folios Agregados: " + rowAffected.ToString();
+                //if (EntradaCtrl.FondeoExisteEntradaPrevia())
+                //{
+                //    throw new Exception("El pedimento proporcionado ya tiene una entrada, deberá ser capturado manualmente por el área de sistemas");
+                //}
+                //else 
+                validaCodigos(folioFondeo);
             }
             catch (Exception)
             {
