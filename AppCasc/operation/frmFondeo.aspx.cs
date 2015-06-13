@@ -175,6 +175,7 @@ namespace AppCasc.operation
                     string tempPath = System.IO.Path.GetTempFileName();
                     string[] arrFileName = fu_Folios.FileName.Split('.');
                     tempPath = tempPath.Replace(".tmp", "." + arrFileName[arrFileName.Length - 1]);
+                    tempPath = tempPath.ToLower();
                     hf_path.Value = tempPath;
                     fu_Folios.SaveAs(tempPath);
                     cleanControls();
