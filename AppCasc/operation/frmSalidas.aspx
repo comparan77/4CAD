@@ -69,10 +69,10 @@
     <asp:HiddenField runat="server" ID="hfIdDocReq" />
     <asp:HiddenField runat="server" ID="hfMascara" />
     <label id="lblReferencia">Documento:</label>
-    <asp:TextBox runat="server" ID="txt_referencia" AutoPostBack="true" OnTextChanged="txt_referencia_TextChanged"></asp:TextBox>
+    <asp:TextBox runat="server" ID="txt_referencia" AutoPostBack="true" OnTextChanged="txt_referencia_TextChanged" ValidationGroup="valgrp_referencia"></asp:TextBox>
     <asp:RequiredFieldValidator CssClass="validator" ID="rfvReferencia" runat="server" ControlToValidate="txt_referencia" ></asp:RequiredFieldValidator>
     <div>
-    <asp:CustomValidator CssClass="validator" ID="cvReferencia" runat="server" ControlToValidate="txt_referencia" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
+    <asp:CustomValidator CssClass="validator" ID="cvReferencia" runat="server" ControlToValidate="txt_referencia" ValidationGroup="valgrp_referencia" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
     </div>
 </div>
 <div>
@@ -123,7 +123,7 @@
             <div>
                 <label>Pedimento:</label>
                 <asp:TextBox runat="server" ID="txt_pedimento_consolidado"></asp:TextBox>
-                <asp:CustomValidator CssClass="validator" ID="cvPedimentoConsolidado" runat="server" ControlToValidate="txt_pedimento_consolidado" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
+                <asp:CustomValidator CssClass="validator" ID="cvPedimentoConsolidado" ValidationGroup="vgPedimentos" runat="server" ControlToValidate="txt_pedimento_consolidado" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
                 <asp:Button runat="server" ID="btnAdd_pedimento" ValidationGroup="vgPedimentos" CausesValidation="false" Text="Agregar" OnClick="btnAdd_pedimento_click" />
             </div>
             <div>
