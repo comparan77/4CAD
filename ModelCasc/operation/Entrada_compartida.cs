@@ -25,6 +25,7 @@ namespace ModelCasc.operation
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public bool Capturada { get { return _capturada; } set { _capturada = value; } }
         public bool IsActive { get { return _isActive; } set { _isActive = value; } }
+        public string NombreUsuario { get; set; }
         #endregion
 
         #region Constructores

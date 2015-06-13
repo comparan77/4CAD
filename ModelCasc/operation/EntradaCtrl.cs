@@ -44,7 +44,7 @@ namespace ModelCasc.operation
                 oEC.Referencia = referencia.Trim();
                 oECMng.O_Entrada_compartida = oEC;
                 if (oECMng.Exists())
-                    throw new Exception("La referencia: " + referencia + ", pertenece a una entrada compartida del folio: " + oEC.Folio);
+                    throw new Exception("La referencia: " + referencia + ", pertenece a una entrada compartida del folio: " + oEC.Folio + ". <br />Pendiente de capturar por el usuario: " + oEC.NombreUsuario);
             }
             catch
             {

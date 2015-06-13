@@ -343,6 +343,7 @@ namespace ModelCasc.operation
                         this._oEntrada_compartida.Capturada = logica;
                         logica = false;
                     }
+                    this._oEntrada_compartida.NombreUsuario = dr["nombre"].ToString();
                 }
             }
             catch

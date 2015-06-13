@@ -493,6 +493,9 @@ namespace AppCasc.operation.arribos
                 if (!exixteFondeo)
                     throw new Exception("El pedimento: " + referencia + ", no ha sido dado de alta en los fondeos");
 
+                //Verifica que no sea una compartida de otro usuario
+                EntradaCtrl.ReferenciaValida(txt_referencia.Text, Convert.ToInt32(hf_id_cliente.Value));
+
 
                 //Verifica que sea un nuevo arribo o un arribo parcial
                 if (!EntradaCtrl.EsReferenciaParcial(referencia, 1))
