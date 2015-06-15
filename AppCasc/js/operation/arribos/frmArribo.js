@@ -120,7 +120,7 @@ var MngArribo = function () {
                 }
             });
 
-            return IsValid;
+            //return IsValid;
 
             if (IsValid) {
                 var confirm = $('#hf-confirmado').val() * 1;
@@ -140,8 +140,21 @@ var MngArribo = function () {
                     mensaje += '</ul>';
                     mensaje += '<hr />';
                     mensaje += '<b>Compartida:</b> ' + (lstEntComp.length > 0 ? 'Sí' : 'No');
+                    //Confirmarción de piezas y bultos
+                    mensaje += '<hr />';
+                    mensaje += '<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Confirmar cantidades</h3>';
+                    mensaje += '<div class="divForm">';
+                    mensaje += '<div><label>Bultos Recibidos:</label><input type="text" class="txtNumber" id="txt_no_bulto_recibido_confirm" /></div>';
+                    mensaje += '<div><label>Piezas Recibidas:</label><input type="text" class="txtNumber" id="txt_no_pieza_recibida_confirm" /></div>';
+                    mensaje += '</div>';
                     $('#spn-aviso-registro').html(mensaje);
                     $("#dialog-confirm").dialog('open');
+
+
+                    $('.confirmValue').each(function () {
+                        $(this).addClass('blurry-text');
+                    });
+
                     IsValid = false;
                 }
                 else {
@@ -155,18 +168,39 @@ var MngArribo = function () {
         $("#dialog-confirm").dialog({
             autoOpen: false,
             resizable: false,
-            height: 250,
+            height: 380,
             width: 450,
             modal: true,
+            close: function () {
+                $('.confirmValue').each(function () {
+                    $(this).removeClass('blurry-text');
+                });
+            },
             buttons: {
                 "Guardar Entrada": function () {
                     $(this).dialog("close");
-                    $('#hf-confirmado').val(1);
-                    var clickButton = document.getElementById('ctl00_body_btn_save');
-                    clickButton.click();
+
+                    if ($('#ctl00_body_txt_no_bulto_recibido').val() == $('#txt_no_bulto_recibido_confirm').val() && $('#ctl00_body_txt_no_pieza_recibida').val() == $('#txt_no_pieza_recibida_confirm').val()) {
+                        $('#hf-confirmado').val(1);
+                        var clickButton = document.getElementById('ctl00_body_btn_save');
+                        clickButton.click();
+                    }
+                    else {
+                        $('.confirmValue').each(function () {
+                            var attr = $(this).attr('disabled');
+                            if (typeof attr == typeof undefined) {
+                                $(this).val('');
+                            }
+                        });
+                        alert('Las cantidades proporcionadas no coinciden, favor de verficarlas.');
+                    }
+
                 },
                 Cancel: function () {
                     $(this).dialog("close");
+                    $('.confirmValue').each(function () {
+                        $(this).removeClass('blurry-text');
+                    });
                 }
             }
         });

@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmRemision.aspx.cs" Inherits="AppCasc.operation.frmRemision" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
-    <script src="../js/common.js?v1.1.150611_1926" type="text/javascript"></script>
-    <script src="../js/operation/helperRemDetail.js?v1.1.150611_1926" type="text/javascript"></script>
-    <script src="../js/operation/frmRemision.js?v1.1.150611_1926" type="text/javascript"></script>
+    <script src="../js/common.js?v1.1.150614_1904" type="text/javascript"></script>
+    <script src="../js/operation/helperRemDetail.js?v1.1.150614_1904" type="text/javascript"></script>
+    <script src="../js/operation/frmRemision.js?v1.1.150614_1904" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     

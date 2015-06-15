@@ -27,6 +27,11 @@ input[type=text], textarea, select, input[type=password]
     right: 5px;
 }
 
+.blurry-text {
+   color: transparent;
+   text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
 #div_entrada label, #div_salida label, #dsiv_EntSal label, .divForm div label
 {
     float: left;

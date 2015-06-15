@@ -34,9 +34,9 @@ namespace ModelCasc.report.operation
             try
             {
                 contentByte = stamper.GetOverContent(1);
-                int CTE_HEIGHT_CONST = 420;
-                int CTE_X_POS_INI = 39;
-                int CTE_X_SPACE = 130;
+                int CTE_HEIGHT_CONST = 425;
+                int CTE_X_POS_INI = 35;
+                int CTE_X_SPACE = 135;
                 Image image = Image.GetInstance(BarCode.EncodeBytes(oSR1.Codigo, true));
                 image.SetAbsolutePosition(CTE_X_POS_INI, CTE_HEIGHT_CONST);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
                 //image.ScaleToFit(200, 25);
@@ -85,6 +85,9 @@ namespace ModelCasc.report.operation
 
                 fields.SetField("folioRemision", oSR.Folio_remision);
                 fields.SetField("lblFolioRemision", "FOLIO REMISION");
+
+                fields.SetField("codigoCliente", oSR.Codigo_cliente);
+                fields.SetField("lblCodigoCliente", "CÓDIGO AVN");
 
                 CultureInfo ci = new CultureInfo("es-MX");
                 fields.SetField("fecha_remision", oSR.Fecha_remision.ToString("dddd, dd \\de MMMM \\de yy", ci));

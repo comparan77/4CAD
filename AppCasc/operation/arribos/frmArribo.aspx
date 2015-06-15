@@ -5,7 +5,7 @@
 
     <script src="../../js/mobiscroll-2.1-beta.custom.min.js" type="text/javascript"></script>
     <script src="../../js/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script src="../../js/operation/arribos/frmArribo.js?v1.1.150611_1926" type="text/javascript"></script>
+    <script src="../../js/operation/arribos/frmArribo.js?v1.1.150614_1904" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -268,21 +268,21 @@
     </div>
     <div>
         <label>Bultos Declarados:</label>
-        <asp:TextBox CssClass="txtNumber" id="txt_no_bulto_declarado" runat="server" ToolTip="Número de Bultos reportados en la descarga."></asp:TextBox>
+        <asp:TextBox CssClass="txtNumber confirmValue" id="txt_no_bulto_declarado" runat="server" ToolTip="Número de Bultos reportados en la descarga."></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_no_bulto_declarado" ControlToValidate="txt_no_bulto_declarado" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_declarado" ControlToValidate="txt_no_bulto_declarado" ErrorMessage="Es necesario capturar un número entre 1 y 10,000" MinimumValue="1" MaximumValue="10000"></asp:RangeValidator>
     </div>
 
     <div>
         <label>Bultos Recibidos:</label>
-        <asp:TextBox CssClass="txtNumber" id="txt_no_bulto_recibido" runat="server" ToolTip="Conteo del número de los bultos en la descarga."></asp:TextBox>
+        <asp:TextBox CssClass="txtNumber confirmValue" id="txt_no_bulto_recibido" runat="server" ToolTip="Conteo del número de los bultos en la descarga."></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_no_bulto_recibido" ControlToValidate="txt_no_bulto_recibido" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_recibido" ControlToValidate="txt_no_bulto_recibido" ErrorMessage="Es necesario capturar un número entre 1 y 10,000" MinimumValue="1" MaximumValue="10000"></asp:RangeValidator>
     </div>
 
     <div>
         <label>Piezas Declaradas:</label>
-        <asp:TextBox CssClass="txtNumber" id="txt_no_pieza_declarada" runat="server" ToolTip="Número de Piezas declaradas en el pedimento." Enabled="false"></asp:TextBox>
+        <asp:TextBox CssClass="txtNumber confirmValue" id="txt_no_pieza_declarada" runat="server" ToolTip="Número de Piezas declaradas en el pedimento." Enabled="false"></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_no_pieza_declarada" ControlToValidate="txt_no_pieza_declarada" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_pieza_declarada" ControlToValidate="txt_no_pieza_declarada" ErrorMessage="Es necesario capturar un número entre 1 y 5,000,000" MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
     </div>
@@ -294,7 +294,7 @@
 
     <div>
         <label>Piezas Recibidas:</label>
-        <asp:TextBox CssClass="txtNumber" id="txt_no_pieza_recibida" runat="server" ToolTip="Número de Piezas recibidas en el pedimento."></asp:TextBox>
+        <asp:TextBox CssClass="txtNumber confirmValue" id="txt_no_pieza_recibida" runat="server" ToolTip="Número de Piezas recibidas en el pedimento."></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_no_pieza_recibida" ControlToValidate="txt_no_pieza_recibida" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_pieza_recibida" ControlToValidate="txt_no_pieza_recibida" ErrorMessage="Es necesario capturar un número entre 1 y 5,000,000" MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
     </div>

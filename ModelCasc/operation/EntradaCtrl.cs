@@ -207,10 +207,18 @@ namespace ModelCasc.operation
             Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
             Entrada_compartida oECFI = new Entrada_compartida();
             string folioIndice = string.Empty;
+            bool clienteDocumentoRequerido = false;
             try
             {
                 //Verifica la referencia sea valida (No se puede repetir la referencia a menos que sea parcial)
-                if (!EsReferenciaParcial(oE.Referencia, oE.Id_cliente))
+                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
+                Cliente_documento oCD = new Cliente_documento();
+                oCD.Id_cliente = oE.Id_cliente;
+                oCDMng.O_Cliente_documento = oCD;
+                oCDMng.fillLstByCliente();
+                clienteDocumentoRequerido = oCDMng.Lst.Count > 0;
+
+                if (!EsReferenciaParcial(oE.Referencia, oE.Id_cliente) && clienteDocumentoRequerido)
                 {
                     ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
                 }
@@ -232,6 +240,9 @@ namespace ModelCasc.operation
                     folioIndice = oECMng.GetIndice(trans);
                     oE.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();//System.Text.Encoding.ASCII.GetChars(new byte[] { Convert.ToByte(folioIndice) }).ToString();
                 }
+
+                if (!clienteDocumentoRequerido)
+                    oE.Referencia = oE.Folio + oE.Folio_indice;
 
                 //obtiene la referencia de acuerdo al cliente
                 oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
