@@ -991,31 +991,28 @@ namespace ModelCasc.operation
             return lstEntFondeo;
         }
 
-        public static int FondeoPasoInsertData(List<Entrada_fondeo> lst, ref string folioFondeo)
+        public static int FondeoPasoInsertData(List<Entrada_fondeo> lst, int id_usuario)
         {
             int rowInserted = 0;
             int indEF = 0;
-            IDbTransaction trans = null;
             try
             {
-                trans = GenericDataAccess.BeginTransaction();
-
                 Entrada_fondeoMng oEFMng = new Entrada_fondeoMng();
                 oEFMng = new Entrada_fondeoMng(new StringBuilder("set names utf8;"));
-                oEFMng.InitializeInsert();
+                oEFMng.InitializeInsert(id_usuario);
 
-                folioFondeo = FolioCtrl.getFolio(enumTipo.FND, trans);
+                //folioFondeo = FolioCtrl.getFolio(enumTipo.FND, trans);
 
                 for (; indEF < lst.Count; indEF++)
                 {
                     Entrada_fondeo itemEF = lst[indEF];
-                    itemEF.Folio = folioFondeo;
+                    //itemEF.Folio = folioFondeo;
                     oEFMng.O_Entrada_fondeo = itemEF;
 
                     //if (indWF == 1000)
                     //indWF = indWF;
 
-                    oEFMng.AddValuesInsert(indEF + 1 == lst.Count);
+                    oEFMng.AddValuesInsert(id_usuario, indEF + 1 == lst.Count);
 
                     //if (indWF % 1000 == 0 && indWF > 0)
                     //{
@@ -1023,7 +1020,7 @@ namespace ModelCasc.operation
                     //    oEFMng = new Entrada_fondeoMng(new StringBuilder("set names utf8;"));
                     //}
                 }
-                rowInserted += oEFMng.execInserts(trans);
+                rowInserted += oEFMng.execInserts();
 
             }
             catch (Exception e)
@@ -1066,16 +1063,23 @@ namespace ModelCasc.operation
             return lst;
         }
 
-        public static int FondeoInsertData()
+        public static int FondeoInsertData(ref string folioFondeo)
         {
             int rowInserted = 0;
+            IDbTransaction trans = null;
             try
             {
-                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
-                rowInserted = oMng.insertFromFondeoPaso();
+                trans = GenericDataAccess.BeginTransaction();
+                folioFondeo = FolioCtrl.getFolio(enumTipo.FND, trans);
+
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = new Entrada_fondeo() { Folio = folioFondeo } };
+                rowInserted = oMng.insertFromFondeoPaso(trans);
+
+                GenericDataAccess.CommitTransaction(trans);
             }
             catch
             {
+                GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
             return rowInserted;

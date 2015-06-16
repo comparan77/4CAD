@@ -247,14 +247,14 @@ namespace ModelCasc.operation
 
         #endregion
 
-        internal void InitializeInsert()
+        internal void InitializeInsert(int id_usuario)
         {
-            this._sbQry.Append("TRUNCATE entrada_fondeo_paso;").AppendLine();
-            this._sbQry.Append("INSERT INTO entrada_fondeo_paso (fecha, importador, aduana, referencia, factura, codigo, orden, vendor, piezas, valorfactura, folio) VALUES");
+            this._sbQry.Append("delete from entrada_fondeo_paso where id = " + id_usuario + ";").AppendLine();
+            this._sbQry.Append("INSERT INTO entrada_fondeo_paso (id, fecha, importador, aduana, referencia, factura, codigo, orden, vendor, piezas, valorfactura) VALUES");
             this._sbQry.AppendLine();
         }
 
-        internal void AddValuesInsert(bool IsLastValue = false)
+        internal void AddValuesInsert(int id_usuario, bool IsLastValue = false)
         {
             try
             {
@@ -264,7 +264,8 @@ namespace ModelCasc.operation
 
                 this._sbQry.Append("(");
                 //this._sbQry.Append(",'" + this._oPu_paso.Fecha_fact.ToString("yyyy-MM-dd") + "'");
-                this._sbQry.Append("'" + this.O_Entrada_fondeo.Fecha.ToString("yyyy-MM-dd") + "'");
+                this._sbQry.Append(id_usuario);
+                this._sbQry.Append(",'" + this.O_Entrada_fondeo.Fecha.ToString("yyyy-MM-dd") + "'");
                 this._sbQry.Append(",'" + this.O_Entrada_fondeo.Importador.Replace("'", "") + "'");
                 this._sbQry.Append(",'" + this.O_Entrada_fondeo.Aduana.Replace("'", "") + "'");
                 this._sbQry.Append(",'" + this.O_Entrada_fondeo.Referencia.Replace("'", "") + "'");
@@ -274,7 +275,7 @@ namespace ModelCasc.operation
                 this._sbQry.Append(",'" + this.O_Entrada_fondeo.Vendor.Replace("'", "") + "'");
                 this._sbQry.Append("," + this.O_Entrada_fondeo.Piezas);
                 this._sbQry.Append("," + this.O_Entrada_fondeo.Valorfactura);
-                this._sbQry.Append(",'" + this.O_Entrada_fondeo.Folio.Replace("'", "") + "'");
+                //this._sbQry.Append(",'" + this.O_Entrada_fondeo.Folio.Replace("'", "") + "'");
                 this._sbQry.Append(")" + (IsLastValue ? ";" : ",")).AppendLine();
 
             }
@@ -285,7 +286,7 @@ namespace ModelCasc.operation
             }
         }
 
-        internal int execInserts(IDbTransaction trans)
+        internal int execInserts()
         {
             int rowInserted = 0;
             try
@@ -293,7 +294,7 @@ namespace ModelCasc.operation
                 if (this._sbQry.Length > 0)
                 {
                     this.comm = GenericDataAccess.CreateCommand(this._sbQry.ToString());
-                    rowInserted = GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                    rowInserted = GenericDataAccess.ExecuteNonQuery(this.comm);
                 }
             }
             catch (Exception)
@@ -346,14 +347,14 @@ namespace ModelCasc.operation
             }
         }
 
-        internal int insertFromFondeoPaso()
+        internal int insertFromFondeoPaso(IDbTransaction trans)
         {
             int rowAfected = 0;
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_fondeo");
                 addParameters(7);
-                GenericDataAccess.ExecuteNonQuery(this.comm);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
                 rowAfected = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch (Exception)

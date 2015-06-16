@@ -35,11 +35,12 @@ namespace AppCasc.operation
             ControlsMng.GridViewClean(grd_reviewFile);
         }
 
-        private void importFondeo(string folioFondeo)
+        private void importFondeo()
         {
             try
             {
-                int rowAffected = EntradaCtrl.FondeoInsertData();
+                string folioFondeo = string.Empty;
+                int rowAffected = EntradaCtrl.FondeoInsertData(ref folioFondeo);
                 lbl_NoFolios.Text = "No de Partidas Agregadas: " + rowAffected.ToString() + "; Folio: " + folioFondeo;
             }
             catch
@@ -48,7 +49,7 @@ namespace AppCasc.operation
             }
         }
 
-        private void validaVendors(string folioFondeo)
+        private void validaVendors()
         {
             try
             {
@@ -62,7 +63,7 @@ namespace AppCasc.operation
                     grd_reviewFile.DataBind();
                 }
                 else
-                    importFondeo(folioFondeo);
+                    importFondeo();
             }
             catch
             {
@@ -70,7 +71,7 @@ namespace AppCasc.operation
             }
         }
 
-        private void validaCodigos(string folioFondeo)
+        private void validaCodigos()
         {
             try
             {
@@ -84,7 +85,7 @@ namespace AppCasc.operation
                     grd_reviewFile.DataBind();
                 }
                 else
-                    validaVendors(folioFondeo);
+                    validaVendors();
             }
             catch
             {
@@ -98,13 +99,13 @@ namespace AppCasc.operation
             {
                 List<Entrada_fondeo> lst = EntradaCtrl.FondeoFillFromDT(dt);
                 string folioFondeo = string.Empty;
-                int rowAffected = EntradaCtrl.FondeoPasoInsertData(lst, ref folioFondeo);
+                int rowAffected = EntradaCtrl.FondeoPasoInsertData(lst,((MstCasc)this.Master).getUsrLoged().Id);
                 //if (EntradaCtrl.FondeoExisteEntradaPrevia())
                 //{
                 //    throw new Exception("El pedimento proporcionado ya tiene una entrada, deberá ser capturado manualmente por el área de sistemas");
                 //}
                 //else 
-                validaCodigos(folioFondeo);
+                validaCodigos();
             }
             catch (Exception)
             {
