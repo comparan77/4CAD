@@ -139,7 +139,22 @@ namespace ModelCasc.report.operation
                 if (lotePdf.Length > 0)
                     lotePdf = lotePdf.Substring(0, lotePdf.Length - 2);
                 fields.SetField("mercancia_k", oSR.Mercancia + (lotePdf.Length > 0 ? "\nLote: " + lotePdf : ""));
+
+                fields.SetField("lblCodigo", "Código");
+                fields.SetField("lblOrden", "Orden de Compra");
+                fields.SetField("lblDescripcion", "Descripción");
+                fields.SetField("lblNoProveedor", "No. de Proveedor");
+                fields.SetField("lblTotalCtns1", "Total CTNS:");
+                fields.SetField("lblTotalCtns2", "Total CTNS:");
+                fields.SetField("lblCartones1", "Cartones");
+                fields.SetField("lblCartones2", "Cartones");
+                fields.SetField("lblPiezasCU1", "Piezas C/U");
+                fields.SetField("lblPiezasCU2", "Piezas C/U");
+                fields.SetField("lblTotalPzas", "Total Piezas");
+
                 addBarCodes(stamper, oSR);
+
+
 
                 //fields.SetField("bulto", oSR.Bulto.ToString("N0"));
                 //fields.SetField("bulto_i", oSR2.Bulto.ToString("N0"));
