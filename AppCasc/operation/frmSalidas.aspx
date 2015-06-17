@@ -5,7 +5,7 @@
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/mobiscroll-2.1-beta.custom.min.js" type="text/javascript"></script>
     <script src="../js/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script src="../js/operation/frmSalidas.js" type="text/javascript"></script>
+    <script src="../js/operation/frmSalidas.js?v1.1.150614_1904" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 

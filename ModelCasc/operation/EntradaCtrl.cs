@@ -741,6 +741,7 @@ namespace ModelCasc.operation
         #endregion
 
         #region Entrada Fondeo - Control piso
+
         private static string validaDato(object dato, string tipo, bool IsRequired)
         {
             string valido = string.Empty;
@@ -876,6 +877,19 @@ namespace ModelCasc.operation
             return dtReviewFile;
         }
 
+        public static void FondeoPasoDltByUsuario(int id_usuario, IDbTransaction trans = null)
+        {
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = new Entrada_fondeo() { Id = id_usuario } };
+                oMng.dltFondeoPaso(trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        
         public static DataTable FondeoUpLoadData(string path, DateTime fecha, string importador, string aduana)
         {
             DataTable dtReviewFile = new DataTable();
@@ -1026,6 +1040,7 @@ namespace ModelCasc.operation
             catch (Exception e)
             {
                 indEF++;
+                FondeoPasoDltByUsuario(id_usuario);
                 throw new Exception("Registro Número: " + indEF.ToString() + e.Message);
             }
             return rowInserted;
@@ -1063,7 +1078,7 @@ namespace ModelCasc.operation
             return lst;
         }
 
-        public static int FondeoInsertData(ref string folioFondeo)
+        public static int FondeoInsertData(ref string folioFondeo, int id_usuario)
         {
             int rowInserted = 0;
             IDbTransaction trans = null;
@@ -1072,14 +1087,17 @@ namespace ModelCasc.operation
                 trans = GenericDataAccess.BeginTransaction();
                 folioFondeo = FolioCtrl.getFolio(enumTipo.FND, trans);
 
-                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = new Entrada_fondeo() { Folio = folioFondeo } };
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = new Entrada_fondeo() { Folio = folioFondeo, Id = id_usuario } };
                 rowInserted = oMng.insertFromFondeoPaso(trans);
+
+                FondeoPasoDltByUsuario(id_usuario, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch
             {
                 GenericDataAccess.RollbackTransaction(trans);
+                FondeoPasoDltByUsuario(id_usuario);
                 throw;
             }
             return rowInserted;

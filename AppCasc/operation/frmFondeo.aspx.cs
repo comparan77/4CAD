@@ -35,12 +35,27 @@ namespace AppCasc.operation
             ControlsMng.GridViewClean(grd_reviewFile);
         }
 
+        /// <summary>
+        /// Elimina los registros de la tabla fondeo_paso del usuario, regularmente se ocupará cuando no existan códigos o vendors
+        /// </summary>
+        private void fondeoPasoDlt()
+        {
+            try
+            {
+                EntradaCtrl.FondeoPasoDltByUsuario(((MstCasc)this.Master).getUsrLoged().Id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         private void importFondeo()
         {
             try
             {
                 string folioFondeo = string.Empty;
-                int rowAffected = EntradaCtrl.FondeoInsertData(ref folioFondeo);
+                int rowAffected = EntradaCtrl.FondeoInsertData(ref folioFondeo, ((MstCasc)this.Master).getUsrLoged().Id);
                 lbl_NoFolios.Text = "No de Partidas Agregadas: " + rowAffected.ToString() + "; Folio: " + folioFondeo;
             }
             catch
@@ -57,6 +72,7 @@ namespace AppCasc.operation
                 List<Entrada_fondeo> lst = EntradaCtrl.FondeoValidaVendors();
                 if (lst.Count > 0)
                 {
+                    fondeoPasoDlt();
                     lbl_NoFoliosMsg.Text = "Partidas con vendors no existentes en el catálogo: " + lst.Count.ToString();
                     grd_reviewFile.AutoGenerateColumns = true;
                     grd_reviewFile.DataSource = lst;
@@ -79,6 +95,7 @@ namespace AppCasc.operation
                 List<Entrada_fondeo> lst = EntradaCtrl.FondeoValidaCodigos();
                 if (lst.Count > 0)
                 {
+                    fondeoPasoDlt();
                     lbl_NoFoliosMsg.Text = "Partidas con codigos no existentes en el catálogo: " + lst.Count.ToString();
                     grd_reviewFile.AutoGenerateColumns = true;
                     grd_reviewFile.DataSource = lst;

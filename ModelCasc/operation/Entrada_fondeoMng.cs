@@ -404,5 +404,23 @@ namespace ModelCasc.operation
             }
             return Existe;
         }
+
+        internal void dltFondeoPaso(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_fondeo");
+                addParameters(11);
+                if (trans != null)
+                    GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                else
+                    GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

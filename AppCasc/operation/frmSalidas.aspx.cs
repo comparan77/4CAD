@@ -855,7 +855,7 @@ namespace AppCasc.operation
 
                 Salida oSalidaRemision = null;
                 oSalidaRemision = SalidaCtrl.SalidaRefValida(tb.Text, id_cliente);
-                setEnabledControls(false, new WebControl[] { txt_destino, txt_mercancia, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
+                setEnabledControls(false, new WebControl[] { txt_destino, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
                 txt_destino.Text = oSalidaRemision.Destino;
                 txt_mercancia.Text = oSalidaRemision.Mercancia;
                 ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
