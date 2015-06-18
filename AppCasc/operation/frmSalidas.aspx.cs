@@ -660,6 +660,11 @@ namespace AppCasc.operation
             oCdia.Nombre = ddlCustodia.SelectedItem.Text;
             oS.PCustodia = oCdia;
 
+            //salida orden carga
+            int.TryParse(hf_id_salida_orden_carga.Value, out numero);
+            oS.Id_salida_orden_carga = numero;
+            numero = 0;
+            
             return oS;
         }
 
@@ -845,6 +850,7 @@ namespace AppCasc.operation
         {
             CustomValidator cv = (CustomValidator)sender;
             cv.ErrorMessage = string.Empty;
+            hf_id_salida_orden_carga.Value = string.Empty;
 
             try
             {
@@ -855,6 +861,7 @@ namespace AppCasc.operation
 
                 Salida oSalidaRemision = null;
                 oSalidaRemision = SalidaCtrl.SalidaRefValida(tb.Text, id_cliente);
+                hf_id_salida_orden_carga.Value = oSalidaRemision.Id_salida_orden_carga.ToString();
                 setEnabledControls(false, new WebControl[] { txt_destino, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
                 txt_destino.Text = oSalidaRemision.Destino;
                 txt_mercancia.Text = oSalidaRemision.Mercancia;
@@ -865,10 +872,24 @@ namespace AppCasc.operation
                 txt_no_pieza.Text = oSalidaRemision.No_pieza.ToString();
 
                 //Verifica si se trata de salida única, parcial o ultima
-                if (SalidaCtrl.SalidaPiezasInventario(tb.Text) > 0)
+                int piezasInventario = SalidaCtrl.SalidaPiezasInventario(tb.Text);
+
+                lbl_no_salida.Visible = false;
+                chk_ultima.Visible = false;
+
+                if (piezasInventario > 0)
                 {
                     chk_tipo_salida.Checked = false;
                     chk_tipo_salida_checked(chk_tipo_salida, null);
+                    
+                    lbl_no_salida.Visible = true;
+
+                    int NumSalida = SalidaCtrl.getNumSalPar(oSalidaRemision.Referencia);
+                    NumSalida++;
+
+                    lbl_no_salida.Text = "Salida Número: " + NumSalida.ToString();
+
+                    chk_ultima.Checked = piezasInventario == oSalidaRemision.No_pieza;
                 }
 
                 //SalidaCtrl.ReferenciaUnicaValida(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));

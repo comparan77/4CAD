@@ -88,6 +88,7 @@ namespace ModelCasc.operation
         public Transporte PTransporte { get; set; }
         public Transporte_tipo PTransporteTipo { get; set; }
         public Custodia PCustodia { get; set; }
+        public int Id_salida_orden_carga { get; set; }
         #endregion
 
         #region Constructores

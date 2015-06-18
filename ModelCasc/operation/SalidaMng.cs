@@ -573,6 +573,13 @@ namespace ModelCasc.operation
                     this._oSalida.Destino = dr["destino"].ToString();
                     this._oSalida.Mercancia = dr["mercancia"].ToString();
 
+                    if (dr["id_salida_orden_carga"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_salida_orden_carga"].ToString(), out entero);
+                        this._oSalida.Id_salida_orden_carga = entero;
+                        entero = 0;
+                    }
+
                     if (dr["id_transporte"] != DBNull.Value)
                     {
                         int.TryParse(dr["id_transporte"].ToString(), out entero);

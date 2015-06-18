@@ -166,6 +166,15 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfMascara;
         
         /// <summary>
+        /// hf_id_salida_orden_carga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_salida_orden_carga;
+        
+        /// <summary>
         /// txt_referencia control.
         /// </summary>
         /// <remarks>

@@ -68,6 +68,7 @@
     <asp:HiddenField runat="server" ID="hfReferencia" />
     <asp:HiddenField runat="server" ID="hfIdDocReq" />
     <asp:HiddenField runat="server" ID="hfMascara" />
+    <asp:HiddenField runat="server" ID="hf_id_salida_orden_carga" />
     <label id="lblReferencia">Documento:</label>
     <asp:TextBox runat="server" ID="txt_referencia" AutoPostBack="true" OnTextChanged="txt_referencia_TextChanged" ValidationGroup="valgrp_referencia"></asp:TextBox>
     <asp:RequiredFieldValidator CssClass="validator" ID="rfvReferencia" runat="server" ControlToValidate="txt_referencia" ></asp:RequiredFieldValidator>
@@ -317,12 +318,15 @@
     <ContentTemplate>
         <asp:CheckBox runat="server" ID="chk_tipo_salida" Text="Salida Única" AutoPostBack="true" Checked="true" OnCheckedChanged="chk_tipo_salida_checked" />
         <asp:RequiredFieldValidator CssClass="validator" runat="server" Enabled="false" ID="rfv_refCompartifda" ControlToValidate="txt_referencia" ErrorMessage="Es necesario capturar un pedimento para compartir la salida"></asp:RequiredFieldValidator>
+
+        <div id="div_no_salida">
+            <asp:Label runat="server" ID="lbl_no_salida" Visible="false"></asp:Label>
+        </div>
+        <asp:CheckBox runat="server" ID="chk_ultima" Text="Última" Visible="false" />
+
     </ContentTemplate>
     </asp:UpdatePanel>
-    <div id="div_no_salida">
-        <asp:Label runat="server" ID="lbl_no_salida" Visible="false"></asp:Label>
-    </div>
-    <asp:CheckBox runat="server" ID="chk_ultima" Text="Última" Visible="false" />
+    
 </div>
 </div>
 </div>

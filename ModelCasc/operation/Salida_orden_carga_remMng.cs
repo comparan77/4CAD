@@ -235,5 +235,19 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void setSalida(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga_rem");
+                addParameters(7);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

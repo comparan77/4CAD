@@ -35,8 +35,8 @@ namespace AppCasc.operation
         private void setDateRange()
         {
             DateTime fecha = DateTime.Today;
-            DateTime fecha_ini = fecha.AddDays(-30);
-            DateTime fecha_fin = fecha.AddDays(30);
+            DateTime fecha_ini = fecha.AddDays(-7);
+            DateTime fecha_fin = fecha;
             txt_fecha_ini.Text = fecha_ini.ToString("dd/MM/yyyy");
             txt_fecha_fin.Text = fecha_fin.ToString("dd/MM/yyyy");
         }

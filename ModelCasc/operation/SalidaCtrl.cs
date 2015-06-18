@@ -265,6 +265,7 @@ namespace ModelCasc.operation
             {
                 ReferenciaIngresada(oS.Referencia, oS.Id_cliente);
                 ReferenciaUnicaValida(oS.Referencia, oS.Id_cliente);
+                SalidaRefValida(oS.Referencia, oS.Id_cliente);
 
                 //Comienza la transaccion
                 trans = GenericDataAccess.BeginTransaction();
@@ -329,6 +330,10 @@ namespace ModelCasc.operation
                     oSPMng.O_Salida_parcial = oS.PSalPar;
                     oSPMng.add(trans);
                 }
+
+                //Orden de carga
+                Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id } };
+                oSOCR.setSalida(trans);
 
                 oS.IsActive = true;
 

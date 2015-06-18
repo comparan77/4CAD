@@ -470,7 +470,7 @@
     </div>
     <div>
         <label for="notas">Notas:</label>
-        <input type="text" id="notas" />
+        <input type="text" maxlength="250" id="notas" />
     </div>
     <div>
         <asp:HiddenField runat="server" ID="hf_entrada_inventario" />
