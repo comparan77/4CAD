@@ -38,7 +38,8 @@ namespace ModelCasc.operation
             try
             {
                 SalidaMng oMng = new SalidaMng() { O_Salida = o };
-                oMng.refValida();
+                if (id_cliente == 1 || id_cliente == 23)
+                    oMng.refValida();
             }
             catch (Exception)
             {
@@ -263,6 +264,7 @@ namespace ModelCasc.operation
             string folioIndice = string.Empty;
             try
             {
+                
                 ReferenciaIngresada(oS.Referencia, oS.Id_cliente);
                 ReferenciaUnicaValida(oS.Referencia, oS.Id_cliente);
                 SalidaRefValida(oS.Referencia, oS.Id_cliente);
