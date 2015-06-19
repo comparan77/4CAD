@@ -227,6 +227,42 @@ namespace ModelCasc.catalog
             }
         }
 
+        public void fillLstByTransporteTipo()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Transporte_tipo_transporte");
+                addParameters(8);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Transporte_tipo_transporte>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Transporte_tipo_transporte o = new Transporte_tipo_transporte();
+                    int.TryParse(dr["id"].ToString(), out entero);
+                    o.Id = entero;
+                    entero = 0;
+                    if (dr["id_transporte"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_transporte"].ToString(), out entero);
+                        o.Id_transporte = entero;
+                        entero = 0;
+                    }
+                    if (dr["id_transporte_tipo"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_transporte_tipo"].ToString(), out entero);
+                        o.Id_transporte_tipo = entero;
+                        entero = 0;
+                    }
+                    o.Transporte = dr["transporte"].ToString();
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

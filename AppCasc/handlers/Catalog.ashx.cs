@@ -38,6 +38,9 @@ namespace AppCasc.handlers
                     case "documento":
                         response = CatalogCtrl.DocumentoLstToJson();
                         break;
+                    case "transporte":
+                        response = JsonConvert.SerializeObject(CatalogCtrl.TransporteGetByTipo(Convert.ToInt32(context.Request["id_transporte_tipo"])));
+                        break;
                     default:
                         break;
                 }

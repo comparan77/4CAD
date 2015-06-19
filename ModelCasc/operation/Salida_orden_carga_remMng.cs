@@ -38,6 +38,7 @@ namespace ModelCasc.operation
                 GenericDataAccess.AddInOutParameter(this.comm, "?P_id_salida", DbType.Int32, DBNull.Value);
             else
                 GenericDataAccess.AddInOutParameter(this.comm, "?P_id_salida", DbType.Int32, this._oSalida_orden_carga_rem.Id_salida);
+            GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oSalida_orden_carga_rem.Referencia);
         }
 
         protected void BindByDataRowRem(DataRow dr, Salida_orden_carga_rem o)

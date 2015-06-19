@@ -252,7 +252,8 @@ namespace AppCasc.operation
                     if (Globals.EST_ORC_CAPTURADA == id_Estatus)
                     {
                         lnkRemision.Text = "La remisión ya tiene una orden de carga";
-                        lnkRemision.OnClientClick = "MngOrdenCarga.printOrdeCarga('" + Request.Url.AbsoluteUri + "?_key=" + o.Id_salida_orden_carga.ToString() + "')";
+                        string url = Request.Url.AbsoluteUri.Split('?')[0];
+                        lnkRemision.OnClientClick = "MngOrdenCarga.printOrdeCarga('" + url + "?_key=" + o.Id_salida_orden_carga.ToString() + "')";
                     }
                 }
             }

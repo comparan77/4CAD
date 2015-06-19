@@ -17,6 +17,7 @@ namespace ModelCasc.catalog
         public int Id { get { return _id; } set { _id = value; } }
         public int Id_transporte { get { return _id_transporte; } set { _id_transporte = value; } }
         public int Id_transporte_tipo { get { return _id_transporte_tipo; } set { _id_transporte_tipo = value; } }
+        public string Transporte { get; set; }
         #endregion
 
         #region Constructores

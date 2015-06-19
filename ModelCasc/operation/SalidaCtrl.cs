@@ -334,7 +334,7 @@ namespace ModelCasc.operation
                 }
 
                 //Orden de carga
-                Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id } };
+                Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id, Referencia = oS.Referencia } };
                 oSOCR.setSalida(trans);
 
                 oS.IsActive = true;
@@ -622,6 +622,43 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        #region Salida Trafico
+
+        /// <summary>
+        /// Devuelve 20 solicitudes pendientes poniendo en primer lugar aquellas no asignadas.
+        /// </summary>
+        /// <returns></returns>
+        public static List<Salida_trafico> TraficoLstSinCita()
+        {
+            List<Salida_trafico> lst = new List<Salida_trafico>();
+            try
+            {
+                Salida_traficoMng oMng = new Salida_traficoMng();
+                oMng.LstSinCita();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static void TraficoSolicitarCita(Salida_trafico o)
+        {
+            try
+            {
+                Salida_traficoMng oMng = new Salida_traficoMng() { O_Salida_trafico = o };
+                oMng.add();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
 
         #region Salida Remision
 

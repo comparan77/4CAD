@@ -908,6 +908,33 @@ namespace ModelCasc.catalog
 
         #endregion
 
+        #region Transporte
+
+        public static List<Transporte> TransporteGetByTipo(int id_tipo_transporte)
+        {
+            List<Transporte> lst = new List<Transporte>();
+            try
+            {
+                Transporte_tipo_transporteMng oTTTMng = new Transporte_tipo_transporteMng() { O_Transporte_tipo_transporte = new Transporte_tipo_transporte() { Id_transporte_tipo = id_tipo_transporte } };
+                oTTTMng.fillLstByTransporteTipo();
+                for (int i = 0; i < oTTTMng.Lst.Count; i++)
+                {
+                    Transporte o = new Transporte();
+                    Transporte_tipo_transporte ottt = oTTTMng.Lst[i];
+                    o.Id = ottt.Id_transporte;
+                    o.Nombre = ottt.Transporte;
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
         public static string ToCSV(List<Object> lst)
         {
             string Csv = "[";
