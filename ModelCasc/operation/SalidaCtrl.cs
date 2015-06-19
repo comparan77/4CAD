@@ -822,6 +822,23 @@ namespace ModelCasc.operation
 
         #region Salida Orden Carga
 
+        public static List<Salida_orden_carga_rem> OrdenCargaCompartidas(string referencia, int id_salida_orden_carga)
+        {
+            List<Salida_orden_carga_rem> lst = new List<Salida_orden_carga_rem>();
+            try
+            {
+                Salida_orden_carga_remMng oMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Referencia = referencia, Id_salida_orden_carga = id_salida_orden_carga } };
+                oMng.fillLstCompartidas();
+                lst = oMng.Lst;
+            }
+            catch 
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
         public static int OrdenCargaAdd(Salida_orden_carga o)
         {
             int id = 0;
@@ -908,5 +925,7 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        
     }
 }

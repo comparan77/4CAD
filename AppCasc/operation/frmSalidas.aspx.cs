@@ -861,37 +861,54 @@ namespace AppCasc.operation
 
                 Salida oSalidaRemision = null;
                 oSalidaRemision = SalidaCtrl.SalidaRefValida(tb.Text, id_cliente);
-                hf_id_salida_orden_carga.Value = oSalidaRemision.Id_salida_orden_carga.ToString();
-                setEnabledControls(false, new WebControl[] { txt_destino, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
-                txt_destino.Text = oSalidaRemision.Destino;
-                txt_mercancia.Text = oSalidaRemision.Mercancia;
-                ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
-                ddlTransporte_changed(null, null);
-                ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
-                txt_no_bulto.Text = oSalidaRemision.No_bulto.ToString();
-                txt_no_pieza.Text = oSalidaRemision.No_pieza.ToString();
-
-                //Verifica si se trata de salida única, parcial o ultima
-                int piezasInventario = SalidaCtrl.SalidaPiezasInventario(tb.Text);
-
-                lbl_no_salida.Visible = false;
-                chk_ultima.Visible = false;
-
-                if (piezasInventario > 0)
+                if (oSalidaRemision.Id_salida_orden_carga > 0)
                 {
-                    chk_tipo_salida.Checked = false;
-                    chk_tipo_salida_checked(chk_tipo_salida, null);
+                    hf_id_salida_orden_carga.Value = oSalidaRemision.Id_salida_orden_carga.ToString();
+
+                    //Vefifica si viene compartida
+                    List<Salida_orden_carga_rem> lstPedimentosCompartidos = SalidaCtrl.OrdenCargaCompartidas(oSalidaRemision.Referencia, oSalidaRemision.Id_salida_orden_carga);
+                    hfEsCompartida.Value = (lstPedimentosCompartidos.Count > 1).ToString();
+                    if (lstPedimentosCompartidos.Count > 1)
+                    {
+                        lst_pedimentos_consolidados.Items.Clear();
+                        foreach (Salida_orden_carga_rem itemSC in lstPedimentosCompartidos)
+                        {
+                            lst_pedimentos_consolidados.Items.Add(new ListItem(itemSC.Referencia, itemSC.Referencia));
+                        }    
+                    }
                     
-                    lbl_no_salida.Visible = true;
 
-                    int NumSalida = SalidaCtrl.getNumSalPar(oSalidaRemision.Referencia);
-                    NumSalida++;
+                    setEnabledControls(false, new WebControl[] { txt_destino, txt_no_bulto, txt_no_pieza, chk_tipo_salida, txt_pedimento_consolidado, lst_pedimentos_consolidados, btnAdd_pedimento });
+                    txt_destino.Text = oSalidaRemision.Destino;
+                    txt_mercancia.Text = oSalidaRemision.Mercancia;
+                    ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
+                    ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
+                    ddlTransporte_changed(null, null);
+                    ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
+                    txt_no_bulto.Text = oSalidaRemision.No_bulto.ToString();
+                    txt_no_pieza.Text = oSalidaRemision.No_pieza.ToString();
 
-                    lbl_no_salida.Text = "Salida Número: " + NumSalida.ToString();
+                    //Verifica si se trata de salida única, parcial o ultima
+                    int piezasInventario = SalidaCtrl.SalidaPiezasInventario(tb.Text);
 
-                    chk_ultima.Checked = piezasInventario == oSalidaRemision.No_pieza;
+                    lbl_no_salida.Visible = false;
+                    chk_ultima.Visible = false;
+
+                    if (piezasInventario > 0)
+                    {
+                        chk_tipo_salida.Checked = false;
+                        chk_tipo_salida_checked(chk_tipo_salida, null);
+
+                        lbl_no_salida.Visible = true;
+
+                        int NumSalida = SalidaCtrl.getNumSalPar(oSalidaRemision.Referencia);
+                        NumSalida++;
+
+                        lbl_no_salida.Text = "Salida Número: " + NumSalida.ToString();
+
+                        chk_ultima.Checked = piezasInventario == oSalidaRemision.No_pieza;
+                    }
                 }
-
                 //SalidaCtrl.ReferenciaUnicaValida(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
                 //SalidaCtrl.ReferenciaIngresada(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
                 //SalidaCtrl.ReferenciaCompartidaValida(tb.Text);
@@ -1219,8 +1236,11 @@ namespace AppCasc.operation
         {
             try
             {
+                int id_cliente = 0;
+                int.TryParse(ddlCliente.SelectedValue, out id_cliente);
+
                 Salida oS = null;
-                if (Convert.ToBoolean(hfEsCompartida.Value))
+                if (Convert.ToBoolean(hfEsCompartida.Value) && id_cliente != 1 && id_cliente != 23)
                     oS = addSalidaValuesCompartida();
                 else
                     oS = addSalidaValues();

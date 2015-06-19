@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="../js/operation/frmFondeo.js?v1.1.150614_1904" type="text/javascript"></script>
+    <script src="../js/operation/frmFondeo.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 

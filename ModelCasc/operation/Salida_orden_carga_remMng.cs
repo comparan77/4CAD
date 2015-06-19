@@ -250,5 +250,26 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void fillLstCompartidas()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga_rem");
+                addParameters(8);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_orden_carga_rem>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_orden_carga_rem o = new Salida_orden_carga_rem();
+                    o.Referencia = dr["referencia"].ToString();
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

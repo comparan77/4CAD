@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmRelEntSal.aspx.cs" Inherits="AppCasc.operation.frmRelEntSal" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="../js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="../js/catalog/frmLst.js?v1.1.150614_1904" type="text/javascript"></script>
-    <script src="../js/operation/frmRelEntSal.js?v1.1.150614_1904" type="text/javascript"></script>
+    <script src="../js/catalog/frmLst.js?v1.1.150619_1446" type="text/javascript"></script>
+    <script src="../js/operation/frmRelEntSal.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 

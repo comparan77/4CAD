@@ -14,6 +14,12 @@
 
                 obj.Init();
 
+                $('body').keydown(function (e) {
+                    if (e.which === 116) {
+                        return false;
+                    }
+                });
+
                 //setHeartbeat();
             });
         } // Init <<fin>>

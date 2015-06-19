@@ -31,15 +31,6 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
-        /// hfEsCompartida control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfEsCompartida;
-        
-        /// <summary>
         /// hfFolio control.
         /// </summary>
         /// <remarks>
@@ -173,6 +164,15 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hf_id_salida_orden_carga;
+        
+        /// <summary>
+        /// hfEsCompartida control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEsCompartida;
         
         /// <summary>
         /// txt_referencia control.

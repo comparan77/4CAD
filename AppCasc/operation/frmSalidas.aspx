@@ -5,7 +5,7 @@
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/mobiscroll-2.1-beta.custom.min.js" type="text/javascript"></script>
     <script src="../js/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script src="../js/operation/frmSalidas.js?v1.1.150614_1904" type="text/javascript"></script>
+    <script src="../js/operation/frmSalidas.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -13,7 +13,7 @@
 
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
-<asp:HiddenField runat="server" ID="hfEsCompartida" />
+
 <asp:HiddenField runat="server" ID="hfFolio" />
 
 <div id="dialog-confirm" title="Datos de salida">
@@ -69,6 +69,7 @@
     <asp:HiddenField runat="server" ID="hfIdDocReq" />
     <asp:HiddenField runat="server" ID="hfMascara" />
     <asp:HiddenField runat="server" ID="hf_id_salida_orden_carga" />
+    <asp:HiddenField runat="server" ID="hfEsCompartida" />
     <label id="lblReferencia">Documento:</label>
     <asp:TextBox runat="server" ID="txt_referencia" AutoPostBack="true" OnTextChanged="txt_referencia_TextChanged" ValidationGroup="valgrp_referencia"></asp:TextBox>
     <asp:RequiredFieldValidator CssClass="validator" ID="rfvReferencia" runat="server" ControlToValidate="txt_referencia" ></asp:RequiredFieldValidator>
@@ -111,14 +112,15 @@
 
 <div>
     <div>
-        <label id="lblConsolidada">NO Consolidada</label>
+        <label id="lblConsolidada">NO Compartido</label>
         <input type="checkbox" id="chkConsolidado" />
         <asp:HiddenField runat="server" ID="hfConsolidada" Value="false" />
     </div>
     <div id="pnl_consolidada" class="hidden">
         <asp:UpdatePanel runat="server" ID="up_consolidada" UpdateMode="Conditional">
         <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="btnAdd_pedimento" EventName="Click" />
+            <asp:AsyncPostBackTrigger ControlID="btnAdd_pedimento" EventName="Click" />
+            <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
         </Triggers>
         <ContentTemplate>
             <div>

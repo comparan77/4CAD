@@ -29,6 +29,7 @@
             upDocRequerido.addClass('ajaxLoading');
         });
 
+        //Update panel de referencia o documento requerido
         upDocRequerido.panelReady(function () {
             var DocReq;
             var DocMask;
@@ -66,6 +67,13 @@
                 $('#chkConsolidado').removeAttr('disabled');
             else
                 $('#chkConsolidado').attr('disabled', 'true');
+
+            if ($('#ctl00_body_hfEsCompartida').val() == "True") {
+                $('#lblConsolidada').html('Compartida');
+                $(chkConsolidado).attr('disabled', 'disabled').attr('checked', 'checked');
+                $('#ctl00_body_txt_pedimento_consolidado').val('');
+                $('#pnl_consolidada').show('slow');
+            }
 
             upDocRequerido.removeClass('ajaxLoading');
             $('#div_salida').removeClass('ajaxLoading');
@@ -131,22 +139,15 @@
         var pnl_consolidada;
 
         var chkConsolidado = $('#chkConsolidado').click(function () {
-            var lblConsolidada = $('#lblConsolidada').html('NO Consolidada');
+            var lblConsolidada = $('#lblConsolidada').html('NO Compartida');
             pnl_consolidada = $('#pnl_consolidada').hide('slow');
             var hfConsolidada = $('#ctl00_body_hfConsolidada').val('false');
             if ($(this).is(':checked')) {
-                $(lblConsolidada).html('Consolidada');
+                $(lblConsolidada).html('Compartida');
                 $(pnl_consolidada).show('slow');
                 $(hfConsolidada).val('true');
             }
         });
-
-        if ($('#ctl00_body_hfEsCompartida').val() == "True") {
-            $('#lblConsolidada').html('Consolidada');
-            $(chkConsolidado).attr('disabled', 'disabled').attr('checked', 'checked');
-            $('#ctl00_body_txt_pedimento_consolidado').val('');
-            $('#pnl_consolidada').show('slow');
-        }
 
         var up_documento_enviado = $('#ctl00_body_up_documento_enviado');
         var up_Destino = $('#ctl00_body_up_Destino');
