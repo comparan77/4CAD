@@ -882,7 +882,6 @@ namespace AppCasc.operation
                     txt_destino.Text = oSalidaRemision.Destino;
                     txt_mercancia.Text = oSalidaRemision.Mercancia;
                     ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
-                    ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
                     ddlTransporte_changed(null, null);
                     ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
                     txt_no_bulto.Text = oSalidaRemision.No_bulto.ToString();
