@@ -876,7 +876,6 @@ namespace AppCasc.operation
                             lst_pedimentos_consolidados.Items.Add(new ListItem(itemSC.Referencia, itemSC.Referencia));
                         }    
                     }
-                    
 
                     setEnabledControls(false, new WebControl[] { txt_destino, txt_no_bulto, txt_no_pieza, chk_tipo_salida, txt_pedimento_consolidado, lst_pedimentos_consolidados, btnAdd_pedimento });
                     txt_destino.Text = oSalidaRemision.Destino;
