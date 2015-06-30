@@ -39,7 +39,7 @@ namespace ModelCasc.operation
         protected int _bultos_sobr;
         protected string _observaciones;
         protected DateTime _fecha_maquila;
-        protected int _id_estatus;
+        protected bool _maquila_abierta;
 
         protected List<Entrada_inventario_detail> _lstEntInvDet;
         protected List<Entrada_inventario_lote> _lstEntInvLote;
@@ -77,7 +77,7 @@ namespace ModelCasc.operation
         public string Observaciones { get { return _observaciones; } set { _observaciones = value; } }
         public DateTime Fecha_maquila { get { return _fecha_maquila; } set { _fecha_maquila = value; } }
         public string StrFecha_maquila { get { return this._fecha_maquila.ToString("dd/MM/yyyy"); } }
-        public int Id_estatus { get { return _id_estatus; } set { _id_estatus = value; } }
+        public bool Maquila_abierta { get { return _maquila_abierta; } set { _maquila_abierta = value; } }
         public List<Entrada_inventario_detail> LstEntInvDet { get { return _lstEntInvDet; } set { _lstEntInvDet = value; } }
         public List<Entrada_inventario_lote> LstEntInvLote { get { return _lstEntInvLote; } set { _lstEntInvLote = value; } }
 
@@ -87,6 +87,8 @@ namespace ModelCasc.operation
         public string Proveedor { get; set; }
         public string Nom { get; set; }
         public string FolioEntrada { get; set; }
+        public string Lote { get; set; }
+        public bool Maquilado { get; set; } 
         //public int PzasPorBulto { get; set; }
         #endregion
 
@@ -122,7 +124,7 @@ namespace ModelCasc.operation
             this._bultos_sobr = 0;
             this._observaciones = String.Empty;
             this._fecha_maquila = default(DateTime);
-            this._id_estatus = 0;
+            this._maquila_abierta = true;
         }
         #endregion
 

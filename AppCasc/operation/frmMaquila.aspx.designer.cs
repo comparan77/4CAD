@@ -10,7 +10,7 @@
 namespace AppCasc.operation {
     
     
-    public partial class frmRemision {
+    public partial class frmMaquila {
         
         /// <summary>
         /// hfTitleErr control.
@@ -67,6 +67,24 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.Repeater rep_resultados;
         
         /// <summary>
+        /// rep_WorkDay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rep_WorkDay;
+        
+        /// <summary>
+        /// rep_MqXCerrar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rep_MqXCerrar;
+        
+        /// <summary>
         /// hf_id_entrada control.
         /// </summary>
         /// <remarks>
@@ -94,13 +112,13 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_id_cliente;
         
         /// <summary>
-        /// hf_id_entrada_maquila control.
+        /// hf_HasLote control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_entrada_maquila;
+        protected global::System.Web.UI.WebControls.HiddenField hf_HasLote;
         
         /// <summary>
         /// hf_referencia control.
@@ -112,13 +130,13 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_referencia;
         
         /// <summary>
-        /// hf_codigo_cliente control.
+        /// hf_ordencompra control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_codigo_cliente;
+        protected global::System.Web.UI.WebControls.HiddenField hf_ordencompra;
         
         /// <summary>
         /// hf_codigo control.
@@ -130,31 +148,31 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_codigo;
         
         /// <summary>
-        /// hf_orden control.
+        /// hf_pieza_faltante control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_orden;
+        protected global::System.Web.UI.WebControls.HiddenField hf_pieza_faltante;
         
         /// <summary>
-        /// hf_idUsuario control.
+        /// hf_pieza_sobrante control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_idUsuario;
+        protected global::System.Web.UI.WebControls.HiddenField hf_pieza_sobrante;
         
         /// <summary>
-        /// hf_HasLote control.
+        /// hf_EST_MAQ_PAR_CERRADA control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_HasLote;
+        protected global::System.Web.UI.WebControls.HiddenField hf_EST_MAQ_PAR_CERRADA;
         
         /// <summary>
         /// rep_oc_by_pedimento control.
@@ -166,265 +184,139 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.Repeater rep_oc_by_pedimento;
         
         /// <summary>
-        /// grdDetMaq control.
+        /// btn_cerrar_maquila control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grdDetMaq;
+        protected global::System.Web.UI.WebControls.Button btn_cerrar_maquila;
         
         /// <summary>
-        /// rep_remisiones control.
+        /// up_maquila control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rep_remisiones;
+        protected global::System.Web.UI.UpdatePanel up_maquila;
         
         /// <summary>
-        /// btnDltRemision control.
+        /// rep_dias_trabajados control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDltRemision;
+        protected global::System.Web.UI.WebControls.Repeater rep_dias_trabajados;
         
         /// <summary>
-        /// hf_id_remision control.
+        /// hf_bultos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_remision;
+        protected global::System.Web.UI.WebControls.HiddenField hf_bultos;
         
         /// <summary>
-        /// hf_img_codigo control.
+        /// hf_piezasInventario control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_img_codigo;
+        protected global::System.Web.UI.WebControls.HiddenField hf_piezasInventario;
         
         /// <summary>
-        /// hf_img_orden control.
+        /// hf_bulto_maquilado control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_img_orden;
+        protected global::System.Web.UI.WebControls.HiddenField hf_bulto_maquilado;
         
         /// <summary>
-        /// hf_img_vendor control.
+        /// grdDetInv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_img_vendor;
+        protected global::System.Web.UI.WebControls.GridView grdDetInv;
         
         /// <summary>
-        /// hf_mercancia_danada control.
+        /// txt_fecha_trabajo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_mercancia_danada;
+        protected global::System.Web.UI.WebControls.TextBox txt_fecha_trabajo;
         
         /// <summary>
-        /// hf_id_entrada_maquila_detail_1 control.
+        /// hf_id_maquilado control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_entrada_maquila_detail_1;
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_maquilado;
         
         /// <summary>
-        /// txt_bulto control.
+        /// hf_dia_pallet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_bulto;
+        protected global::System.Web.UI.WebControls.HiddenField hf_dia_pallet;
         
         /// <summary>
-        /// txt_piezasXbulto control.
+        /// hf_dia_bulto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_piezasXbulto;
+        protected global::System.Web.UI.WebControls.HiddenField hf_dia_bulto;
         
         /// <summary>
-        /// txt_piezas control.
+        /// hf_dia_pieza control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_piezas;
+        protected global::System.Web.UI.WebControls.HiddenField hf_dia_pieza;
         
         /// <summary>
-        /// hf_lote_1 control.
+        /// txt_pallet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_lote_1;
+        protected global::System.Web.UI.WebControls.TextBox txt_pallet;
         
         /// <summary>
-        /// hf_mercancia_danadaInc control.
+        /// rv_pallet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_mercancia_danadaInc;
+        protected global::System.Web.UI.WebControls.RangeValidator rv_pallet;
         
         /// <summary>
-        /// hf_id_entrada_maquila_detail_2 control.
+        /// hf_entrada_maquila_detail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_entrada_maquila_detail_2;
-        
-        /// <summary>
-        /// txt_bultoInc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_bultoInc;
-        
-        /// <summary>
-        /// txt_piezasXbultoInc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_piezasXbultoInc;
-        
-        /// <summary>
-        /// txt_piezasInc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_piezasInc;
-        
-        /// <summary>
-        /// hf_lote_2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_lote_2;
-        
-        /// <summary>
-        /// txt_piezaTotal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_piezaTotal;
-        
-        /// <summary>
-        /// rv_piezas control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_piezas;
-        
-        /// <summary>
-        /// txt_dano control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_dano;
-        
-        /// <summary>
-        /// rfv_dano control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_dano;
-        
-        /// <summary>
-        /// txt_elaboro control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_elaboro;
-        
-        /// <summary>
-        /// ddl_autorizo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_autorizo;
-        
-        /// <summary>
-        /// txt_fecha_remision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_fecha_remision;
-        
-        /// <summary>
-        /// rfv_fecha_remision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_fecha_remision;
-        
-        /// <summary>
-        /// txt_folio_cita control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_folio_cita;
-        
-        /// <summary>
-        /// rfv_folio_cita control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_folio_cita;
+        protected global::System.Web.UI.WebControls.HiddenField hf_entrada_maquila_detail;
         
         /// <summary>
         /// btn_save control.

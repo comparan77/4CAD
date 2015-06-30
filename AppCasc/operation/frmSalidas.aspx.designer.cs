@@ -31,6 +31,15 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
+        /// hfEsCompartida control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEsCompartida;
+        
+        /// <summary>
         /// hfFolio control.
         /// </summary>
         /// <remarks>
@@ -155,24 +164,6 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfMascara;
-        
-        /// <summary>
-        /// hf_id_salida_orden_carga control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_salida_orden_carga;
-        
-        /// <summary>
-        /// hfEsCompartida control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfEsCompartida;
         
         /// <summary>
         /// txt_referencia control.
@@ -364,15 +355,6 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_destino;
         
         /// <summary>
-        /// up_Mercancia control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel up_Mercancia;
-        
-        /// <summary>
         /// txt_mercancia control.
         /// </summary>
         /// <remarks>
@@ -389,15 +371,6 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_mercancia;
-        
-        /// <summary>
-        /// up_Transporte control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel up_Transporte;
         
         /// <summary>
         /// ddlTransporte control.
@@ -470,6 +443,24 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_placa;
+        
+        /// <summary>
+        /// txt_caja control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_caja;
+        
+        /// <summary>
+        /// rfv_caja control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_caja;
         
         /// <summary>
         /// txt_caja_1 control.
@@ -587,15 +578,6 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rv_no_pallet;
-        
-        /// <summary>
-        /// up_bulto_pieza control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel up_bulto_pieza;
         
         /// <summary>
         /// txt_no_bulto control.
@@ -812,5 +794,41 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGuardar;
+        
+        /// <summary>
+        /// lblUsrName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUsrName;
+        
+        /// <summary>
+        /// repFoliosPendientes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repFoliosPendientes;
+        
+        /// <summary>
+        /// repSalPar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repSalPar;
+        
+        /// <summary>
+        /// repSalHoy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repSalHoy;
     }
 }

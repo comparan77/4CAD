@@ -359,7 +359,7 @@ namespace AppCasc.operation
                     o.Consec = o.Consec + 1;
                     hf_consec_inventario.Value = o.Consec.ToString();
 
-                    o.Id_estatus = Globals.EST_INV_SIN_APROBACION;
+                    //o.Id_estatus = Globals.EST_INV_SIN_APROBACION;
 
                     VSLstEntPiso.Add(o);
                     fillRepeaterPiso();
@@ -422,7 +422,7 @@ namespace AppCasc.operation
                 oEI.LstEntInvLote = lstEntInvLote;
 
                 oEI.Id_usuario = ((MstCasc)this.Master).getUsrLoged().Id;
-                oEI.Id_estatus = Globals.EST_INV_CON_APROBACION;
+                //oEI.Id_estatus = Globals.EST_INV_CON_APROBACION;
                 EntradaCtrl.InventarioSave(oEI);
                 ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('Se guardó correctamente el registro');</script>");
                 //window.location.href='frmInventario.aspx?_kp=" + hf_id_entrada.Value + "';

@@ -55,7 +55,7 @@
     <siteMapNode roles="Inventario" title="Inventario">
       <siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
       <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
-      <siteMapNode url="~/operation/frmOrdenTrabajo.aspx" title="Ord. Trabajo"  description="Orden de Trabajo" />
+      <siteMapNode url="~/operation/frmMaquila.aspx" title="Maquila"  description="Maquila" />
       <siteMapNode url="~/operation/frmTrafico.aspx" title="Tráfico"  description="Control del Tráfico" />
       <siteMapNode url="~/operation/frmRemision.aspx" title="Remisión"  description="Remisión" />
       <siteMapNode url="~/operation/frmOrdenCarga.aspx" title="Orden de Carga"  description="Orden de Carga" />

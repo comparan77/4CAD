@@ -36,7 +36,6 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada", DbType.Int32, this._oEntrada_maquila.Id_entrada);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oEntrada_maquila.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada_inventario", DbType.Int32, this._oEntrada_maquila.Id_entrada_inventario);
-            GenericDataAccess.AddInParameter(this.comm, "?P_fecha_trabajo", DbType.DateTime, this._oEntrada_maquila.Fecha_trabajo);
             GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, this._oEntrada_maquila.Pallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_bulto", DbType.Int32, this._oEntrada_maquila.Bulto);
             GenericDataAccess.AddInParameter(this.comm, "?P_pieza", DbType.Int32, this._oEntrada_maquila.Pieza);
@@ -45,7 +44,6 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_bulto_sobrante", DbType.Int32, this._oEntrada_maquila.Bulto_sobrante);
             GenericDataAccess.AddInParameter(this.comm, "?P_pieza_faltante", DbType.Int32, this._oEntrada_maquila.Pieza_faltante);
             GenericDataAccess.AddInParameter(this.comm, "?P_pieza_sobrante", DbType.Int32, this._oEntrada_maquila.Pieza_sobrante);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_estatus", DbType.Int32, this._oEntrada_maquila.Id_estatus);
         }
 
         protected void BindByDataRow(DataRow dr, Entrada_maquila o)
@@ -85,10 +83,7 @@ namespace ModelCasc.operation
                     o.Fecha_trabajo = fecha;
                     fecha = default(DateTime);
                 }
-                else
-                {
-                    o.Fecha_trabajo = null;
-                }
+                
                 if (dr["pallet"] != DBNull.Value)
                 {
                     int.TryParse(dr["pallet"].ToString(), out entero);
@@ -135,12 +130,6 @@ namespace ModelCasc.operation
                 {
                     int.TryParse(dr["pieza_sobrante"].ToString(), out entero);
                     o.Pieza_sobrante = entero;
-                    entero = 0;
-                }
-                if (dr["id_estatus"] != DBNull.Value)
-                {
-                    int.TryParse(dr["id_estatus"].ToString(), out entero);
-                    o.Id_estatus = entero;
                     entero = 0;
                 }
             }
@@ -251,6 +240,12 @@ namespace ModelCasc.operation
                 {
                     DataRow dr = dt.Rows[0];
                     BindByDataRow(dr, this._oEntrada_maquila);
+                    if (dr["maquila_abierta"] != null)
+                    {
+                        logica = string.Compare(dr["maquila_abierta"].ToString(), "1") == 0 ? true : false;
+                        this._oEntrada_maquila.Maquila_abierta = logica;
+                        logica = false;
+                    }
 
                     DataTable dtDetMaq = ds.Tables[1];
                     this._oEntrada_maquila.LstEntMaqDet = new List<Entrada_maquila_detail>();
@@ -259,10 +254,10 @@ namespace ModelCasc.operation
                     {
                         Entrada_maquila_detail oEMD = new Entrada_maquila_detail();
                         oEMDMng.BindByDataRow(drDetMaq, oEMD);
-                        if (dr["id_estatus"] != DBNull.Value)
+                        if (drDetMaq["tiene_remision"] != DBNull.Value)
                         {
-                            int.TryParse(dr["id_estatus"].ToString(), out entero);
-                            oEMD.IdEstatus = entero;
+                            int.TryParse(drDetMaq["tiene_remision"].ToString(), out entero);
+                            oEMD.Tiene_remision = entero > 0;
                             entero = 0;
                         }
                         this._oEntrada_maquila.LstEntMaqDet.Add(oEMD);
@@ -452,14 +447,14 @@ namespace ModelCasc.operation
                         entero = 0;
                     }
 
-                    if (drDetMaq["id_estatus_proceso"] != DBNull.Value)
-                    {
-                        int.TryParse(drDetMaq["id_estatus_proceso"].ToString(), out entero);
-                        oEMD.IdEstatus = entero;
-                        entero = 0;
-                    }
+                    //if (drDetMaq["id_estatus_proceso"] != DBNull.Value)
+                    //{
+                    //    int.TryParse(drDetMaq["id_estatus_proceso"].ToString(), out entero);
+                    //    oEMD.Maquila_abierta = entero;
+                    //    entero = 0;
+                    //}
 
-                    oEMD.cssLocked = oEMD.IdEstatus == Globals.EST_MAQ_PAR_SIN_CERRAR ? "un" : "";
+                    //oEMD.cssLocked = oEMD.Maquila_abierta == Globals.EST_MAQ_PAR_SIN_CERRAR ? "un" : "";
 
                     this._oEntrada_maquila.LstEntMaqDet.Add(oEMD);
                 }

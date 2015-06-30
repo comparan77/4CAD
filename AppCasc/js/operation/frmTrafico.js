@@ -6,21 +6,7 @@
 
         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
 
-        //        var btn_buscar = $('#ctl00_body_btn_buscar');
-        //        var div_busqueda = $('#div_busqueda');
-        //        var up_resultados = $('#ctl00_body_up_resultados');
-
-        //        var up_ordenes = $('#ctl00_body_up_ordenes');
-
-        //        var div_tbl_folio_remision = $('#div-tbl-folio-remision');
-
-        //        $(btn_buscar).button({
-        //            'icons': {
-        //                'primary': 'ui-icon-search'
-        //            }
-        //        }).click(function () {
-        //            div_busqueda.addClass('ajaxLoading');
-        //        });
+        $('#ctl00_body_btn_solicitar_cita').button();
 
         //inputs de horario <<ini>>
         $('#ctl00_body_txt_hora_carga_solicitada, #ctl00_body_txt_hora_cita').scroller({
@@ -42,16 +28,22 @@
         $(up_trafico).panelReady(function () {
 
             $('.activaGuardarCita').each(function () {
-                $(this).attr('disabled', 'disabled');
+                $(this).button({
+                    disabled: true
+                });
+            });
+
+            $('.classTransporte_tipo').each(function () {
+                $(this).unbind('change').change(function () {
+                    $(this).parent().next().children('select').html('');
+                    tipo_transporte_change($(this));
+                    validaCamposRequeridos($(this));
+                });
             });
 
             $('.citaReq').each(function () {
                 $(this).unbind('change').change(function () {
-                    var valido = validaCamposRequeridos();
-                    if (valido)
-                        $(this).parent().parent().children('div').last().children('input').removeAttr('disabled');
-                    else
-                        $(this).parent().parent().children('div').last().children('input').attr('disabled', 'disabled');
+                    var valido = validaCamposRequeridos($(this));
                 });
             });
 
@@ -73,29 +65,35 @@
 
             $('.spn_TransporteGetByTipo').each(function () {
                 $(this).click(function () {
-                    var id_transporte_tipo = $(this).attr('id').split("_")[1] * 1;
-                    getTransporteByTipo(id_transporte_tipo);
+
+                    var id_cita = $(this).parent().prev().children('input').val() * 1;
+                    var id_transporte_tipo = $(this).parent().prev().children('select').val() * 1;
+                    getTransporteByTipo(id_transporte_tipo, id_cita, $(this).parent().children('select'));
                 });
             });
 
         });
     }
 
-    function validaCamposRequeridos() {
+    function validaCamposRequeridos(input) {
         var valido = true;
-        $('.citaReq').each(function () {
-            if ($(this).val().length == 0) {
+        $(input).parent().parent().find('.citaReq').each(function () {
+            if ($(this).val() == null || $(this).val().length == 0) {
                 valido = false;
                 return;
             }
         });
+        if (valido)
+            $(input).parent().parent().children('div').last().children('input').button('enable');
+        else
+            $(input).parent().parent().children('div').last().children('input').button('option', 'disabled');
 
         return valido;
     }
 
-    function getTransporteByTipo(id_transporte_tipo) {
+    function getTransporteByTipo(id_transporte_tipo, id_cita, ddlTransporte) {
 
-        $('#linea_' + id_transporte_tipo).html('');
+        $(ddlTransporte).html('');
 
         $.ajax({
             type: 'GET',
@@ -107,19 +105,23 @@
             success: function (data) {
 
                 $(data).each(function (i, obj) {
-                    var opt = '<option value="' + obj.Id + (i == 0 ? '" selected="selected"' : '"') + '>' + obj.Nombre + '</option>';
-                    $('#linea_' + id_transporte_tipo).append(opt);
+                    var opt = '<option placa="' + obj.PTransporte_tipo.Requiere_placa + '" ';
+                    opt += 'caja="' + obj.PTransporte_tipo.Requiere_caja + '" ';
+                    opt += 'caja1="' + obj.PTransporte_tipo.Requiere_caja1 + '" ';
+                    opt += 'caja2="' + obj.PTransporte_tipo.Requiere_caja2 + '" ';
+                    opt += 'value="' + obj.Id_transporte + (i == 0 ? '" selected="selected"' : '"') + '>' + obj.Transporte + '</option>';
+                    $(ddlTransporte).append(opt);
                 });
 
-                //$('#linea_' + id_transporte_tipo).prev().val(data[0].Id);
+                $(ddlTransporte).prev().val(data[0].Id_transporte);
 
-                $('#linea_' + id_transporte_tipo).trigger('change');
-
-                validaCamposRequeridos();
-
-                $('#linea_' + id_transporte_tipo).unbind('change').change(function () {
-                    $(this).prev().val($(this).val());
+                //validaCamposRequeridos();
+                tipo_transporte_change(ddlTransporte);
+                validaCamposRequeridos(ddlTransporte);
+                $(ddlTransporte).unbind('change').change(function () {
+                    $(ddlTransporte).prev().val(data[0].Id_transporte);
                 });
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
@@ -130,6 +132,42 @@
 
     }
 
+    function tipo_transporte_change(ddl_tipo_transporte) {
+
+        if (ddl_tipo_transporte.length > 0) {
+            var optionSelected = $(ddl_tipo_transporte).find(':selected');
+
+            var placa = $(optionSelected).attr('placa');
+            var caja = $(optionSelected).attr('caja');
+            var caja1 = $(optionSelected).attr('caja1');
+            var caja2 = $(optionSelected).attr('caja2');
+
+            for (var iP = 7; iP < 11; iP++) {
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(' + iP + ')').addClass('hidden');
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(' + iP + ')').children('input').val('N.A');
+            }
+
+            if (placa.toLowerCase() == 'true') {
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(7)').removeClass('hidden');
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(7)').children('input').val('');
+            }
+
+            if (caja.toLowerCase() == 'true') {
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(8)').removeClass('hidden');
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(8)').children('input').val('');
+            }
+
+            if (caja1.toLowerCase() == 'true') {
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(9)').removeClass('hidden');
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(9)').children('input').val('');
+            }
+
+            if (caja2.toLowerCase() == 'true') {
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(10)').removeClass('hidden');
+                $(ddl_tipo_transporte).parent().parent().children('div:nth-child(10)').children('input').val('');
+            }
+        }
+    }
 }
 
 MngTrafico.printOrdeCarga = function (url) {

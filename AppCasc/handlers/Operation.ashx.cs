@@ -7,6 +7,7 @@ using ModelCasc.operation;
 using Newtonsoft.Json;
 using System.IO;
 using ModelCasc;
+using ModelCasc.catalog;
 
 namespace AppCasc.handlers
 {
@@ -14,7 +15,12 @@ namespace AppCasc.handlers
     /// Summary description for Operation
     /// </summary>
     public class Operation : IHttpHandler
-    {   
+    {
+        string response = string.Empty;
+        string referencia = string.Empty;
+        string jsonData = string.Empty;
+        int id = 0;
+
         public bool IsReusable
         {
             get
@@ -23,15 +29,14 @@ namespace AppCasc.handlers
             }
         }
 
+        
         public void ProcessRequest(HttpContext context)
         {
+
             context.Response.ContentType = "application/json";
             context.Response.ContentEncoding = Encoding.UTF8;
             string operation = context.Request["op"].ToString();
-            
-            string response = string.Empty;
-            string referencia = string.Empty;
-            int id = 0;
+
             try
             {
                 switch (operation)
@@ -57,26 +62,38 @@ namespace AppCasc.handlers
                         int.TryParse(context.Request["key"].ToString(), out id);
                         response = JsonConvert.SerializeObject(EntradaCtrl.FondeoGetById(id));
                         break;
-                    case "maquiladate":
+                    case "maquilaGet":
                         int.TryParse(context.Request["key"].ToString(), out id);
-                        DateTime fechaTrabajo = default(DateTime);
-                        DateTime.TryParse(context.Request["date"].ToString(), out fechaTrabajo); 
-                        response = JsonConvert.SerializeObject(EntradaCtrl.MaquilaSelBy(id, fechaTrabajo));
+                        response = JsonConvert.SerializeObject(EntradaCtrl.MaquilaSelById(id));
                         break;
                     case "remDetail":
                         int.TryParse(context.Request["key"].ToString(), out id);
                         response = JsonConvert.SerializeObject(SalidaCtrl.RemDetailGetLstByParent(id));
                         break;
-                    case "closeMaqPar":
-                        string jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                        Entrada_estatus o = JsonConvert.DeserializeObject<Entrada_estatus>(jsonData);
-                        o.Id_estatus_proceso = Globals.EST_MAQ_PAR_CERRADA;
-                        EntradaCtrl.EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus_proceso, o.Id_usuario, o.Id_entrada_maquila);
+                    case "changeMaqPar":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Entrada_estatus oEE = JsonConvert.DeserializeObject<Entrada_estatus>(jsonData);
+                        oEE.Id_estatus_proceso = Globals.EST_MAQ_PAR_CERRADA;
+                        EntradaCtrl.EntradaEstatusAdd(oEE.Id_entrada_inventario, oEE.Id_estatus_proceso, oEE.Id_usuario, oEE.Id_entrada_maquila);
                         response = JsonConvert.SerializeObject("La maquila ha sido cerrada correctamente");// exixteFondeo.ToString();
+                        break;
+                    case "MciaDescChange":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Cliente_mercancia oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                        EntradaCtrl.InventarioUdtMercancia(oCM);
+                        response = JsonConvert.SerializeObject("La descripción ha sido actualizada correctamente");
+                        break;
+                    case "MqStateChange":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        id = JsonConvert.DeserializeObject<Int32>(jsonData);
+                        EntradaCtrl.InventarioUdtMaqAbierta(id, true);
+                        response = JsonConvert.SerializeObject("La maquila ha sido abierta correctamente");
                         break;
                     case "embarque":
                         response = embarque(context);
-
+                        break;
+                    case "cita":
+                        response = Citas(context);
                         break;
                     default:
                         break;
@@ -104,6 +121,32 @@ namespace AppCasc.handlers
                     response = JsonConvert.SerializeObject(SalidaCtrl.SalidaRefValida(referencia, id_cliente));
                     break;
                 
+            }
+            return response;
+        }
+
+        private string Citas(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+
+            switch (option)
+            {
+                case "getCitas": 
+                    string referencia = context.Request["ref"];
+                    //int id_cliente = 0;
+                    //int.TryParse(context.Request["cliente"].ToString(), out id_cliente);
+                    response = JsonConvert.SerializeObject(SalidaCtrl.TraficoLstCita());
+                    break;
+                case "getWithRem":
+                    DateTime firstDate = default(DateTime);
+                    DateTime.TryParse(context.Request["start"].ToString(), out firstDate);
+                    response = JsonConvert.SerializeObject(SalidaCtrl.TraficoLstWithRem(firstDate));
+                    break;
+                case "getByIdTrafico":
+                    int.TryParse(context.Request["id_salida_trafico"].ToString(), out id);
+                    response = JsonConvert.SerializeObject(SalidaCtrl.RemisionGetByIdTrafico(id));
+                    break;
             }
             return response;
         }

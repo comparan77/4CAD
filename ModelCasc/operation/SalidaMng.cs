@@ -47,6 +47,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, this._oSalida.Id_transporte);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo", DbType.Int32, this._oSalida.Id_transporte_tipo);
             GenericDataAccess.AddInParameter(this.comm, "?P_placa", DbType.String, this._oSalida.Placa);
+            GenericDataAccess.AddInParameter(this.comm, "?P_caja", DbType.String, this._oSalida.Caja);
             GenericDataAccess.AddInParameter(this.comm, "?P_caja1", DbType.String, this._oSalida.Caja1);
             GenericDataAccess.AddInParameter(this.comm, "?P_caja2", DbType.String, this._oSalida.Caja2);
             GenericDataAccess.AddInParameter(this.comm, "?P_sello", DbType.String, this._oSalida.Sello);
@@ -125,6 +126,7 @@ namespace ModelCasc.operation
                         entero = 0;
                     }
                     o.Placa = dr["placa"].ToString();
+                    o.Caja = dr["caja"].ToString();
                     o.Caja1 = dr["caja1"].ToString();
                     o.Caja2 = dr["caja2"].ToString();
                     o.Sello = dr["sello"].ToString();
@@ -237,6 +239,7 @@ namespace ModelCasc.operation
                         entero = 0;
                     }
                     this._oSalida.Placa = dr["placa"].ToString();
+                    this._oSalida.Caja = dr["caja"].ToString();
                     this._oSalida.Caja1 = dr["caja1"].ToString();
                     this._oSalida.Caja2 = dr["caja2"].ToString();
                     this._oSalida.Sello = dr["sello"].ToString();
@@ -414,6 +417,7 @@ namespace ModelCasc.operation
                         entero = 0;
                     }
                     this._oSalida.Placa = dr["placa"].ToString();
+                    this._oSalida.Caja = dr["caja"].ToString();
                     this._oSalida.Caja1 = dr["caja1"].ToString();
                     this._oSalida.Caja2 = dr["caja2"].ToString();
                     this._oSalida.Sello = dr["sello"].ToString();

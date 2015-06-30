@@ -21,8 +21,13 @@
     clear: left;
 }
 
-#div_entrada, #div_salida
+#div_entrada
 {
+}
+
+#div_salida
+{
+    width: 700px;    float: left;
 }
 
 .div_inventario
@@ -73,6 +78,12 @@
 .txtSmall
 {
     width: 100px!important;
+}
+
+.txtNoBorder
+{
+    border: none!important;
+    background-color: transparent!important;
 }
 
 textarea

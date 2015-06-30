@@ -38,8 +38,8 @@ namespace ModelCasc.operation
             try
             {
                 SalidaMng oMng = new SalidaMng() { O_Salida = o };
-                if (id_cliente == 1 || id_cliente == 23)
-                    oMng.refValida();
+                //if (id_cliente == 1 || id_cliente == 23)
+                //    oMng.refValida();
             }
             catch (Exception)
             {
@@ -625,6 +625,35 @@ namespace ModelCasc.operation
 
         #region Salida Trafico
 
+        public static List<Salida_trafico> TraficoLstCita()
+        {
+            List<Salida_trafico> lst = new List<Salida_trafico>();
+            try
+            {
+                Salida_traficoMng oMng = new Salida_traficoMng();
+                oMng.LstCita();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static void TraficoSaveCita(Salida_trafico o)
+        {
+            try
+            {
+                Salida_traficoMng oMng = new Salida_traficoMng() { O_Salida_trafico = o };
+                oMng.saveCita();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// Devuelve 20 solicitudes pendientes poniendo en primer lugar aquellas no asignadas.
         /// </summary>
@@ -656,6 +685,29 @@ namespace ModelCasc.operation
             {
                 throw;
             }
+        }
+
+        public static List<FullCalendar> TraficoLstWithRem(DateTime firstDate)
+        {
+            List<FullCalendar> lst = new List<FullCalendar>();
+            try
+            {
+                Salida_traficoMng oMng = new Salida_traficoMng() { O_Salida_trafico = new Salida_trafico() { Fecha_cita = firstDate } };
+                oMng.LstWithRem();
+                for (int i = 0; i < oMng.Lst.Count; i++)
+                {
+                    Salida_trafico o = oMng.Lst[i];
+                    DateTime dtCita = DateTime.ParseExact(string.Concat(new string[] { Convert.ToDateTime(o.Fecha_cita).ToString("yyyy-MM-dd"), " ", o.Hora_cita }), "yyyy-MM-dd HH:mm:ss",
+                        System.Globalization.CultureInfo.CurrentCulture);
+
+                    lst.Add(new FullCalendar() { id = o.Id, title = o.Folio_cita, start = dtCita, end = dtCita.AddMinutes(40) });
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
         }
 
         #endregion
@@ -702,7 +754,7 @@ namespace ModelCasc.operation
                     oSRDMng.add(trans);
                 }
 
-                EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(o.Id_entrada_inventario), o.Id_estatus, o.Id_usuario_elaboro, null, o.Id, trans);
+                //EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(o.Id_entrada_inventario), o.Id_estatus, o.Id_usuario_elaboro, null, o.Id, trans);
 
                 Salida_remision oSR = SalidaCtrl.RemisionGetSumAvailable(Convert.ToInt32(o.Id_entrada_inventario), trans);
                 //if (oSR.PiezaTotal <=0)
@@ -796,6 +848,34 @@ namespace ModelCasc.operation
                 
                 throw;
             }
+        }
+
+        public static Salida_trafico RemisionGetByIdTrafico(int id_salida_trafico)
+        {
+            Salida_trafico o = new Salida_trafico() { Id = id_salida_trafico };
+            o.PLstSalRem = new List<Salida_remision>();
+            try
+            {
+                Salida_traficoMng oMngST = new Salida_traficoMng() { O_Salida_trafico = o };
+                oMngST.selById();
+
+                o.PTransporte = new Transporte() { Id = Convert.ToInt32(o.Id_transporte) };
+                TransporteMng oMngT = new TransporteMng() { O_Transporte = o.PTransporte };
+                oMngT.selById();
+
+                o.PTransporteTipo = new Transporte_tipo() { Id = Convert.ToInt32(o.Id_transporte_tipo_cita) };
+                Transporte_tipoMng oMngTT = new Transporte_tipoMng() { O_Transporte_tipo = o.PTransporteTipo };
+                oMngTT.selById();
+
+                Salida_remisionMng oMng = new Salida_remisionMng() { O_Salida_remision = new Salida_remision() { Id_salida_trafico = id_salida_trafico } };
+                oMng.selByIdSalidaTrafico();
+                o.PLstSalRem = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
         }
 
         #endregion
@@ -925,7 +1005,5 @@ namespace ModelCasc.operation
         }
 
         #endregion
-
-        
     }
 }

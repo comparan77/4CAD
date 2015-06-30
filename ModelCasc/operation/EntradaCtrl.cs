@@ -1196,7 +1196,7 @@ namespace ModelCasc.operation
                     oEILMng.add(trans);
                 }
 
-                EntradaEstatusAdd(o.Id, o.Id_estatus, o.Id_usuario, null, null, trans);
+                //EntradaEstatusAdd(o.Id, o.Id_estatus, o.Id_usuario, null, null, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
@@ -1255,6 +1255,21 @@ namespace ModelCasc.operation
             return lst;
         }
 
+        public static List<Entrada_inventario> InventarioGetSinMaquila()
+        {
+            List<Entrada_inventario> lst = new List<Entrada_inventario>();
+
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+                oMng.getSinMaquila();
+                lst = oMng.Lst;
+            }
+            catch { throw; }
+
+            return lst;
+        }
+
         public static List<Entrada_inventario> InventarioGetBy(int id_entrada, bool withDetail = true)
         {
             List<Entrada_inventario> lst = new List<Entrada_inventario>();
@@ -1276,6 +1291,37 @@ namespace ModelCasc.operation
                 o.Id_entrada = id_entrada;
                 oMng.O_Entrada_inventario = o;
                 oMng.getByIdEntrada(withDetail);
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+
+            return lst;
+        }
+
+        public static List<Entrada_inventario> InventarioMaquilado(int id_entrada)
+        {
+            List<Entrada_inventario> lst = new List<Entrada_inventario>();
+
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+                Entrada_inventario o = new Entrada_inventario();
+
+                //Se verifica que sea única o compartida
+                Entrada oE = EntradaCtrl.EntradaGetAllDataById(id_entrada);
+                if (!oE.Es_unica)
+                {
+                    List<Entrada_parcial> lstPartial = EntradaCtrl.ParcialGetAllByReferencia(oE.Referencia);
+                    oE = EntradaCtrl.EntradaGetAllDataById(lstPartial.First().Id_entrada);
+                    id_entrada = oE.Id;
+                }
+
+                o.Id_entrada = id_entrada;
+                oMng.O_Entrada_inventario = o;
+                oMng.getMaquilado();
                 lst = oMng.Lst;
             }
             catch
@@ -1333,6 +1379,32 @@ namespace ModelCasc.operation
                 throw;
             }
             return lst;
+        }
+
+        public static void InventarioUdtMercancia(Cliente_mercancia oCM)
+        {
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = new Entrada_inventario() { Codigo = oCM.Codigo, Mercancia = oCM.Nombre } };
+                oMng.udtMercancia();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static void InventarioUdtMaqAbierta(int id, bool abierta)
+        {
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = new Entrada_inventario() { Id = id, Maquila_abierta = abierta } };
+                oMng.udtMaqAbierta();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         #endregion
@@ -1429,7 +1501,7 @@ namespace ModelCasc.operation
                     }
                 }
 
-                EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
+                //EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
@@ -1457,10 +1529,11 @@ namespace ModelCasc.operation
                 {
                     itemMD.Id_entrada_maquila = o.Id;
                     oEMDMng.O_Entrada_maquila_detail = itemMD;
-                    oEMDMng.add(trans);
+                    if (!itemMD.Tiene_remision)
+                        oEMDMng.add(trans);
                 }
 
-                EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
+                //EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
@@ -1471,13 +1544,12 @@ namespace ModelCasc.operation
             }
         }
 
-        public static Entrada_maquila MaquilaSelBy(int IdEntradaInventario, DateTime FechaTrabajo)
+        public static Entrada_maquila MaquilaSelById(int IdEntrada_maquila)
         {
             Entrada_maquila o = new Entrada_maquila();
             try
             {
-                o.Id_entrada_inventario = IdEntradaInventario;
-                o.Fecha_trabajo = FechaTrabajo;
+                o.Id = IdEntrada_maquila;
                 Entrada_maquilaMng oMng = new Entrada_maquilaMng();
                 oMng.O_Entrada_maquila = o;
                 oMng.selBy();
@@ -1532,15 +1604,16 @@ namespace ModelCasc.operation
             IDbTransaction trans = null;
             try
             {
-                Entrada_maquilaMng oMng = new Entrada_maquilaMng() { O_Entrada_maquila = o };
+                //Entrada_maquilaMng oMng = new Entrada_maquilaMng() { O_Entrada_maquila = o };
                 //o.Id_estatus = Globals.EST_MAQ_PAR_CERRADA;
-                o.Id_estatus = Globals.EST_MAQ_TOT_CERRADA;
-                oMng.O_Entrada_maquila = o;
+                //o.Id_estatus = Globals.EST_MAQ_TOT_CERRADA;
+                //oMng.O_Entrada_maquila = o;
 
                 trans = GenericDataAccess.BeginTransaction();
-
-                EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, null, null, trans);
-                EntradaEstatusCloseMaquila(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, null, trans);
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = new Entrada_inventario() { Id = o.Id_entrada_inventario, Maquila_abierta = false } };
+                oMng.updateMaquilaCerrada(trans);
+                //EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, null, null, trans);
+                //EntradaEstatusCloseMaquila(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, null, trans);
                 if (ConIncidencia)
                 {
                     IncidenciaCtrl.OrdenTrabajo(oE, o, mailFrom);
@@ -1576,6 +1649,11 @@ namespace ModelCasc.operation
 
         #region Entrada Maquila Detalle - Control piso
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IdEntradaMaquila"></param>
+        /// <returns></returns>
         public static List<Entrada_maquila_detail> MaquilaDetGetByInvId(int IdEntradaMaquila)
         {
             List<Entrada_maquila_detail> lst = new List<Entrada_maquila_detail>();

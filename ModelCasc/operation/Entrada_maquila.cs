@@ -13,7 +13,7 @@ namespace ModelCasc.operation
         protected int _id_entrada;
         protected int _id_usuario;
         protected int _id_entrada_inventario;
-        protected DateTime? _fecha_trabajo;
+        protected DateTime _fecha_trabajo;
         protected int _pallet;
         protected int _bulto;
         protected int _pieza;
@@ -22,7 +22,6 @@ namespace ModelCasc.operation
         protected int _bulto_sobrante;
         protected int _pieza_faltante;
         protected int _pieza_sobrante;
-        protected int _id_estatus;
         #endregion
 
         #region Propiedades
@@ -31,7 +30,7 @@ namespace ModelCasc.operation
         public int Id_entrada { get { return _id_entrada; } set { _id_entrada = value; } }
         public int Id_usuario { get { return _id_usuario; } set { _id_usuario = value; } }
         public int Id_entrada_inventario { get { return _id_entrada_inventario; } set { _id_entrada_inventario = value; } }
-        public DateTime? Fecha_trabajo { get { return _fecha_trabajo; } set { _fecha_trabajo = value; } }
+        public DateTime Fecha_trabajo { get { return _fecha_trabajo; } set { _fecha_trabajo = value; } }
         public int Pallet { get { return _pallet; } set { _pallet = value; } }
         public int Bulto { get { return _bulto; } set { _bulto = value; } }
         public int Pieza { get { return _pieza; } set { _pieza = value; } }
@@ -40,8 +39,8 @@ namespace ModelCasc.operation
         public int Bulto_sobrante { get { return _bulto_sobrante; } set { _bulto_sobrante = value; } }
         public int Pieza_faltante { get { return _pieza_faltante; } set { _pieza_faltante = value; } }
         public int Pieza_sobrante { get { return _pieza_sobrante; } set { _pieza_sobrante = value; } }
-        public int Id_estatus { get { return _id_estatus; } set { _id_estatus = value; } }
         public List<Entrada_maquila_detail> LstEntMaqDet { get; set; }
+        public bool Maquila_abierta { get; set; } 
         #endregion
 
         #region Constructores
@@ -51,7 +50,7 @@ namespace ModelCasc.operation
             this._id_entrada = 0;
             this._id_usuario = 0;
             this._id_entrada_inventario = 0;
-            this._fecha_trabajo = null;
+            this._fecha_trabajo = default(DateTime);
             this._pallet = 0;
             this._bulto = 0;
             this._pieza = 0;
@@ -60,7 +59,6 @@ namespace ModelCasc.operation
             this._bulto_sobrante = 0;
             this._pieza_faltante = 0;
             this._pieza_sobrante = 0;
-            this._id_estatus = 0;
         }
         #endregion
     }

@@ -52,11 +52,11 @@
 
                         $('#spn-piezatotal').html(piezaTotal);
 
-                        var hf_EST_REM_SIN_APROBACION = $('#ctl00_body_hf_EST_REM_CON_APROBACION');
-                        if (hf_EST_REM_SIN_APROBACION.val() == $('#spn-estatus').html()) {
-                            if (eliminar_remision != undefined)
-                                $(eliminar_remision).attr('disabled', 'true');
-                        }
+                        //                        var hf_EST_REM_SIN_APROBACION = $('#ctl00_body_hf_EST_REM_CON_APROBACION');
+                        //                        if (hf_EST_REM_SIN_APROBACION.val() == $('#spn-estatus').html()) {
+//                        if (eliminar_remision != undefined)
+//                            $(eliminar_remision).attr('disabled', 'true');
+                        //                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         var oErrorMessage = new ErrorMessage();

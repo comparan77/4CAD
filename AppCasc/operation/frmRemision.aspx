@@ -28,9 +28,9 @@
         <ItemTemplate>
             <li><asp:LinkButton ID="LinkButton1" CssClass="lnk_result" runat="server" Text='<%# Eval("folio") + ", " + Eval("referencia") %>' CommandArgument='<%# Eval("id") %>' CausesValidation="false"></asp:LinkButton></li>
             <ul style="list-style-type:circle;">
-                <asp:Repeater runat="server" ID="repOrdCod" OnItemDataBound="repOrdCod_ItemDataBound">
+                <asp:Repeater runat="server" ID="repOrdCod">
                 <ItemTemplate>
-                    <li><asp:LinkButton ID="lnkMaquilado" runat="server" Text='<%# Eval("orden_compra") + ", " + Eval("codigo") + ", " + Eval("mercancia") %>' OnCommand="click_ord_cod" CommandArgument='<%# Eval("id") + "|" + Eval("id_entrada")%>' CausesValidation="false"></asp:LinkButton></li>
+                    <li><asp:LinkButton ID="lnkMaquilado" runat="server" Text='<%# Eval("orden_compra") + ", " + Eval("codigo") + ", " + Eval("mercancia") + " " + Eval("lote") + (Convert.ToBoolean(Eval("maquilado")) ? "" : " [Sin Maquila]") %>' Enabled='<%# Convert.ToBoolean(Eval("maquilado")) %>' OnCommand="click_ord_cod" CommandArgument='<%# Eval("id") + "|" + Eval("id_entrada")%>' CausesValidation="false"></asp:LinkButton></li>
                 </ItemTemplate>
                 <FooterTemplate>
                     <asp:Label runat="server" ID="lbl_repOrdCod" Visible="false" Text="Sin inventario capturado"></asp:Label>
@@ -59,9 +59,19 @@
 <asp:HiddenField runat="server" ID="hf_codigo_cliente" Value="" />
 <asp:HiddenField runat="server" ID="hf_codigo" Value="" />
 <asp:HiddenField runat="server" ID="hf_orden" Value="" />
-<asp:HiddenField runat="server" ID="hf_EST_REM_CON_APROBACION" />
+<%--<asp:HiddenField runat="server" ID="hf_EST_REM_CON_APROBACION" />--%>
 <asp:HiddenField runat="server" ID="hf_idUsuario" />
 <asp:HiddenField runat="server" ID="hf_HasLote" Value="false" />
+
+<div id="div_ordenescodigos" title="Órdenes de compra y códigos del pedimento">   
+    <ul>
+    <asp:Repeater runat="server" ID="rep_oc_by_pedimento">
+    <ItemTemplate>
+        <li><a href='<%# (Convert.ToBoolean(Eval("maquilado")) ? "?_fk=" + Eval("id_entrada") + "&_pk=" + Eval("id") : "#") %>' style='<%# (Convert.ToBoolean(Eval("maquilado")) ? "" : "color:black; pointer-events: none;") %>'><%# Eval("orden_compra") + ", " + Eval("codigo") + ", " + Eval("mercancia") + Eval("lote") + (Convert.ToBoolean(Eval("maquilado")) ? "" : " [Sin Maquila]")%></a></li>
+    </ItemTemplate>
+    </asp:Repeater>
+    </ul>
+</div>
 
 <div>
     <label>Referencia:</label>
@@ -81,7 +91,11 @@
 </div>
 <div>
     <label>Pedimento:</label>
-    <span><%= oE.Referencia %></span>
+    <span><a id="lnk_pedimento" class="icon-button-action" href="#"><%= oE.Referencia %></a></span>
+</div>
+<div>
+    <label>Estado de la Maquila:</label>
+    <span id="spn_estado_maquila" title='<%= oEI.Maquila_abierta ? "" : "Abrir Maquila" %>' class='<%= "ui-icon ui-icon-" + (oEI.Maquila_abierta ? "unlocked" : "locked icon-button-action") %>'></span>
 </div>
 <div style="width: 450px; padding: 10px; position: relative; margin-bottom: 70px;">
     <label>Detalle de Maquila</label>
@@ -103,9 +117,10 @@
     <asp:BoundField DataField="piezastotales" HeaderText="Total Disp." DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />
     <asp:BoundField HeaderStyle-CssClass="hasLote" ItemStyle-CssClass="hasLote" DataField="lote" HeaderText="Lote." />
     <asp:TemplateField>
+        <HeaderStyle CssClass="hidden" />
+        <ItemStyle CssClass="hidden" />
         <ItemTemplate>
-            <input type="hidden" value='<%# Eval("id_entrada_maquila") %>' />
-            <span class='<%# "ui-icon ui-icon-" + Eval("cssLocked") + "locked icon-button-action" %>'></span>
+            <input type="hidden" value='<%# Eval("id") %>' />
         </ItemTemplate>
     </asp:TemplateField>
     </Columns>
@@ -127,7 +142,7 @@
 </thead>
 <tbody>
     <tr id="renglon-1">
-        <td align="center">1</td>
+        <td align="center">1<input type="hidden" id="hf_id_maquila_detail_1" /></td>
         <td align="center" class="hasLote"><span id="spn_lote-1"></span></td>
         <td align="center"><span id="spn_pzaXbulto-1"></span><input type="hidden" id="hf_danado-1" value="false" /></td>
         <td align="center"><input type="text" id="txt_bulto-1" class="txtNumber" /><input type="hidden" id="hf_max_bulto-1" /></td>
@@ -135,7 +150,7 @@
         <td align="center"><span id="spn_del-1" class="ui-icon ui-icon-trash icon-button-action"></span></td>
     </tr>
     <tr id="renglon-2">
-        <td align="center">2</td>
+        <td align="center">2<input type="hidden" id="hf_id_maquila_detail_2" /></td>
         <td align="center" class="hasLote"><span id="spn_lote-2"></span></td>
         <td align="center"><span id="spn_pzaXbulto-2"></span><input type="hidden" id="hf_danado-2" value="false" /></td>
         <td align="center"><input type="text" id="txt_bulto-2" class="txtNumber" /><input type="hidden" id="hf_max_bulto-2" /></td>
@@ -279,7 +294,24 @@
     </table>
 </div>
 
-<div style="margin-top: 25px;">
+<div id="div_udt_mercancia" title="Cambio de la descripción de la mercancía">
+    <div class="divForm">
+    <div>
+        <label>Descripción Actual:</label>
+        <input type="text" id="txt_old_description" readonly="readonly" class="txtNoBorder txtLarge" value='<%=oEI.Mercancia %>' />
+    </div>
+    <div style="margin-top: 5px;">
+        <label>Descripción Nueva:</label>
+        <input type="text" id="txt_new_description" class="txtLarge" />
+    </div>
+    <div style="margin-top: 5px;">
+        <input type="hidden" id="hf_codigo_udt" value='<%=oEI.Codigo %>' />
+        <button class="floatRight" style="margin-right: 10px;" id="btn_udt_description">Actualizar</button>
+    </div>
+    </div>
+</div>
+
+<div style="margin-top: 25px; clear: left;">
 
 <table border="1" cellpadding="5" cellspacing="0" width="100%">
     <tbody>
@@ -292,7 +324,7 @@
                 <img id="img-orden" src="" alt="" />
                 <asp:HiddenField runat="server" ID="hf_img_orden" Value="" />
             </td>
-            <td align="center" id="mercancia"><span class="spn_title">Descripci&oacute;n<br /></span><%=oEI.Mercancia %><br /><span id="spnLotes"></span></td>
+            <td align="center" id="mercancia"><span id="spn_mercancia" class="spn_title">Descripci&oacute;n<br /></span><a id="lnk_mercancia" href="#"><%=oEI.Mercancia %></a><br /><span id="spnLotes"></span></td>
             <td align="center" id="vendor"><span class="spn_title">No. de Proveedor<br /></span><%=oCV.Codigo %><br />
                 <img id="img-vendor" src="" alt="" />
                 <asp:HiddenField runat="server" ID="hf_img_vendor" Value="" />
@@ -311,6 +343,7 @@
                             </td>
                             <td>
                                 <asp:HiddenField runat="server" ID="hf_mercancia_danada" Value="false" />
+                                <asp:HiddenField runat="server" ID="hf_id_entrada_maquila_detail_1" />
                                 <asp:TextBox runat="server" ID="txt_bulto" CssClass="txtNumber"  Text="0"></asp:TextBox>
                                 <label>Cartones</label>
                             </td>
@@ -330,6 +363,7 @@
                             </td>
                             <td>
                                 <asp:HiddenField runat="server" ID="hf_mercancia_danadaInc" Value="false" />
+                                <asp:HiddenField runat="server" ID="hf_id_entrada_maquila_detail_2" />
                                 <asp:TextBox runat="server" ID="txt_bultoInc" CssClass="txtNumber" Text="0" ></asp:TextBox>
                                 <label>Cartones</label>
                             </td>
@@ -387,6 +421,11 @@
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_fecha_remision" ErrorMessage="Es necesario proporcionar la fecha de remision" ControlToValidate="txt_fecha_remision"></asp:RequiredFieldValidator>
     </div>
     <div>
+        <label>Folio Cita:</label><span id="spn_folio_cita" class="ui-icon ui-icon-calendar icon-button-action"></span><span id="spn_cita_sel"></span>
+        <asp:TextBox CssClass="hidden" runat="server" ID="txt_folio_cita"></asp:TextBox>
+        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_folio_cita" ErrorMessage="Es necesario proporcionar el folio de la cita" ControlToValidate="txt_folio_cita"></asp:RequiredFieldValidator>
+    </div>
+    <div>
         <asp:Button runat="server" ID="btn_save" Text="Guardar Remisión" OnClick="save_remision" />
     </div>
 </div>
@@ -394,4 +433,12 @@
 </div>
 
 </div>
+
+<!-- Listado de citas -->
+<div id="div_citas" title="Listado de Citas">
+    <ul id="ul_citas" style="list-style-type: none;">
+        
+    </ul>
+</div>
+
 </asp:Content>

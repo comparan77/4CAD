@@ -33,22 +33,6 @@ namespace AppCasc.operation
             }
         }
 
-        //private bool SIsRefresh
-        //{
-        //    set
-        //    {
-        //        Session["__ISREFRESHSalida"] = value;
-        //    }
-        //    get
-        //    {
-        //        bool boleano;
-        //        object o = Session["__ISREFRESHSalida"];
-        //        o = (o == null ? "false" : "true");
-        //        bool.TryParse(o.ToString(), out boleano);
-        //        return boleano;
-        //    }
-        //}
-
         private List<Cliente_documento> VSLstCDS
         {
             get
@@ -79,17 +63,6 @@ namespace AppCasc.operation
 
         #region Metodos
 
-        private void clearControlbyReferencia()
-        {
-            txt_destino.Text = string.Empty;
-            txt_mercancia.Text = string.Empty;
-            txt_no_bulto.Text = string.Empty;
-            txt_no_pieza.Text = string.Empty;
-            chk_tipo_salida.Checked = true;
-            chk_tipo_salida_checked(chk_tipo_salida, null);
-            setEnabledControls(true, new WebControl[] { txt_destino, txt_mercancia, txt_no_bulto, txt_no_pieza, chk_tipo_salida });
-        }
-
         private void clearControls()
         {
             setEnabledControls(true, new WebControl[] { 
@@ -109,6 +82,7 @@ namespace AppCasc.operation
                 ddlTransporte,
                 ddlTipo_Transporte,
                 txt_placa,
+                txt_caja,
                 txt_caja_1,
                 txt_caja_2,
                 txt_sello,
@@ -140,6 +114,7 @@ namespace AppCasc.operation
             txt_mercancia.Text = string.Empty;
             txt_operador.Text = string.Empty;
             txt_placa.Text = string.Empty;
+            txt_caja.Text = string.Empty;
             txt_caja_1.Text = string.Empty;
             txt_caja_2.Text = string.Empty;
             txt_sello.Text = string.Empty;
@@ -178,8 +153,8 @@ namespace AppCasc.operation
             catch (Exception ex)
             {
                 hfTitleErr.Value = ex.Message;
-                    if (ex.InnerException != null)
-                        hfDescErr.Value = ex.InnerException.Message;
+                if (ex.InnerException != null)
+                    hfDescErr.Value = ex.InnerException.Message;
             }
         }
 
@@ -201,6 +176,8 @@ namespace AppCasc.operation
 
                     txt_placa.Text = string.Empty;
                     txt_placa.ReadOnly = (!o.Requiere_placa);
+                    txt_caja.Text = string.Empty;
+                    txt_caja.ReadOnly = (!o.Requiere_caja);
                     txt_caja_1.Text = string.Empty;
                     txt_caja_1.ReadOnly = (!o.Requiere_caja1);
                     txt_caja_2.Text = string.Empty;
@@ -208,6 +185,8 @@ namespace AppCasc.operation
 
                     if (txt_placa.ReadOnly)
                         txt_placa.Text = "N.A.";
+                    if (txt_caja.ReadOnly)
+                        txt_caja.Text = "N.A.";
                     if (txt_caja_1.ReadOnly)
                         txt_caja_1.Text = "N.A.";
                     if (txt_caja_2.ReadOnly)
@@ -220,51 +199,51 @@ namespace AppCasc.operation
             }
         }
 
-        //private void fillRepSalCompartidas(int IdUsuario)
-        //{
-        //    try
-        //    {                
-        //        IEnumerable<Salida_compartida> lstDistinct = SalidaCtrl.getSalidaCompartidaByUserNoCapturada(IdUsuario).Distinct();
+        private void fillRepSalCompartidas(int IdUsuario)
+        {
+            try
+            {
+                IEnumerable<Salida_compartida> lstDistinct = SalidaCtrl.getSalidaCompartidaByUserNoCapturada(IdUsuario).Distinct();
 
-        //        repFoliosPendientes.DataSource = lstDistinct.ToList<Salida_compartida>();
-        //        repFoliosPendientes.DataBind();
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
+                repFoliosPendientes.DataSource = lstDistinct.ToList<Salida_compartida>();
+                repFoliosPendientes.DataBind();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-        //private void fillRepSalHoy(int IdUsuario)
-        //{
+        private void fillRepSalHoy(int IdUsuario)
+        {
 
-        //    repSalHoy.DataSource = SalidaCtrl.getTodaySalidaUsuario(IdUsuario);
-        //    repSalHoy.DataBind();
-        //}
+            repSalHoy.DataSource = SalidaCtrl.getTodaySalidaUsuario(IdUsuario);
+            repSalHoy.DataBind();
+        }
 
-        //private void fillSalParcial(int IdUsuario)
-        //{
+        private void fillSalParcial(int IdUsuario)
+        {
 
-        //    repSalPar.DataSource = SalidaCtrl.getSalidaParcialByUser(IdUsuario);
-        //    repSalPar.DataBind();
-        //}
+            repSalPar.DataSource = SalidaCtrl.getSalidaParcialByUser(IdUsuario);
+            repSalPar.DataBind();
+        }
 
         private void fillUser()
         {
             try
             {
-                //lblUsrName.Text = ((MstCasc)this.Master).getUsrLoged().Nombre;
+                lblUsrName.Text = ((MstCasc)this.Master).getUsrLoged().Nombre;
                 ddlBodega.SelectedValue = ((MstCasc)this.Master).getUsrLoged().Id_bodega.ToString();
-                //fillRepSalCompartidas(((MstCasc)this.Master).getUsrLoged().Id);
-                //fillSalParcial(((MstCasc)this.Master).getUsrLoged().Id);
-                //fillRepSalHoy(((MstCasc)this.Master).getUsrLoged().Id);
+                fillRepSalCompartidas(((MstCasc)this.Master).getUsrLoged().Id);
+                fillSalParcial(((MstCasc)this.Master).getUsrLoged().Id);
+                fillRepSalHoy(((MstCasc)this.Master).getUsrLoged().Id);
             }
             catch (Exception)
             {
                 Response.Redirect("~/Login.aspx");
             }
         }
-                
+
         private void clienteRequiereDocumentos(int IdCliente)
         {
             try
@@ -314,7 +293,7 @@ namespace AppCasc.operation
                 ctrl.Enabled = IsActive;
             }
         }
-        
+
         private void calculaTotalCarga()
         {
             double pesoUnitario = 0;
@@ -334,7 +313,7 @@ namespace AppCasc.operation
             {
                 oS = SalidaCtrl.getSalidaById(IdSalida);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -348,9 +327,9 @@ namespace AppCasc.operation
             {
                 oS = SalidaCtrl.getSalidaCompartidaByFolio(folio);
             }
-            catch 
+            catch
             {
-                throw ;
+                throw;
             }
             return oS;
         }
@@ -377,7 +356,7 @@ namespace AppCasc.operation
             numero = 0;
 
             numero = 0;
-                       
+
             oS.PUsuario = new Usuario();
             oS.PUsuario.Id = ((MstCasc)this.Master).getUsrLoged().Id;
 
@@ -464,7 +443,7 @@ namespace AppCasc.operation
                 oCdia.Nombre = ddlCustodia.SelectedItem.Text;
                 oS.PCustodia = oCdia;
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -500,7 +479,7 @@ namespace AppCasc.operation
             int.TryParse(ddlCliente.SelectedValue, out numero);
             oS.Id_cliente = numero;
             numero = 0;
-        
+
             //Referencia
             if (rfvReferencia.Enabled)
                 oS.Referencia = txt_referencia.Text;
@@ -525,6 +504,9 @@ namespace AppCasc.operation
 
             //Placa
             oS.Placa = txt_placa.Text;
+
+            //Caja
+            oS.Caja = txt_caja.Text;
 
             //Caja1
             oS.Caja1 = txt_caja_1.Text;
@@ -594,7 +576,7 @@ namespace AppCasc.operation
 
             //Documentos asociados a la salida
             oS.PLstSalDoc = VSLstSD;
-            
+
             //Se obtiene la descripcion de los tipos de documento
             DocumentoMng oDocMng = new DocumentoMng();
             foreach (Salida_documento itemSD in oS.PLstSalDoc)
@@ -618,7 +600,7 @@ namespace AppCasc.operation
 
             //Vigilante
             oS.Vigilante = txt_vigilante.Text.Trim();
-            
+
             //Bodega
             Bodega oB = new Bodega();
             oB.Id = Convert.ToInt32(ddlBodega.SelectedValue);
@@ -660,35 +642,7 @@ namespace AppCasc.operation
             oCdia.Nombre = ddlCustodia.SelectedItem.Text;
             oS.PCustodia = oCdia;
 
-            //salida orden carga
-            int.TryParse(hf_id_salida_orden_carga.Value, out numero);
-            oS.Id_salida_orden_carga = numero;
-            numero = 0;
-            
             return oS;
-        }
-
-        private string getFolio(int id_bodega, enumTipo tipo)
-        {
-            string folio = string.Empty;
-
-            try
-            {
-                FolioMng oMng = new FolioMng();
-                Folio o = new Folio();
-                o.Anio_actual = id_bodega;
-                o.Tipo = tipo.ToString();
-                oMng.O_Folio = o;
-                //oMng.getFolio();
-                folio = o.Tipo + o.Actual.ToString();
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
-
-            return folio;
         }
 
         private Salida addSalidaValues()
@@ -701,7 +655,7 @@ namespace AppCasc.operation
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -767,6 +721,7 @@ namespace AppCasc.operation
                     ddlTipo_Transporte.SelectedValue = oS.Id_transporte_tipo.ToString();
                     validarTipo(oS.Id_transporte_tipo);
                     txt_placa.Text = oS.Placa;
+                    txt_caja.Text = oS.Caja;
                     txt_caja_1.Text = oS.Caja1;
                     txt_caja_2.Text = oS.Caja2;
                     txt_sello.Text = oS.Sello;
@@ -805,7 +760,7 @@ namespace AppCasc.operation
                 ddlCliente.SelectedValue = oS.Id_cliente.ToString();
                 txt_mercancia.Text = oS.Mercancia;
                 txt_destino.Text = oS.Destino;
-                
+
                 VSLstSD = new List<Salida_documento>();
                 lst_documento_recibido.Items.Clear();
                 foreach (Salida_documento itemSD in oS.PLstSalDoc)
@@ -850,68 +805,15 @@ namespace AppCasc.operation
         {
             CustomValidator cv = (CustomValidator)sender;
             cv.ErrorMessage = string.Empty;
-            hf_id_salida_orden_carga.Value = string.Empty;
-
             try
             {
-
                 TextBox tb = cv.Parent.FindControl(cv.ControlToValidate) as TextBox;
-                int id_cliente = 0;
-                int.TryParse(ddlCliente.SelectedValue, out id_cliente);
+                SalidaCtrl.ReferenciaUnicaValida(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
+                SalidaCtrl.ReferenciaIngresada(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
+                SalidaCtrl.ReferenciaCompartidaValida(tb.Text);
+                if (string.Compare("cvPedimentoConsolidado", cv.ID) != 0)
+                    SalidaCtrl.ReferenciaParcial(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
 
-                Salida oSalidaRemision = null;
-                oSalidaRemision = SalidaCtrl.SalidaRefValida(tb.Text, id_cliente);
-                if (oSalidaRemision.Id_salida_orden_carga > 0)
-                {
-                    hf_id_salida_orden_carga.Value = oSalidaRemision.Id_salida_orden_carga.ToString();
-
-                    //Vefifica si viene compartida
-                    List<Salida_orden_carga_rem> lstPedimentosCompartidos = SalidaCtrl.OrdenCargaCompartidas(oSalidaRemision.Referencia, oSalidaRemision.Id_salida_orden_carga);
-                    hfEsCompartida.Value = (lstPedimentosCompartidos.Count > 1).ToString();
-                    if (lstPedimentosCompartidos.Count > 1)
-                    {
-                        lst_pedimentos_consolidados.Items.Clear();
-                        foreach (Salida_orden_carga_rem itemSC in lstPedimentosCompartidos)
-                        {
-                            lst_pedimentos_consolidados.Items.Add(new ListItem(itemSC.Referencia, itemSC.Referencia));
-                        }    
-                    }
-
-                    setEnabledControls(false, new WebControl[] { txt_destino, txt_no_bulto, txt_no_pieza, chk_tipo_salida, txt_pedimento_consolidado, lst_pedimentos_consolidados, btnAdd_pedimento });
-                    txt_destino.Text = oSalidaRemision.Destino;
-                    txt_mercancia.Text = oSalidaRemision.Mercancia;
-                    ddlTransporte.SelectedValue = oSalidaRemision.Id_transporte.ToString();
-                    ddlTransporte_changed(null, null);
-                    ddlTipo_Transporte.SelectedValue = oSalidaRemision.Id_transporte_tipo.ToString();
-                    txt_no_bulto.Text = oSalidaRemision.No_bulto.ToString();
-                    txt_no_pieza.Text = oSalidaRemision.No_pieza.ToString();
-
-                    //Verifica si se trata de salida única, parcial o ultima
-                    int piezasInventario = SalidaCtrl.SalidaPiezasInventario(tb.Text);
-
-                    lbl_no_salida.Visible = false;
-                    chk_ultima.Visible = false;
-
-                    if (piezasInventario > 0)
-                    {
-                        chk_tipo_salida.Checked = false;
-                        chk_tipo_salida_checked(chk_tipo_salida, null);
-
-                        lbl_no_salida.Visible = true;
-
-                        int NumSalida = SalidaCtrl.getNumSalPar(oSalidaRemision.Referencia);
-                        NumSalida++;
-
-                        lbl_no_salida.Text = "Salida Número: " + NumSalida.ToString();
-
-                        chk_ultima.Checked = piezasInventario == oSalidaRemision.No_pieza;
-                    }
-                }
-                //SalidaCtrl.ReferenciaUnicaValida(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
-                //SalidaCtrl.ReferenciaIngresada(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
-                //SalidaCtrl.ReferenciaCompartidaValida(tb.Text);
-                //if(string.Compare("cvPedimentoConsolidado", cv.ID)!=0)
-                //    SalidaCtrl.ReferenciaParcial(tb.Text, Convert.ToInt32(ddlCliente.SelectedValue));
             }
             catch (Exception ex)
             {
@@ -922,13 +824,7 @@ namespace AppCasc.operation
 
         protected void txt_referencia_TextChanged(object sender, EventArgs args)
         {
-            int id_cliente = 0;
-            int.TryParse(ddlCliente.SelectedValue, out id_cliente);
-            if (id_cliente == 1 || id_cliente == 23)
-            {
-                clearControlbyReferencia();
-                cvReferencia.Validate();
-            }
+            cvReferencia.Validate();
         }
 
         protected void ddlBodega_changed(object sender, EventArgs args)
@@ -994,7 +890,6 @@ namespace AppCasc.operation
             VSLstSD.Clear();
             clienteRequiereDocumentos(IdCliente);
             clienteDestinos(IdCliente);
-            clearControlbyReferencia();
         }
 
         protected void ddlTransporte_changed(object sender, EventArgs args)
@@ -1008,7 +903,7 @@ namespace AppCasc.operation
             {
                 ((MstCasc)this.Master).setError = e.Message;
             }
-            
+
         }
 
         protected void ddlTipo_Transporte_changed(object sender, EventArgs args)
@@ -1049,7 +944,7 @@ namespace AppCasc.operation
                         chk_tipo_salida_checked(chk_tipo_salida, null);
                         upChkSalida.Update();
                     }
-                        
+
                 }
             }
             txt_referencia_documento.Text = string.Empty;
@@ -1061,9 +956,9 @@ namespace AppCasc.operation
             ListItem li = lst_documento_recibido.SelectedItem;
             int IdDocumento = 0;
             int.TryParse(li.Value, out IdDocumento);
-                        
+
             VSLstSD.Remove(VSLstSD.Find(p => p.Id_documento == IdDocumento));
-            lst_documento_recibido.Items.Remove(li);            
+            lst_documento_recibido.Items.Remove(li);
         }
 
         protected void btnAdd_pedimento_click(object sender, EventArgs args)
@@ -1137,6 +1032,7 @@ namespace AppCasc.operation
                 ddlTransporte,
                 ddlTipo_Transporte,
                 txt_placa,
+                txt_caja,
                 txt_caja_1,
                 txt_caja_2,
                 txt_sello,
@@ -1156,7 +1052,7 @@ namespace AppCasc.operation
                 Repeater repReferencias = args.Item.FindControl("repReferencias") as Repeater;
                 Label lblFolioCompartido = args.Item.FindControl("lblFolioCompartido") as Label;
                 string folioCompatido = lblFolioCompartido.Text;
-                
+
                 repReferencias.DataSource = SalidaCtrl.getSalidaCompartidaByFolioNoCapturada(folioCompatido);
                 repReferencias.DataBind();
             }
@@ -1175,7 +1071,7 @@ namespace AppCasc.operation
                 chkbox.Text = CTE_TIP_SAL_PAR;
             }
         }
-                
+
         protected void txt_peso_unitario_txtChanged(object sender, EventArgs args)
         {
             calculaTotalCarga();
@@ -1185,7 +1081,7 @@ namespace AppCasc.operation
         {
             calculaTotalCarga();
         }
-                
+
         protected void salidaHoy_click(object sender, CommandEventArgs args)
         {
             int Id_Salida = 0;
@@ -1234,11 +1130,8 @@ namespace AppCasc.operation
         {
             try
             {
-                int id_cliente = 0;
-                int.TryParse(ddlCliente.SelectedValue, out id_cliente);
-
                 Salida oS = null;
-                if (Convert.ToBoolean(hfEsCompartida.Value) && id_cliente != 1 && id_cliente != 23)
+                if (Convert.ToBoolean(hfEsCompartida.Value))
                     oS = addSalidaValuesCompartida();
                 else
                     oS = addSalidaValues();

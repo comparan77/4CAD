@@ -59,6 +59,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_bultos_sobr", DbType.Int32, this._oEntrada_inventario.Bultos_sobr);
             GenericDataAccess.AddInParameter(this.comm, "?P_observaciones", DbType.String, this._oEntrada_inventario.Observaciones);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_maquila", DbType.DateTime, this._oEntrada_inventario.Fecha_maquila);
+            GenericDataAccess.AddInParameter(this.comm, "?P_maquila_abierta", DbType.Boolean, this._oEntrada_inventario.Maquila_abierta);
         }
 
         public void BindByDataRow(DataRow dr, Entrada_inventario o)
@@ -195,11 +196,12 @@ namespace ModelCasc.operation
                     o.Fecha_maquila = fecha;
                     fecha = new DateTime(1, 1, 1);
                 }
-                if (dr["id_estatus"] != DBNull.Value)
+                
+                if (dr["maquila_abierta"] != DBNull.Value)
                 {
-                    int.TryParse(dr["id_estatus"].ToString(), out entero);
-                    o.Id_estatus = entero;
-                    entero = 0;
+                    logica = string.Compare("1", dr["maquila_abierta"].ToString()) == 0 ? true : false; 
+                    o.Maquila_abierta = logica;
+                    logica = false;
                 }
             }
             catch
@@ -372,12 +374,7 @@ namespace ModelCasc.operation
                         o.Mercancia = dr["mercancia"].ToString();
                         o.Mercancia += Entrada_inventario_loteMng.getLotesByIdEntradaInventario(o.Id);
 
-                        if (dr["id_estatus"] != DBNull.Value)
-                        {
-                            int.TryParse(dr["id_estatus"].ToString(), out entero);
-                            o.Id_estatus = entero;
-                            entero = 0;
-                        }
+                        
                     }
                     this._lst.Add(o);
                 }
@@ -440,18 +437,126 @@ namespace ModelCasc.operation
                     //oEILMng.selDistinctLote();
                     //List<Entrada_inventario_lote> lstEIL = oEILMng.Lst;
                     o.Mercancia = dr["mercancia"].ToString();
-                    if (dr["id_estatus"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_estatus"].ToString(), out entero);
-                        o.Id_estatus = entero;
-                        entero = 0;
-                    }
+                    
                     this._lst.Add(o);
                 }
             }
             catch
             {
                 
+                throw;
+            }
+        }
+
+        internal void getSinMaquila()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(9);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Entrada_inventario>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entrada_inventario o = new Entrada_inventario();
+                    int.TryParse(dr["id"].ToString(), out entero);
+                    o.Id = entero;
+                    entero = 0;
+                    if (dr["id_entrada"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_entrada"].ToString(), out entero);
+                        o.Id_entrada = entero;
+                        entero = 0;
+                    }
+                    o.FolioEntrada = dr["folio"].ToString();
+                    o.Referencia = dr["referencia"].ToString();
+                    o.Orden_compra = dr["orden_compra"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+                    o.Mercancia = dr["mercancia"].ToString();
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        internal void updateMaquilaCerrada(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(10);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void getMaquilado()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(11);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Entrada_inventario>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entrada_inventario o = new Entrada_inventario();
+
+                    int.TryParse(dr["id"].ToString(), out entero);
+                    o.Id = entero;
+                    entero = 0;
+                    if (dr["id_entrada"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_entrada"].ToString(), out entero);
+                        o.Id_entrada = entero;
+                        entero = 0;
+                    }
+                    o.Orden_compra = dr["orden_compra"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+
+                    o.Mercancia = dr["mercancia"].ToString();
+                    o.Lote = dr["lote"].ToString();
+                    o.Maquilado = string.Compare("1", dr["maquilado"].ToString()) == 0 ? true : false;
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void udtMercancia()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(12);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void udtMaqAbierta()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(13);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
                 throw;
             }
         }

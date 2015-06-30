@@ -56,13 +56,13 @@
     
     <asp:Menu runat="server" ID="menu" Orientation="Horizontal" DataSourceID="siteMapData" MaximumDynamicDisplayLevels="2" OnDataBound="Menu_DataBound">
         
-        <staticmenustyle CssClass="ui-menu ui-widget ui-widget-content ui-corner-all"/>
-        <StaticHoverStyle CssClass="ui-corner-all ui-state-focus" />
-        <StaticMenuItemStyle CssClass="ui-menu-item" />
+        <staticmenustyle CssClass="ui-menu ui-widget ui-widget-content ui-corner-all optionMenu"/>
+        <StaticHoverStyle CssClass="ui-corner-all ui-state-focus optionMenu" />
+        <StaticMenuItemStyle CssClass="ui-menu-item optionMenu" />
 
-        <DynamicMenuStyle CssClass="ui-menu ui-widget ui-widget-content ui-corner-all" BackColor="#fbfbfb" />
-        <DynamicHoverStyle CssClass="ui-corner-all ui-state-focus" />
-        <DynamicMenuItemStyle CssClass="ui-menu-item" />
+        <DynamicMenuStyle CssClass="ui-menu ui-widget ui-widget-content ui-corner-all optionMenu" BackColor="#fbfbfb" />
+        <DynamicHoverStyle CssClass="ui-corner-all ui-state-focus optionMenu" />
+        <DynamicMenuItemStyle CssClass="ui-menu-item optionMenu" />
         
     </asp:Menu>
 

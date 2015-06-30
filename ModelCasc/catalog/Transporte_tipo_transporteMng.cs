@@ -254,6 +254,32 @@ namespace ModelCasc.catalog
                         entero = 0;
                     }
                     o.Transporte = dr["transporte"].ToString();
+                    o.PTransporte_tipo = new Transporte_tipo();
+                    if (dr["requiere_placa"] != DBNull.Value)
+                    {
+                        bool.TryParse(dr["requiere_placa"].ToString(), out logica);
+                        o.PTransporte_tipo.Requiere_placa = logica;
+                        logica = false;
+                    }
+                    if (dr["requiere_caja"] != DBNull.Value)
+                    {
+                        bool.TryParse(dr["requiere_caja"].ToString(), out logica);
+                        o.PTransporte_tipo.Requiere_caja = logica;
+                        logica = false;
+                    }
+                    if (dr["requiere_caja1"] != DBNull.Value)
+                    {
+                        bool.TryParse(dr["requiere_caja1"].ToString(), out logica);
+                        o.PTransporte_tipo.Requiere_caja1 = logica;
+                        logica = false;
+                    }
+                    if (dr["requiere_caja2"] != DBNull.Value)
+                    {
+                        bool.TryParse(dr["requiere_caja2"].ToString(), out logica);
+                        o.PTransporte_tipo.Requiere_caja2 = logica;
+                        logica = false;
+                    }
+
                     this._lst.Add(o);
                 }
             }

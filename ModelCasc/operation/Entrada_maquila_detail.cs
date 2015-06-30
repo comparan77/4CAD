@@ -26,7 +26,7 @@ namespace ModelCasc.operation
         public int PiezasTotales { get; set; }
         public int BultoSR { get; set; }
         public int BultoD { get; set; }
-        public int IdEstatus { get; set; }
+        public bool Tiene_remision { get; set; }
         public string cssLocked { get; set; }
         #endregion
 

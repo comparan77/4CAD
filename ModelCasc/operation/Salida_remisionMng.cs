@@ -36,6 +36,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada_inventario", DbType.Int32, this._oSalida_remision.Id_entrada_inventario);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario_elaboro", DbType.Int32, this._oSalida_remision.Id_usuario_elaboro);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario_autorizo", DbType.Int32, this._oSalida_remision.Id_usuario_autorizo);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_trafico", DbType.Int32, this._oSalida_remision.Id_salida_trafico);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio_remision", DbType.String, this._oSalida_remision.Folio_remision);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oSalida_remision.Referencia);
             GenericDataAccess.AddInParameter(this.comm, "?P_codigo_cliente", DbType.String, this._oSalida_remision.Codigo_cliente);
@@ -74,6 +75,12 @@ namespace ModelCasc.operation
                 if (dr["id_usuario_elaboro"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_usuario_elaboro"].ToString(), out entero);
+                    o.Id_usuario_elaboro = entero;
+                    entero = 0;
+                }
+                if (dr["id_salida_trafico"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_salida_trafico"].ToString(), out entero);
                     o.Id_usuario_elaboro = entero;
                     entero = 0;
                 }
@@ -171,6 +178,14 @@ namespace ModelCasc.operation
                         this._oSalida_remision.LstSRDetail.Add(oSRD);
                         this._oSalida_remision.PiezaTotal += oSRD.Piezas;
                     }
+
+                    DataTable dtTrafico = ds.Tables[2];
+                    Salida_traficoMng oMngST = new Salida_traficoMng();
+                    Salida_trafico oST = new Salida_trafico();
+                    oMngST.BindByDataRow(dtTrafico.Rows[0], oST);
+                    oST.Transporte = dtTrafico.Rows[0]["transporte"].ToString();
+                    oST.Transporte_tipo = dtTrafico.Rows[0]["transporte_tipo"].ToString();
+                    this._oSalida_remision.PTrafico = oST;
 
                 }
                 else if (dt.Rows.Count > 1)
@@ -372,6 +387,50 @@ namespace ModelCasc.operation
             {
                 throw;
             }
+        }
+
+        internal void selByIdSalidaTrafico()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
+                addParameters(9);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_remision>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_remision o = new Salida_remision();
+                    int.TryParse(dr["id"].ToString(), out entero);
+                    o.Id = entero;
+                    entero = 0;
+                    
+                    o.Folio_remision = dr["folio_remision"].ToString();
+                    o.Referencia = dr["referencia"].ToString();
+                    //o.Codigo_cliente = dr["codigo_cliente"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+                    o.Orden = dr["orden"].ToString();
+
+                    if (dr["pieza"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["pieza"].ToString(), out entero);
+                        o.PiezaTotal = entero;
+                        entero = 0;
+                    }
+
+                    if (dr["bulto"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["bulto"].ToString(), out entero);
+                        o.BultoTotal = entero;
+                        entero = 0;
+                    }
+
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }            
         }
     }
 }

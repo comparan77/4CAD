@@ -18,7 +18,7 @@ namespace AppCasc.operation
         protected Entrada_maquila oEM = new Entrada_maquila();
         protected Cliente_vendor oCV = new Cliente_vendor();
         protected Salida_remision oSR = new Salida_remision();
-        protected int Maq_con_aprobacion = Globals.EST_MAQ_TOT_CERRADA;
+        //protected int Maq_con_aprobacion = Globals.EST_MAQ_TOT_CERRADA;
         
         private Salida_remision SSalida_remision
         {
@@ -132,6 +132,11 @@ namespace AppCasc.operation
                     btn_save.Enabled = false;
                     btn_save.Text = "Sin disponibilidad de Mercancia";
                 }
+
+                //Ordenes y codigos por pedimento
+                List<Entrada_inventario> lst = EntradaCtrl.InventarioMaquilado(oE.Id);
+                rep_oc_by_pedimento.DataSource = lst;
+                rep_oc_by_pedimento.DataBind();
             }
             catch
             {
@@ -169,6 +174,10 @@ namespace AppCasc.operation
 
             //primer renglon
             Salida_remision_detail oSRD1 = new Salida_remision_detail();
+            int.TryParse(hf_id_entrada_maquila_detail_1.Value, out numero);
+            oSRD1.Id_entrada_maquila_detail = numero;
+            numero = 0;
+            
             int.TryParse(txt_bulto.Text, out numero);
             oSRD1.Bulto = numero;
             numero = 0;
@@ -185,12 +194,16 @@ namespace AppCasc.operation
             oSRD1.Danado = logica;
 
             oSRD1.Lote = hf_lote_1.Value;
-
             o.LstSRDetail = new List<Salida_remision_detail>();
             o.LstSRDetail.Add(oSRD1);
 
             //segundo renglon
             Salida_remision_detail oSRD2 = new Salida_remision_detail();
+
+            int.TryParse(hf_id_entrada_maquila_detail_2.Value, out numero);
+            oSRD2.Id_entrada_maquila_detail = numero;
+            numero = 0;
+
             int.TryParse(txt_bultoInc.Text, out numero);
             oSRD2.Bulto = numero;
             numero = 0;
@@ -221,7 +234,11 @@ namespace AppCasc.operation
             
             if(oSRD1.Danado || oSRD2.Danado)
                 o.Dano_especifico = txt_dano.Text.Trim();
-            
+         
+            int.TryParse(txt_folio_cita.Text, out numero);
+            o.Id_salida_trafico = numero;
+            numero = 0;
+
             return o;
         }
 
@@ -300,7 +317,8 @@ namespace AppCasc.operation
                 int IdEntrada = 0;
                 int.TryParse(args.CommandArgument.ToString(), out IdEntrada);
                 Repeater repOrdCod = args.Item.FindControl("repOrdCod") as Repeater;
-                List<Entrada_inventario> lst = EntradaCtrl.InventarioGetBy(IdEntrada, false);
+                //List<Entrada_inventario> lst = EntradaCtrl.InventarioGetBy(IdEntrada, false);
+                List<Entrada_inventario> lst = EntradaCtrl.InventarioMaquilado(IdEntrada);
                 repOrdCod.DataSource = lst;
                 repOrdCod.DataBind();
             }

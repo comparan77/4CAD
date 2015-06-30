@@ -79,6 +79,11 @@
     z-index: 1;
 }
 
+.optionMenu
+{
+    z-index: 2!important;
+}
+
 a:link, a:visited
 {
     text-decoration: none;

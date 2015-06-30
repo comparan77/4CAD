@@ -14,6 +14,7 @@ namespace ModelCasc.operation
         protected int? _id_entrada_inventario;
         protected int _id_usuario_elaboro;
         protected int _id_usuario_autorizo;
+        protected int _id_salida_trafico;
         protected string _folio_remision;
         protected string _referencia;
         protected string _codigo_cliente;
@@ -32,6 +33,7 @@ namespace ModelCasc.operation
         public int? Id_entrada_inventario { get { return _id_entrada_inventario; } set { _id_entrada_inventario = value; } }
         public int Id_usuario_elaboro { get { return _id_usuario_elaboro; } set { _id_usuario_elaboro = value; } }
         public int Id_usuario_autorizo { get { return _id_usuario_autorizo; } set { _id_usuario_autorizo = value; } }
+        public int Id_salida_trafico { get { return _id_salida_trafico; } set { _id_salida_trafico = value; } }
         public string Folio_remision { get { return _folio_remision; } set { _folio_remision = value; } }
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public string Codigo_cliente { get { return _codigo_cliente; } set { _codigo_cliente = value; } }
@@ -51,6 +53,7 @@ namespace ModelCasc.operation
         public string Elaboro { get; set; }
         public int PiezaTotal { get; set; }
         public int BultoTotal { get; set; }
+        public Salida_trafico PTrafico { get; set; }
         #endregion
 
         #region Constructores
@@ -60,6 +63,7 @@ namespace ModelCasc.operation
             this._id_entrada_inventario = null;
             this._id_usuario_elaboro = 0;
             this._id_usuario_autorizo = 0;
+            this._id_salida_trafico = 0;
             this._folio_remision = String.Empty;
             this._referencia = String.Empty;
             this._codigo_cliente = String.Empty;

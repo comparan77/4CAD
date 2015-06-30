@@ -39,7 +39,6 @@ namespace AppCasc.operation
             o.Id_transporte_tipo = Convert.ToInt32(ddlTipo_Transporte.SelectedValue);
             o.Id_tipo_carga = Convert.ToInt32(ddlTipoCarga.SelectedValue);
             o.Destino = txt_destino.Text.Trim();
-
             return o;
         }
 
@@ -73,18 +72,84 @@ namespace AppCasc.operation
             }
         }
 
-        //protected void ddlTransporte_changed(object sender, EventArgs args)
-        //{
-        //    try
-        //    {
-        //        ControlsMng.fillTipoTransporte(ddlTipo_Transporte, ddlTransporte);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ((MstCasc)this.Master).setError = e.Message;
-        //    }
+        protected void grd_trafico_row_databound(object sender, GridViewRowEventArgs args)
+        {
+            try
+            {
+                if (args.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddl = args.Row.FindControl("ddl_transporte") as DropDownList;
+                    ControlsMng.fillTipoTransporte(ddl);
+                    ddl.SelectedValue = grd_trafico.DataKeys[args.Row.RowIndex][1].ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
 
-        //}
+        protected void grd_trafico_row_command(object sender, GridViewCommandEventArgs args)
+        {
+            try
+            {
+                // Convert the row index stored in the CommandArgument
+                // property to an Integer.
+                int index = Convert.ToInt32(args.CommandArgument);
+
+                // Retrieve the row that contains the button clicked 
+                // by the user from the Rows collection.
+                GridViewRow row = grd_trafico.Rows[index];
+
+                int id = Convert.ToInt32(grd_trafico.DataKeys[index][0]);
+                //int id_transporte_tipo = Convert.ToInt32(grd_trafico.DataKeys[index][1]);
+                //int id_tipo_carga = Convert.ToInt32(grd_trafico.DataKeys[index][2]);
+
+                Salida_trafico o = new Salida_trafico();
+                o.Id = id;
+                TextBox txt_folio_cita = row.FindControl("txt_folio_cita") as TextBox;
+                o.Folio_cita = txt_folio_cita.Text.Trim();
+
+                TextBox txt_fecha_cita = row.FindControl("txt_fecha_cita") as TextBox;
+                o.Fecha_cita = Convert.ToDateTime(txt_fecha_cita.Text);
+
+                TextBox txt_hora_cita = row.FindControl("txt_hora_cita") as TextBox;
+                o.Hora_cita = txt_hora_cita.Text;
+
+                TextBox txt_operador = row.FindControl("txt_operador") as TextBox;
+                o.Operador = txt_operador.Text;
+
+                TextBox txt_placa = row.FindControl("txt_placa") as TextBox;
+                o.Placa = txt_placa.Text;
+
+                TextBox txt_caja = row.FindControl("txt_caja") as TextBox;
+                o.Caja = txt_caja.Text;
+
+                TextBox txt_caja1 = row.FindControl("txt_caja1") as TextBox;
+                o.Caja1 = txt_caja1.Text;
+
+                TextBox txt_caja2 = row.FindControl("txt_caja2") as TextBox;
+                o.Caja2 = txt_caja2.Text;
+
+                HiddenField hf_id_transporte = row.FindControl("hf_id_transporte") as HiddenField;
+                o.Id_transporte = Convert.ToInt32(hf_id_transporte.Value);
+
+                DropDownList ddl_transporte = row.FindControl("ddl_transporte") as DropDownList;
+                o.Id_transporte_tipo_cita = Convert.ToInt32(ddl_transporte.SelectedValue);
+
+                SalidaCtrl.TraficoSaveCita(o);
+
+
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+            finally
+            {
+                fillSolicitudes();
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs args)
         {

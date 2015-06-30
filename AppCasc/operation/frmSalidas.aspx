@@ -3,6 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/mobiscroll-2.1-beta.custom.min.css" rel="stylesheet" type="text/css" />
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery.updatepanel.js" type="text/javascript"></script>
     <script src="../js/mobiscroll-2.1-beta.custom.min.js" type="text/javascript"></script>
     <script src="../js/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script src="../js/operation/frmSalidas.js?v1.1.150619_1446" type="text/javascript"></script>
@@ -13,7 +14,7 @@
 
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
-
+<asp:HiddenField runat="server" ID="hfEsCompartida" />
 <asp:HiddenField runat="server" ID="hfFolio" />
 
 <div id="dialog-confirm" title="Datos de salida">
@@ -25,7 +26,7 @@
 </div>
 
 <div>
-<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Embarques</h3>
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Salida</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
 <div>
     <label>Bodega:</label>
@@ -68,17 +69,13 @@
     <asp:HiddenField runat="server" ID="hfReferencia" />
     <asp:HiddenField runat="server" ID="hfIdDocReq" />
     <asp:HiddenField runat="server" ID="hfMascara" />
-    <asp:HiddenField runat="server" ID="hf_id_salida_orden_carga" />
-    <asp:HiddenField runat="server" ID="hfEsCompartida" />
     <label id="lblReferencia">Documento:</label>
-    <asp:TextBox runat="server" ID="txt_referencia" AutoPostBack="true" OnTextChanged="txt_referencia_TextChanged" ValidationGroup="valgrp_referencia"></asp:TextBox>
+    <asp:TextBox runat="server" ID="txt_referencia" AutoPostBack="true" OnTextChanged="txt_referencia_TextChanged"></asp:TextBox>
     <asp:RequiredFieldValidator CssClass="validator" ID="rfvReferencia" runat="server" ControlToValidate="txt_referencia" ></asp:RequiredFieldValidator>
-    <div>
-    <asp:CustomValidator CssClass="validator" ID="cvReferencia" runat="server" ControlToValidate="txt_referencia" ValidationGroup="valgrp_referencia" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
-    </div>
+    <asp:CustomValidator CssClass="validator" ID="cvReferencia" runat="server" ControlToValidate="txt_referencia" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
 </div>
 <div>
-    <label>Tipo de Documento a Enviar:</label>
+    <label>Tipo de Documento Recibido:</label>
     <asp:DropDownList runat="server" ID="ddlDocumento"></asp:DropDownList>
 </div>
 </ContentTemplate>
@@ -112,21 +109,20 @@
 
 <div>
     <div>
-        <label id="lblConsolidada">NO Compartido</label>
+        <label id="lblConsolidada">NO Consolidada</label>
         <input type="checkbox" id="chkConsolidado" />
         <asp:HiddenField runat="server" ID="hfConsolidada" Value="false" />
     </div>
     <div id="pnl_consolidada" class="hidden">
         <asp:UpdatePanel runat="server" ID="up_consolidada" UpdateMode="Conditional">
         <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="btnAdd_pedimento" EventName="Click" />
-            <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
+        <asp:AsyncPostBackTrigger ControlID="btnAdd_pedimento" EventName="Click" />
         </Triggers>
         <ContentTemplate>
             <div>
                 <label>Pedimento:</label>
                 <asp:TextBox runat="server" ID="txt_pedimento_consolidado"></asp:TextBox>
-                <asp:CustomValidator CssClass="validator" ID="cvPedimentoConsolidado" ValidationGroup="vgPedimentos" runat="server" ControlToValidate="txt_pedimento_consolidado" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
+                <asp:CustomValidator CssClass="validator" ID="cvPedimentoConsolidado" runat="server" ControlToValidate="txt_pedimento_consolidado" OnServerValidate="cvReferencia_ServerValidate"></asp:CustomValidator>
                 <asp:Button runat="server" ID="btnAdd_pedimento" ValidationGroup="vgPedimentos" CausesValidation="false" Text="Agregar" OnClick="btnAdd_pedimento_click" />
             </div>
             <div>
@@ -154,7 +150,6 @@
     <asp:UpdatePanel runat="server" ID="up_Destino" UpdateMode="Conditional">
     <Triggers>
         <asp:AsyncPostBackTrigger ControlID="ddlCliente" EventName="SelectedIndexChanged" />
-        <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
     </Triggers>
     <ContentTemplate>
         <asp:TextBox id="txt_destino" CssClass="txtLarge" runat="server"></asp:TextBox>
@@ -164,37 +159,19 @@
 </div>
 <div>
     <label>Mercancía:</label>
-    <asp:UpdatePanel runat="server" ID="up_Mercancia" UpdateMode="Conditional">
-    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="ddlCliente" EventName="SelectedIndexChanged" />
-        <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
-    </Triggers>
-    <ContentTemplate>
     <asp:TextBox id="txt_mercancia" runat="server" TextMode="MultiLine" Rows="4"></asp:TextBox>
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_mercancia" ControlToValidate="txt_mercancia" ErrorMessage="Es necesario capturar la descripción de la mercancía"></asp:RequiredFieldValidator>
-    </ContentTemplate>
-    </asp:UpdatePanel>
-    
 </div>
 <div>
     <label>Transporte:</label>
-    <asp:UpdatePanel runat="server" ID="up_Transporte" UpdateMode="Conditional">
-    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="ddlCliente" EventName="SelectedIndexChanged" />
-        <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
-    </Triggers>
-    <ContentTemplate>
     <asp:DropDownList runat="server" ID="ddlTransporte" AutoPostBack="true" OnSelectedIndexChanged="ddlTransporte_changed"></asp:DropDownList>
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvTransporte" ControlToValidate="ddlTransporte" InitialValue="" ErrorMessage="Es necesario seleccionar un transporte"></asp:RequiredFieldValidator>
-    </ContentTemplate>
-    </asp:UpdatePanel>
 </div>
 <div>
     <label>Tipo de Transporte:</label>
 <asp:UpdatePanel runat="server" ID="upTipoTransporte" UpdateMode="Conditional">
 <Triggers>
 <asp:AsyncPostBackTrigger ControlID="ddlTransporte" EventName="SelectedIndexChanged" />
-<asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
 </Triggers>
 <ContentTemplate>
         <asp:DropDownList runat="server" ID="ddlTipo_Transporte" AutoPostBack="true" OnSelectedIndexChanged="ddlTipo_Transporte_changed"></asp:DropDownList>
@@ -214,14 +191,19 @@
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_placa" ControlToValidate="txt_placa" ErrorMessage="Es necesario capturar la placa para este tipo de vehículo"></asp:RequiredFieldValidator>
 </div>
 <div>
+    <label>Caja:</label>
+    <asp:TextBox id="txt_caja" runat="server" MaxLength="50"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja" ControlToValidate="txt_caja" ErrorMessage="Es necesario capturar la placa de la caja para este tipo de vehículo"></asp:RequiredFieldValidator>
+</div>
+<div>
     <label>Contenedor 1:</label>
     <asp:TextBox id="txt_caja_1" runat="server" MaxLength="50"></asp:TextBox>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_1" ControlToValidate="txt_caja_1" ErrorMessage="Es necesario capturar la placa de la caja 1 para este tipo de vehículo"></asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_1" ControlToValidate="txt_caja_1" ErrorMessage="Es necesario capturar el número de contenedor 1 para este tipo de vehículo"></asp:RequiredFieldValidator>
 </div>
 <div>
     <label>Contenedor 2:</label>
     <asp:TextBox id="txt_caja_2" runat="server" MaxLength="50"></asp:TextBox>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_2" ControlToValidate="txt_caja_2" ErrorMessage="Es necesario capturar la placa de la caja 2 para este tipo de vehículo"></asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_2" ControlToValidate="txt_caja_2" ErrorMessage="Es necesario capturar el número de contenedor 2 para este tipo de vehículo"></asp:RequiredFieldValidator>
 </div>
 </ContentTemplate>
 </asp:UpdatePanel>
@@ -257,12 +239,6 @@
         <asp:TextBox CssClass="txtNumber" id="txt_no_pallet" runat="server"></asp:TextBox>
         <asp:RangeValidator runat="server" CssClass="validator" Type="Integer" ID="rv_no_pallet" ControlToValidate="txt_no_pallet" ErrorMessage="Es necesario capturar un número entre 0 y 1000" MinimumValue="0" MaximumValue="1000"></asp:RangeValidator>
     </div>
-    <asp:UpdatePanel runat="server" ID="up_bulto_pieza" UpdateMode="Conditional">
-    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="ddlCliente" EventName="SelectedIndexChanged" />
-        <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
-    </Triggers>
-    <ContentTemplate>
     <div>
         <label>Bultos:</label>
         <asp:TextBox CssClass="txtNumber" id="txt_no_bulto" runat="server" AutoPostBack="true" OnTextChanged="txt_no_bulto_txtChanged"></asp:TextBox>
@@ -275,9 +251,6 @@
         <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_no_pieza" ControlToValidate="txt_no_pieza" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" runat="server" CssClass="validator" ID="rv_no_pieza" ControlToValidate="txt_no_pieza" ErrorMessage="Es necesario capturar un número entre 1 y 5,000,000" MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
     </div>
-    </ContentTemplate>
-    </asp:UpdatePanel>
-    
     <div>
         <label>Peso x Bulto (Kg):</label>
         <asp:TextBox CssClass="txtNumber" ID="txt_peso_unitario" runat="server" AutoPostBack="true" OnTextChanged="txt_peso_unitario_txtChanged"></asp:TextBox>
@@ -314,21 +287,16 @@
     <asp:UpdatePanel runat="server" ID="upChkSalida" UpdateMode="Conditional">
     <Triggers>
         <asp:AsyncPostBackTrigger ControlID="chk_tipo_salida" EventName="CheckedChanged" />
-        <asp:AsyncPostBackTrigger ControlID="ddlCliente" EventName="SelectedIndexChanged" />
-        <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
     </Triggers>
     <ContentTemplate>
         <asp:CheckBox runat="server" ID="chk_tipo_salida" Text="Salida Única" AutoPostBack="true" Checked="true" OnCheckedChanged="chk_tipo_salida_checked" />
         <asp:RequiredFieldValidator CssClass="validator" runat="server" Enabled="false" ID="rfv_refCompartifda" ControlToValidate="txt_referencia" ErrorMessage="Es necesario capturar un pedimento para compartir la salida"></asp:RequiredFieldValidator>
-
-        <div id="div_no_salida">
-            <asp:Label runat="server" ID="lbl_no_salida" Visible="false"></asp:Label>
-        </div>
-        <asp:CheckBox runat="server" ID="chk_ultima" Text="Última" Visible="false" />
-
     </ContentTemplate>
     </asp:UpdatePanel>
-    
+    <div id="div_no_salida">
+        <asp:Label runat="server" ID="lbl_no_salida" Visible="false"></asp:Label>
+    </div>
+    <asp:CheckBox runat="server" ID="chk_ultima" Text="Última" Visible="false" />
 </div>
 </div>
 </div>
@@ -360,6 +328,64 @@
 </div>
 </div>
 
+<div id="div_panel">
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Panel</h3>
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+<div>
+<label>Operador: </label>
+<asp:Label runat="server" ID="lblUsrName"></asp:Label>
+</div>
+<hr />
+<div>
+<label>Salidas Compartidas Pendientes:</label>
 
+<ul>
+<asp:Repeater runat="server" ID="repFoliosPendientes" OnItemDataBound="repFoliosPendientes_ItemDataBound">
+<ItemTemplate>
+<li><span>Folio: </span><asp:Label ID="lblFolioCompartido" runat="server" Text='<%# Eval("Folio") %>'></asp:Label>
+<ul class="ulCompartida">
+<asp:Repeater runat="server" ID="repReferencias">
+<ItemTemplate>
+<li><asp:Button runat="server" ID="btnRefCompartido" CommandArgument='<%# Eval("Folio") %>' Text='<%# Eval("Referencia") %>' OnCommand="referenciaCompartido_click" CausesValidation="false" /></li>
+</ItemTemplate>
+</asp:Repeater>
+</ul>
+</li>
+</ItemTemplate>
+</asp:Repeater>
+</ul>
+</div>
+<hr />
+<div id="salidasParciales">
+    <label>Salidas Parciales:</label>
+    <ul id="ulParcial">
+    <asp:Repeater runat="server" ID="repSalPar">
+    <ItemTemplate>
+    <li>
+        <asp:Button runat="server" ID="btnSalPar" CommandArgument='<%# Eval("id_salida") %>' Text='<%# Eval("referencia") %>' OnCommand="btnSalPar_click" CausesValidation="false" />
+        <asp:HiddenField runat="server" ID="hfNoSalida" Value='<%# Eval("no_salida") %>' />
+    </li>
+    </ItemTemplate>
+    </asp:Repeater>
+    </ul>
+</div>
+<hr />
+<div id="salidasCapturadas">
+    <label>Salidas Capturadas Hoy:</label>
+    <ul id="ulSalHoy">
+    <asp:Repeater runat="server" ID="repSalHoy">
+    <ItemTemplate>
+    <li>
+    <div>
+        <asp:Button runat="server" ID="btnFolios" CommandArgument='<%# Eval("id_salida") %>' Text='<%# Eval("folio") %>' OnCommand="salidaHoy_click" CausesValidation="false" />
+    </div>
+    </li>
+    </ItemTemplate>
+    </asp:Repeater>
+    </ul>
+</div>
+<hr />
+</div>
+</div>
 
 </asp:Content>

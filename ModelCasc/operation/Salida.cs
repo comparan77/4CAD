@@ -23,6 +23,7 @@ namespace ModelCasc.operation
         protected int _id_transporte;
         protected int _id_transporte_tipo;
         protected string _placa;
+        protected string _caja;
         protected string _caja1;
         protected string _caja2;
         protected string _sello;
@@ -57,6 +58,7 @@ namespace ModelCasc.operation
         public int Id_transporte { get { return _id_transporte; } set { _id_transporte = value; } }
         public int Id_transporte_tipo { get { return _id_transporte_tipo; } set { _id_transporte_tipo = value; } }
         public string Placa { get { return _placa; } set { _placa = value; } }
+        public string Caja { get { return _caja; } set { _caja = value; } }
         public string Caja1 { get { return _caja1; } set { _caja1 = value; } }
         public string Caja2 { get { return _caja2; } set { _caja2 = value; } }
         public string Sello { get { return _sello; } set { _sello = value; } }
@@ -120,5 +122,6 @@ namespace ModelCasc.operation
             this._isActive = false;
         }
         #endregion
+
     }
 }

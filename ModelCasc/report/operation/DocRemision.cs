@@ -89,6 +89,24 @@ namespace ModelCasc.report.operation
                 fields.SetField("codigoCliente", oSR.Codigo_cliente);
                 fields.SetField("lblCodigoCliente", "CÓDIGO AVN");
 
+                #region Trafico
+
+                fields.SetField("lbllinea", "Línea: ");
+                fields.SetField("linea", oSR.PTrafico.Transporte);
+
+                fields.SetField("lbloperador", "Operador: ");
+                fields.SetField("operador", oSR.PTrafico.Operador);
+
+                fields.SetField("lblplaca", "Placa: ");
+                fields.SetField("placa", oSR.PTrafico.Placa);
+
+                fields.SetField("lblcita", "Folio - Fecha: ");
+                string fechaCita = Convert.ToDateTime(oSR.PTrafico.Fecha_cita).ToString("dd/MM/yyyy");
+                fields.SetField("cita", oSR.PTrafico.Folio_cita + " - " + fechaCita + " " + oSR.PTrafico.Hora_cita);
+
+                #endregion
+
+
                 CultureInfo ci = new CultureInfo("es-MX");
                 fields.SetField("fecha_remision", oSR.Fecha_remision.ToString("dddd, dd \\de MMMM \\de yy", ci));
 

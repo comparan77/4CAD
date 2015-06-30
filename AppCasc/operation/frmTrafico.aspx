@@ -11,7 +11,8 @@
 <asp:HiddenField runat="server" ID="hfDescErr" />
 
 
-<div class="divForm">
+<h3 id="div-floor-control" style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Solicitud de Citas</h3>
+<div id="div-solicitud-trafico" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
 
 <div>
     <label>Fecha de la Solicitud:</label>
@@ -49,22 +50,44 @@
 <div>
     <asp:Button runat="server" ID="btn_solicitar_cita" Text="Solicitar Cita"  OnClick="click_solicitar_trafico"/>
 </div>
+</div>
+
+<h3 style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Citas</h3>
+<div id="div-citas" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
 
 <asp:UpdatePanel runat="server" ID="up_trafico" UpdateMode="Conditional">
 <Triggers>
     <asp:AsyncPostBackTrigger ControlID="btn_solicitar_cita" EventName="Click" />
 </Triggers>
 <ContentTemplate>
-    <asp:GridView runat="server" ID="grd_trafico" CssClass="grdCasc" AutoGenerateColumns="false" EmptyDataText="Sin solicitud de citas">
+    <asp:GridView runat="server" ID="grd_trafico" CssClass="grdCasc" AutoGenerateColumns="false" EmptyDataText="Sin solicitud de citas"
+    DataKeyNames="id, id_transporte_tipo" OnRowCommand="grd_trafico_row_command" OnRowDataBound="grd_trafico_row_databound">
         <Columns>
             <asp:BoundField HeaderText="Fecha Solicitud" DataField="fecha_solicitud" DataFormatString="{0:dd/MM/yyyy}" />
             <asp:BoundField HeaderText="Fecha Carga Solicitada" DataField="fecha_carga_solicitada" DataFormatString="{0:dd/MM/yyyy}" />
             <asp:BoundField HeaderText="Hora Carga Solicitada" DataField="hora_carga_solicitada" DataFormatString="{0:HH:mm:ss}" />
-            <asp:BoundField HeaderText="Tipo de Transporte" DataField="tipo_transporte" />
+            <asp:BoundField HeaderText="Tipo Solicitado" DataField="Transporte_tipo" />
             <asp:BoundField HeaderText="Tipo Carga" DataField="tipo_carga" />
             <asp:BoundField HeaderText="Destino" DataField="destino" />
             
-            <asp:TemplateField HeaderText="Cita">
+            <asp:TemplateField HeaderText="Cita Proporcionada">
+            <ItemTemplate>
+                <ol>
+                    <li><span>Folio:</span>&nbsp;<span><%# Eval("Folio_cita") %></span></li>
+                    <li><span>Fecha:</span>&nbsp;<span><%# Eval("Fecha_cita", "{0:dd/MM/yyyy}") %></span></li>
+                    <li><span>Hora:</span>&nbsp;<span><%# Eval("Hora_cita") %></span></li>
+                    <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte") %></span></li>
+                    <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte_tipo_cita") %></span></li>
+                    <li class="hidden"><span>Operador:</span>&nbsp;<span><%# Eval("Operador") %></span></li>
+                    <li class="hidden"><span>Placas:</span>&nbsp;<span><%# Eval("Placa") %></span></li>
+                    <li class="hidden"><span>Caja:</span>&nbsp;<span><%# Eval("Caja") %></span></li>
+                    <li class="hidden"><span>Contenedor 1:</span>&nbsp;<span><%# Eval("Caja1") %></span></li>
+                    <li class="hidden"><span>Contenedor 2:</span>&nbsp;<span><%# Eval("Caja2") %></span></li>
+                </ol>
+            </ItemTemplate>
+            </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="Capturar Cita">
                 <ItemTemplate>
                     <div class="divForm">
                         <div>
@@ -80,13 +103,38 @@
                             <asp:TextBox CssClass="citaReq txt_hora" runat="server" ID="txt_hora_cita"></asp:TextBox>
                         </div>
                         <div>
-                            <label>Línea:</label>
-                            <span id='<%# "spn_" + Eval("id_transporte_tipo") %>' title="Llenar listado de lineas de transporte" class="icon-button-action ui-icon ui-icon-refresh spn_TransporteGetByTipo"></span>
-                            <asp:HiddenField runat="server" ID="hf_id_transporte" />
-                            <select class="citaReq" id='<%# "linea_" + Eval("id_transporte_tipo")  %>'><option></option></select>
+                            <label>Tipo Transporte:</label>
+                            <input type="hidden" value='<%# Eval("id") %>' id='<%# "spn_id_trafico_" + Eval("id") %>' />
+                            <asp:DropDownList CssClass="classTransporte_tipo" runat="server" ID="ddl_transporte"></asp:DropDownList>
                         </div>
                         <div>
-                            <asp:Button CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" />
+                            <label>Línea:</label>
+                            <span title="Llenar listado de lineas de transporte" class="icon-button-action ui-icon ui-icon-refresh spn_TransporteGetByTipo"></span>
+                            <asp:HiddenField runat="server" ID="hf_id_transporte" />
+                            <select class="citaReq"><option></option></select>
+                        </div>
+                        <div>
+                            <label>Operador:</label>
+                            <asp:TextBox CssClass="txt_operador" runat="server" ID="txt_operador"></asp:TextBox>
+                        </div>
+                        <div class="hidden">
+                            <label>Placa:</label>
+                            <asp:TextBox CssClass="citaNoReq txt_placa" runat="server" ID="txt_placa"></asp:TextBox>
+                        </div>
+                        <div class="hidden">
+                            <label>Caja:</label>
+                            <asp:TextBox CssClass="citaNoReq txt_caja" runat="server" ID="txt_caja"></asp:TextBox>
+                        </div>
+                        <div class="hidden">
+                            <label>Contenedor 1:</label>
+                            <asp:TextBox CssClass="citaNoReq txt_caja1" runat="server" ID="txt_caja1"></asp:TextBox>
+                        </div>
+                        <div class="hidden">
+                            <label>Contenedor 2:</label>
+                            <asp:TextBox CssClass="citaNoReq txt_caja2" runat="server" ID="txt_caja2"></asp:TextBox>
+                        </div>
+                        <div>
+                            <asp:Button CausesValidation="false" CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
                         </div>
                     </div>
                     

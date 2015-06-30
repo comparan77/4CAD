@@ -35,16 +35,37 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_solicitud", DbType.DateTime, this._oSalida_trafico.Fecha_solicitud);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_carga_solicitada", DbType.DateTime, this._oSalida_trafico.Fecha_carga_solicitada);
             GenericDataAccess.AddInParameter(this.comm, "?P_hora_carga_solicitada", DbType.String, this._oSalida_trafico.Hora_carga_solicitada);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, this._oSalida_trafico.Id_transporte);
+            
+            if(this.O_Salida_trafico.Id_transporte == null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, this._oSalida_trafico.Id_transporte);
+            
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo", DbType.Int32, this._oSalida_trafico.Id_transporte_tipo);
+
+            if (this.O_Salida_trafico.Id_transporte_tipo_cita == null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo_cita", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo_cita", DbType.Int32, this._oSalida_trafico.Id_transporte_tipo_cita);
+
             GenericDataAccess.AddInParameter(this.comm, "?P_id_tipo_carga", DbType.Int32, this._oSalida_trafico.Id_tipo_carga);
             GenericDataAccess.AddInParameter(this.comm, "?P_destino", DbType.String, this._oSalida_trafico.Destino);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_cita", DbType.DateTime, this._oSalida_trafico.Fecha_cita);
             GenericDataAccess.AddInParameter(this.comm, "?P_hora_cita", DbType.String, this._oSalida_trafico.Hora_cita);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio_cita", DbType.String, this._oSalida_trafico.Folio_cita);
+            GenericDataAccess.AddInParameter(this.comm, "?P_operador", DbType.String, this._oSalida_trafico.Operador);
+            GenericDataAccess.AddInParameter(this.comm, "?P_placa", DbType.String, this._oSalida_trafico.Placa);
+            GenericDataAccess.AddInParameter(this.comm, "?P_caja", DbType.String, this._oSalida_trafico.Caja);
+            GenericDataAccess.AddInParameter(this.comm, "?P_caja1", DbType.String, this._oSalida_trafico.Caja1);
+            GenericDataAccess.AddInParameter(this.comm, "?P_caja2", DbType.String, this._oSalida_trafico.Caja2);
+
+            if (this.O_Salida_trafico.Pallet == null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, this._oSalida_trafico.Pallet);
         }
 
-        protected void BindByDataRow(DataRow dr, Salida_trafico o)
+        public void BindByDataRow(DataRow dr, Salida_trafico o)
         {
             try
             {
@@ -80,6 +101,12 @@ namespace ModelCasc.operation
                     o.Id_transporte_tipo = entero;
                     entero = 0;
                 }
+                if (dr["id_transporte_tipo_cita"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_transporte_tipo_cita"].ToString(), out entero);
+                    o.Id_transporte_tipo_cita = entero;
+                    entero = 0;
+                }
                 if (dr["id_tipo_carga"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_tipo_carga"].ToString(), out entero);
@@ -99,6 +126,17 @@ namespace ModelCasc.operation
                 }
                 o.Hora_cita = dr["hora_cita"].ToString();
                 o.Folio_cita = dr["folio_cita"].ToString();
+                o.Operador = dr["operador"].ToString();
+                o.Placa = dr["placa"].ToString();
+                o.Caja = dr["caja"].ToString();
+                o.Caja1 = dr["caja1"].ToString();
+                o.Caja2 = dr["caja2"].ToString();
+                if (dr["pallet"] != DBNull.Value)
+                {
+                    int.TryParse(dr["pallet"].ToString(), out entero);
+                    o.Pallet = entero;
+                    entero = 0;
+                }
             }
             catch
             {
@@ -207,8 +245,70 @@ namespace ModelCasc.operation
                 {
                     Salida_trafico o = new Salida_trafico();
                     BindByDataRow(dr, o);
-                    o.Tipo_transporte = dr["tipo_transporte"].ToString();
+                    o.Transporte_tipo = dr["transporte_tipo"].ToString();
+                    o.Transporte_tipo_cita = dr["transporte_tipo_cita"].ToString();
                     o.Tipo_carga = dr["tipo_carga"].ToString();
+                    o.Transporte = dr["transporte"].ToString();
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void saveCita()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_trafico");
+                addParameters(6);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void LstCita()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_trafico");
+                addParameters(7);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_trafico>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_trafico o = new Salida_trafico();
+                    BindByDataRow(dr, o);
+                    o.Transporte_tipo = dr["transporte_tipo"].ToString();
+                    o.Transporte_tipo_cita = dr["transporte_tipo_cita"].ToString();
+                    o.Tipo_carga = dr["tipo_carga"].ToString();
+                    o.Transporte = dr["transporte"].ToString();
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void LstWithRem()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_trafico");
+                addParameters(8);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_trafico>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_trafico o = new Salida_trafico();
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
