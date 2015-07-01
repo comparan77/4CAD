@@ -72,6 +72,16 @@
                 });
             });
 
+            $('.clsLnkFolioCita').each(function () {
+                $(this).click(function () {
+                    var id = $(this).attr('id').split('_')[3] * 1;
+                    $('#lbl_folio_cita_' + id).next('input').val($(this).html());
+                    $('#lbl_fecha_cita_' + id).next('input').val($('#spn_fecha_cita_' + id).html());
+                    $('#lbl_hora_cita_' + id).next('input').val($('#spn_hora_cita_' + id).html());
+                    return false;
+                });
+            });
+
         });
     }
 
@@ -119,7 +129,7 @@
                 tipo_transporte_change(ddlTransporte);
                 validaCamposRequeridos(ddlTransporte);
                 $(ddlTransporte).unbind('change').change(function () {
-                    $(ddlTransporte).prev().val(data[0].Id_transporte);
+                    $(ddlTransporte).prev().val($(this).val());
                 });
 
             },

@@ -87,7 +87,7 @@ namespace ModelCasc.report.operation
                 fields.SetField("lblFolioRemision", "FOLIO REMISION");
 
                 fields.SetField("codigoCliente", oSR.Codigo_cliente);
-                fields.SetField("lblCodigoCliente", "CÓDIGO AVN");
+                fields.SetField("lblCodigoCliente", "REFERENCIA");
 
                 #region Trafico
 

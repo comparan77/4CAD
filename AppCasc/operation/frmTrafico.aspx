@@ -73,9 +73,9 @@
             <asp:TemplateField HeaderText="Cita Proporcionada">
             <ItemTemplate>
                 <ol>
-                    <li><span>Folio:</span>&nbsp;<span><%# Eval("Folio_cita") %></span></li>
-                    <li><span>Fecha:</span>&nbsp;<span><%# Eval("Fecha_cita", "{0:dd/MM/yyyy}") %></span></li>
-                    <li><span>Hora:</span>&nbsp;<span><%# Eval("Hora_cita") %></span></li>
+                    <li><span>Folio:</span>&nbsp;<a class="clsLnkFolioCita" id='<%# "lnk_folio_cita_" + Eval("Id") %>' href="#"><%# Eval("Folio_cita") %></a></li>
+                    <li><span>Fecha:</span>&nbsp;<span id='<%# "spn_fecha_cita_" + Eval("Id") %>'><%# Eval("Fecha_cita", "{0:dd/MM/yyyy}") %></span></li>
+                    <li><span>Hora:</span>&nbsp;<span id='<%# "spn_hora_cita_" + Eval("Id") %>'><%# Eval("Hora_cita") %></span></li>
                     <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte") %></span></li>
                     <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte_tipo_cita") %></span></li>
                     <li class="hidden"><span>Operador:</span>&nbsp;<span><%# Eval("Operador") %></span></li>
@@ -91,15 +91,15 @@
                 <ItemTemplate>
                     <div class="divForm">
                         <div>
-                            <label>Folio Cita:</label>
+                            <label id='<%# "lbl_folio_cita_" + Eval("Id") %>'>Folio Cita:</label>
                             <asp:TextBox CssClass="citaReq" runat="server" ID="txt_folio_cita"></asp:TextBox>
                         </div>
                         <div>
-                            <label>Fecha Cita:</label>
+                            <label id='<%# "lbl_fecha_cita_" + Eval("Id") %>'>Fecha Cita:</label>
                             <asp:TextBox CssClass="citaReq txt_fecha" runat="server" ID="txt_fecha_cita"></asp:TextBox>
                         </div>
                         <div>
-                            <label>Hora Cita:</label>
+                            <label id='<%# "lbl_hora_cita_" + Eval("Id") %>'>Hora Cita:</label>
                             <asp:TextBox CssClass="citaReq txt_hora" runat="server" ID="txt_hora_cita"></asp:TextBox>
                         </div>
                         <div>
