@@ -166,15 +166,6 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_pieza_sobrante;
         
         /// <summary>
-        /// hf_EST_MAQ_PAR_CERRADA control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_EST_MAQ_PAR_CERRADA;
-        
-        /// <summary>
         /// rep_oc_by_pedimento control.
         /// </summary>
         /// <remarks>
@@ -191,15 +182,6 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn_cerrar_maquila;
-        
-        /// <summary>
-        /// up_maquila control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel up_maquila;
         
         /// <summary>
         /// rep_dias_trabajados control.

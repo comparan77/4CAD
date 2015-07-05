@@ -4,7 +4,8 @@
     <link href="../css/jquery.combobox.css" rel="stylesheet" type="text/css" />
     <script src="../js/common.js" type="text/javascript"></script>
     <script src="../js/jquery.combobox.js" type="text/javascript"></script>
-    <script src="../js/operation/frmMaquila.js" type="text/javascript"></script>
+    <script src="../js/moment.min.js" type="text/javascript"></script>
+    <script src="../js/operation/frmMaquila.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -89,6 +90,7 @@
 
 <h3 id="div-floor-control" style="clear:left; cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Orden de Trabajo</h3>
 <div id="div-control" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm hidden">
+
 <asp:HiddenField runat="server" ID="hf_id_entrada" Value="0" />
 <asp:HiddenField runat="server" ID="hf_id_entrada_inventario" Value="0" />
 <asp:HiddenField runat="server" ID="hf_id_cliente" Value="0" />
@@ -100,7 +102,7 @@
 <asp:HiddenField runat="server" ID="hf_pieza_faltante" />
 <asp:HiddenField runat="server" ID="hf_pieza_sobrante" />
 <input type="hidden" id="hf_maquila_abierta" />
-<asp:HiddenField runat="server" ID="hf_EST_MAQ_PAR_CERRADA" />
+<%--<asp:HiddenField runat="server" ID="hf_EST_MAQ_PAR_CERRADA" />--%>
 
 <div id="div_ordenescodigos" title="Órdenes de compra y códigos del pedimento">   
     <ul>
@@ -173,18 +175,15 @@
     </div>
 </div>
 
-<asp:UpdatePanel runat="server" ID="up_maquila" UpdateMode="Conditional">
-<Triggers>
-    <asp:PostBackTrigger ControlID="btn_save" />
-</Triggers>
-<ContentTemplate>
-
 <div>
     <label>D&iacute;as Trabajados:</label>
     <ul class="diasTrabajados">
         <asp:Repeater runat="server" ID="rep_dias_trabajados" >
         <ItemTemplate>
-            <li><a id='<%#Eval ("id") %>' href="#" ><%# Eval("fecha_trabajo","{0:dd/MM/yyyy HH:mm:ss}") %></a></li>
+            <li id='<%# "liDiaTrabajado_" + Eval("id") %>'>
+                <a id='<%# "lnkDiaTrabajado_" + Eval ("id") %>' href="#" ><%# Eval("fecha_trabajo","{0:dd/MM/yyyy HH:mm:ss}") %></a>
+                <span id='<%# "dltDiaTrabajado_" + Eval("id")%>' class="ui-icon ui-icon-trash icon-button-action dltDiaTrabajado floatRight"></span>
+            </li>
         </ItemTemplate>
         </asp:Repeater>
     </ul>
@@ -237,8 +236,7 @@
         </tr>
     </tbody>
 </table>
-</ContentTemplate>
-</asp:UpdatePanel>
+
 </div>
 
 
@@ -247,14 +245,10 @@
 
 <div>
     <label>Fecha de Trabajo:</label>
-    <asp:TextBox CssClass="txtNoBorder" runat="server" ID="txt_fecha_trabajo"></asp:TextBox>
+    <asp:TextBox CssClass="txtNoBorder" runat="server" ID="txt_fecha_trabajo" Enabled="false"></asp:TextBox>
+    <a href="#" id="lnk_limpiarCaptura">Limpiar informaci&oacute;n</a>
 </div>
 
-<%--<asp:UpdatePanel runat="server" ID="up_cantidades" UpdateMode="Conditional">
-<Triggers>
-    <asp:AsyncPostBackTrigger ControlID="txt_fecha_trabajo" EventName="TextChanged" />
-</Triggers>
-<ContentTemplate>--%>
 <div id="up_cantidades">
 <asp:HiddenField runat="server" ID="hf_id_maquilado" Value="0" />
 <input type="hidden" id="hf_piezasMaquiladasXDia" />
@@ -342,9 +336,6 @@
         </tbody>
     </table>
 </div>
-
-<%--</ContentTemplate>
-</asp:UpdatePanel>--%>
 
 </div>
 

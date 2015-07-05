@@ -89,6 +89,12 @@ namespace AppCasc.handlers
                         EntradaCtrl.InventarioUdtMaqAbierta(id, true);
                         response = JsonConvert.SerializeObject("La maquila ha sido abierta correctamente");
                         break;
+                    case "MqDelete":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        id = JsonConvert.DeserializeObject<Int32>(jsonData);
+                        EntradaCtrl.MaquilaDlt(id);
+                        response = JsonConvert.SerializeObject("La maquila ha sido eliminada correctamente");
+                        break;
                     case "embarque":
                         response = embarque(context);
                         break;

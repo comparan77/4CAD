@@ -41,10 +41,13 @@ namespace AppCasc.operation
 
             o.Id_usuario = ((MstCasc)this.Master).getUsrLoged().Id;
 
-            //DateTime fecha = default(DateTime);
-            //DateTime.TryParse(txt_fecha_trabajo.Text, out fecha);
-            //o.Fecha_trabajo = fecha;
-            //fecha = default(DateTime);
+            DateTime fecha = default(DateTime);
+            if (!DateTime.TryParse(txt_fecha_trabajo.Text, out fecha))
+            {
+                throw new Exception("La fecha proporcionada es incorrecta");
+            }
+            o.Fecha_trabajo = fecha;
+            fecha = default(DateTime);
 
             int.TryParse(txt_pallet.Text, out entero);
             o.Pallet = entero;
@@ -234,7 +237,7 @@ namespace AppCasc.operation
                 fillEntradaInventario();
             }
 
-            hf_EST_MAQ_PAR_CERRADA.Value = Globals.EST_MAQ_PAR_CERRADA.ToString();
+            //hf_EST_MAQ_PAR_CERRADA.Value = Globals.EST_MAQ_PAR_CERRADA.ToString();
             txt_fecha_trabajo.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
@@ -393,43 +396,6 @@ namespace AppCasc.operation
                 txt_pallet.Text = "0";
             }
         }
-
-        //protected void change_date(object sender, EventArgs args)
-        //{
-        //    hf_dia_pallet.Value = "0";
-        //    hf_dia_bulto.Value = "0";
-        //    hf_dia_pieza.Value = "0";
-        //    try
-        //    {
-        //        int IdEntradaInventario = 0;
-        //        DateTime FechaTrabajo = default(DateTime);
-        //        int.TryParse(hf_id_entrada_inventario.Value, out IdEntradaInventario);
-        //        DateTime.TryParse(txt_fecha_trabajo.Text, out FechaTrabajo);
-        //        Entrada_maquila o = EntradaCtrl.MaquilaSelById(IdEntradaInventario, FechaTrabajo);
-        //        if (o.Id >= 0)
-        //        {
-        //            hf_id_maquilado.Value = o.Id.ToString();
-                    
-        //            txt_pallet.Text = o.Pallet.ToString();
-        //            hf_dia_pallet.Value = o.Pallet.ToString();
-
-        //            //txt_bulto.Text = o.Bulto.ToString();
-        //            //hf_dia_bulto.Value = o.Bulto.ToString();
-
-        //            //txt_pieza.Text = o.Pieza.ToString();
-        //            //hf_dia_pieza.Value = o.Pieza.ToString();
-                    
-        //            //txt_pieza_danada.Text = o.Pieza_danada.ToString();
-
-        //            refreshMaquilado(IdEntradaInventario);
-        //        }
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ((MstCasc)this.Master).setError = e.Message;
-        //    }
-        //}
 
         protected void Page_Load(object sender, EventArgs args)
         {

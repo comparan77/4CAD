@@ -36,6 +36,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada", DbType.Int32, this._oEntrada_maquila.Id_entrada);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oEntrada_maquila.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada_inventario", DbType.Int32, this._oEntrada_maquila.Id_entrada_inventario);
+            GenericDataAccess.AddInParameter(this.comm, "?P_fecha_trabajo", DbType.DateTime, this._oEntrada_maquila.Fecha_trabajo);
             GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, this._oEntrada_maquila.Pallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_bulto", DbType.Int32, this._oEntrada_maquila.Bulto);
             GenericDataAccess.AddInParameter(this.comm, "?P_pieza", DbType.Int32, this._oEntrada_maquila.Pieza);

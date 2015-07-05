@@ -12,6 +12,25 @@ var BeanEntradaMaquilaDetail = function (id, idEntradaMaquila, danado, bultos, p
     this.Tiene_remision = tiene_remision;
 }
 
+var BeanEntradaMaquila = function (id_cliente, id_entrada, id_entrada_inventario, id_usuario, pallet, lst) {
+
+    this.Id = 0;
+    this.Id_cliente = id_cliente;
+    this.Id_entrada = id_entrada;
+    this.Id_usuario = id_usuario;
+    this.Id_entrada_inventario = id_entrada_inventario;
+    this.Fecha_trabajo = '1999-01-01';
+    this.Pallet = pallet;
+    this.Bulto = 0;
+    this.Pieza = 0;
+    this.Pieza_danada = 0;
+    this.Bulto_faltante = 0;
+    this.Bulto_sobrante = 0;
+    this.Pieza_faltante = 0;
+    this.Pieza_sobrante = 0;
+    this.LstEntMaqDet = lst;
+}
+
 var MngMaquila = function () {
 
     this.Init = init;
@@ -23,6 +42,7 @@ var MngMaquila = function () {
         var div_search = $('#div-search');
         var btn_buscar = $('#ctl00_body_btn_buscar');
         var hf_id_entrada_inventario = $('#ctl00_body_hf_id_entrada_inventario');
+        var hf_id_entrada = $('#ctl00_body_hf_id_entrada');
         var inventory_control = $('#div-floor-control');
         var div_control_piso = $('#div-control-piso');
         var txt_fecha_trabajo = $('#ctl00_body_txt_fecha_trabajo');
@@ -106,12 +126,6 @@ var MngMaquila = function () {
                 });
             });
 
-            //<<Captura de Trabajo Ini>>
-
-            //            $(txt_fecha_trabajo).datepicker({
-            //                'dateFormat': 'dd/mm/yy'
-            //            });
-
             $('#btn_add_detalle').unbind('click').click(function () {
 
                 var bultos = $('#th_bultos').val();
@@ -161,10 +175,6 @@ var MngMaquila = function () {
                 var maquilado = 0;
 
                 $(txt_bulto).blur(function () {
-                    //                    if ($(txt_pieza).val() * 1 == 0) {
-                    //                        $(txt_pieza).val($(this).val() * 1 * piezaXbulto)
-                    //                        $(txt_pieza).focus().select();
-                    //                    }
                     calculateDiferencias(txt_bulto, bulto_faltante, bulto_sobrante, txt_pieza, txt_pieza_danada, pieza_faltante, pieza_sobrante, bulto_inventario, pieza_inventario);
                 });
 
@@ -183,29 +193,7 @@ var MngMaquila = function () {
             });
         }
 
-        $(up_maquila).panelReady(function () {
-
-            //            verifyLote();
-
-            $('.diasTrabajados').children('li').each(function () {
-                var lnk = $(this).children('a');
-                $(lnk).unbind('click').click(function () {
-                    loadDetailByDate($(this).attr('id'));
-                    $(txt_fecha_trabajo).val($(this).html());
-                    //                    $(txt_fecha_trabajo).val($(this).html()).change();
-                    //                    txt_fecha_aux = $(txt_fecha_trabajo).val();
-                    return false;
-                });
-            });
-        });
-
-        //        $(txt_fecha_trabajo).change(function (obj) {
-        //            loadDetailByDate(hf_id_entrada_inventario.val(), $(this).val());
-        //        });
-
         $('#ddl_lote').combobox();
-
-        //        verifyLote();
 
         // Ordenes y códigos del pedimento
         $('#div_ordenescodigos').dialog({
@@ -220,7 +208,70 @@ var MngMaquila = function () {
             return false;
         });
 
+        // Admnistrar dias trabajados
+        mngDiasTrabajados(txt_fecha_trabajo, hf_id_entrada.val(), hf_id_entrada_inventario.val());
+
+        //Limpiar informacion de maquila
+        $('#lnk_limpiarCaptura').click(function () {
+            txt_fecha_trabajo.val(moment().format('DD/MM/YYYY HH:mm:ss'));
+            $('#ctl00_body_txt_pallet').val('0');
+            $('#hf_piezasMaquiladasXDia').val(0);
+            $('#ctl00_body_hf_id_maquilado').val(0);
+            lstEntMaqDet = [];
+            addDetail();
+            return false;
+        });
+
     } //Fin init
+
+    function mngDiasTrabajados(txt_fecha_trabajo, id_entrada, id_entrada_inventario) {
+
+        $('.diasTrabajados').children('li').each(function () {
+            var lnk = $(this).children('a');
+            $(lnk).unbind('click').click(function () {
+                var id = $(this).attr('id').split('_')[1] * 1;
+                loadDetailByDate(id);
+                $(txt_fecha_trabajo).val($(this).html());
+                return false;
+            });
+
+            var spn = $(this).children('span');
+            $(spn).unbind('click').click(function () {
+                var id = $(this).attr('id').split('_')[1];
+                var diaTrabajado = $('#lnkDiaTrabajado_' + id).html();
+                if (confirm('Desea eliminar el día de trabajo :' + diaTrabajado)) {
+                    dltDiaTrabajado(id, id_entrada, id_entrada_inventario);
+                }
+            });
+
+        });
+
+    }
+
+    function dltDiaTrabajado(id_entrada_maquila, id_entrada, id_entrada_inventario) {
+
+        $('.diasTrabajados').parent().addClass('ajaxLoading');
+
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=MqDelete',
+            data: id_entrada_maquila,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+                $('.diasTrabajados').parent().removeClass('ajaxLoading');
+            },
+            success: function (data) {
+                alert(data);
+                window.location.href = 'frmMaquila.aspx?_fk=' + id_entrada + "&_pk=" + id_entrada_inventario;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
 
     function calculateDiferencias(txt_bulto, bulto_faltante, bulto_sobrante, txt_pieza, txt_pieza_danada, pieza_faltante, pieza_sobrante, bulto_inventario, pieza_inventario) {
 
@@ -324,7 +375,7 @@ var MngMaquila = function () {
             td += '<td align="right">' + oCommon.GetSeparatorComasNumber(lstEntMaqDet[item].Piezasxbulto) + '</td>';
             td += '<td align="center">' + (lstEntMaqDet[item].Lote ? lstEntMaqDet[item].Lote : '') + '</td>';
             var pzaTot = lstEntMaqDet[item].Bultos * lstEntMaqDet[item].Piezasxbulto;
-//            td += '<td>' + lstEntMaqDet[item].Lote + '</td>';
+            //            td += '<td>' + lstEntMaqDet[item].Lote + '</td>';
             td += '<td align="right">' + oCommon.GetSeparatorComasNumber(pzaTot) + '</td>';
             if (lstEntMaqDet[item].Tiene_remision)
                 td += '<td align="center">R</td>';
@@ -404,7 +455,6 @@ var MngMaquila = function () {
         $.ajax({
             type: 'GET',
             url: "/handlers/Operation.ashx",
-            //dataType: "jsonp",
             data: {
                 op: 'maquilaGet',
                 key: idEntrada_maquila
@@ -440,16 +490,6 @@ var MngMaquila = function () {
             }
         });
     }
-
-    //    function verifyLote() {
-    //        var hasLote = Boolean($('#ctl00_body_hf_HasLote').val());
-    //        $('.hasLote').each(function () {
-    //            if (hasLote)
-    //                $(this).show();
-    //            else
-    //                $(this).hide();
-    //        });
-    //    }
 }
 
 var master = new webApp.Master;

@@ -1645,6 +1645,19 @@ namespace ModelCasc.operation
             return o;
         }
 
+        public static void MaquilaDlt(int id_entrada_maquila)
+        {
+            try
+            {
+                Entrada_maquilaMng oMng = new Entrada_maquilaMng() { O_Entrada_maquila = new Entrada_maquila() { Id = id_entrada_maquila } };
+                oMng.dlt();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Entrada Maquila Detalle - Control piso
