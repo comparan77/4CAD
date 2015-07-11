@@ -52,7 +52,11 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_destino", DbType.String, this._oSalida_trafico.Destino);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_cita", DbType.DateTime, this._oSalida_trafico.Fecha_cita);
             GenericDataAccess.AddInParameter(this.comm, "?P_hora_cita", DbType.String, this._oSalida_trafico.Hora_cita);
-            GenericDataAccess.AddInParameter(this.comm, "?P_folio_cita", DbType.String, this._oSalida_trafico.Folio_cita);
+
+            if(this._oSalida_trafico.Folio_cita == null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_folio_cita", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_folio_cita", DbType.String, this._oSalida_trafico.Folio_cita);
             GenericDataAccess.AddInParameter(this.comm, "?P_operador", DbType.String, this._oSalida_trafico.Operador);
             GenericDataAccess.AddInParameter(this.comm, "?P_placa", DbType.String, this._oSalida_trafico.Placa);
             GenericDataAccess.AddInParameter(this.comm, "?P_caja", DbType.String, this._oSalida_trafico.Caja);
@@ -233,11 +237,16 @@ namespace ModelCasc.operation
 
         #endregion
 
-        internal void LstSinCita()
+        internal void LstCitas(bool conCita = false)
         {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_trafico");
+                if (conCita)
+                    this._oSalida_trafico.Folio_cita = string.Empty;
+                else
+                    this._oSalida_trafico.Folio_cita = null;
+                
                 addParameters(5);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 this._lst = new List<Salida_trafico>();

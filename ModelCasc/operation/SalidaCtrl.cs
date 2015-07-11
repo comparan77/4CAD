@@ -658,13 +658,13 @@ namespace ModelCasc.operation
         /// Devuelve 20 solicitudes pendientes poniendo en primer lugar aquellas no asignadas.
         /// </summary>
         /// <returns></returns>
-        public static List<Salida_trafico> TraficoLstSinCita()
+        public static List<Salida_trafico> TraficoLstCitas(bool conCita = false)
         {
             List<Salida_trafico> lst = new List<Salida_trafico>();
             try
             {
                 Salida_traficoMng oMng = new Salida_traficoMng();
-                oMng.LstSinCita();
+                oMng.LstCitas(conCita);
                 lst = oMng.Lst;
             }
             catch

@@ -148,12 +148,30 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.UpdatePanel up_trafico;
         
         /// <summary>
-        /// grd_trafico control.
+        /// grd_trafico_sin_citas control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grd_trafico;
+        protected global::System.Web.UI.WebControls.GridView grd_trafico_sin_citas;
+        
+        /// <summary>
+        /// up_trafico_con_cita control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel up_trafico_con_cita;
+        
+        /// <summary>
+        /// grd_trafico_con_citas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grd_trafico_con_citas;
     }
 }

@@ -56,21 +56,20 @@ namespace AppCasc.operation
                         oE.Id = Convert.ToInt32(hfId.Value);
                         oE.Motivo_cancelacion = "CANCELO: " + txtAutorizaUsuario.Text + ", MOTIVO: " + txtMotivo.Text;
                         EntradaCtrl.PartialCancel(oE);
-                        Response.Redirect("frmRelEntSal.aspx");
+                        // Response.Redirect("frmRelEntSal.aspx");
                         break;
                     case "SALIDA":
                         Salida oS = new Salida();
                         oS.Id = Convert.ToInt32(hfId.Value);
                         oS.Motivo_cancelacion = "CANCELO: " + txtAutorizaUsuario.Text + ", MOTIVO: " + txtMotivo.Text;
                         SalidaCtrl.PartialCancel(oS);
-                        Response.Redirect("frmRelEntSal.aspx");
+                        // Response.Redirect("frmRelEntSal.aspx");
                         break;
                     default:
                         Response.Redirect("frmRelEntSal.aspx");
                         break;
                 }
-
-                
+                ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('Se canceló correctamente el registro');window.location.href='frmRelEntSal.aspx'</script>");
             }
             catch (Exception e)
             {

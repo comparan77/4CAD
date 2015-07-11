@@ -208,7 +208,7 @@ namespace AppCasc.operation
             oSRD2.Bulto = numero;
             numero = 0;
 
-            int.TryParse(txt_piezasXbultoInc.Text, out numero);
+            int.TryParse(txt_piezasXbultoInc.Text.Replace(",", ""), out numero);
             oSRD2.Piezaxbulto = numero;
             numero = 0;
 

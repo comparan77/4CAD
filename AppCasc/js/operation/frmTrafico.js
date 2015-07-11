@@ -4,9 +4,23 @@
 
     function init() {
 
-        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        var up_trafico = $('#ctl00_body_up_trafico');
+        var btn_solicitar_cita = $('#ctl00_body_btn_solicitar_cita');
 
-        $('#ctl00_body_btn_solicitar_cita').button();
+        $(btn_solicitar_cita).button().click(function () {
+
+            var IsValid = true;
+            $('.validator').each(function () {
+                if ($(this).css('visibility') == 'visible') {
+                    IsValid = false;
+                    return false;
+                }
+            });
+            if (IsValid) {
+                $(this).val('Solicitando cita ...');
+                $(up_trafico).addClass('ajaxLoading');
+            }
+        });
 
         //inputs de horario <<ini>>
         $('#ctl00_body_txt_hora_carga_solicitada, #ctl00_body_txt_hora_cita').scroller({
@@ -22,8 +36,6 @@
         $('#ctl00_body_txt_fecha_solicitud, #ctl00_body_txt_fecha_carga_solicitada, #ctl00_body_txt_fecha_cita').datepicker({
             'dateFormat': 'dd/mm/yy'
         })
-
-        var up_trafico = $('#ctl00_body_up_trafico');
 
         $(up_trafico).panelReady(function () {
 
@@ -82,6 +94,16 @@
                 });
             });
 
+            $(btn_solicitar_cita).val('Solicitar Cita');
+            clearAfterApply();
+            $(up_trafico).removeClass('ajaxLoading');
+
+        });
+    }
+
+    function clearAfterApply() {
+        $('.cleanAfterApply').each(function () {
+            $(this).val('');
         });
     }
 

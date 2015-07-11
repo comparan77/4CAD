@@ -21,7 +21,8 @@ namespace AppCasc.operation
                 ControlsMng.fillTipoTransporte(ddlTipo_Transporte);
                 int IdTransporteTipo = 0;
                 int.TryParse(ddlTipo_Transporte.SelectedValue, out IdTransporteTipo);
-                fillSolicitudes();
+                fillSolicitudesSinCita();
+                fillSolicitudesConCita();
             }
             catch
             {
@@ -42,14 +43,27 @@ namespace AppCasc.operation
             return o;
         }
 
-        private void fillSolicitudes()
+        private void fillSolicitudesSinCita()
         {
             try
             {
-                grd_trafico.DataSource = SalidaCtrl.TraficoLstSinCita();
-                grd_trafico.DataBind();
+                grd_trafico_sin_citas.DataSource = SalidaCtrl.TraficoLstCitas();
+                grd_trafico_sin_citas.DataBind();
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        private void fillSolicitudesConCita()
+        {
+            try
+            {
+                grd_trafico_con_citas.DataSource = SalidaCtrl.TraficoLstCitas(true);
+                grd_trafico_con_citas.DataBind();
+            }
+            catch 
             {
                 throw;
             }
@@ -68,14 +82,15 @@ namespace AppCasc.operation
             }
             finally
             {
-                fillSolicitudes();
+                fillSolicitudesSinCita();
             }
         }
 
-        protected void grd_trafico_row_databound(object sender, GridViewRowEventArgs args)
+        protected void grd_trafico_citas_row_databound(object sender, GridViewRowEventArgs args)
         {
             try
             {
+                GridView grd_trafico = (GridView)sender;
                 if (args.Row.RowType == DataControlRowType.DataRow)
                 {
                     DropDownList ddl = args.Row.FindControl("ddl_transporte") as DropDownList;
@@ -89,10 +104,11 @@ namespace AppCasc.operation
             }
         }
 
-        protected void grd_trafico_row_command(object sender, GridViewCommandEventArgs args)
+        protected void grd_trafico_citas_row_command(object sender, GridViewCommandEventArgs args)
         {
             try
             {
+                GridView grd_trafico = (GridView)sender;
                 // Convert the row index stored in the CommandArgument
                 // property to an Integer.
                 int index = Convert.ToInt32(args.CommandArgument);
@@ -102,8 +118,8 @@ namespace AppCasc.operation
                 GridViewRow row = grd_trafico.Rows[index];
 
                 int id = Convert.ToInt32(grd_trafico.DataKeys[index][0]);
-                //int id_transporte_tipo = Convert.ToInt32(grd_trafico.DataKeys[index][1]);
-                //int id_tipo_carga = Convert.ToInt32(grd_trafico.DataKeys[index][2]);
+                //int id_transporte_tipo = Convert.ToInt32(grd_trafico_sin_citas.DataKeys[index][1]);
+                //int id_tipo_carga = Convert.ToInt32(grd_trafico_sin_citas.DataKeys[index][2]);
 
                 Salida_trafico o = new Salida_trafico();
                 o.Id = id;
@@ -138,8 +154,6 @@ namespace AppCasc.operation
                 o.Id_transporte_tipo_cita = Convert.ToInt32(ddl_transporte.SelectedValue);
 
                 SalidaCtrl.TraficoSaveCita(o);
-
-
             }
             catch (Exception e)
             {
@@ -147,7 +161,8 @@ namespace AppCasc.operation
             }
             finally
             {
-                fillSolicitudes();
+                fillSolicitudesSinCita();
+                fillSolicitudesConCita();
             }
         }
 
