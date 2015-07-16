@@ -169,7 +169,7 @@ namespace AppCasc.operation.arribos
                 numero = 0;
 
                 //Fecha
-                o.Fecha = DateTime.Today;
+                o.Fecha = Convert.ToDateTime(txt_fecha.Text);
 
                 //Hora
                 o.Hora = txt_hora_llegada.Text;
