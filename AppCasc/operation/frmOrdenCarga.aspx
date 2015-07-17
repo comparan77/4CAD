@@ -27,7 +27,7 @@
     <div class="divForm" style="margin-bottom: 10px;">
         <div>
             <label>Cita:</label>
-            <input type="text" id="txt_cita" readonly="readonly" class="txtNoBorder" />
+            <input type="text" id="txt_cita" readonly="readonly" class="txtNoBorder txtLarge" />
         </div>
         <div>
             <label>Destino:</label>

@@ -72,6 +72,9 @@
         $('#txt_linea').val('');
         $('#txt_unidad').val('');
         $('#tbody_remisiones').html('');
+        $('#td_pieza_total').html('0');
+        $('#td_bulto_total').html('0');
+        $('#td_pallet_total').html('0');
     }
 
     // Llena la tabla de remisiones
