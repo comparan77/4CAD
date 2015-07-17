@@ -60,6 +60,7 @@
       <siteMapNode url="~/operation/frmRemision.aspx" title="Remisión"  description="Remisión" />
       <siteMapNode url="~/operation/frmOrdenCarga.aspx" title="Orden de Carga"  description="Orden de Carga" />
       <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
+      <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración del Inventario"  description="Administración" />
     </siteMapNode>
     <siteMapNode roles="Ejecutivo" title="Procesos">
       <siteMapNode url="~/processStatus/frmProcess.aspx" title="Procesos"  description="Procesos" />
