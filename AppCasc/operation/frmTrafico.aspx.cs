@@ -40,6 +40,7 @@ namespace AppCasc.operation
             o.Id_transporte_tipo = Convert.ToInt32(ddlTipo_Transporte.SelectedValue);
             o.Id_tipo_carga = Convert.ToInt32(ddlTipoCarga.SelectedValue);
             o.Destino = txt_destino.Text.Trim();
+            o.Id_usuario_solicita = ((MstCasc)this.Master).getUsrLoged().Id;
             return o;
         }
 
@@ -123,37 +124,50 @@ namespace AppCasc.operation
 
                 Salida_trafico o = new Salida_trafico();
                 o.Id = id;
-                TextBox txt_folio_cita = row.FindControl("txt_folio_cita") as TextBox;
-                o.Folio_cita = txt_folio_cita.Text.Trim();
 
-                TextBox txt_fecha_cita = row.FindControl("txt_fecha_cita") as TextBox;
-                o.Fecha_cita = Convert.ToDateTime(txt_fecha_cita.Text);
+                switch (args.CommandName)
+                {
+                    case "ist":
+                        o.Id_usuario_asigna = ((MstCasc)this.Master).getUsrLoged().Id;
+                        TextBox txt_folio_cita = row.FindControl("txt_folio_cita") as TextBox;
+                        o.Folio_cita = txt_folio_cita.Text.Trim();
 
-                TextBox txt_hora_cita = row.FindControl("txt_hora_cita") as TextBox;
-                o.Hora_cita = txt_hora_cita.Text;
+                        TextBox txt_fecha_cita = row.FindControl("txt_fecha_cita") as TextBox;
+                        o.Fecha_cita = Convert.ToDateTime(txt_fecha_cita.Text);
 
-                TextBox txt_operador = row.FindControl("txt_operador") as TextBox;
-                o.Operador = txt_operador.Text;
+                        TextBox txt_hora_cita = row.FindControl("txt_hora_cita") as TextBox;
+                        o.Hora_cita = txt_hora_cita.Text;
 
-                TextBox txt_placa = row.FindControl("txt_placa") as TextBox;
-                o.Placa = txt_placa.Text;
+                        TextBox txt_operador = row.FindControl("txt_operador") as TextBox;
+                        o.Operador = txt_operador.Text;
 
-                TextBox txt_caja = row.FindControl("txt_caja") as TextBox;
-                o.Caja = txt_caja.Text;
+                        TextBox txt_placa = row.FindControl("txt_placa") as TextBox;
+                        o.Placa = txt_placa.Text;
 
-                TextBox txt_caja1 = row.FindControl("txt_caja1") as TextBox;
-                o.Caja1 = txt_caja1.Text;
+                        TextBox txt_caja = row.FindControl("txt_caja") as TextBox;
+                        o.Caja = txt_caja.Text;
 
-                TextBox txt_caja2 = row.FindControl("txt_caja2") as TextBox;
-                o.Caja2 = txt_caja2.Text;
+                        TextBox txt_caja1 = row.FindControl("txt_caja1") as TextBox;
+                        o.Caja1 = txt_caja1.Text;
 
-                HiddenField hf_id_transporte = row.FindControl("hf_id_transporte") as HiddenField;
-                o.Id_transporte = Convert.ToInt32(hf_id_transporte.Value);
+                        TextBox txt_caja2 = row.FindControl("txt_caja2") as TextBox;
+                        o.Caja2 = txt_caja2.Text;
 
-                DropDownList ddl_transporte = row.FindControl("ddl_transporte") as DropDownList;
-                o.Id_transporte_tipo_cita = Convert.ToInt32(ddl_transporte.SelectedValue);
+                        HiddenField hf_id_transporte = row.FindControl("hf_id_transporte") as HiddenField;
+                        o.Id_transporte = Convert.ToInt32(hf_id_transporte.Value);
 
-                SalidaCtrl.TraficoSaveCita(o);
+                        DropDownList ddl_transporte = row.FindControl("ddl_transporte") as DropDownList;
+                        o.Id_transporte_tipo_cita = Convert.ToInt32(ddl_transporte.SelectedValue);
+
+                        SalidaCtrl.TraficoSaveCita(o);
+                        break;
+                    case "dlt":
+                        o.Id_usuario_solicita = ((MstCasc)this.Master).getUsrLoged().Id;
+                        SalidaCtrl.TraficoDltCita(o);
+                        break;
+                    default:
+                        break;
+                }
             }
             catch (Exception e)
             {

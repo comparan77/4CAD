@@ -45,6 +45,13 @@
                 });
             });
 
+            $('.eliminarCitaSinAsignar').each(function () {
+                $(this).button().click(function () {
+                    if (!confirm('La cita sólo podrá ser eliminada por el solicitante, Desea eliminar esta cita?'))
+                        return false;
+                });
+            });
+
             $('.classTransporte_tipo').each(function () {
                 $(this).unbind('change').change(function () {
                     $(this).parent().next().children('select').html('');

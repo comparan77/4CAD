@@ -17,6 +17,8 @@ namespace ModelCasc.operation
         protected int _id_transporte_tipo;
         protected int? _id_transporte_tipo_cita;
         protected int _id_tipo_carga;
+        protected int _id_usuario_solicita;
+        protected int? _id_usuario_asigna;
         protected string _destino;
         protected DateTime? _fecha_cita;
         protected string _hora_cita;
@@ -38,6 +40,8 @@ namespace ModelCasc.operation
         public int Id_transporte_tipo { get { return _id_transporte_tipo; } set { _id_transporte_tipo = value; } }
         public int? Id_transporte_tipo_cita { get { return _id_transporte_tipo_cita; } set { _id_transporte_tipo_cita = value; } }
         public int Id_tipo_carga { get { return _id_tipo_carga; } set { _id_tipo_carga = value; } }
+        public int Id_usuario_solicita { get { return _id_usuario_solicita; } set { _id_usuario_solicita = value; } }
+        public int? Id_usuario_asigna { get { return _id_usuario_asigna; } set { _id_usuario_asigna = value; } }
         public string Destino { get { return _destino; } set { _destino = value; } }
         public DateTime? Fecha_cita { get { return _fecha_cita; } set { _fecha_cita = value; } }
         public string Hora_cita { get { return _hora_cita; } set { _hora_cita = value; } }
@@ -53,6 +57,8 @@ namespace ModelCasc.operation
         public string Transporte_tipo_cita { get; set; }
         public string Tipo_carga { get; set; }
         public string Transporte { get; set; }
+        public string Solicitante { get; set; }
+        public string Asignante { get; set; }
         public List<Salida_remision> PLstSalRem { get; set; }
         public Transporte PTransporte { get; set; }
         public Transporte_tipo PTransporteTipo { get; set; }
@@ -68,6 +74,8 @@ namespace ModelCasc.operation
             this._id_transporte_tipo = 0;
             this._id_transporte_tipo_cita = null;
             this._id_tipo_carga = 0;
+            this._id_usuario_solicita = 0;
+            this._id_usuario_asigna = null; 
             this._destino = String.Empty;
             this._fecha_cita = null;
             this._hora_cita = null;
