@@ -560,5 +560,40 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void getByReferencia()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(14);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Entrada_inventario>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entrada_inventario o = new Entrada_inventario();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void udtCodigo()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
+                addParameters(13);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

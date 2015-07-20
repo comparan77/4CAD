@@ -14,7 +14,8 @@ namespace AppCasc.handlers
     /// <summary>
     /// Summary description for Operation
     /// </summary>
-    public class Operation : IHttpHandler
+    
+    public class Operation : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
     {
         string response = string.Empty;
         string referencia = string.Empty;
@@ -36,7 +37,7 @@ namespace AppCasc.handlers
             context.Response.ContentType = "application/json";
             context.Response.ContentEncoding = Encoding.UTF8;
             string operation = context.Request["op"].ToString();
-
+            
             try
             {
                 switch (operation)
@@ -61,6 +62,13 @@ namespace AppCasc.handlers
                     case "stockcode":
                         int.TryParse(context.Request["key"].ToString(), out id);
                         response = JsonConvert.SerializeObject(EntradaCtrl.FondeoGetById(id));
+                        break;
+                    case "inventoryCodigo":
+                        int.TryParse(context.Request["key"].ToString(), out id);
+                        if(EntradaCtrl.InventarioCambiosChangeCodigo(id, ((Usuario)context.Session["userCasc"]).Id, context.Request["codigo"].ToString().Trim()) > -1)
+                            response = JsonConvert.SerializeObject("El código ha sido cambiado exitosamente");
+                        else
+                            response = JsonConvert.SerializeObject("El código NO ha sido cambiado");
                         break;
                     case "maquilaGet":
                         int.TryParse(context.Request["key"].ToString(), out id);
@@ -100,6 +108,9 @@ namespace AppCasc.handlers
                         break;
                     case "cita":
                         response = Citas(context);
+                        break;
+                    case "fondeoCodigoOrden":
+                        response = JsonConvert.SerializeObject(EntradaCtrl.InventarioGetByReferencia(context.Request["key"].ToString()));
                         break;
                     default:
                         break;

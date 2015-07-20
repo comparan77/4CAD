@@ -1155,6 +1155,27 @@ namespace ModelCasc.operation
             }
             return ExisteEntradaPrevia;
         }
+
+        public static List<Entrada_fondeo> FondeoGetForKardex(string referencia)
+        {
+            List<Entrada_fondeo> lst = new List<Entrada_fondeo>();
+            try
+            {
+                Entrada_fondeo o = new Entrada_fondeo();
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                o.Referencia = referencia.Trim();
+                o.Folio = referencia.Trim();
+                oMng.O_Entrada_fondeo = o;
+                oMng.selforKardex();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         #endregion
 
         #region Entrada Inventario - Control piso
@@ -1236,6 +1257,21 @@ namespace ModelCasc.operation
             {
                 if (trans != null)
                     GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static List<Entrada_inventario> InventarioGetByReferencia(string referencia)
+        {
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng() { O_Entrada_inventario = new Entrada_inventario() { Referencia = referencia } };
+                oMng.getByReferencia();
+                return oMng.Lst;
+            }
+            catch 
+            {
+                
                 throw;
             }
         }
@@ -1470,6 +1506,23 @@ namespace ModelCasc.operation
                 throw;
             }
             return lst;
+        }
+
+        #endregion
+
+        #region Entrada Inventario - Cambios
+
+        public static int InventarioCambiosChangeCodigo(int id, int id_usuario, string codigo)
+        {
+            try
+            {
+                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng() { O_Entrada_inventario_cambios = new Entrada_inventario_cambios() { Id_entrada_inventario = id, Id_usuario = id_usuario, Codigo = codigo } };
+                return oMng.udtCodigo();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         #endregion

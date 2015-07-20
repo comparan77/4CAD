@@ -422,5 +422,27 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void selforKardex()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_fondeo");
+                addParameters(12);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Entrada_fondeo>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entrada_fondeo o = new Entrada_fondeo();
+                    o.Aduana = dr["aduana"].ToString();
+                    o.Referencia = dr["referencia"].ToString();
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
