@@ -61,9 +61,6 @@
       <siteMapNode url="~/operation/frmOrdenCarga.aspx" title="Orden de Carga"  description="Orden de Carga" />
       <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
     </siteMapNode>
-    <siteMapNode roles="Ejecutivo" title="Procesos">
-      <siteMapNode url="~/processStatus/frmProcess.aspx" title="Procesos"  description="Procesos" />
-    </siteMapNode>
     <siteMapNode roles="*" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
       <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />
