@@ -452,16 +452,16 @@ var MngRemision = function () {
                 else {
                     $(data).each(function (i, obj) {
                         var liCita = '<li>';
-                        liCita += '<font color="#0d5fb3">Folio:&nbsp;</font>' + obj.Folio_cita + '<font color="#0d5fb3">&nbsp;Fecha:&nbsp;</font>' + new Date(obj.Fecha_cita.substr(0, 10)).toLocaleDateString();
+                        liCita += '<font color="#0d5fb3">Folio:&nbsp;</font>' + obj.Folio_cita + '<font color="#0d5fb3">&nbsp;Fecha:&nbsp;</font>' + moment(obj.Fecha_cita).format("DD/MM/YYYY");
                         liCita += '&nbsp;<font color="#0d5fb3">Hora:</font>&nbsp;' + obj.Hora_cita;
                         liCita += '<div style="position: relative">';
                         liCita += '<ul>';
                         liCita += '<li><b>Destino:</b> ' + obj.Destino + '</li>';
                         liCita += '<li><b>Línea:</b> ' + obj.Transporte + '</li>';
                         liCita += '<li><b>Operador:</b> ' + obj.Operador + '</li>';
-                        liCita += '<li><b>Tipo:</b> ' + obj.Transporte_tipo + '</li>';
+                        liCita += '<li><b>Tipo:</b> ' + obj.Transporte_tipo_cita + '</li>';
                         liCita += '<li><b>Placa:</b> ' + obj.Placa + '</li>';
-                        liCita += '<li><b>Fecha Carga Solicitada:</b> ' + new Date(obj.Fecha_carga_solicitada.substr(0, 10)).toLocaleDateString() + '</li>';
+                        liCita += '<li><b>Fecha Carga Solicitada:</b> ' + moment(obj.Fecha_carga_solicitada).format('DD/MM/YYYY') + '</li>';
                         liCita += '<li><b>Hora Carga Solicitada:</b> ' + obj.Hora_carga_solicitada + '</li>';
                         liCita += '</ul>'
                         liCita += '<button class="btn_sel_cita" id="btn_cita_' + obj.Id + '" style="position: absolute; top: 20px; right: 20px;">Seleccionar</button>';

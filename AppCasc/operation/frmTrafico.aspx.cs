@@ -127,7 +127,7 @@ namespace AppCasc.operation
 
                 switch (args.CommandName)
                 {
-                    case "ist":
+                    case "udt":
                         o.Id_usuario_asigna = ((MstCasc)this.Master).getUsrLoged().Id;
                         TextBox txt_folio_cita = row.FindControl("txt_folio_cita") as TextBox;
                         o.Folio_cita = txt_folio_cita.Text.Trim();
