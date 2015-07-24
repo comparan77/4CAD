@@ -100,6 +100,7 @@ namespace AppCasc.operation
                     grd_reviewFile.AutoGenerateColumns = true;
                     grd_reviewFile.DataSource = lst;
                     grd_reviewFile.DataBind();
+                    usrControlClienteMercancia1.fillNegocio();
                 }
                 else
                     validaVendors();

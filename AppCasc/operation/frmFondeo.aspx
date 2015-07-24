@@ -1,7 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmFondeo.aspx.cs" Inherits="AppCasc.operation.frmFondeo" %>
+<%@ Register src="../webControls/usrControlClienteMercancia.ascx" tagname="usrControlClienteMercancia" tagprefix="uc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+
+    <link href="../css/jquery.combobox.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery.combobox.js" type="text/javascript"></script>
+    <script src="../js/webControls/crtlClienteMercancia.js?v1.1.150619_1446" type="text/javascript"></script>
+
     <script src="../js/operation/frmFondeo.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -60,6 +67,11 @@
 </div>
 
 <div>
+    <uc1:usrControlClienteMercancia ID="usrControlClienteMercancia1" 
+        runat="server" />
+</div>
+
+<div>
 
 <div><asp:Label runat="server" ID="lbl_NoFolios"></asp:Label></div>
 <div>
@@ -108,6 +120,7 @@
     </ContentTemplate>
     </asp:UpdatePanel>
 </div>
+    
 </div>
 
 </asp:Content>

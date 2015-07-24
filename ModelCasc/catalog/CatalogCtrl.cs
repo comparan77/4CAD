@@ -796,6 +796,19 @@ namespace ModelCasc.catalog
             }
         }
 
+        public static List<string> Cliente_mercanciaGetNegocios()
+        {
+            try
+            {
+                Cliente_mercanciaMng oMng = new Cliente_mercanciaMng();
+                return oMng.getNegocioRecurrente();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Tipos de Carga
@@ -953,7 +966,5 @@ namespace ModelCasc.catalog
 
             return Csv + "]";
         }
-
-        
     }
 }

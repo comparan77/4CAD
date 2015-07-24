@@ -244,5 +244,25 @@ namespace ModelCasc.catalog
                 throw;
             }
         }
+
+        internal List<string> getNegocioRecurrente()
+        {
+            List<string> lstNegocio = new List<string>();
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_mercancia");
+                addParameters(8);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    lstNegocio.Add(dr["negocio"].ToString().Trim());
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lstNegocio;
+        }
     }
 }
