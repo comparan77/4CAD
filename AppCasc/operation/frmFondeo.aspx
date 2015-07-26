@@ -7,7 +7,7 @@
 
     <link href="../css/jquery.combobox.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery.combobox.js" type="text/javascript"></script>
-    <script src="../js/webControls/crtlClienteMercancia.js?v1.1.150619_1446" type="text/javascript"></script>
+    <script src="../js/webControls/ctrlClienteMercancia.js?v1.1.150619_1446" type="text/javascript"></script>
 
     <script src="../js/operation/frmFondeo.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>

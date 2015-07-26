@@ -62,12 +62,6 @@
       <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
       <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración del Inventario"  description="Administración" />
     </siteMapNode>
-<<<<<<< HEAD
-    <!--<siteMapNode roles="Ejecutivo" title="Procesos">
-      <siteMapNode url="~/processStatus/frmProcess.aspx" title="Procesos"  description="Procesos" />
-    </siteMapNode>-->
-=======
->>>>>>> master
     <siteMapNode roles="*" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
       <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />

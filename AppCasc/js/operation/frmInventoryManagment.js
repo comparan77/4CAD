@@ -1,4 +1,5 @@
-﻿var lstCodigoOrden = [];
+﻿//var oCrtlCM;
+var lstCodigoOrden = [];
 
 var BeanCodigoOrden = function (id, codigo, orden) {
     this.Id = id;
@@ -14,7 +15,7 @@ var MngInventoryManagment = function () {
         initControls();
     }
 
-    function inventarioChangeCodigo(id_entrada_inventario, codigo) {
+    function inventarioChangeCodigo(id_entrada_inventario, codigo, oCrtlCM) {
 
         $.ajax({
             type: "POST",
@@ -26,8 +27,15 @@ var MngInventoryManagment = function () {
 
             },
             success: function (data) {
-                //var n = str.indexOf("exitosamente");
-                alert(data);
+                var n = data.indexOf("existe");
+                if (n > 0) {
+                    if (confirm(data + '. Desea dar de alta la nueva mercancía?')) {
+                        oCrtlCM.OpenFrm(codigo);
+                    }
+                }
+                else {
+                    alert(data);
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
@@ -38,7 +46,7 @@ var MngInventoryManagment = function () {
 
     }
 
-    function fondeoGetById(idFondeo) {
+    function fondeoGetById(idFondeo, oCrtlCM) {
 
         $.ajax({
             type: 'GET',
@@ -84,7 +92,7 @@ var MngInventoryManagment = function () {
                     }
                     else {
 
-                        inventarioChangeCodigo($('#spn_edit_codigo').attr('id_entrada_inventario'), $(this).next().val());
+                        inventarioChangeCodigo($('#spn_edit_codigo').attr('id_entrada_inventario'), $(this).next().val(), oCrtlCM);
 
                         $(this).removeClass('ui-icon-disk')
                         $(this).addClass('ui-icon-pencil')
@@ -104,7 +112,7 @@ var MngInventoryManagment = function () {
 
     }
 
-    function fill_Cod_OC() {
+    function fill_Cod_OC(oCrtlCM) {
 
         $('#tbdy_oc_cod').html('');
 
@@ -121,7 +129,7 @@ var MngInventoryManagment = function () {
             $(this).unbind('click').click(function () {
                 //alert($(this).attr('id'));
                 var idFondeo = $(this).attr('id').split('_')[1] * 1;
-                fondeoGetById(idFondeo);
+                fondeoGetById(idFondeo, oCrtlCM);
             });
         });
     }
@@ -132,7 +140,7 @@ var MngInventoryManagment = function () {
 
     }
 
-    function load_Cod_OC(referencia) {
+    function load_Cod_OC(referencia, oCrtlCM) {
 
         if (lstCodigoOrden.length == 0) {
 
@@ -152,7 +160,7 @@ var MngInventoryManagment = function () {
                     $.each(data, function (i, o) {
                         lstCodigoOrden.push(o);
                     });
-                    fill_Cod_OC();
+                    fill_Cod_OC(oCrtlCM);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     var oErrorMessage = new ErrorMessage();
@@ -162,7 +170,7 @@ var MngInventoryManagment = function () {
             });
         }
         else
-            fill_Cod_OC();
+            fill_Cod_OC(oCrtlCM);
 
     }
 
@@ -184,6 +192,9 @@ var MngInventoryManagment = function () {
         var div_search = $('#div-search');
         var h_referencia = $('#h_referencia');
 
+        oCrtlCM = new ctrlClienteMercancia();
+        oCrtlCM.Init();
+
         $(tabs).tabs({
             activate: function (event, ui) {
                 switch (ui.newPanel.attr('id')) {
@@ -191,7 +202,7 @@ var MngInventoryManagment = function () {
                         load_Inf_Gral(h_referencia.val());
                         break;
                     case 'tabs-2':
-                        load_Cod_OC(h_referencia.val());
+                        load_Cod_OC(h_referencia.val(), oCrtlCM);
                         break;
                 }
             }
