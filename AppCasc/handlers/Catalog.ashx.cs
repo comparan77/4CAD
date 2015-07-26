@@ -5,6 +5,7 @@ using System.Web;
 using ModelCasc.catalog;
 using System.Text;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace AppCasc.handlers
 {
@@ -13,6 +14,7 @@ namespace AppCasc.handlers
     /// </summary>
     public class Catalog : IHttpHandler
     {
+        string jsonData = string.Empty;
         public bool IsReusable
         {
             get
@@ -34,6 +36,12 @@ namespace AppCasc.handlers
                 {
                     case "cliente_mercancia":
                         response = CatalogCtrl.ToCSV(CatalogCtrl.Cliente_mercanciafillByCliente(Convert.ToInt32(context.Request["Idcliente"]), context.Request["codigo"].ToString()).Cast<Object>().ToList());
+                        break;
+                    case "cliente_mercanciaAdd":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Cliente_mercancia oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                        CatalogCtrl.Cliente_mercanciaAdd(oCM);
+                        response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
                         break;
                     case "documento":
                         response = CatalogCtrl.DocumentoLstToJson();

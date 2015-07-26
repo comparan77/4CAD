@@ -1,4 +1,5 @@
-﻿var Fondeo = function () {
+﻿var oCrtlCM;
+var Fondeo = function () {
 
     this.Init = init;
 
@@ -79,7 +80,33 @@
             //fu_Folios.tooltip({ position: { my: "left+15 center", at: "right center"} });
             fu_Folios.button();
 
+            //Captura de codigos
+            
+            oCrtlCM = new ctrlClienteMercancia();
+            oCrtlCM.Init();
+            capturaCodigoVendor();
         });
+
+        function capturaCodigoVendor() {
+            var lbl_NoFoliosMsg = $('#ctl00_body_lbl_NoFoliosMsg');
+            var grd_reviewFile = $('#ctl00_body_grd_reviewFile');
+            var idx = $(lbl_NoFoliosMsg).html().indexOf('codigos no existentes');
+            if (idx > 0) {
+                $(grd_reviewFile).children('tbody').children('tr').each(function () {
+                    var td = $(this).children('td:eq(6)');
+                    var codigo = $(td).html();
+                    $(td).html('').append('<a id="lnk_' + codigo + '" class="newCode" href="#">' + codigo + '<span class="ui-icon ui-icon-plus"></span></a>');
+                });
+
+                $('.newCode').each(function () {
+                    $(this).click(function () {
+                        var cod = $(this).attr('id').split('_')[1];
+                        oCrtlCM.OpenFrm(cod);
+                        return false;
+                    });
+                });
+            }
+        }
     }
 
     //

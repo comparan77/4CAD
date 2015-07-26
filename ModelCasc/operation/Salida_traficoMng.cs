@@ -49,6 +49,13 @@ namespace ModelCasc.operation
                 GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo_cita", DbType.Int32, this._oSalida_trafico.Id_transporte_tipo_cita);
 
             GenericDataAccess.AddInParameter(this.comm, "?P_id_tipo_carga", DbType.Int32, this._oSalida_trafico.Id_tipo_carga);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario_solicita", DbType.Int32, this._oSalida_trafico.Id_usuario_solicita);
+
+            if (this.O_Salida_trafico.Id_usuario_asigna == null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario_asigna", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario_asigna", DbType.Int32, this._oSalida_trafico.Id_usuario_asigna);
+
             GenericDataAccess.AddInParameter(this.comm, "?P_destino", DbType.String, this._oSalida_trafico.Destino);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_cita", DbType.DateTime, this._oSalida_trafico.Fecha_cita);
             GenericDataAccess.AddInParameter(this.comm, "?P_hora_cita", DbType.String, this._oSalida_trafico.Hora_cita);
@@ -116,6 +123,22 @@ namespace ModelCasc.operation
                     int.TryParse(dr["id_tipo_carga"].ToString(), out entero);
                     o.Id_tipo_carga = entero;
                     entero = 0;
+                }
+                if (dr["id_usuario_solicita"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_usuario_solicita"].ToString(), out entero);
+                    o.Id_usuario_solicita = entero;
+                    entero = 0;
+                }
+                if (dr["id_usuario_asigna"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_usuario_asigna"].ToString(), out entero);
+                    o.Id_usuario_asigna = entero;
+                    entero = 0;
+                }
+                else
+                {
+                    o.Id_usuario_asigna = null;
                 }
                 o.Destino = dr["destino"].ToString();
                 if (dr["fecha_cita"] != DBNull.Value)
@@ -258,6 +281,8 @@ namespace ModelCasc.operation
                     o.Transporte_tipo_cita = dr["transporte_tipo_cita"].ToString();
                     o.Tipo_carga = dr["tipo_carga"].ToString();
                     o.Transporte = dr["transporte"].ToString();
+                    o.Solicitante = dr["solicitante"].ToString();
+                    o.Asignante = dr["asignante"].ToString();
                     this._lst.Add(o);
                 }
             }

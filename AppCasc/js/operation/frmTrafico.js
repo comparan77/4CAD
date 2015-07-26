@@ -5,6 +5,7 @@
     function init() {
 
         var up_trafico = $('#ctl00_body_up_trafico');
+        var up_trafico_con_cita = $('#ctl00_body_up_trafico_con_cita');
         var btn_solicitar_cita = $('#ctl00_body_btn_solicitar_cita');
 
         $(btn_solicitar_cita).button().click(function () {
@@ -37,11 +38,79 @@
             'dateFormat': 'dd/mm/yy'
         })
 
+        $(up_trafico_con_cita).panelReady(function () {
+
+            $('.activaGuardarCita').each(function () {
+                $(this).button({
+                    disabled: true
+                }).click(function () { 
+                    
+                });
+            });
+
+            $('.classTransporte_tipo').each(function () {
+                $(this).unbind('change').change(function () {
+                    $(this).parent().next().children('select').html('');
+                    tipo_transporte_change($(this));
+                    validaCamposRequeridos($(this));
+                });
+            });
+
+            $('.citaReq').each(function () {
+                $(this).unbind('change').change(function () {
+                    var valido = validaCamposRequeridos($(this));
+                });
+            });
+
+            $('.txt_fecha').each(function () {
+                $(this).datepicker({
+                    'dateFormat': 'dd/mm/yy'
+                })
+            });
+
+            $('.txt_hora').each(function () {
+                $(this).scroller({
+                    preset: 'time',
+                    theme: 'default',
+                    display: 'modal',
+                    mode: 'clickpick',
+                    timeFormat: 'HH:ii:ss'
+                });
+            });
+
+            $('.spn_TransporteGetByTipo').each(function () {
+                $(this).click(function () {
+
+                    var id_cita = $(this).parent().prev().children('input').val() * 1;
+                    var id_transporte_tipo = $(this).parent().prev().children('select').val() * 1;
+                    getTransporteByTipo(id_transporte_tipo, id_cita, $(this).parent().children('select'));
+                });
+            });
+
+            $('.clsLnkFolioCita').each(function () {
+                $(this).click(function () {
+                    var id = $(this).attr('id').split('_')[3] * 1;
+                    $('#lbl_folio_cita_' + id).next('input').val($(this).html());
+                    $('#lbl_fecha_cita_' + id).next('input').val($('#spn_fecha_cita_' + id).html());
+                    $('#lbl_hora_cita_' + id).next('input').val($('#spn_hora_cita_' + id).html());
+                    return false;
+                });
+            });
+
+        });
+
         $(up_trafico).panelReady(function () {
 
             $('.activaGuardarCita').each(function () {
                 $(this).button({
                     disabled: true
+                });
+            });
+
+            $('.eliminarCitaSinAsignar').each(function () {
+                $(this).button().click(function () {
+                    if (!confirm('La cita sólo podrá ser eliminada por el solicitante, Desea eliminar esta cita?'))
+                        return false;
                 });
             });
 

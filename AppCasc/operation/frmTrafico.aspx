@@ -72,12 +72,13 @@
             
             <asp:TemplateField HeaderText="Sin Cita Proporcionada">
             <ItemTemplate>
+                <p><span>Solicita:</span>&nbsp;<span class="spn_title"><%# Eval("solicitante") %></span></p>
                 <ol>
                     <li><span>Folio:</span>&nbsp;<a class="clsLnkFolioCita" id='<%# "lnk_folio_cita_" + Eval("Id") %>' href="#"><%# Eval("Folio_cita") %></a></li>
                     <li><span>Fecha:</span>&nbsp;<span id='<%# "spn_fecha_cita_" + Eval("Id") %>'><%# Eval("Fecha_cita", "{0:dd/MM/yyyy}") %></span></li>
                     <li><span>Hora:</span>&nbsp;<span id='<%# "spn_hora_cita_" + Eval("Id") %>'><%# Eval("Hora_cita") %></span></li>
                     <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte") %></span></li>
-                    <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte_tipo_cita") %></span></li>
+                    <li><span>Tipo:</span>&nbsp;<span><%# Eval("Transporte_tipo_cita") %></span></li>
                     <li class="hidden"><span>Operador:</span>&nbsp;<span><%# Eval("Operador") %></span></li>
                     <li class="hidden"><span>Placas:</span>&nbsp;<span><%# Eval("Placa") %></span></li>
                     <li class="hidden"><span>Caja:</span>&nbsp;<span><%# Eval("Caja") %></span></li>
@@ -134,7 +135,8 @@
                             <asp:TextBox CssClass="citaNoReq txt_caja2" runat="server" ID="txt_caja2"></asp:TextBox>
                         </div>
                         <div>
-                            <asp:Button CausesValidation="false" CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
+                            <asp:Button CausesValidation="false" CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" CommandName="udt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
+                            <asp:Button CausesValidation="false" CssClass="eliminarCitaSinAsignar" runat="server" ID="btn_eliminar_cita" Text="Eliminar Cita" CommandName="dlt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
                         </div>
                     </div>
                     
@@ -170,12 +172,18 @@
             
             <asp:TemplateField HeaderText="Cita Proporcionada">
             <ItemTemplate>
+                <p>
+                    <span>Solicita:</span>&nbsp;<span class="spn_title"><%# Eval("solicitante") %></span>
+                    <br />
+                    <span>Asigna:</span>&nbsp;<span class="spn_title"><%# Eval("asignante") %></span>
+                </p>
+
                 <ol>
                     <li><span>Folio:</span>&nbsp;<a class="clsLnkFolioCita" id='<%# "lnk_folio_cita_" + Eval("Id") %>' href="#"><%# Eval("Folio_cita") %></a></li>
                     <li><span>Fecha:</span>&nbsp;<span id='<%# "spn_fecha_cita_" + Eval("Id") %>'><%# Eval("Fecha_cita", "{0:dd/MM/yyyy}") %></span></li>
                     <li><span>Hora:</span>&nbsp;<span id='<%# "spn_hora_cita_" + Eval("Id") %>'><%# Eval("Hora_cita") %></span></li>
                     <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte") %></span></li>
-                    <li><span>Línea:</span>&nbsp;<span><%# Eval("Transporte_tipo_cita") %></span></li>
+                    <li><span>Tipo:</span>&nbsp;<span><%# Eval("Transporte_tipo_cita") %></span></li>
                     <li class="hidden"><span>Operador:</span>&nbsp;<span><%# Eval("Operador") %></span></li>
                     <li class="hidden"><span>Placas:</span>&nbsp;<span><%# Eval("Placa") %></span></li>
                     <li class="hidden"><span>Caja:</span>&nbsp;<span><%# Eval("Caja") %></span></li>
@@ -232,7 +240,7 @@
                             <asp:TextBox CssClass="citaNoReq txt_caja2" runat="server" ID="txt_caja2"></asp:TextBox>
                         </div>
                         <div>
-                            <asp:Button CausesValidation="false" CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
+                            <asp:Button CausesValidation="false" CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" CommandName="udt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
                         </div>
                     </div>
                     

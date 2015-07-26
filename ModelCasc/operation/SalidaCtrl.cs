@@ -710,6 +710,19 @@ namespace ModelCasc.operation
             return lst;
         }
 
+        public static void TraficoDltCita(Salida_trafico o)
+        {
+            try
+            {
+                Salida_traficoMng oMng = new Salida_traficoMng() { O_Salida_trafico = o };
+                oMng.dlt();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Salida Remision

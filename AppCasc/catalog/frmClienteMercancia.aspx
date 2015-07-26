@@ -20,7 +20,7 @@
     </div>
     <div>
         <label>Negocio:</label>
-        <asp:TextBox runat="server" ID="txt_negocio"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txt_negocio" MaxLength="2"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" ID="rfv_negocio" ControlToValidate="txt_negocio" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
     </div>
     <div>
@@ -35,7 +35,7 @@
     </div>
     <div>
         <label>Unidad:</label>
-        <asp:TextBox runat="server" ID="txt_unidad"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txt_unidad" MaxLength="2"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" ID="rfv_unidad" ControlToValidate="txt_unidad" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
     </div>
     <hr />
