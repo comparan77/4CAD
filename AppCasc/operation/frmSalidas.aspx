@@ -211,6 +211,7 @@
 <div>
     <label>Sello:</label>
     <asp:TextBox id="txt_sello" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvSello" ControlToValidate="txt_sello" ErrorMessage="Es necesario capturar el sello"></asp:RequiredFieldValidator>
 </div>
 <div>
     <label>Carta Porte:</label>

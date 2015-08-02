@@ -57,8 +57,8 @@ namespace AppCasc.catalog
             RolMng oMng = new RolMng();
             oMng.fillLst();
             chkLstRol.DataSource = oMng.Lst;
-            chkLstRol.DataTextField = "nombre";
-            chkLstRol.DataValueField = "id";
+            chkLstRol.DataTextField = "descripcion";
+            chkLstRol.DataValueField = "nombre";
             chkLstRol.DataBind();
         }
 
@@ -89,7 +89,7 @@ namespace AppCasc.catalog
                     string[] strRoles = Roles.GetRolesForUser(user.UserName);
                     foreach (string str_rol in strRoles)
                     {
-                        chkLstRol.Items.FindByText(str_rol).Selected = true;
+                        chkLstRol.Items.FindByValue(str_rol).Selected = true;
                     }
                 }
                 //ddlRol.SelectedValue = oU.Id_rol.ToString();
@@ -143,7 +143,7 @@ namespace AppCasc.catalog
                 foreach (ListItem item in chkLstRol.Items)
                 {
                     if (item.Selected)
-                        Roles.AddUserToRole(user.UserName, item.Text);
+                        Roles.AddUserToRole(user.UserName, item.Value);
                 }
             }
             catch

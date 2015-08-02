@@ -175,6 +175,15 @@ namespace AppCasc.operation {
         protected global::AppCasc.webControls.usrControlClienteMercancia usrControlClienteMercancia1;
         
         /// <summary>
+        /// usrControlClienteVendor1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AppCasc.webControls.usrControlClienteVendor usrControlClienteVendor1;
+        
+        /// <summary>
         /// lbl_NoFolios control.
         /// </summary>
         /// <remarks>

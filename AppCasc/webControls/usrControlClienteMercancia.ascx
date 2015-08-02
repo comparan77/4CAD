@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="usrControlClienteMercancia.ascx.cs" Inherits="AppCasc.webControls.usrControlClienteMercancia" %>
-<div id="ctrlClienteMercancia" title="Nueva Mercancia" class="divForm">
+<div id="ctrlClienteMercancia" title="Nueva Mercancia" class="divForm hidden">
     <div>
         <label>Clase:</label>
         <select id="txt_clase">
@@ -14,11 +14,11 @@
     </div>
     <div>
         <label>C&oacute;digo:</label>
-        <input type="text" id="txt_codigo" />
+        <input type="text" id="txt_codigo" class="requeridoCM" />
     </div>
     <div>
         <label>Nombre:</label>
-        <input type="text" id="txt_nombre" />
+        <input type="text" id="txt_nombre" class="requeridoCM" />
     </div>
     <div>
         <label>Unidad:</label>

@@ -32,6 +32,7 @@ namespace ModelCasc.catalog
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oRol.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oRol.Nombre);
+            GenericDataAccess.AddInParameter(this.comm, "?P_descripcion", DbType.String, this._oRol.Descripcion);
         }
 
         public void fillAllLst()
@@ -49,6 +50,7 @@ namespace ModelCasc.catalog
                     o.Id = entero;
                     entero = 0;
                     o.Nombre = dr["nombre"].ToString();
+                    o.Descripcion = dr["descripcion"].ToString();
                     if (dr["IsActive"] != null)
                     {
                         bool.TryParse(dr["IsActive"].ToString(), out logica);
@@ -78,6 +80,7 @@ namespace ModelCasc.catalog
                     o.Id = entero;
                     entero = 0;
                     o.Nombre = dr["nombre"].ToString();
+                    o.Descripcion = dr["descripcion"].ToString();
                     this._lst.Add(o);
                 }
             }
@@ -98,6 +101,7 @@ namespace ModelCasc.catalog
                 {
                     DataRow dr = dt.Rows[0];
                     this._oRol.Nombre = dr["nombre"].ToString();
+                    this._oRol.Descripcion = dr["descripcion"].ToString();
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");

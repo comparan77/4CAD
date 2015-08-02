@@ -1,4 +1,6 @@
 ﻿var oCrtlCM;
+var oCtrlCV;
+
 var Fondeo = function () {
 
     this.Init = init;
@@ -81,15 +83,19 @@ var Fondeo = function () {
             fu_Folios.button();
 
             //Captura de codigos
-            
+
             oCrtlCM = new ctrlClienteMercancia();
-            oCrtlCM.Init();
+
+            oCtrlCV = new ctrlClienteVendor();
+
             capturaCodigoVendor();
         });
 
         function capturaCodigoVendor() {
             var lbl_NoFoliosMsg = $('#ctl00_body_lbl_NoFoliosMsg');
             var grd_reviewFile = $('#ctl00_body_grd_reviewFile');
+            
+            //codigos
             var idx = $(lbl_NoFoliosMsg).html().indexOf('codigos no existentes');
             if (idx > 0) {
                 $(grd_reviewFile).children('tbody').children('tr').each(function () {
@@ -106,6 +112,25 @@ var Fondeo = function () {
                     });
                 });
             }
+
+            //vendors
+            var idv = $(lbl_NoFoliosMsg).html().indexOf('vendors no existentes');
+            if (idv > 0) {
+                $(grd_reviewFile).children('tbody').children('tr').each(function () {
+                    var td = $(this).children('td:eq(8)');
+                    var codigo = $(td).html();
+                    $(td).html('').append('<a id="lnk_' + codigo + '" class="newVendor" href="#">' + codigo + '<span class="ui-icon ui-icon-plus"></span></a>');
+                });
+
+                $('.newVendor').each(function () {
+                    $(this).click(function () {
+                        var cod = $(this).attr('id').split('_')[1];
+                        oCtrlCV.OpenFrm(cod);
+                        return false;
+                    });
+                });
+            }
+
         }
     }
 

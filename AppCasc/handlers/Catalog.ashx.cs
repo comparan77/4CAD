@@ -43,6 +43,12 @@ namespace AppCasc.handlers
                         CatalogCtrl.Cliente_mercanciaAdd(oCM);
                         response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
                         break;
+                    case "cliente_vendorAdd":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Cliente_vendor oCV = JsonConvert.DeserializeObject<Cliente_vendor>(jsonData);
+                        CatalogCtrl.Cliente_vendorAdd(oCV);
+                        response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
+                        break;
                     case "documento":
                         response = CatalogCtrl.DocumentoLstToJson();
                         break;

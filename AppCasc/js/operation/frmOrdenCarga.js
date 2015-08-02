@@ -36,6 +36,21 @@
                 // change the border color just for fun
                 // $(this).css('border-color', 'red');
 
+            },
+            eventRender: function (event, element) {
+                element.qtip({
+                    content: event.title,
+                    style: {
+                        background: 'black',
+                        color: '#FFFFFF'
+                    },
+                    position: {
+                        corner: {
+                            target: 'center',
+                            tooltip: 'bottomMiddle'
+                        }
+                    }
+                });
             }
         });
     }

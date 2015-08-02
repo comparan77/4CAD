@@ -3,6 +3,9 @@
     <link href="../css/mobiscroll-2.1-beta.custom.min.css" rel="stylesheet" type="text/css" />
     <link href="../css/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
+    <link href="../js/qtip/jquery.qtip.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="../js/qtip/jquery.qtip.min.js" type="text/javascript"></script>
     <script src="../js/mobiscroll-2.1-beta.custom.min.js" type="text/javascript"></script>
     <script src="../js/moment.min.js" type="text/javascript"></script>
     <script src="../js/fullCalendar/fullcalendar.min.js" type="text/javascript"></script>
@@ -35,7 +38,7 @@
         </div>
         <div>
             <label>Línea:</label>
-            <input type="text" id="txt_linea" readonly="readonly" class="txtNoBorder" />
+            <input type="text" id="txt_linea" readonly="readonly" class="txtNoBorder txtLarge" />
         </div>
         <div>
             <label>Unidad:</label>

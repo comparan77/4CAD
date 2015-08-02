@@ -16,9 +16,9 @@
 <h3 id="div-search" style="cursor: n-resize;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">B&uacute;squeda de Operaciones</h3>
 <div style="position: relative;" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
 
-<span id="spn_Search" class="ui-icon ui-icon-search icon-button-search icon-button-action"></span>
+<span id="spn_Search" class="ui-icon ui-icon-close icon-button-search icon-button-action"></span>
 
-<div id="div_busqueda" style="display: none;">
+<div id="div_busqueda">
     <label>Folio &oacute; Pedimento</label>
     <asp:TextBox runat="server" ID="txt_dato"></asp:TextBox>
     <asp:Button runat="server" ID="btn_buscar" OnClick="btn_buscar_click" Text="Buscar" CausesValidation="false" />

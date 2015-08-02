@@ -9,13 +9,22 @@ var BeanCodigoOrden = function (id, codigo, orden) {
 
 var MngInventoryManagment = function () {
     this.Init = init;
+    this.InventarioChangeCodigo = inventarioChangeCodigo;
+    this.Id_entrada_inventario = 0;
+    this.CtrlCM = null;
+    this.OCtrSelected = null;
+    this.Recall = recall;
 
     function init() {
         //$("html, body").animate({ scrollTop: $(document).height() }, "slow");
         initControls();
     }
 
-    function inventarioChangeCodigo(id_entrada_inventario, codigo, oCrtlCM) {
+    function recall(oCM, oCtrlCM) {
+        inventarioChangeCodigo(pag.Id_entrada_inventario, oCM.Codigo, oCtrlCM, pag.OCtrSelected);
+    }
+
+    function inventarioChangeCodigo(id_entrada_inventario, codigo, oCrtlCM, trSelected) {
 
         $.ajax({
             type: "POST",
@@ -30,11 +39,16 @@ var MngInventoryManagment = function () {
                 var n = data.indexOf("existe");
                 if (n > 0) {
                     if (confirm(data + '. Desea dar de alta la nueva mercancía?')) {
-                        oCrtlCM.OpenFrm(codigo);
+                        pag.Id_entrada_inventario = id_entrada_inventario;
+                        pag.CtrlCM = oCrtlCM;
+                        pag.OCtrSelected = trSelected;
+                        oCrtlCM.OpenFrm(codigo, pag);
                     }
                 }
                 else {
-                    alert(data);
+                    $('#txt_mer_nombre').val(data[0].Nombre);
+                    $(trSelected).children('td').first().html(codigo);
+                    alert('El código ha sido cambiado exitosamente');
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -46,7 +60,7 @@ var MngInventoryManagment = function () {
 
     }
 
-    function fondeoGetById(idFondeo, oCrtlCM) {
+    function fondeoGetById(idFondeo, oCrtlCM, trSelected) {
 
         $.ajax({
             type: 'GET',
@@ -92,7 +106,7 @@ var MngInventoryManagment = function () {
                     }
                     else {
 
-                        inventarioChangeCodigo($('#spn_edit_codigo').attr('id_entrada_inventario'), $(this).next().val(), oCrtlCM);
+                        inventarioChangeCodigo($('#spn_edit_codigo').attr('id_entrada_inventario'), $(this).next().val(), oCrtlCM, trSelected);
 
                         $(this).removeClass('ui-icon-disk')
                         $(this).addClass('ui-icon-pencil')
@@ -129,7 +143,7 @@ var MngInventoryManagment = function () {
             $(this).unbind('click').click(function () {
                 //alert($(this).attr('id'));
                 var idFondeo = $(this).attr('id').split('_')[1] * 1;
-                fondeoGetById(idFondeo, oCrtlCM);
+                fondeoGetById(idFondeo, oCrtlCM, $(this));
             });
         });
     }
@@ -193,7 +207,6 @@ var MngInventoryManagment = function () {
         var h_referencia = $('#h_referencia');
 
         oCrtlCM = new ctrlClienteMercancia();
-        oCrtlCM.Init();
 
         $(tabs).tabs({
             activate: function (event, ui) {

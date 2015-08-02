@@ -238,6 +238,7 @@
 <div>
     <label>Sello/Candado:</label>
     <asp:TextBox id="txt_sello" runat="server" ToolTip="En caso de no contar con sello realizar un acta informativa"></asp:TextBox>
+    <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvSello" ControlToValidate="txt_sello" ErrorMessage="Es necesario capturar el sello"></asp:RequiredFieldValidator>
 </div>
 <div>
     <label>Carta Porte:</label>

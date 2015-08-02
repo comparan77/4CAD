@@ -66,7 +66,7 @@ namespace AppCasc.handlers
                     case "inventoryCodigo":
                         int.TryParse(context.Request["key"].ToString(), out id);
                         if(EntradaCtrl.InventarioCambiosChangeCodigo(id, ((Usuario)context.Session["userCasc"]).Id, context.Request["codigo"].ToString().Trim()) > -1)
-                            response = JsonConvert.SerializeObject("El código ha sido cambiado exitosamente");
+                            response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_mercanciafillByCliente(1, context.Request["codigo"].ToString().Trim()));
                         else
                             response = JsonConvert.SerializeObject("El código NO ha sido cambiado");
                         break;

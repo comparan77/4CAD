@@ -18,10 +18,9 @@ var ctrlClienteMercancia = function () {
     this.OpenFrm = openFrm;
 
     function init() {
-        initControls();
     }
 
-    function initControls() {
+    function initControls(page) {
         dialog = $("#ctrlClienteMercancia").dialog({
             autoOpen: false,
             //height: 300,
@@ -29,12 +28,16 @@ var ctrlClienteMercancia = function () {
             modal: true,
             resizable: false,
             buttons: {
-                "Guardar Mercancía": addMercancia,
+                "Guardar Mercancía": function () {
+                    if (validaRequeridos())
+                        addMercancia(page);
+                },
                 "Cancelar": function () {
                     $(this).dialog('close');
                 }
             },
             close: function () {
+                $(this).dialog("destroy");
                 // form[0].reset();
                 // allFields.removeClass("ui-state-error");
             }
@@ -45,12 +48,28 @@ var ctrlClienteMercancia = function () {
         $('#txt_unidad').combobox({ maxLength: 2 });
     }
 
-    function openFrm(cod) {
+    function openFrm(cod, page) {
+        initControls(page);
         $('#txt_codigo').val(cod);
         $("#ctrlClienteMercancia").dialog('open');
+
     }
 
-    function addMercancia() {
+    function validaRequeridos() {
+        var valid = true;
+        $('.requeridoCM').each(function () {
+            if ($(this).val() == '' || $(this).val() == null) {
+                alert('Es necesario capturar: ' + $(this).prev().html());
+                $(this).focus();
+                valid = false;
+                return false;
+            }
+
+        });
+        return valid;
+    }
+
+    function addMercancia(page) {
 
         var oCM = new beanCliente_mercancia(1, $('#txt_codigo').val(), $('#txt_nombre').val(), $('#txt_clase').next().children('input').val(), $('#txt_negocio').next().children('input').val(), $('#txt_unidad').next().children('input').val());
 
@@ -66,6 +85,9 @@ var ctrlClienteMercancia = function () {
             success: function (data) {
                 alert(data);
                 $("#ctrlClienteMercancia").dialog('close');
+                if (page != null) {
+                    page.Recall(oCM, page.CtrlCM);
+                }
                 // window.location.href = 'frmMaquila.aspx?_fk=' + id_entrada + "&_pk=" + id_entrada_inventario;
             },
             error: function (jqXHR, textStatus, errorThrown) {

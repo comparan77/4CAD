@@ -24,7 +24,7 @@
       <siteMapNode url="~/catalog/frmClienteCodigo.aspx" title="Código por cliente"  description="Código por cliente" />
       <siteMapNode url="~/operation/frmCancelDoc.aspx" title="Cancelar Movimientos"  description="Cancelar Movimientos" />
     </siteMapNode>
-    <siteMapNode roles="Administrador" title="Catálogos">
+    <siteMapNode roles="Mantenimiento, Super" title="Catálogos">
       <siteMapNode url="~/catalog/frmAduanaLst.aspx" title="Aduanas"  description="Aduanas" />
       <siteMapNode url="~/catalog/frmBodegaLst.aspx" title="Bodegas"  description="Bodegas" />
       <siteMapNode url="~/catalog/frmCortinaLst.aspx" title="Cortinas"  description="Cortinas" />
@@ -41,18 +41,13 @@
       <siteMapNode url="~/catalog/frmUbicacionLst.aspx" title="Ubicaciones"  description="Ubicaciones" />
       <siteMapNode url="~/catalog/frmNomLst.aspx" title="NOM"  description="NOM" />
     </siteMapNode>
-    <siteMapNode roles="Administrador, Operador" title="Operación">
-      <!--<siteMapNode roles="*" title="Arribos">
-        <siteMapNode url="~/operation/arribos/frmAvon.aspx" title="Arribos de Avon"  description="Arribos Avon" />
-        <siteMapNode url="~/operation/arribos/frmArribo.aspx" title="Arribos"  description="Arribos" />
-        <siteMapNode url="~/operation/frmEntradas.aspx" title="Entradas"  description="Entradas" />
-      </siteMapNode>-->
+    <siteMapNode roles="Mantenimiento, Operacion, GteAlmacen, Super" title="Operación">
       <siteMapNode url="~/operation/arribos/frmArribo.aspx" title="Arribos"  description="Arribos" />
       <siteMapNode url="~/operation/frmSalidas.aspx" title="Embarques"  description="Embarques" />
       <!--<siteMapNode url="~/operation/frmReingreso.aspx" title="Reingresos"  description="Reingresos" />-->
       <siteMapNode url="~/operation/frmRelEntSal.aspx" title="Relación de Movimientos"  description="Relación de Movimientos" />
     </siteMapNode>
-    <siteMapNode roles="Inventario" title="Inventario">
+    <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super" title="Inventario">
       <siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
       <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
       <siteMapNode url="~/operation/frmMaquila.aspx" title="Maquila"  description="Maquila" />
@@ -60,13 +55,13 @@
       <siteMapNode url="~/operation/frmRemision.aspx" title="Remisión"  description="Remisión" />
       <siteMapNode url="~/operation/frmOrdenCarga.aspx" title="Orden de Carga"  description="Orden de Carga" />
       <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
-      <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración del Inventario"  description="Administración" />
+      <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración"  description="Administración" />
     </siteMapNode>
-    <siteMapNode roles="*" title="Reportes" >
+    <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
       <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />
       <siteMapNode url="~/report/frmTransporteChart.aspx" title="Gráfica Movimientos"  description="Gráfica Movimientos" />
-      <siteMapNode url="~/report/frmMaquila.aspx" title="Maquila"  description="Maquila" />
+      <!--<siteMapNode url="~/report/frmMaquila.aspx" title="Maquila"  description="Maquila" />-->
       <siteMapNode url="~/report/frmCancelMov.aspx" title="Cancelaciones"  description="Cancelaciones" />
     </siteMapNode>
   </siteMapNode>

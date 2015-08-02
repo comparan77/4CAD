@@ -400,6 +400,15 @@ namespace AppCasc.operation.arribos {
         protected global::System.Web.UI.WebControls.TextBox txt_sello;
         
         /// <summary>
+        /// rfvSello control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvSello;
+        
+        /// <summary>
         /// txt_talon control.
         /// </summary>
         /// <remarks>
