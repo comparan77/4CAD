@@ -64,6 +64,9 @@
                 $('#chkConsolidado').attr('disabled', 'true');
 
             upDocRequerido.removeClass('ajaxLoading');
+
+            //Validacion de destinos
+
         });
 
         $('#ulSalHoy').children('li').each(function () {
@@ -259,7 +262,18 @@
 
         });
 
+        //Destinos
+        listDestinos();
+    }
 
+    function listDestinos() {
+        $('#ul_destinos').children('li').each(function () {
+            $(this).children('a').click(function () {
+                var destino = $(this).attr('destino');
+                $('#ctl00_body_txt_destino').val(destino);
+                return false;
+            });
+        });
     }
 
     function setMaskDocumentType(id) {

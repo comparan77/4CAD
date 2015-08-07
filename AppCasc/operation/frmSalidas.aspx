@@ -146,6 +146,17 @@
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Mercanc&iacute;a y Transporte</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
 <div>
+    <div>
+        <ul id="ul_destinos" style="margin: 0; padding: 0;">
+            <li style="float: left; margin-right: 10px"><a destino="R1 - AV. GUERRERO N° 149, COL. RANCHO SECO CELAYA, GUANAJUATO." href="#">R1</a></li>
+            <li style="float: left; margin-right: 10px"><a destino="R2 - AV. GUERRERO N° 149, COL. RANCHO SECO CELAYA, GUANAJUATO." href="#">R2</a></li>
+            <li style="float: left; margin-right: 10px"><a destino="AVONOVA - AV. GUERRERO N° 149, COL. RANCHO SECO CELAYA, GUANAJUATO." href="#">AVONOVA</a></li>
+            <li style="float: left; margin-right: 10px"><a destino="VICA - CALLE LAUREL 103 COL. FRACCIONAMIENTO INDUSTRIAL EL VERGEL. MUNICIPIO: CELAYA, GUANAJUATO. C.P. 38110" href="#">VICA</a></li>
+            <li style="float: left; margin-right: 10px"><a destino="JASER - PRIVADA RENOVACIÓN 131, LAS FLORES, 38090 CELAYA, GTO." href="#">JASER</a></li>
+            <li style="float: left; margin-right: 10px"><a destino="VALEX - VALEX MAQ SA DE CV FUERZAS ZAPATISTAS 108-B COL.EMILIANO ZAPATA,CELAYA MEX,GUANAJUATO MX CP 38030" href="#">VALEX</a></li>
+        </ul>
+    </div>
+    <div style="clear: left;"></div>
     <label>Destino:</label>
     <asp:UpdatePanel runat="server" ID="up_Destino" UpdateMode="Conditional">
     <Triggers>
