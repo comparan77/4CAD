@@ -152,7 +152,7 @@
             <li style="float: left; margin-right: 10px"><a destino="R2 - AV. GUERRERO N° 149, COL. RANCHO SECO CELAYA, GUANAJUATO." href="#">R2</a></li>
             <li style="float: left; margin-right: 10px"><a destino="AVONOVA - AV. GUERRERO N° 149, COL. RANCHO SECO CELAYA, GUANAJUATO." href="#">AVONOVA</a></li>
             <li style="float: left; margin-right: 10px"><a destino="VICA - CALLE LAUREL 103 COL. FRACCIONAMIENTO INDUSTRIAL EL VERGEL. MUNICIPIO: CELAYA, GUANAJUATO. C.P. 38110" href="#">VICA</a></li>
-            <li style="float: left; margin-right: 10px"><a destino="JASER - PRIVADA RENOVACIÓN 131, LAS FLORES, 38090 CELAYA, GTO." href="#">JASER</a></li>
+            <li style="float: left; margin-right: 10px"><a destino="JASCER - PRIVADA RENOVACIÓN 131, LAS FLORES, 38090 CELAYA, GTO." href="#">JASCER</a></li>
             <li style="float: left; margin-right: 10px"><a destino="VALEX - VALEX MAQ SA DE CV FUERZAS ZAPATISTAS 108-B COL.EMILIANO ZAPATA,CELAYA MEX,GUANAJUATO MX CP 38030" href="#">VALEX</a></li>
         </ul>
     </div>
