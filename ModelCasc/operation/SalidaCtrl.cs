@@ -700,7 +700,7 @@ namespace ModelCasc.operation
                     DateTime dtCita = DateTime.ParseExact(string.Concat(new string[] { Convert.ToDateTime(o.Fecha_cita).ToString("yyyy-MM-dd"), " ", o.Hora_cita }), "yyyy-MM-dd HH:mm:ss",
                         System.Globalization.CultureInfo.CurrentCulture);
 
-                    lst.Add(new FullCalendar() { id = o.Id, title = o.Folio_cita, start = dtCita, end = dtCita.AddMinutes(40) });
+                    lst.Add(new FullCalendar() { id = o.Id, title = o.Folio_cita, start = dtCita, end = dtCita.AddMinutes(40), id_orden_carga = o.PSalidaOrdenCarga.Id, folio_orden_carga = o.PSalidaOrdenCarga.Folio_orden_carga });
                 }
             }
             catch
@@ -954,10 +954,10 @@ namespace ModelCasc.operation
                     oMngRem.O_Salida_orden_carga_rem = item;
                     oMngRem.add(trans);
                     id_sal_rem = item.Id_salida_remision;
-                    Salida_remision oSRem = new Salida_remision() { Id = id_sal_rem };
-                    Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = oSRem };
-                    oSRMng.selById(trans);
-                    EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(oSRem.Id_entrada_inventario), Globals.EST_ORC_CAPTURADA, o.Id_usuario, null, oSRem.Id, trans);
+                    //Salida_remision oSRem = new Salida_remision() { Id = id_sal_rem };
+                    //Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = oSRem };
+                    //oSRMng.selById(trans);
+                    //EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(oSRem.Id_entrada_inventario), Globals.EST_ORC_CAPTURADA, o.Id_usuario, null, oSRem.Id, trans);
                 }
 
                 id = o.Id;
@@ -979,17 +979,10 @@ namespace ModelCasc.operation
                 Salida_orden_cargaMng oMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = o };
                 oMng.selById();
 
-                Tipo_cargaMng oTCMng = new Tipo_cargaMng() { O_Tipo_carga = new Tipo_carga() { Id = o.Id_tipo_carga } };
-                oTCMng.selById();
-                o.TipoCarga = oTCMng.O_Tipo_carga.Nombre;
-
-                TransporteMng oTMng = new TransporteMng() { O_Transporte = new Transporte() { Id = o.Id_transporte } };
-                oTMng.selById();
-                o.Transporte = oTMng.O_Transporte.Nombre;
-
-                Transporte_tipoMng oTTMng = new Transporte_tipoMng() { O_Transporte_tipo = new Transporte_tipo() { Id = o.Id_transporte_tipo } };
-                oTTMng.selById();
-                o.TipoTransporte = oTTMng.O_Transporte_tipo.Nombre;
+                Salida_trafico oST = new Salida_trafico() { Id = o.Id_salida_trafico };
+                Salida_traficoMng OSTMng = new Salida_traficoMng() { O_Salida_trafico = oST };
+                OSTMng.selById();
+                o.PSalidaTrafico = oST;
 
                 Salida_orden_carga_remMng oRMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = Id } };
                 oRMng.selByIdSalOrdCarga();

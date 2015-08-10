@@ -34,10 +34,12 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oSalida_orden_carga_rem.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_remision", DbType.Int32, this._oSalida_orden_carga_rem.Id_salida_remision);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_orden_carga", DbType.Int32, this._oSalida_orden_carga_rem.Id_salida_orden_carga);
+            
             if(this._oSalida_orden_carga_rem.Id_salida==null)
                 GenericDataAccess.AddInOutParameter(this.comm, "?P_id_salida", DbType.Int32, DBNull.Value);
             else
                 GenericDataAccess.AddInOutParameter(this.comm, "?P_id_salida", DbType.Int32, this._oSalida_orden_carga_rem.Id_salida);
+            GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, this._oSalida_orden_carga_rem.Pallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oSalida_orden_carga_rem.Referencia);
         }
 
@@ -82,6 +84,14 @@ namespace ModelCasc.operation
                     o.Id_salida = entero;
                     entero = 0;
                 }
+                if (dr["pallet"] != DBNull.Value)
+                {
+                    int.TryParse(dr["pallet"].ToString(), out entero);
+                    o.Pallet = entero;
+                    entero = 0;
+                }
+                o.Referencia = dr["referencia"].ToString();
+
             }
             catch
             {

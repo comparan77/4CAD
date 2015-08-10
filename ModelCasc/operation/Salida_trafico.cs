@@ -62,6 +62,7 @@ namespace ModelCasc.operation
         public List<Salida_remision> PLstSalRem { get; set; }
         public Transporte PTransporte { get; set; }
         public Transporte_tipo PTransporteTipo { get; set; }
+        public Salida_orden_carga PSalidaOrdenCarga { get; set; } 
         #endregion
 
         #region Constructores

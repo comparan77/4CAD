@@ -203,6 +203,10 @@ namespace ModelCasc.operation
                 {
                     DataRow dr = dt.Rows[0];
                     BindByDataRow(dr, this._oSalida_trafico);
+                    this._oSalida_trafico.Transporte_tipo = dr["transporte_tipo"].ToString();
+                    this._oSalida_trafico.Transporte_tipo_cita = dr["transporte_tipo_cita"].ToString();
+                    this._oSalida_trafico.Tipo_carga = dr["tipo_carga"].ToString();
+                    this._oSalida_trafico.Transporte = dr["transporte"].ToString();
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -343,6 +347,15 @@ namespace ModelCasc.operation
                 {
                     Salida_trafico o = new Salida_trafico();
                     BindByDataRow(dr, o);
+                    o.PSalidaOrdenCarga = new Salida_orden_carga();
+                    if (dr["id_orden_carga"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_orden_carga"].ToString(), out entero);
+                        o.PSalidaOrdenCarga.Id = entero;
+                        entero = 0;
+                    }
+                    
+                    o.PSalidaOrdenCarga.Folio_orden_carga = dr["folio_orden_carga"].ToString();
                     this._lst.Add(o);
                 }
             }

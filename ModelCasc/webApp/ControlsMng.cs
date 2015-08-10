@@ -210,6 +210,16 @@ namespace ModelCasc.webApp
         //    ddlVigilante.DataBind();
         //}
 
+        public static void fillSalidaDestino(DropDownList ddlDestino)
+        {
+            Salida_destinoMng OSDMng = new Salida_destinoMng();
+            OSDMng.fillLst();
+            ddlDestino.DataSource = OSDMng.Lst;
+            ddlDestino.DataTextField = "destino";
+            ddlDestino.DataValueField = "id";
+            ddlDestino.DataBind();
+        }
+
         public static void fillClienteByGrupo(DropDownList ddlCliente, int idGrupo)
         {
             ClienteMng oMng = new ClienteMng();

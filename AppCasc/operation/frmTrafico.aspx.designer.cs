@@ -112,22 +112,13 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoCarga;
         
         /// <summary>
-        /// txt_destino control.
+        /// ddlDestino control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_destino;
-        
-        /// <summary>
-        /// rfv_destino control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_destino;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDestino;
         
         /// <summary>
         /// btn_solicitar_cita control.

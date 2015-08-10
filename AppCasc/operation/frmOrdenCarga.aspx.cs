@@ -16,7 +16,7 @@ namespace AppCasc.operation
         {
             try
             {
-
+                ControlsMng.fillTipoCarga(ddl_tipo_carga);
             }
             catch
             {

@@ -19,6 +19,7 @@ namespace AppCasc.operation
                 //ControlsMng.fillTipoTransporte(ddlTipo_Transporte, ddlTransporte);
                 ControlsMng.fillTipoCarga(ddlTipoCarga);
                 ControlsMng.fillTipoTransporte(ddlTipo_Transporte);
+                ControlsMng.fillSalidaDestino(ddlDestino);
                 int IdTransporteTipo = 0;
                 int.TryParse(ddlTipo_Transporte.SelectedValue, out IdTransporteTipo);
                 fillSolicitudesSinCita();
@@ -39,7 +40,7 @@ namespace AppCasc.operation
             o.Hora_carga_solicitada = txt_hora_carga_solicitada.Text;
             o.Id_transporte_tipo = Convert.ToInt32(ddlTipo_Transporte.SelectedValue);
             o.Id_tipo_carga = Convert.ToInt32(ddlTipoCarga.SelectedValue);
-            o.Destino = txt_destino.Text.Trim();
+            o.Destino = ddlDestino.SelectedItem.Text;
             o.Id_usuario_solicita = ((MstCasc)this.Master).getUsrLoged().Id;
             return o;
         }

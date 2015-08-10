@@ -1,4 +1,20 @@
-﻿var MngOrdenCarga = function () {
+﻿var lstRem = [];
+var beanSalidaOrdenCarga = function (id_tipo_carga, id_salida_trafico, lstRem) {
+    this.Id_tipo_carga = id_tipo_carga;
+    this.Id_usuario = 0;
+    this.Id_salida_trafico = id_salida_trafico;
+    this.Folio_orden_carga = '';
+    this.LstRem = lstRem;
+}
+
+var beanSalidaOrdenCargaRem = function (id_salida_remision, pallet) {
+    this.Id_salida_remision = id_salida_remision;
+    this.Id_salida_orden_carga = 0;
+    this.Pallet = pallet;
+    this.Referencia = '';
+}
+
+var MngOrdenCarga = function () {
 
     this.Init = init;
 
@@ -32,14 +48,14 @@
                     $('#guia_embarque').dialog('close');
 
                 clearGuiaEmbarque();
-                getCitaBy(calEvent.id);
+                getCitaBy(calEvent.id, calEvent.idOC, calEvent.folioOC, calEvent);
                 // change the border color just for fun
                 // $(this).css('border-color', 'red');
 
             },
             eventRender: function (event, element) {
                 element.qtip({
-                    content: event.title,
+                    content: event.title + '<br />' + event.folioOC,
                     style: {
                         background: 'black',
                         color: '#FFFFFF'
@@ -55,7 +71,7 @@
         });
     }
 
-    function getCitaBy(id_salida_trafico) {
+    function getCitaBy(id_salida_trafico, id_orden_carga, folio_orden_carga, calEvent) {
         $.ajax({
             type: 'GET',
             url: "/handlers/Operation.ashx?op=cita&opt=getByIdTrafico",
@@ -68,7 +84,7 @@
             },
             success: function (data) {
 
-                fillTblRemisiones(data);
+                fillTblRemisiones(data, id_orden_carga, folio_orden_carga, calEvent);
 
                 $('#guia_embarque').dialog('open');
             },
@@ -82,6 +98,7 @@
 
     // Limpia los datos de la guia de embarque
     function clearGuiaEmbarque() {
+        $('#hf_id_salida_trafico').val('');
         $('#txt_cita').val('');
         $('#txt_destino').val('');
         $('#txt_linea').val('');
@@ -90,15 +107,27 @@
         $('#td_pieza_total').html('0');
         $('#td_bulto_total').html('0');
         $('#td_pallet_total').html('0');
+        $('#chk_todo').prop('checked', false);
+        $('#lnk_orden_carga').attr('href', '#');
+        $('#lnk_orden_carga').html('');
+        $('#h_orden_carga').val(0);
     }
 
     // Llena la tabla de remisiones
-    function fillTblRemisiones(data) {
+    function fillTblRemisiones(data, id_orden_carga, folio_orden_carga, calEvent) {
 
+        $('#btnSave').button({ disabled: true }).unbind('click').click(function () {
+            saveOrdenCarga(calEvent);
+            return false;
+        });
+
+        $('#hf_id_salida_trafico').val(data.Id);
         $('#txt_cita').val(data.Folio_cita + ", " + moment(data.Fecha_cita).format('DD-MM-YYYY') + ", " + data.Hora_cita);
         $('#txt_destino').val(data.Destino);
         $('#txt_linea').val(data.PTransporte.Nombre);
         $('#txt_unidad').val(data.PTransporteTipo.Nombre);
+        $('#lnk_orden_carga').html(folio_orden_carga);
+        $('#h_orden_carga').val(id_orden_carga);
 
         $.each(data.PLstSalRem, function (i, obj) {
             var tr = '<tr id="rem_' + obj.Id + '">';
@@ -108,7 +137,7 @@
             tr += '<td align="left">' + obj.Codigo + '</td>';
             tr += '<td id="td_pieza_' + obj.Id + '" align="right">' + obj.PiezaTotal + '</td>';
             tr += '<td id="td_bulto_' + obj.Id + '" align="right">' + obj.BultoTotal + '</td>';
-            tr += '<td align="center"><input style="text-align: center;" class="txtSmall" type="text" value="0" id="txt_pallet_' + obj.Id + '" /></td>';
+            // tr += '<td align="center"><input style="text-align: center;" class="txtSmall" type="text" value="0" id="txt_pallet_' + obj.Id + '" /></td>';
             tr += '<td align="center"><input type="checkbox" class="chk_verificar_remisiones" id="chk_' + obj.Id + '" /></td>';
             tr += '</tr>';
             $('#tbody_remisiones').append(tr);
@@ -116,21 +145,30 @@
 
         $('.chk_verificar_remisiones').each(function () {
             $(this).click(function () {
-                var pieza = 0;
-                var bulto = 0;
-                var pallet = 0;
-                $('.chk_verificar_remisiones').each(function () {
-                    if ($(this).is(':checked')) {
-                        pieza += $('#td_pieza_' + $(this).attr('id').split('_')[1]).html() * 1;
-                        bulto += $('#td_bulto_' + $(this).attr('id').split('_')[1]).html() * 1;
-                        pallet += $('#txt_pallet_' + $(this).attr('id').split('_')[1]).val() * 1;
-                    }
-                });
-                $('#td_pieza_total').html(pieza);
-                $('#td_bulto_total').html(bulto);
-                $('#td_pallet_total').html(pallet);
+                sumarSeleccionadas();
             });
         });
+    }
+
+    function sumarSeleccionadas() {
+
+        var pieza = 0;
+        var bulto = 0;
+        var pallet = 0;
+        lstRem = [];
+        $('.chk_verificar_remisiones').each(function () {
+            if ($(this).is(':checked')) {
+                pieza += $('#td_pieza_' + $(this).attr('id').split('_')[1]).html() * 1;
+                bulto += $('#td_bulto_' + $(this).attr('id').split('_')[1]).html() * 1;
+                // pallet += $('#txt_pallet_' + $(this).attr('id').split('_')[1]).val() * 1;
+                var rem = new beanSalidaOrdenCargaRem($(this).attr('id').split('_')[1] * 1, pallet);
+                lstRem.push(rem);
+            }
+        });
+        $('#td_pieza_total').html(pieza);
+        $('#td_bulto_total').html(bulto);
+        $('#td_pallet_total').html(pallet);
+        $('#btnSave').button('option', 'disabled', lstRem.length == 0);
     }
 
     // Llena las citas en el calendario via ajax.
@@ -152,7 +190,10 @@
                         id: obj.id,
                         title: obj.title,
                         start: obj.start,
-                        end: obj.end
+                        end: obj.end,
+                        color: obj.id_orden_carga > 0 ? '' : 'orange',
+                        folioOC: obj.folio_orden_carga,
+                        idOC: obj.id_orden_carga
                     });
                 });
                 callback(events);
@@ -176,6 +217,59 @@
             draggable: false
         });
 
+        $('#chk_todo').click(function () {
+            var isCheckAll = $(this).is(':checked');
+            $('.chk_verificar_remisiones').each(function () {
+                $(this).prop('checked', isCheckAll);
+            });
+            sumarSeleccionadas();
+        });
+
+        $('#lnk_orden_carga').click(function () {
+            //alert($(this).attr('href'));
+            var idOC = $('#h_orden_carga').val() * 1;
+            if (idOC > 0)
+                printOC(idOC);
+            return false;
+        });
+    }
+
+    function printOC(id_orden_carga) {
+        window.open('frmReporter.aspx?rpt=ordcarga&id=' + id_orden_carga, '_blank', 'toolbar=no');
+    }
+
+    function saveOrdenCarga(calEvent) {
+        var oOC = new beanSalidaOrdenCarga($('#ctl00_body_ddl_tipo_carga').val(), $('#hf_id_salida_trafico').val(), lstRem);
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=AddOrdenCarga',
+            data: JSON.stringify(oOC),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+
+            },
+            success: function (data) {
+                var idOC = data.Id;
+                if (idOC > 0) {
+                    alert('Se guardo corréctamente el registro');
+                    calEvent.color = '';
+                    calEvent.idOC = idOC;
+                    calEvent.folioOC = data.Folio_orden_carga;
+                    $('#dates_calendar').fullCalendar('updateEvent', calEvent);
+                    printOC(idOC);
+                }
+                else {
+                    alert(data);
+                }
+                $('#guia_embarque').dialog('close');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
     }
 }
 

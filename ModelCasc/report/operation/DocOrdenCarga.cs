@@ -47,14 +47,13 @@ namespace ModelCasc.report.operation
                 fields.SetField("lblFolio", "FOLIO CARGA");
 
                 CultureInfo ci = new CultureInfo("es-MX");
-                fields.SetField("fecha_solicitud", o.Fecha_solicitud.ToString("dddd, dd \\de MMMM \\de yyyy", ci));
-                fields.SetField("fecha_carga_solicitada", o.Fecha_carga_solicitada.ToString("dddd, dd \\de MMMM \\de yyyy", ci));
-                fields.SetField("hora_carga_solicitada", o.Hora_carga_solicitada);
-                fields.SetField("fecha_cita", o.Fecha_cita.ToString("dddd, dd \\de MMMM \\de yyyy", ci));
-                fields.SetField("hora_cita", o.Hora_cita);
+                fields.SetField("fecha_solicitud", o.PSalidaTrafico.Fecha_solicitud.ToString("dddd, dd \\de MMMM \\de yyyy", ci));
+                fields.SetField("fecha_carga_solicitada", o.PSalidaTrafico.Fecha_carga_solicitada.ToString("dddd, dd \\de MMMM \\de yyyy", ci));
+                fields.SetField("hora_carga_solicitada", o.PSalidaTrafico.Hora_carga_solicitada);
+                fields.SetField("fecha_cita", Convert.ToDateTime(o.PSalidaTrafico.Fecha_cita).ToString("dddd, dd \\de MMMM \\de yyyy", ci));
+                fields.SetField("hora_cita", o.PSalidaTrafico.Hora_cita);
 
                 fields.SetField("tipo_carga", o.TipoCarga);
-                //addBarCodes(stamper, o.Folio_orden_carga);
 
                 IEnumerable<Salida_orden_carga_rem> lstDifPedimentos = o.LstRem.Distinct(new OrdeCargaRemComparer());
                 int countDifPedimentos = 0;
@@ -65,7 +64,7 @@ namespace ModelCasc.report.operation
 
                 o.TipoEnvio = (countDifPedimentos > 1 ? "COMPARTIDO" : "INDIVIDUAL");
                 fields.SetField("tipo_envio", o.TipoEnvio);
-                fields.SetField("destino", o.Destino);
+                fields.SetField("destino", o.PSalidaTrafico.Destino);
 
                 for (int iRem = 0; iRem < lst.Count; iRem++)
                 {
@@ -76,8 +75,8 @@ namespace ModelCasc.report.operation
                     fields.SetField("orden_" + iRem.ToString(), oRem.PSalRem.Orden);
                 }
 
-                fields.SetField("lineaTransporte", o.Transporte);
-                fields.SetField("tipoTransporte", o.TipoTransporte);
+                fields.SetField("lineaTransporte", o.PSalidaTrafico.Transporte);
+                fields.SetField("tipoTransporte", o.PSalidaTrafico.Transporte_tipo_cita);
 
                 stamper.FormFlattening = true;
                 stamper.Close();

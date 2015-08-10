@@ -25,10 +25,14 @@
 </div>
 </div>
 
-<div id="guia_embarque" title="Orden de Carga">
-    
+<div id="guia_embarque" title="Orden de Carga" style="position: relative">
+    <div id="div_orden_carga" style="position: absolute; top: 10px; right: 10px;">
+        <a id="lnk_orden_carga" href="#"></a>
+        <input type="hidden" id="h_orden_carga" value="0" />
+    </div>
     <div class="divForm" style="margin-bottom: 10px;">
         <div>
+            <input type="hidden" id="hf_id_salida_trafico" />
             <label>Cita:</label>
             <input type="text" id="txt_cita" readonly="readonly" class="txtNoBorder txtLarge" />
         </div>
@@ -55,8 +59,8 @@
                 <th align="left">C&oacute;digo</th>
                 <th align="right">Piezas</th>
                 <th align="right">Bultos</th>
-                <th align="center">Pallets</th>
-                <th align="center">Seleccionar</th>
+                <%--<th align="center">Pallets</th>--%>
+                <th align="center">Seleccionar <input type="checkbox" id="chk_todo" /></th>
             </tr>
         </thead>
         <tbody id="tbody_remisiones">
@@ -67,11 +71,22 @@
                 <td colspan="4"></td>
                 <td align="right" id="td_pieza_total">0</td>
                 <td align="right" id="td_bulto_total">0</td>
-                <td align="center" id="td_pallet_total">0</td>
+                <%--<td align="center" id="td_pallet_total">0</td>--%>
                 <td>&nbsp;</td>
             </tr>
         </tfoot>
     </table>
+
+    <div class="divForm" style="margin-top: 10px;">
+        <div>
+            <label>Tipo de Carga:</label>
+            <asp:DropDownList runat="server" ID="ddl_tipo_carga"></asp:DropDownList>
+        </div>
+        <div>
+            <button class="floatRight" id="btnSave">Guardar Orden de Carga</button>
+        </div>
+    </div>
+
 </div>
 
 </asp:Content>

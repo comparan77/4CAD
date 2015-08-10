@@ -112,6 +112,13 @@ namespace AppCasc.handlers
                     case "fondeoCodigoOrden":
                         response = JsonConvert.SerializeObject(EntradaCtrl.InventarioGetByReferencia(context.Request["key"].ToString()));
                         break;
+                    case "AddOrdenCarga":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Salida_orden_carga oSOC = JsonConvert.DeserializeObject<Salida_orden_carga>(jsonData);
+                        oSOC.Id_usuario = ((Usuario)context.Session["userCasc"]).Id;
+                        SalidaCtrl.OrdenCargaAdd(oSOC);
+                        response = JsonConvert.SerializeObject(oSOC);
+                        break;
                     default:
                         break;
                 }

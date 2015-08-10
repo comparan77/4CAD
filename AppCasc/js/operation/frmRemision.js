@@ -186,7 +186,6 @@ var MngRemision = function () {
                 //                    alert('Es necesario cerrar la maquila total o parcialmente');
                 //                    return false;
                 //                }
-
                 var idEntrada_maquila_detail = $(this).parent().children('td').last().children('input').val();
 
                 var Disponible = $('#ctl00_body_grdDetMaq tbody tr:eq(' + i + ')').children('td:eq(3)').html() * 1;

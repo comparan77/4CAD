@@ -43,8 +43,7 @@
 
 <div>
     <label>Destino:</label>
-    <asp:TextBox runat="server" CssClass="txtLarge cleanAfterApply" ID="txt_destino"></asp:TextBox>
-    <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_destino" ControlToValidate="txt_destino" ErrorMessage="Es necesario proporcionar este dato"></asp:RequiredFieldValidator>
+    <asp:DropDownList runat="server" ID="ddlDestino"></asp:DropDownList>
 </div>
 
 <div>
@@ -136,7 +135,7 @@
                         </div>
                         <div>
                             <asp:Button CausesValidation="false" CssClass="activaGuardarCita" runat="server" ID="btn_asignar_cita" Text="Guardar Cita" CommandName="udt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
-                            <asp:Button CausesValidation="false" CssClass="eliminarCitaSinAsignar" runat="server" ID="btn_eliminar_cita" Text="Eliminar Cita" CommandName="dlt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
+                            <asp:Button CausesValidation="false" CssClass="eliminarCitaSinAsignar" runat="server" ID="btn_eliminar_cita" Text="Eliminar Solicitud" CommandName="dlt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" /> 
                         </div>
                     </div>
                     

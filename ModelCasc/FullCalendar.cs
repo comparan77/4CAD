@@ -11,5 +11,7 @@ namespace ModelCasc
         public string title;
         public DateTime start;
         public DateTime end;
+        public int id_orden_carga;
+        public string folio_orden_carga;
     }
 }
