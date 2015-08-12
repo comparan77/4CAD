@@ -430,19 +430,21 @@
         <input type="text" class="txtCurrency" disabled="disabled" id="valorfactura" />
     </div>
     <div>
-        <label for="piezasdeclaradas">Piezas Declaradas:</label>
+        <label for="piezasdeclaradas">Piezas Declaradas (Fondeo):</label>
         <input type="text" disabled="disabled" id="piezasdeclaradas" />
     </div>
+
     <div>
-        <label for="piezasrecibidas">Piezas Totales:</label>
+        <label for="piezasrecibidas">Piezas Totales (Remisi&oacute;n):</label>
         <input type="text" id="piezasrecibidas" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_piezasrecibidas" ControlToValidate="piezasrecibidas" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>
     <div>
-        <label for="bultosrecibidos">Bultos Totales:</label>
+        <label for="bultosrecibidos">Bultos Totales (Remisi&oacute;n):</label>
         <input type="text" id="bultosrecibidos" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_bultosrecibidos" ControlToValidate="bultosrecibidos" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>
+
     <div>
         <label for="pallets">Pallets:</label>
         <input type="text" id="pallets" />
