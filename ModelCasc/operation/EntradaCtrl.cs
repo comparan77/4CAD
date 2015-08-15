@@ -1740,5 +1740,27 @@ namespace ModelCasc.operation
         #endregion
 
         public static int indEF { get; set; }
+
+        public static string PedimentoGetFullNumber(string pedimento)
+        {
+            string fullPedimento = string.Empty;
+            try
+            {
+                pedimento = pedimento.Replace("-", "");
+                if (pedimento.Length != 13)
+                    throw new Exception("El número de pedimento no es correcto");
+
+                string primerosDigitos = pedimento.ToString().Substring(6, 1);
+                primerosDigitos = "1" + primerosDigitos;
+                fullPedimento = primerosDigitos + pedimento;
+            }
+            catch
+            {
+                throw;
+            }
+            
+            
+            return fullPedimento;
+        }
     }
 }
