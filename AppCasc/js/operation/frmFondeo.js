@@ -99,7 +99,7 @@ var Fondeo = function () {
             var idx = $(lbl_NoFoliosMsg).html().indexOf('codigos no existentes');
             if (idx > 0) {
                 $(grd_reviewFile).children('tbody').children('tr').each(function () {
-                    var td = $(this).children('td:eq(6)');
+                    var td = $(this).children('td:eq(5)');
                     var codigo = $(td).html();
                     $(td).html('').append('<a id="lnk_' + codigo + '" class="newCode" href="#">' + codigo + '<span class="ui-icon ui-icon-plus"></span></a>');
                 });
@@ -117,7 +117,7 @@ var Fondeo = function () {
             var idv = $(lbl_NoFoliosMsg).html().indexOf('vendors no existentes');
             if (idv > 0) {
                 $(grd_reviewFile).children('tbody').children('tr').each(function () {
-                    var td = $(this).children('td:eq(8)');
+                    var td = $(this).children('td:eq(7)');
                     var codigo = $(td).html();
                     $(td).html('').append('<a id="lnk_' + codigo + '" class="newVendor" href="#">' + codigo + '<span class="ui-icon ui-icon-plus"></span></a>');
                 });

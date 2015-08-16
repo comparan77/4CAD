@@ -42,6 +42,7 @@ namespace ModelCasc.operation
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oEntrada_fondeo.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oEntrada_fondeo.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha", DbType.DateTime, this._oEntrada_fondeo.Fecha);
             GenericDataAccess.AddInParameter(this.comm, "?P_importador", DbType.String, this._oEntrada_fondeo.Importador);
             GenericDataAccess.AddInParameter(this.comm, "?P_aduana", DbType.String, this._oEntrada_fondeo.Aduana);
@@ -62,6 +63,12 @@ namespace ModelCasc.operation
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
+                if (dr["id_usuario"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_usuario"].ToString(), out entero);
+                    o.Id_usuario = entero;
+                    entero = 0;
+                }
                 if (dr["fecha"] != DBNull.Value)
                 {
                     DateTime.TryParse(dr["fecha"].ToString(), out fecha);
@@ -249,8 +256,8 @@ namespace ModelCasc.operation
 
         internal void InitializeInsert(int id_usuario)
         {
-            this._sbQry.Append("delete from entrada_fondeo_paso where id = " + id_usuario + ";").AppendLine();
-            this._sbQry.Append("INSERT INTO entrada_fondeo_paso (id, fecha, importador, aduana, referencia, factura, codigo, orden, vendor, piezas, valorfactura) VALUES");
+            this._sbQry.Append("delete from entrada_fondeo_paso where id_usuario = " + id_usuario + ";").AppendLine();
+            this._sbQry.Append("INSERT INTO entrada_fondeo_paso (id_usuario, fecha, importador, aduana, referencia, factura, codigo, orden, vendor, piezas, valorfactura) VALUES");
             this._sbQry.AppendLine();
         }
 

@@ -83,7 +83,20 @@
 
 </div>
 
-<asp:GridView runat="server" Width="100%" CssClass="mGrid" ID="grd_reviewFile" AllowPaging="true" PageSize="25" AutoGenerateColumns="false"></asp:GridView>
+<asp:GridView runat="server" Width="100%" CssClass="mGrid" ID="grd_reviewFile" AllowPaging="true" PageSize="25" AutoGenerateColumns="false">
+    <Columns>
+        <asp:BoundField HeaderText="Fecha" DataField="fecha" DataFormatString="{0:dd/MM/yyyy}" />
+        <asp:BoundField HeaderText="Importador" DataField="importador" />
+        <asp:BoundField HeaderText="Aduana" DataField="aduana" />
+        <asp:BoundField HeaderText="Referencia" DataField="referencia" />
+        <asp:BoundField HeaderText="Factura" DataField="factura" />
+        <asp:BoundField HeaderText="Codigo" DataField="codigo" />
+        <asp:BoundField HeaderText="O.C." DataField="orden" />
+        <asp:BoundField HeaderText="Vendor" DataField="vendor" />
+        <asp:BoundField HeaderText="Piezas" DataField="piezas" DataFormatString="{0:N}" />
+        <asp:BoundField HeaderText="Valor" DataField="valorfactura" DataFormatString="{0:$#,##0.00}" />
+    </Columns>
+</asp:GridView>
 
 </ContentTemplate>
 </asp:UpdatePanel>

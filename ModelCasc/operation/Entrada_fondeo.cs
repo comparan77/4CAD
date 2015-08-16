@@ -10,6 +10,7 @@ namespace ModelCasc.operation
     {
         #region Campos
         protected int _id;
+        protected int _id_usuario;
         protected DateTime _fecha;
         protected string _importador;
         protected string _aduana;
@@ -25,6 +26,7 @@ namespace ModelCasc.operation
 
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
+        public int Id_usuario { get { return _id_usuario; } set { _id_usuario = value; } }
         public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
         public string Importador { get { return _importador; } set { _importador = value; } }
         public string Aduana { get { return _aduana; } set { _aduana = value; } }
@@ -46,6 +48,7 @@ namespace ModelCasc.operation
 		#region Constructores
 		public Entrada_fondeo()
 		{
+            this._id_usuario = 0;
 			this._fecha = default(DateTime);
             this._importador = string.Empty;
 			this._aduana = String.Empty;

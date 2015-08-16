@@ -74,7 +74,7 @@ namespace AppCasc.operation
                 {
                     fondeoPasoDlt();
                     lbl_NoFoliosMsg.Text = "Partidas con vendors no existentes en el catálogo: " + lst.Count.ToString();
-                    grd_reviewFile.AutoGenerateColumns = true;
+                    //grd_reviewFile.AutoGenerateColumns = true;
                     grd_reviewFile.DataSource = lst;
                     grd_reviewFile.DataBind();
                 }
@@ -97,7 +97,7 @@ namespace AppCasc.operation
                 {
                     fondeoPasoDlt();
                     lbl_NoFoliosMsg.Text = "Partidas con codigos no existentes en el catálogo: " + lst.Count.ToString();
-                    grd_reviewFile.AutoGenerateColumns = true;
+                    //grd_reviewFile.AutoGenerateColumns = true;
                     grd_reviewFile.DataSource = lst;
                     grd_reviewFile.DataBind();
                     usrControlClienteMercancia1.fillNegocio();
