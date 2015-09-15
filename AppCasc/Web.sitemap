@@ -59,6 +59,7 @@
     </siteMapNode>
     <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
+      <siteMapNode url="~/report/frmReportViewer.aspx" title="Reportes Operativos"  description="Reportes Operativos" />
       <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />
       <siteMapNode url="~/report/frmTransporteChart.aspx" title="Gráfica Movimientos"  description="Gráfica Movimientos" />
       <!--<siteMapNode url="~/report/frmMaquila.aspx" title="Maquila"  description="Maquila" />-->

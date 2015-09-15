@@ -881,7 +881,7 @@ namespace ModelCasc.operation
         {
             try
             {
-                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = new Entrada_fondeo() { Id = id_usuario } };
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng() { O_Entrada_fondeo = new Entrada_fondeo() { Id_usuario = id_usuario } };
                 oMng.dltFondeoPaso(trans);
             }
             catch
