@@ -38,7 +38,8 @@ namespace AppCasc.operation.arribos
             {
                 facturas += iEF.Factura + ",";
             }
-            facturas = facturas.Substring(0, facturas.Length - 1);
+            if(facturas.Length> 0)
+                facturas = facturas.Substring(0, facturas.Length - 1);
             hf_facturasAvon.Value = facturas;
         }
 
