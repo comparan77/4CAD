@@ -926,6 +926,7 @@
                               <Value>=Fields!Bultos_recibidos.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -958,6 +959,7 @@
                               <Value>=Fields!Bultos_desglosados.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -989,7 +991,8 @@
                             <TextRun>
                               <Value>=Fields!Piezas_recibidas.Value</Value>
                               <Style>
-                                <Format>#,0;(#,0)</Format>
+                                <Format>n0</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1022,6 +1025,7 @@
                               <Value>=Fields!Piezas_desglosadas.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1086,6 +1090,7 @@
                               <Value>=Fields!Piezas_maquiladas.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1118,6 +1123,7 @@
                               <Value>=Fields!Piezas_danadas.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1150,6 +1156,7 @@
                               <Value>=Fields!Piezas_sobrante.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1182,6 +1189,7 @@
                               <Value>=Fields!Piezas_no_maquiladas.Value</Value>
                               <Style>
                                 <Format>#,0;(#,0)</Format>
+                                <Language>es-MX</Language>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1241,7 +1249,7 @@
         <Top>1.31445cm</Top>
         <Left>0.67945cm</Left>
         <Height>1.2cm</Height>
-        <Width>51.82492cm</Width>
+        <Width>51.82491cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
