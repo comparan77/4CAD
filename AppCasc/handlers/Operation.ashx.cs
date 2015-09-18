@@ -119,6 +119,9 @@ namespace AppCasc.handlers
                         SalidaCtrl.OrdenCargaAdd(oSOC);
                         response = JsonConvert.SerializeObject(oSOC);
                         break;
+                    case "ordenCarga":
+                        response = ordenCarga(context);
+                        break;
                     default:
                         break;
                 }
@@ -170,6 +173,26 @@ namespace AppCasc.handlers
                 case "getByIdTrafico":
                     int.TryParse(context.Request["id_salida_trafico"].ToString(), out id);
                     response = JsonConvert.SerializeObject(SalidaCtrl.RemisionGetByIdTrafico(id));
+                    break;
+            }
+            return response;
+        }
+
+        private string ordenCarga(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string folioOC = string.Empty;
+            int idOc = 0;
+            switch (option)
+            {
+                case "getByFolio": //Valida referencia
+                    folioOC = context.Request["folio"].ToString();
+                    response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetByFolio(folioOC));
+                    break;
+                case "getById":
+                    int.TryParse(context.Request["id_orden_carga"].ToString(), out idOc);
+                    response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetById(idOc));
                     break;
             }
             return response;

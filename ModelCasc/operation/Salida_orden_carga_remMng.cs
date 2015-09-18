@@ -51,7 +51,38 @@ namespace ModelCasc.operation
                 o.PSalRem.Referencia = dr["referencia"].ToString();
                 o.PSalRem.Codigo = dr["codigo"].ToString();
                 o.PSalRem.Orden = dr["orden"].ToString();
-                
+                entero = 0;
+                if (dr["bultoE"] != DBNull.Value)
+                {
+                    int.TryParse(dr["bultoE"].ToString(), out entero);
+                    o.PSalRem.BultoTotalInv = entero;
+                    entero = 0;
+                }
+                if (dr["piezaE"] != DBNull.Value)
+                {
+                    int.TryParse(dr["piezaE"].ToString(), out entero);
+                    o.PSalRem.PiezaTotalInv = entero;
+                    entero = 0;
+                }
+                if (dr["bultoS"] != DBNull.Value)
+                {
+                    int.TryParse(dr["bultoS"].ToString(), out entero);
+                    o.PSalRem.BultoTotal = entero;
+                    entero = 0;
+                }
+                if (dr["piezaS"] != DBNull.Value)
+                {
+                    int.TryParse(dr["piezaS"].ToString(), out entero);
+                    o.PSalRem.PiezaTotal = entero;
+                    entero = 0;
+                }
+                if (dr["parciales"] != DBNull.Value)
+                {
+                    int.TryParse(dr["parciales"].ToString(), out entero);
+                    o.PSalRem.CantParciales = entero;
+                    entero = 0;
+                }
+
             }
             catch
             {

@@ -23,6 +23,7 @@
       <siteMapNode url="~/catalog/frmClienteMercancia.aspx" title="Mercancia"  description="Mercancia" />
       <siteMapNode url="~/catalog/frmClienteCodigo.aspx" title="Código por cliente"  description="Código por cliente" />
       <siteMapNode url="~/operation/frmCancelDoc.aspx" title="Cancelar Movimientos"  description="Cancelar Movimientos" />
+      <siteMapNode url="~/operation/embarques/frmEmbarqueOC.aspx" title="Embarques"  description="Embarques" />
     </siteMapNode>
     <siteMapNode roles="Mantenimiento, Super" title="Catálogos">
       <siteMapNode url="~/catalog/frmAduanaLst.aspx" title="Aduanas"  description="Aduanas" />

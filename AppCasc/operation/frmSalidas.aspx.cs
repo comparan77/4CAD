@@ -835,9 +835,15 @@ namespace AppCasc.operation
                 ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedValue));
                 ControlsMng.fillCliente(ddlCliente);
                 int IdCliente = 0;
-                int.TryParse(ddlCliente.SelectedValue, out IdCliente);
 
+                int.TryParse(Request.QueryString["_idCte"], out IdCliente);
 
+                if (IdCliente == 0)
+                    int.TryParse(ddlCliente.SelectedValue, out IdCliente);
+                
+
+                ddlCliente.SelectedValue = IdCliente.ToString();
+                ddlCliente_changed(null, null);
                 //ControlsMng.fillDocumento(ddlDocumento);
                 clienteRequiereDocumentos(IdCliente);
                 //clienteDestinos(IdCliente);
@@ -885,6 +891,8 @@ namespace AppCasc.operation
         {
             int IdCliente = 0;
             int.TryParse(ddlCliente.SelectedValue, out IdCliente);
+            if (IdCliente == 1)
+                Response.Redirect("~/operation/embarques/frmEmbarqueOC.aspx");
             txt_referencia.Text = string.Empty;
             lst_documento_recibido.Items.Clear();
             VSLstSD.Clear();
@@ -1136,7 +1144,9 @@ namespace AppCasc.operation
                 else
                     oS = addSalidaValues();
                 printSalida(oS);
-                Response.Redirect("frmSalidas.aspx?_kp=" + oS.Id);
+                int IdCliente = 0;
+                int.TryParse(ddlCliente.SelectedValue, out IdCliente);
+                Response.Redirect("frmSalidas.aspx?_kp=" + oS.Id + "&_idCte=" + IdCliente);
             }
             catch (Exception e)
             {

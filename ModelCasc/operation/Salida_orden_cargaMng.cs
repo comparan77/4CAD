@@ -175,5 +175,26 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void fillLstByFolio()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga");
+                addParameters(5);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_orden_carga>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_orden_carga o = new Salida_orden_carga();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }            
+        }
     }
 }

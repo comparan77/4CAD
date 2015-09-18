@@ -53,6 +53,9 @@ namespace ModelCasc.operation
         public string Elaboro { get; set; }
         public int PiezaTotal { get; set; }
         public int BultoTotal { get; set; }
+        public int PiezaTotalInv { get; set; }
+        public int BultoTotalInv { get; set; }
+        public int CantParciales { get; set; }
         public Salida_trafico PTrafico { get; set; }
         #endregion
 

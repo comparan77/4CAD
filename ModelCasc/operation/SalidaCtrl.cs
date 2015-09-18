@@ -1010,6 +1010,22 @@ namespace ModelCasc.operation
             return o;
         }
 
+        public static List<Salida_orden_carga> OrdenCargaGetByFolio(string folioOC)
+        {
+            List<Salida_orden_carga> lst = new List<Salida_orden_carga>();
+            try
+            {
+                Salida_orden_cargaMng oMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = new Salida_orden_carga() { Folio_orden_carga = folioOC } };
+                oMng.fillLstByFolio();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         #endregion
     }
 }
