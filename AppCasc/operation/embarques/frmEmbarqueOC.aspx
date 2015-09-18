@@ -94,7 +94,7 @@
         <asp:TextBox runat="server" ID="txt_destino" CssClass="txtNoBorder txtMedium"></asp:TextBox>
     </div>
     <hr />
-    <asp:GridView runat="server" ID="grd_rem" CssClass="grdCasc" AutoGenerateColumns="false" EmptyDataText="Sin remisiones" OnRowDataBound="grd_rem_databound">
+    <asp:GridView runat="server" ID="grd_rem" CssClass="grdCasc" AutoGenerateColumns="false" EmptyDataText="Sin remisiones" OnRowDataBound="grd_rem_databound" CellPadding="3">
     <Columns>
         <asp:BoundField HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Center" HeaderText="Pedimento" DataField="Referencia" />
         <asp:TemplateField HeaderText="Documentos">
@@ -115,6 +115,7 @@
                     <li id='<%# "liDoc" + Eval("Id") + "_3" %>'><%# "Remisión->" + Eval("PSalRem.Folio_remision")%></li>
                 </ul>
             </div>
+            <asp:HiddenField runat="server" ID="hf_JsonDocumentos" />
         </ItemTemplate>
         </asp:TemplateField>
         <asp:BoundField HeaderStyle-HorizontalAlign="Center" HeaderText="Bultos" ItemStyle-HorizontalAlign="Center" DataField="PSalRem.BultoTotal" DataFormatString="{0:N0}" />
@@ -122,12 +123,85 @@
 
         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Pallets">
         <ItemTemplate>
-            <input type="text" id="txt_no_pallet" class="txtNumber" />
+            <asp:TextBox runat="server" ID="txt_no_pallet" CssClass="txtNumber"></asp:TextBox>
+        </ItemTemplate>
+        </asp:TemplateField>
+
+        <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" HeaderText="Mercancía">
+        <ItemTemplate>
+            <asp:TextBox runat="server" ID="txt_mercancia" TextMode="MultiLine"></asp:TextBox>
         </ItemTemplate>
         </asp:TemplateField>
 
     </Columns>
     </asp:GridView>
+</ContentTemplate>
+</asp:UpdatePanel>
+
+</div>
+</div>
+
+
+<div style="margin-top: 5px;">
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Transporte</h3>
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+
+<asp:UpdatePanel runat="server" ID="up_transporte" UpdateMode="Conditional">
+<Triggers>
+    <asp:AsyncPostBackTrigger ControlID="rep_resultados" EventName="ItemCommand" />
+</Triggers>
+<ContentTemplate>
+
+<div>
+    <label>Linea:</label>
+    <asp:DropDownList runat="server" ID="ddl_linea"></asp:DropDownList>
+</div>
+<div>
+    <label>Tipo:</label>
+    <asp:DropDownList runat="server" ID="ddl_tipo"></asp:DropDownList>
+</div>
+<div>
+    <label>Placa:</label>
+    <asp:TextBox id="txt_placa" runat="server" MaxLength="50"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_placa" ControlToValidate="txt_placa" ErrorMessage="Es necesario capturar la placa para este tipo de vehículo"></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Caja:</label>
+    <asp:TextBox id="txt_caja" runat="server" MaxLength="50"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja" ControlToValidate="txt_caja" ErrorMessage="Es necesario capturar la placa de la caja para este tipo de vehículo"></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Contenedor 1:</label>
+    <asp:TextBox id="txt_caja_1" runat="server" MaxLength="50"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_1" ControlToValidate="txt_caja_1" ErrorMessage="Es necesario capturar el número de contenedor 1 para este tipo de vehículo"></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Contenedor 2:</label>
+    <asp:TextBox id="txt_caja_2" runat="server" MaxLength="50"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_2" ControlToValidate="txt_caja_2" ErrorMessage="Es necesario capturar el número de contenedor 2 para este tipo de vehículo"></asp:RequiredFieldValidator>
+</div>
+
+<div>
+    <label>Sello:</label>
+    <asp:TextBox id="txt_sello" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvSello" ControlToValidate="txt_sello" ErrorMessage="Es necesario capturar el sello"></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Carta Porte:</label>
+    <asp:TextBox id="txt_talon" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvCartaPorte" ControlToValidate="txt_talon" ErrorMessage="Es necesario capturar la carta porte"></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Custodia:</label>
+    <asp:DropDownList runat="server" ID="ddlCustodia"></asp:DropDownList>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvCustodia" ControlToValidate="ddlCustodia" InitialValue="" ErrorMessage="Es necesario seleccionar una custodia"></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Operador:</label>
+    <asp:TextBox runat="server" ID="txt_operador"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvOperador" ControlToValidate="txt_operador" ErrorMessage="Es necesario capturar el operador de la custodia"></asp:RequiredFieldValidator>
+</div>
+
 </ContentTemplate>
 </asp:UpdatePanel>
 

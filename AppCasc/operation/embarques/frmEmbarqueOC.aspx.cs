@@ -7,13 +7,12 @@ using System.Web.UI.WebControls;
 using ModelCasc.webApp;
 using ModelCasc.operation;
 using Model;
+using ModelCasc.catalog;
 
 namespace AppCasc.operation.embarques
 {
     public partial class frmEmbarqueOC : System.Web.UI.Page
     {
-        
-
         private void loadFirstTime()
         {
             try
@@ -34,13 +33,57 @@ namespace AppCasc.operation.embarques
                 ddlBodega.SelectedValue = ((MstCasc)this.Master).getUsrLoged().Id_bodega.ToString();
                 ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedValue));
                 ControlsMng.fillCliente(ddlCliente);
-                
+                ControlsMng.fillTransporte(ddl_linea);
+                ControlsMng.fillTipoTransporte(ddl_tipo);
+                ControlsMng.fillCustodia(ddlCustodia);
+
                 int IdCliente = 0;
                 int.TryParse(ddlCliente.SelectedValue, out IdCliente);
             }
             catch (Exception)
             {
                 Response.Redirect("~/Login.aspx");
+            }
+        }
+
+        private void validarTipoTransporte(int IdTransporteTipo)
+        {
+            try
+            {
+                if (IdTransporteTipo > 0)
+                {
+                    Transporte_tipoMng oMng = new Transporte_tipoMng();
+                    Transporte_tipo o = new Transporte_tipo();
+                    o.Id = IdTransporteTipo;
+                    oMng.O_Transporte_tipo = o;
+                    oMng.selById();
+
+                    //rv_total_carga_max.MinimumValue = "0";
+                    //rv_total_carga_max.MaximumValue = o.Peso_maximo.ToString();
+                    //rv_total_carga_max.ErrorMessage = "El peso excede los " + o.Peso_maximo.ToString() + " Kg, para el tipo de transrpote selecccionado";
+
+                    txt_placa.Text = string.Empty;
+                    txt_placa.ReadOnly = (!o.Requiere_placa);
+                    txt_caja.Text = string.Empty;
+                    txt_caja.ReadOnly = (!o.Requiere_caja);
+                    txt_caja_1.Text = string.Empty;
+                    txt_caja_1.ReadOnly = (!o.Requiere_caja1);
+                    txt_caja_2.Text = string.Empty;
+                    txt_caja_2.ReadOnly = (!o.Requiere_caja2);
+
+                    if (txt_placa.ReadOnly)
+                        txt_placa.Text = "N.A.";
+                    if (txt_caja.ReadOnly)
+                        txt_caja.Text = "N.A.";
+                    if (txt_caja_1.ReadOnly)
+                        txt_caja_1.Text = "N.A.";
+                    if (txt_caja_2.ReadOnly)
+                        txt_caja_2.Text = "N.A.";
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
 
@@ -80,13 +123,27 @@ namespace AppCasc.operation.embarques
 
         private void fillControlsToOC(Salida_orden_carga oSOC)
         {
-
+            #region Cita
             txt_folio_cita.Text = oSOC.PSalidaTrafico.Folio_cita;
             txt_cita_fecha_hora.Text = CommonFunctions.FormatDate(Convert.ToDateTime(oSOC.PSalidaTrafico.Fecha_cita), "dd \\de MMMM \\de yyyy") + " " + oSOC.PSalidaTrafico.Hora_cita.ToString();
             txt_destino.Text = oSOC.PSalidaTrafico.Destino;
+            #endregion
 
+            #region Documentos
             grd_rem.DataSource = oSOC.LstRem;
             grd_rem.DataBind();
+            #endregion
+
+            #region Transporte
+            ddl_linea.SelectedValue = Convert.ToInt32(oSOC.PSalidaTrafico.Id_transporte).ToString();
+            ddl_tipo.SelectedValue = Convert.ToInt32(oSOC.PSalidaTrafico.Id_transporte_tipo_cita).ToString();
+            txt_placa.Text = oSOC.PSalidaTrafico.Placa;
+            txt_caja.Text = oSOC.PSalidaTrafico.Caja;
+            txt_caja_1.Text = oSOC.PSalidaTrafico.Caja1;
+            txt_caja_2.Text = oSOC.PSalidaTrafico.Caja2;
+            txt_operador.Text = oSOC.PSalidaTrafico.Operador;
+            validarTipoTransporte(Convert.ToInt32(oSOC.PSalidaTrafico.Id_transporte_tipo_cita));
+            #endregion
         }
 
         protected void click_result(object sender, RepeaterCommandEventArgs args)
