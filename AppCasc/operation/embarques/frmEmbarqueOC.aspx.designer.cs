@@ -166,6 +166,15 @@ namespace AppCasc.operation.embarques {
         protected global::System.Web.UI.UpdatePanel up_Rem;
         
         /// <summary>
+        /// hf_id_doc_req_by_cliente control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_doc_req_by_cliente;
+        
+        /// <summary>
         /// txt_folio_cita control.
         /// </summary>
         /// <remarks>
@@ -371,5 +380,50 @@ namespace AppCasc.operation.embarques {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvOperador;
+        
+        /// <summary>
+        /// txt_hora_carga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_hora_carga;
+        
+        /// <summary>
+        /// rfv_hora_carga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_hora_carga;
+        
+        /// <summary>
+        /// txt_vigilante control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_vigilante;
+        
+        /// <summary>
+        /// rfvVigilante control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvVigilante;
+        
+        /// <summary>
+        /// txt_observaciones control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_observaciones;
     }
 }

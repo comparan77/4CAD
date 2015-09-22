@@ -82,7 +82,7 @@ namespace ModelCasc.operation
                     o.PSalRem.CantParciales = entero;
                     entero = 0;
                 }
-
+                o.PSalRem.Forma = dr["forma"].ToString();
             }
             catch
             {

@@ -19,6 +19,7 @@ namespace AppCasc.operation.embarques
             {
                 ControlsMng.fillBodega(ddlBodega);
                 fillControls();
+                txt_fecha.Text = DateTime.Today.ToString("dd MMM yy");
             }
             catch
             {
@@ -118,6 +119,7 @@ namespace AppCasc.operation.embarques
             {
                 DropDownList ddl_documento = args.Row.FindControl("ddl_documento") as DropDownList;
                 ControlsMng.fillDocumento(ddl_documento);
+                ddl_documento.Items.Remove(ddl_documento.Items.FindByValue(hf_id_doc_req_by_cliente.Value));
             }
         }
 
@@ -130,6 +132,12 @@ namespace AppCasc.operation.embarques
             #endregion
 
             #region Documentos
+            Cliente_documentoMng oCDMng = new Cliente_documentoMng();
+            Cliente_documento oCD = new Cliente_documento();
+            oCD.Id_cliente = Convert.ToInt32(ddlCliente.SelectedValue);
+            oCDMng.O_Cliente_documento = oCD;
+            oCDMng.fillLstByCliente();
+            hf_id_doc_req_by_cliente.Value = oCDMng.Lst.First().Id_documento.ToString();
             grd_rem.DataSource = oSOC.LstRem;
             grd_rem.DataBind();
             #endregion

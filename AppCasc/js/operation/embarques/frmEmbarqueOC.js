@@ -1,4 +1,21 @@
-﻿var MngEmbarqueOC = function () {
+﻿var lstDoc;
+
+var BeanSalidaDocumento = function (id_documento, Pdocumento, referencia) {
+    this.Id = 0;
+    this.Id_entrada = 0;
+    this.Id_documento = id_documento;
+    this.Referencia = referencia;
+    this.PDocumento = Pdocumento;
+}
+
+var BeanDocumento = function (id_documento, nombre, mascara) {
+    this.Id = id_documento;
+    this.Nombre = nombre;
+    this.Mascara = mascara;
+    this.IsActive = true;
+}
+
+var MngEmbarqueOC = function () {
     this.Init = init;
 
     function init() {
@@ -6,7 +23,62 @@
     }
 
     function initControls() {
-       
+        $('#ctl00_body_txt_hora_salida, #ctl00_body_txt_hora_carga').scroller({
+            preset: 'time',
+            theme: 'default',
+            display: 'modal',
+            mode: 'clickpick',
+            timeFormat: 'HH:ii:ss'
+        });
+        var up_Rem = $('#ctl00_body_up_Rem');
+        $(up_Rem).panelReady(function () {
+            $('.add_doc').each(function () {
+                $(this).button().unbind('click').click(function () {
+
+                    var idTipoDoc;
+                    var tipoDoc;
+                    var selectDoc;
+                    var referenciaDoc;
+
+                    referenciaDoc = $(this).parent().parent().children('div:nth-child(2)').children('input').val();
+
+                    if (referenciaDoc.length <= 0) {
+                        alert('La referencia del documento no puede estar vacía');
+                        return false;
+                    }
+
+                    selectDoc = $(this).parent().parent().children('div').first().children('select');
+                    idTipoDoc = selectDoc.val();
+                    tipoDoc = selectDoc.find(":selected").text();
+
+                    //                    var oDoc = new BeanDocumento(idTipoDoc, tipoDoc);
+                    //                    var oEntDoc = new BeanSalidaDocumento(idTipoDoc, oDoc, referenciaDoc);
+                    //                    var arrDocEx = $.grep(lstDoc, function (obj) {
+                    //                        return obj.Id_documento == idDocumento;
+                    //                    });
+                    //                    
+                    //                    if (arrDocEx.length == 0)
+                    //                        lstDoc.push(oEntDoc);
+
+                    //Verifica que no se repita el tipo de documento
+                    var existe = false;
+                    $(this).parent().next().children('ul').children('li').each(function () {
+                        if ($(this).attr('iddoc') == idTipoDoc) {
+                            existe = true;
+                            return false;
+                        }
+                    });
+                    if (!existe)
+                        $(this).parent().next().children('ul').append('<li iddoc="' + idTipoDoc + '" style="clear: left"><span style="float: left; display: block;">' + tipoDoc + '->' + referenciaDoc + '</span><span class="ui-icon ui-icon-trash icon-button-action removeDoc"></span></li>');
+
+                    $('.removeDoc').each(function () {
+                        $(this).click(function () {
+                            $(this).parent().remove();
+                        });
+                    });
+                });
+            });
+        });
     }
 
     function clearControls() {

@@ -56,6 +56,10 @@ namespace ModelCasc.operation
         public int PiezaTotalInv { get; set; }
         public int BultoTotalInv { get; set; }
         public int CantParciales { get; set; }
+        /// <summary>
+        /// La forma de una salida puede ser única, parcial o última
+        /// </summary>
+        public string Forma { get; set; }
         public Salida_trafico PTrafico { get; set; }
         #endregion
 

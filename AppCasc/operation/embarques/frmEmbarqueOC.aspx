@@ -1,6 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmEmbarqueOC.aspx.cs" Inherits="AppCasc.operation.embarques.frmEmbarqueOC" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../../css/mobiscroll-2.1-beta.custom.min.css" rel="stylesheet" type="text/css" />
     <link href="../../css/frmOperation.css" rel="stylesheet" type="text/css" />
+    <script src="../../js/jquery.updatepanel.js" type="text/javascript"></script>
+    <script src="../../js/mobiscroll-2.1-beta.custom.min.js" type="text/javascript"></script>
     <script src="../../js/operation/embarques/frmEmbarqueOC.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -80,6 +83,7 @@
     <asp:AsyncPostBackTrigger ControlID="rep_resultados" EventName="ItemCommand" />
 </Triggers>
 <ContentTemplate>
+    <asp:HiddenField runat="server" ID="hf_id_doc_req_by_cliente" />
 
     <div>
         <label>Cita:</label>
@@ -108,11 +112,11 @@
                 <asp:TextBox runat="server" ID="txt_ref_doc"></asp:TextBox>
             </div>
             <div>
-                <asp:Button CausesValidation="false" runat="server" ID="btn_add_doc" Text="Agregar Documento" />
+                <input type="button" class="add_doc" value="Agregar Documento" />
             </div>
             <div>
                 <ul>
-                    <li id='<%# "liDoc" + Eval("Id") + "_3" %>'><%# "Remisión->" + Eval("PSalRem.Folio_remision")%></li>
+                    <li iddoc="3"><span><%# "Remisión->" + Eval("PSalRem.Folio_remision")%></span></li>
                 </ul>
             </div>
             <asp:HiddenField runat="server" ID="hf_JsonDocumentos" />
@@ -132,6 +136,9 @@
             <asp:TextBox runat="server" ID="txt_mercancia" TextMode="MultiLine"></asp:TextBox>
         </ItemTemplate>
         </asp:TemplateField>
+
+        <asp:BoundField DataField="PSalRem.forma" HeaderText="Forma" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+        </asp:BoundField>
 
     </Columns>
     </asp:GridView>
@@ -204,6 +211,30 @@
 
 </ContentTemplate>
 </asp:UpdatePanel>
+
+</div>
+</div>
+
+<div style="margin-top: 5px;">
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Revisi&oacute;n</h3>
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+
+<div>
+    <label>Hora carga:</label>
+    <asp:TextBox CssClass="horaPicker" id="txt_hora_carga" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" ID="rfv_hora_carga" ControlToValidate="txt_hora_carga" ErrorMessage="Es necesario proporcionar una hora" ></asp:RequiredFieldValidator>
+    <span class="hidden error">Es necesario proporcionar una hora</span>
+</div>
+<div>
+    <label>Vigilante:</label>
+    <%--<asp:DropDownList runat="server" ID="ddlVigilante"></asp:DropDownList>--%>
+    <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante"></asp:TextBox>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="txt_vigilante" ErrorMessage="Es necesario proporcionar vigilante" ></asp:RequiredFieldValidator>
+</div>
+<div>
+    <label>Observaciones:</label>
+    <asp:TextBox runat="server" TextMode="MultiLine" Rows="4" Columns="1" ID="txt_observaciones"></asp:TextBox>
+</div>
 
 </div>
 </div>
