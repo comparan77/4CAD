@@ -37,7 +37,7 @@ namespace ModelCasc.report.operation
                     o.FechaEntrada = Convert.ToDateTime(dr["fecha_entrada"]);
                     o.Folio_entrada = dr["folio_entrada"].ToString();
                     o.Referencia = dr["referencia"].ToString();
-                    o.Orden = dr["codigo"].ToString();
+                    o.Orden = dr["orden_compra"].ToString();
                     o.Codigo = dr["codigo"].ToString();
                     o.Mercancia = dr["mercancia"].ToString();
                     o.Vendor = dr["vendor"].ToString();
