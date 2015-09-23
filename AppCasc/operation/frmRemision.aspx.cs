@@ -174,8 +174,8 @@ namespace AppCasc.operation
 
             //primer renglon
             Salida_remision_detail oSRD1 = new Salida_remision_detail();
-            int.TryParse(hf_id_entrada_maquila_detail_1.Value, out numero);
-            oSRD1.Id_entrada_maquila_detail = numero;
+            //int.TryParse(hf_id_entrada_maquila_detail_1.Value, out numero);
+            //oSRD1.Id_entrada_maquila_detail = numero;
             numero = 0;
             
             int.TryParse(txt_bulto.Text, out numero);
@@ -200,8 +200,8 @@ namespace AppCasc.operation
             //segundo renglon
             Salida_remision_detail oSRD2 = new Salida_remision_detail();
 
-            int.TryParse(hf_id_entrada_maquila_detail_2.Value, out numero);
-            oSRD2.Id_entrada_maquila_detail = numero;
+            //int.TryParse(hf_id_entrada_maquila_detail_2.Value, out numero);
+            //oSRD2.Id_entrada_maquila_detail = numero;
             numero = 0;
 
             int.TryParse(txt_bultoInc.Text, out numero);
