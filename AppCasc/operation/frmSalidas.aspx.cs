@@ -554,7 +554,7 @@ namespace AppCasc.operation
             doble = 0;
 
             //Es consolidada
-            oS.EsConsolidada = Convert.ToBoolean(hfConsolidada.Value);
+            oS.EsCompartida = Convert.ToBoolean(hfConsolidada.Value);
 
             //Es parcial
             oS.Es_unica = true;

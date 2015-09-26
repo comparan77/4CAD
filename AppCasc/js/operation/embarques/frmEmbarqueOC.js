@@ -1,18 +1,10 @@
-﻿var lstDoc;
+﻿var lstDoc = [];
 
-var BeanSalidaDocumento = function (id_documento, Pdocumento, referencia) {
+var BeanSalidaDocumento = function (id_documento, referencia) {
     this.Id = 0;
-    this.Id_entrada = 0;
+    this.Id_salida = 0;
     this.Id_documento = id_documento;
     this.Referencia = referencia;
-    this.PDocumento = Pdocumento;
-}
-
-var BeanDocumento = function (id_documento, nombre, mascara) {
-    this.Id = id_documento;
-    this.Nombre = nombre;
-    this.Mascara = mascara;
-    this.IsActive = true;
 }
 
 var MngEmbarqueOC = function () {
@@ -30,6 +22,28 @@ var MngEmbarqueOC = function () {
             mode: 'clickpick',
             timeFormat: 'HH:ii:ss'
         });
+
+        $('#ctl00_body_btnGuardar').button().click(function () {
+            var IsValid = true;
+
+            validaReferencias();
+
+            $('.validator').each(function () {
+                if ($(this).css('visibility') == 'visible') {
+                    $('html,body').animate({
+                        scrollTop: $(this).offset().top
+                    }, 2000);
+                    IsValid = false;
+                    return false;
+                }
+            });
+
+            if (IsValid) {
+                fillJsonDocByReferencia();
+                $(this).hide();
+            }
+        });
+
         var up_Rem = $('#ctl00_body_up_Rem');
         $(up_Rem).panelReady(function () {
             $('.add_doc').each(function () {
@@ -42,23 +56,14 @@ var MngEmbarqueOC = function () {
 
                     referenciaDoc = $(this).parent().parent().children('div:nth-child(2)').children('input').val();
 
-                    if (referenciaDoc.length <= 0) {
-                        alert('La referencia del documento no puede estar vacía');
-                        return false;
-                    }
-
                     selectDoc = $(this).parent().parent().children('div').first().children('select');
                     idTipoDoc = selectDoc.val();
                     tipoDoc = selectDoc.find(":selected").text();
 
-                    //                    var oDoc = new BeanDocumento(idTipoDoc, tipoDoc);
-                    //                    var oEntDoc = new BeanSalidaDocumento(idTipoDoc, oDoc, referenciaDoc);
-                    //                    var arrDocEx = $.grep(lstDoc, function (obj) {
-                    //                        return obj.Id_documento == idDocumento;
-                    //                    });
-                    //                    
-                    //                    if (arrDocEx.length == 0)
-                    //                        lstDoc.push(oEntDoc);
+                    if (referenciaDoc.length <= 0) {
+                        alert('La referencia del documento ' + tipoDoc + ' no puede estar vacía');
+                        return false;
+                    }
 
                     //Verifica que no se repita el tipo de documento
                     var existe = false;
@@ -69,7 +74,7 @@ var MngEmbarqueOC = function () {
                         }
                     });
                     if (!existe)
-                        $(this).parent().next().children('ul').append('<li iddoc="' + idTipoDoc + '" style="clear: left"><span style="float: left; display: block;">' + tipoDoc + '->' + referenciaDoc + '</span><span class="ui-icon ui-icon-trash icon-button-action removeDoc"></span></li>');
+                        $(this).parent().next().children('ul').append('<li iddoc="' + idTipoDoc + '" style="clear: left"><span style="float: left; display: block;">' + tipoDoc + ':</span>&nbsp;<span style="float: left; display: block;">' + referenciaDoc + '</span><span style="float: left; display: block;" class="ui-icon ui-icon-trash icon-button-action removeDoc"></span></li>');
 
                     $('.removeDoc').each(function () {
                         $(this).click(function () {
@@ -78,6 +83,44 @@ var MngEmbarqueOC = function () {
                     });
                 });
             });
+        });
+    }
+
+    function validaReferencias() {
+        $('.revReferencia').each(function () {
+            var txt_pallet = $(this).children('td:nth-child(5)').children('input');
+            var txt_mercancia = $(this).children('td:nth-child(6)').children('textarea');
+
+            $(txt_pallet).next().next().css('visibility', 'hidden');
+            if (txt_pallet.val().length == 0)
+                $(txt_pallet).next().next().css('visibility', 'visible');
+
+            $(txt_mercancia).next().next().css('visibility', 'hidden');
+            if (txt_mercancia.val().length == 0)
+                $(txt_mercancia).next().next().css('visibility', 'visible');
+        });
+    }
+
+    function fillJsonDocByReferencia() {
+        $('.revReferencia').each(function () {
+            var ulDocs = $(this).children('td:nth-child(2)').children('div:nth-child(4)').children('ul');
+            lstDoc = [];
+            $(ulDocs).children('li').each(function () {
+
+                var idTipoDoc = $(this).attr('iddoc');
+                var tipoDoc = $(this).children('span').first().html();
+                var referenciaDoc = $(this).children('span:nth-child(2)').html();
+
+                var oSalDoc = new BeanSalidaDocumento(idTipoDoc, referenciaDoc);
+                var arrDocEx = $.grep(lstDoc, function (obj) {
+                    return obj.Id_documento == idTipoDoc;
+                });
+
+                if (arrDocEx.length == 0)
+                    lstDoc.push(oSalDoc);
+            });
+            var hfJsonDoc = $(this).children('td:nth-child(2)').children('div:nth-child(4)').children('input');
+            hfJsonDoc.val(JSON.stringify(lstDoc));
         });
     }
 

@@ -59,7 +59,7 @@ namespace ModelCasc.operation
         /// <summary>
         /// La forma de una salida puede ser única, parcial o última
         /// </summary>
-        public string Forma { get; set; }
+        public int Forma { get; set; }
         public Salida_trafico PTrafico { get; set; }
         #endregion
 

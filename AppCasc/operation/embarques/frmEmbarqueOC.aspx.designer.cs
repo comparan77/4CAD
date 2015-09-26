@@ -175,6 +175,15 @@ namespace AppCasc.operation.embarques {
         protected global::System.Web.UI.WebControls.HiddenField hf_id_doc_req_by_cliente;
         
         /// <summary>
+        /// hf_id_salida_orden_carga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_salida_orden_carga;
+        
+        /// <summary>
         /// txt_folio_cita control.
         /// </summary>
         /// <remarks>
@@ -418,12 +427,12 @@ namespace AppCasc.operation.embarques {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvVigilante;
         
         /// <summary>
-        /// txt_observaciones control.
+        /// btnGuardar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_observaciones;
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
     }
 }

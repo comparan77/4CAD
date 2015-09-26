@@ -84,7 +84,7 @@
 </Triggers>
 <ContentTemplate>
     <asp:HiddenField runat="server" ID="hf_id_doc_req_by_cliente" />
-
+    <asp:HiddenField runat="server" ID="hf_id_salida_orden_carga" />
     <div>
         <label>Cita:</label>
         <asp:TextBox ID="txt_folio_cita" runat="server" CssClass="txtNoBorder txtLarge"></asp:TextBox>
@@ -99,13 +99,14 @@
     </div>
     <hr />
     <asp:GridView runat="server" ID="grd_rem" CssClass="grdCasc" AutoGenerateColumns="false" EmptyDataText="Sin remisiones" OnRowDataBound="grd_rem_databound" CellPadding="3">
+    <RowStyle CssClass="revReferencia" />
     <Columns>
         <asp:BoundField HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Center" HeaderText="Pedimento" DataField="Referencia" />
         <asp:TemplateField HeaderText="Documentos">
         <ItemTemplate>
             <div>
                 <label>Tipo de documento:</label>
-                <asp:DropDownList runat="server" ID="ddl_documento"></asp:DropDownList>
+                <asp:DropDownList CssClass="txtMedium" runat="server" ID="ddl_documento"></asp:DropDownList>
             </div>    
             <div>
                 <label>Referencia del documento:</label>
@@ -116,10 +117,10 @@
             </div>
             <div>
                 <ul>
-                    <li iddoc="3"><span><%# "Remisión->" + Eval("PSalRem.Folio_remision")%></span></li>
+                    <li iddoc="3"><span>Remisi&oacute;n:</span>&nbsp;<span><%# Eval("PSalRem.Folio_remision")%></span></li>
                 </ul>
+                <asp:HiddenField runat="server" ID="hf_JsonDocumentos" />
             </div>
-            <asp:HiddenField runat="server" ID="hf_JsonDocumentos" />
         </ItemTemplate>
         </asp:TemplateField>
         <asp:BoundField HeaderStyle-HorizontalAlign="Center" HeaderText="Bultos" ItemStyle-HorizontalAlign="Center" DataField="PSalRem.BultoTotal" DataFormatString="{0:N0}" />
@@ -128,17 +129,25 @@
         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Pallets">
         <ItemTemplate>
             <asp:TextBox runat="server" ID="txt_no_pallet" CssClass="txtNumber"></asp:TextBox>
+            <br />
+            <span class="validator" style="visibility: hidden; color: Red;">Es necesario capturar una cantidad</span>
         </ItemTemplate>
         </asp:TemplateField>
 
         <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" HeaderText="Mercancía">
         <ItemTemplate>
-            <asp:TextBox runat="server" ID="txt_mercancia" TextMode="MultiLine"></asp:TextBox>
+            <asp:TextBox runat="server" ID="txt_mercancia" TextMode="MultiLine" CssClass="requerido"></asp:TextBox>
+            <br />
+            <span class="validator" style="visibility: hidden; color: Red;">Es necesario capturar la descripción de la mercanc&iacute;a</span>
         </ItemTemplate>
         </asp:TemplateField>
 
-        <asp:BoundField DataField="PSalRem.forma" HeaderText="Forma" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
-        </asp:BoundField>
+        <asp:TemplateField HeaderText="Observaciones">
+        <ItemTemplate>
+            <asp:TextBox runat="server" TextMode="MultiLine" Rows="4" Columns="1" ID="txt_observaciones"></asp:TextBox>
+            <asp:HiddenField runat="server" ID="hf_forma" Value='<%# Eval("PSalRem.Forma") %>' />
+        </ItemTemplate>
+        </asp:TemplateField>
 
     </Columns>
     </asp:GridView>
@@ -231,12 +240,12 @@
     <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante"></asp:TextBox>
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="txt_vigilante" ErrorMessage="Es necesario proporcionar vigilante" ></asp:RequiredFieldValidator>
 </div>
-<div>
-    <label>Observaciones:</label>
-    <asp:TextBox runat="server" TextMode="MultiLine" Rows="4" Columns="1" ID="txt_observaciones"></asp:TextBox>
-</div>
 
 </div>
+</div>
+
+<div>
+    <asp:Button runat="server" ID="btnGuardar" Text="Guardar" OnClick="btnGuardar_click" />
 </div>
 
 </asp:Content>

@@ -83,7 +83,7 @@ namespace ModelCasc.operation
         public Bodega PBodega { get; set; }
         public Cortina PCortina { get; set; }
         public Cliente PCliente { get; set; }
-        public bool EsConsolidada { get; set; }
+        public bool EsCompartida { get; set; }
         public Salida_parcial PSalPar { get; set; }
         public List<Salida_documento> PLstSalDoc { get; set; }
         public List<Salida_compartida> PLstSalComp { get; set; }

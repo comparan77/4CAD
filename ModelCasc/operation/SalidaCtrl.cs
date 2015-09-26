@@ -115,12 +115,12 @@ namespace ModelCasc.operation
                 throw new Exception("La referencia: " + referencia + ", ya se ha marcado como una salida unica ó última parcial con el folio: " + oS.Folio + oS.Folio_indice);
         }
 
-        private static bool EsConsolidada(Salida oS)
+        private static bool EsCompartida(Salida oS)
         {
-            bool EsConsolidada = false;
+            bool Es_Compartida = false;
             if (oS.PLstSalComp != null)
-                EsConsolidada = (oS.PLstSalComp.Count > 0);
-            return EsConsolidada;
+                Es_Compartida = (oS.PLstSalComp.Count > 0);
+            return Es_Compartida;
         }
 
         public static void ReferenciaIngresada(string referencia, int IdCliente)
@@ -273,7 +273,7 @@ namespace ModelCasc.operation
                 trans = GenericDataAccess.BeginTransaction();
                 oS.Folio = FolioCtrl.getFolio(enumTipo.S, trans);
 
-                if (EsConsolidada(oS))
+                if (EsCompartida(oS))
                 {
                     oSCFI.Folio = oS.Folio;
                     oSCMng.O_Salida_compartida = oSCFI;
@@ -306,7 +306,7 @@ namespace ModelCasc.operation
 
                 //Salida compartida, por el momento comparten pedimentos
                 oSCMng = new Salida_compartidaMng();
-                if (EsConsolidada(oS))
+                if (EsCompartida(oS))
                 {
                     Salida_compartida oSCA = new Salida_compartida();
                     oSCA.Referencia = oS.Referencia;
@@ -435,6 +435,96 @@ namespace ModelCasc.operation
                 throw;
             }
             return lst;
+        }
+
+        public static void salidaAddFromLst(List<Salida> lst)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                foreach (Salida oS in lst)
+                {
+                    Salida_compartidaMng oSCMng = new Salida_compartidaMng();
+                    Salida_compartida oSCFI = new Salida_compartida();
+                    string folioIndice = string.Empty;
+                    
+                    oS.Folio = FolioCtrl.getFolio(enumTipo.S, trans);
+
+                    if (EsCompartida(oS))
+                    {
+                        oSCFI.Folio = oS.Folio;
+                        oSCMng.O_Salida_compartida = oSCFI;
+                        folioIndice = oSCMng.GetIndice(trans);
+                        oS.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();
+                    }
+
+                    //Salida de mercancia al almacen
+                    SalidaMng oMng = new SalidaMng();
+                    oMng.O_Salida = oS;
+                    oMng.add(trans);
+
+                    //Usuario que captura la Salida
+                    Salida_usuarioMng oSUMng = new Salida_usuarioMng();
+                    Salida_usuario oSU = new Salida_usuario();
+                    oSU.Id_salida = oS.Id;
+                    oSU.Id_usuario = oS.PUsuario.Id;
+                    oSU.Folio = oS.Folio + oS.Folio_indice;
+                    oSUMng.O_Salida_usuario = oSU;
+                    oSUMng.add(trans);
+
+                    //Documentos asociados a la Salida
+                    Salida_documentoMng oSdMng = new Salida_documentoMng();
+                    foreach (Salida_documento oSD in oS.PLstSalDoc)
+                    {
+                        oSD.Id_salida = oS.Id;
+                        oSdMng.O_Salida_documento = oSD;
+                        oSdMng.add(trans);
+                    }
+
+                    //Salida compartida, por el momento comparten pedimentos
+                    oSCMng = new Salida_compartidaMng();
+                    if (EsCompartida(oS))
+                    {
+                        Salida_compartida oSCA = new Salida_compartida();
+                        oSCA.Referencia = oS.Referencia;
+                        oSCA.Folio = oS.Folio;
+                        oSCA.Id_salida = oS.Id;
+                        oSCA.Id_usuario = oS.PUsuario.Id;
+                        oSCA.Capturada = true;
+                        oSCMng.O_Salida_compartida = oSCA;
+                        oSCMng.add(trans);
+                        foreach (Salida_compartida oSC in oS.PLstSalComp)
+                        {
+                            oSC.Folio = oS.Folio;
+                            oSCMng.O_Salida_compartida = oSC;
+                            oSCMng.add(trans);
+                        }
+                    }
+
+                    //Parcial
+                    if (oS.PSalPar != null)
+                    {
+                        Salida_parcialMng oSPMng = new Salida_parcialMng();
+                        oS.PSalPar.Id_salida = oS.Id;
+                        oSPMng.O_Salida_parcial = oS.PSalPar;
+                        oSPMng.add(trans);
+                    }
+
+                    //Orden de carga
+                    Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id, Referencia = oS.Referencia, Pallet = oS.No_pallet } };
+                    oSOCR.setSalida(trans);
+
+                    oS.IsActive = true;
+                } 
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
         }
 
         /// <summary>
@@ -608,20 +698,6 @@ namespace ModelCasc.operation
         }
 
         #endregion
-
-        public static void actualizaDatos(Salida oS)
-        {
-            try
-            {
-                SalidaMng oSMng = new SalidaMng();
-                oSMng.O_Salida = oS;
-                oSMng.udt();
-            }
-            catch
-            {
-                throw;
-            }
-        }
 
         #region Salida Trafico
 
@@ -1027,5 +1103,19 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        public static void actualizaDatos(Salida oS)
+        {
+            try
+            {
+                SalidaMng oSMng = new SalidaMng();
+                oSMng.O_Salida = oS;
+                oSMng.udt();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

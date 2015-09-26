@@ -8,6 +8,7 @@ using ModelCasc.webApp;
 using ModelCasc.operation;
 using Model;
 using ModelCasc.catalog;
+using Newtonsoft.Json;
 
 namespace AppCasc.operation.embarques
 {
@@ -160,6 +161,7 @@ namespace AppCasc.operation.embarques
             {
                 int IdOc = 0;
                 int.TryParse(args.CommandArgument.ToString(), out IdOc);
+                hf_id_salida_orden_carga.Value = IdOc.ToString();
                 Salida_orden_carga oSOC = SalidaCtrl.OrdenCargaGetById(IdOc);
                 fillControlsToOC(oSOC);
             }
@@ -190,6 +192,169 @@ namespace AppCasc.operation.embarques
             if (IdCliente != 1)
                 Response.Redirect("~/operation/frmSalidas.aspx?_idCte=" + IdCliente.ToString());
                 
+        }
+
+        protected void btnGuardar_click(object sender, EventArgs args)
+        {
+            try
+            {
+                List<Salida> lstSalidas = new List<Salida>();
+                Salida oS = getFormValues();
+                List<Salida_compartida> lstSalComp = new List<Salida_compartida>();
+                int numero;
+                foreach (GridViewRow row in grd_rem.Rows)
+                {
+                    Salida o = new Salida();
+                    o = oS;
+                    o.Referencia = row.Cells[0].Text;
+                    HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
+                    o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
+
+                    //Numero de pallet
+                    TextBox txt_no_pallet = row.FindControl("txt_no_pallet") as TextBox;
+                    int.TryParse(CommonFunctions.NumbersOnly(txt_no_pallet.Text), out numero);
+                    oS.No_pallet = numero;
+                    numero = 0;
+
+                    //Numero de bulto
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[2].Text), out numero);
+                    oS.No_bulto = numero;
+                    numero = 0;
+
+                    //Numero de pieza
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[3].Text), out numero);
+                    oS.No_pieza = numero;
+                    numero = 0;
+
+                    //Mercancia
+                    TextBox txt_mercancia = row.FindControl("txt_mercancia") as TextBox;
+                    o.Mercancia = txt_mercancia.Text;
+
+                    //Forma (única o parcial)
+                    HiddenField hf_forma = row.FindControl("hf_forma") as HiddenField;
+                    Salida_parcial oSP = new Salida_parcial();
+                    switch (Convert.ToInt32(hf_forma.Value))
+                    {
+                        case 0:
+                            o.Es_unica = true;
+                            break;
+                        case 1:
+                            oSP.Referencia = oS.Referencia;
+                            oSP.Es_ultima = false;
+                            oSP.Id_usuario = oS.PUsuario.Id;
+                            oS.PSalPar = oSP;
+                            oS.Es_unica = false;
+                            break;
+                        case -1:
+                            oSP.Referencia = oS.Referencia;
+                            oSP.Es_ultima = true;
+                            oSP.Id_usuario = oS.PUsuario.Id;
+                            oS.PSalPar = oSP;
+                            oS.Es_unica = false;
+                            break;
+                    }
+
+                    //Compartida
+                    Salida_compartida oSC = new Salida_compartida();
+                    oSC.Id_usuario = o.PUsuario.Id;
+                    oSC.Capturada = false;
+                    oSC.Referencia = o.Referencia;
+                    lstSalComp.Add(oSC);
+                    lstSalidas.Add(o);
+                }
+
+                if (lstSalComp.Count > 1)
+                    foreach (Salida itemS in lstSalidas)
+                    {
+                        itemS.PLstSalComp = lstSalComp.FindAll(p => string.Compare(p.Referencia, itemS.Referencia) != 0);
+                    }
+
+                SalidaCtrl.salidaAddFromLst(lstSalidas);
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        private Salida getFormValues()
+        {
+            Salida oS = new Salida();
+            int numero;
+
+            //Usuario
+            oS.PUsuario = ((MstCasc)this.Master).getUsrLoged();
+
+            //Bodega
+            int.TryParse(ddlBodega.SelectedValue, out numero);
+            oS.Id_bodega = numero;
+            numero = 0;
+
+            //Fecha
+            oS.Fecha = DateTime.Today;
+
+            //Hora
+            oS.Hora_salida = txt_hora_salida.Text;
+
+            //Cortina
+            int.TryParse(ddlCortina.SelectedValue, out numero);
+            oS.Id_cortina = numero;
+            numero = 0;
+
+            //Cliente
+            int.TryParse(ddlCliente.SelectedValue, out numero);
+            oS.Id_cliente = numero;
+            numero = 0;
+
+            //Destino
+            oS.Destino = txt_destino.Text;
+
+            //Linea de Transporte
+            int.TryParse(ddl_linea.SelectedValue, out numero);
+            oS.Id_transporte = numero;
+            numero = 0;
+
+            //Tipo de transporte
+            int.TryParse(ddl_tipo.SelectedValue, out numero);
+            oS.Id_transporte_tipo = numero;
+            numero = 0;
+
+            //Placa
+            oS.Placa = txt_placa.Text;
+
+            //Caja
+            oS.Caja = txt_caja.Text;
+
+            //Caja1
+            oS.Caja1 = txt_caja_1.Text;
+
+            //Caja2
+            oS.Caja2 = txt_caja_2.Text;
+
+            //Sello
+            oS.Sello = txt_sello.Text;
+
+            //Talon
+            oS.Talon = txt_talon.Text;
+
+            //Custodia
+            int.TryParse(ddlCustodia.SelectedValue, out numero);
+            oS.Id_custodia = numero;
+            numero = 0;
+
+            //Operador de la custodia
+            oS.Operador = txt_operador.Text;
+
+            //Hora carga
+            oS.Hora_carga = txt_hora_carga.Text;
+
+            //Vigilante
+            oS.Vigilante = txt_vigilante.Text.Trim();
+
+            //Orden de carga
+            oS.Id_salida_orden_carga = Convert.ToInt32(hf_id_salida_orden_carga.Value);
+
+            return oS;
         }
 
         protected void Page_Load(object sender, EventArgs args)

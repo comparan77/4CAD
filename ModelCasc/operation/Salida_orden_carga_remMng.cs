@@ -82,7 +82,12 @@ namespace ModelCasc.operation
                     o.PSalRem.CantParciales = entero;
                     entero = 0;
                 }
-                o.PSalRem.Forma = dr["forma"].ToString();
+                if (dr["forma"] != DBNull.Value)
+                {
+                    int.TryParse(dr["forma"].ToString(), out entero);
+                    o.PSalRem.Forma = entero;
+                    entero = 0;
+                }
             }
             catch
             {
