@@ -239,12 +239,12 @@ namespace ModelCasc.operation
             }
         }
 
-        internal void selByIdSalOrdCarga()
+        internal void selByIdSalOrdCarga(bool agrupado = true)
         {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga_rem");
-                addParameters(5);
+                addParameters(agrupado ? 51 : 50);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 this._lst = new List<Salida_orden_carga_rem>();
                 foreach (DataRow dr in dt.Rows)

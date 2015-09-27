@@ -1047,7 +1047,7 @@ namespace ModelCasc.operation
             return id;
         }
 
-        public static Salida_orden_carga OrdenCargaGetById(int Id)
+        public static Salida_orden_carga OrdenCargaGetById(int Id, bool agrupado = true)
         {
             Salida_orden_carga o = new Salida_orden_carga() { Id = Id };
             try
@@ -1061,7 +1061,7 @@ namespace ModelCasc.operation
                 o.PSalidaTrafico = oST;
 
                 Salida_orden_carga_remMng oRMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = Id } };
-                oRMng.selByIdSalOrdCarga();
+                oRMng.selByIdSalOrdCarga(agrupado);
                 o.LstRem = oRMng.Lst;
             }
             catch

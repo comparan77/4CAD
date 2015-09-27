@@ -96,6 +96,110 @@ namespace AppCasc.operation.embarques
             }
         }
 
+        private void saveSalida()
+        {
+            try
+            {
+                List<Salida> lstSalidas = new List<Salida>();
+                Salida oS = getFormValues();
+                List<Salida_compartida> lstSalComp = new List<Salida_compartida>();
+                int numero;
+                foreach (GridViewRow row in grd_rem.Rows)
+                {
+                    Salida o = new Salida();
+                    o = oS;
+                    o.Referencia = row.Cells[0].Text;
+                    HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
+                    o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
+
+                    //Numero de pallet
+                    TextBox txt_no_pallet = row.FindControl("txt_no_pallet") as TextBox;
+                    int.TryParse(CommonFunctions.NumbersOnly(txt_no_pallet.Text), out numero);
+                    oS.No_pallet = numero;
+                    numero = 0;
+
+                    //Numero de bulto
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[2].Text), out numero);
+                    oS.No_bulto = numero;
+                    numero = 0;
+
+                    //Numero de pieza
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[3].Text), out numero);
+                    oS.No_pieza = numero;
+                    numero = 0;
+
+                    //Mercancia
+                    TextBox txt_mercancia = row.FindControl("txt_mercancia") as TextBox;
+                    o.Mercancia = txt_mercancia.Text;
+
+                    //observaciones
+                    //Mercancia
+                    TextBox txt_observaciones = row.FindControl("txt_observaciones") as TextBox;
+                    o.Observaciones = txt_observaciones.Text.Trim();
+
+                    //Forma (única o parcial)
+                    HiddenField hf_forma = row.FindControl("hf_forma") as HiddenField;
+                    Salida_parcial oSP = new Salida_parcial();
+                    switch (Convert.ToInt32(hf_forma.Value))
+                    {
+                        case 0:
+                            o.Es_unica = true;
+                            break;
+                        case 1:
+                            oSP.Referencia = oS.Referencia;
+                            oSP.Es_ultima = false;
+                            oSP.Id_usuario = oS.PUsuario.Id;
+                            oS.PSalPar = oSP;
+                            oS.Es_unica = false;
+                            break;
+                        case -1:
+                            oSP.Referencia = oS.Referencia;
+                            oSP.Es_ultima = true;
+                            oSP.Id_usuario = oS.PUsuario.Id;
+                            oS.PSalPar = oSP;
+                            oS.Es_unica = false;
+                            break;
+                    }
+
+                    //Compartida
+                    Salida_compartida oSC = new Salida_compartida();
+                    oSC.Id_usuario = o.PUsuario.Id;
+                    oSC.Capturada = false;
+                    oSC.Referencia = o.Referencia;
+                    lstSalComp.Add(oSC);
+                    lstSalidas.Add(o);
+                }
+
+                if (lstSalComp.Count > 1)
+                    foreach (Salida itemS in lstSalidas)
+                    {
+                        itemS.PLstSalComp = lstSalComp.FindAll(p => string.Compare(p.Referencia, itemS.Referencia) != 0);
+                    }
+
+                SalidaCtrl.salidaAddFromLst(lstSalidas);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void printSalida(int Id_orden_carga)
+        {
+            string path = string.Empty;
+            string pathImg = string.Empty;
+            string virtualPath = string.Empty;
+            ((MstCasc)this.Master).getUsrLoged().Id_print = Id_orden_carga.ToString();
+            try
+            {
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=ordCargaSal','_blank', 'toolbar=no');</script>");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// En caso de que la búsqueda no devuelva ningún valor, el pie del repetidor mostrará
         /// la leyenda en la cual se indica al usuario que no ha resultados.
@@ -189,105 +293,6 @@ namespace AppCasc.operation.embarques
             catch (Exception e)
             {
                 ((MstCasc)this.Master).setError = e.Message;
-            }
-        }
-
-        private void saveSalida()
-        {
-            try
-            {
-                List<Salida> lstSalidas = new List<Salida>();
-                Salida oS = getFormValues();
-                List<Salida_compartida> lstSalComp = new List<Salida_compartida>();
-                int numero;
-                foreach (GridViewRow row in grd_rem.Rows)
-                {
-                    Salida o = new Salida();
-                    o = oS;
-                    o.Referencia = row.Cells[0].Text;
-                    HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
-                    o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
-
-                    //Numero de pallet
-                    TextBox txt_no_pallet = row.FindControl("txt_no_pallet") as TextBox;
-                    int.TryParse(CommonFunctions.NumbersOnly(txt_no_pallet.Text), out numero);
-                    oS.No_pallet = numero;
-                    numero = 0;
-
-                    //Numero de bulto
-                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[2].Text), out numero);
-                    oS.No_bulto = numero;
-                    numero = 0;
-
-                    //Numero de pieza
-                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[3].Text), out numero);
-                    oS.No_pieza = numero;
-                    numero = 0;
-
-                    //Mercancia
-                    TextBox txt_mercancia = row.FindControl("txt_mercancia") as TextBox;
-                    o.Mercancia = txt_mercancia.Text;
-
-                    //Forma (única o parcial)
-                    HiddenField hf_forma = row.FindControl("hf_forma") as HiddenField;
-                    Salida_parcial oSP = new Salida_parcial();
-                    switch (Convert.ToInt32(hf_forma.Value))
-                    {
-                        case 0:
-                            o.Es_unica = true;
-                            break;
-                        case 1:
-                            oSP.Referencia = oS.Referencia;
-                            oSP.Es_ultima = false;
-                            oSP.Id_usuario = oS.PUsuario.Id;
-                            oS.PSalPar = oSP;
-                            oS.Es_unica = false;
-                            break;
-                        case -1:
-                            oSP.Referencia = oS.Referencia;
-                            oSP.Es_ultima = true;
-                            oSP.Id_usuario = oS.PUsuario.Id;
-                            oS.PSalPar = oSP;
-                            oS.Es_unica = false;
-                            break;
-                    }
-
-                    //Compartida
-                    Salida_compartida oSC = new Salida_compartida();
-                    oSC.Id_usuario = o.PUsuario.Id;
-                    oSC.Capturada = false;
-                    oSC.Referencia = o.Referencia;
-                    lstSalComp.Add(oSC);
-                    lstSalidas.Add(o);
-                }
-
-                if (lstSalComp.Count > 1)
-                    foreach (Salida itemS in lstSalidas)
-                    {
-                        itemS.PLstSalComp = lstSalComp.FindAll(p => string.Compare(p.Referencia, itemS.Referencia) != 0);
-                    }
-
-                SalidaCtrl.salidaAddFromLst(lstSalidas);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        private void printSalida(int Id_orden_carga)
-        {
-            string path = string.Empty;
-            string pathImg = string.Empty;
-            string virtualPath = string.Empty;
-            ((MstCasc)this.Master).getUsrLoged().Id_print = Id_orden_carga.ToString();
-            try
-            {
-                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=ordCargaSal','_blank', 'toolbar=no');</script>");
-            }
-            catch
-            {
-                throw;
             }
         }
 

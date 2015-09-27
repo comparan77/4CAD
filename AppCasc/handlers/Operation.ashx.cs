@@ -192,7 +192,7 @@ namespace AppCasc.handlers
                     break;
                 case "getById":
                     int.TryParse(context.Request["id_orden_carga"].ToString(), out idOc);
-                    response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetById(idOc));
+                    response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetById(idOc, false));
                     break;
             }
             return response;

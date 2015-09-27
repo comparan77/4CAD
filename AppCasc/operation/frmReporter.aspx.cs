@@ -100,7 +100,7 @@ namespace AppCasc.operation
                         RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
                         pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateOrdenCarga.pdf");
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
                         DocSalida.getSalidaOC(path, TemplatePath, (Salida_orden_carga)obj);
                         ShowPdf(path);
                         break;
