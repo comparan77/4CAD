@@ -235,13 +235,13 @@ var MngRemision = function () {
             $(this).parent().parent().children('td:eq(1)').children('span').html('');
             $(this).parent().parent().children('td:eq(2)').children('span').html('');
 
-            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
+//            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
             $('#ctl00_body_txt_bulto').val('0');
             $('#ctl00_body_txt_piezasXbulto').val('0');
             $('#ctl00_body_hf_mercancia_danada').val('false');
             $('#ctl00_body_hf_lote_1').val('');
 
-            $('#ctl00_body_hf_id_entrada_maquila_detail_2').val('0');
+//            $('#ctl00_body_hf_id_entrada_maquila_detail_2').val('0');
             $('#ctl00_body_txt_bultoInc').val('0');
             $('#ctl00_body_txt_piezasXbultoInc').val('0');
             $('#ctl00_body_hf_mercancia_danadaInc').val('false');
@@ -269,7 +269,7 @@ var MngRemision = function () {
                         $('#ctl00_body_txt_piezasXbulto').val($('#spn_pzaXbulto-1').html());
                         $('#ctl00_body_hf_mercancia_danada').val($('#hf_danado-1').val());
                         $('#ctl00_body_hf_lote_1').val($('#spn_lote-1').html().replace('&nbsp;', ''));
-                        $('#ctl00_body_hf_id_entrada_maquila_detail_1').val($('#hf_id_maquila_detail_1').val());
+//                        $('#ctl00_body_hf_id_entrada_maquila_detail_1').val($('#hf_id_maquila_detail_1').val());
                     }
                     else
                         CantBultoValido = false;
@@ -282,7 +282,7 @@ var MngRemision = function () {
                         $('#ctl00_body_txt_piezasXbultoInc').val($('#spn_pzaXbulto-2').html());
                         $('#ctl00_body_hf_mercancia_danadaInc').val($('#hf_danado-2').val());
                         $('#ctl00_body_hf_lote_2').val($('#spn_lote-2').html().replace('&nbsp;', ''));
-                        $('#ctl00_body_hf_id_entrada_maquila_detail_2').val($('#hf_id_maquila_detail_2').val());
+//                        $('#ctl00_body_hf_id_entrada_maquila_detail_2').val($('#hf_id_maquila_detail_2').val());
                     }
                     else
                         CantBultoValido = false;

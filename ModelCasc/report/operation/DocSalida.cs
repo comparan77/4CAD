@@ -122,5 +122,27 @@ namespace ModelCasc.report.operation
                 throw;
             }
         }
+
+        public static void getSalidaOC(string FilePath, string TemplatePath, Salida_orden_carga o)
+        {
+            try
+            {
+                List<string> files = new List<string>();
+                
+                foreach(Salida_orden_carga_rem item in o.LstRem)
+                {
+                    string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                    getSalida(fileName, TemplatePath, SalidaCtrl.getAllDataById(Convert.ToInt32(item.Id_salida)));
+                    files.Add(fileName);
+                }
+
+                DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

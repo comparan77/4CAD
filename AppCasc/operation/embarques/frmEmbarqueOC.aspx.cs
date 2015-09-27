@@ -18,6 +18,13 @@ namespace AppCasc.operation.embarques
         {
             try
             {
+                int Id_salida_orden_carga = 0;
+                if (Request.QueryString["_kp"] != null)
+                {
+                    int.TryParse(Request.QueryString["_kp"].ToString(), out Id_salida_orden_carga);
+                    printSalida(Id_salida_orden_carga);
+                }
+
                 ControlsMng.fillBodega(ddlBodega);
                 fillControls();
                 txt_fecha.Text = DateTime.Today.ToString("dd MMM yy");
@@ -185,16 +192,7 @@ namespace AppCasc.operation.embarques
             }
         }
 
-        protected void ddlCliente_changed(object sender, EventArgs args)
-        {
-            int IdCliente = 0;
-            int.TryParse(ddlCliente.SelectedValue, out IdCliente);
-            if (IdCliente != 1)
-                Response.Redirect("~/operation/frmSalidas.aspx?_idCte=" + IdCliente.ToString());
-                
-        }
-
-        protected void btnGuardar_click(object sender, EventArgs args)
+        private void saveSalida()
         {
             try
             {
@@ -270,6 +268,44 @@ namespace AppCasc.operation.embarques
                     }
 
                 SalidaCtrl.salidaAddFromLst(lstSalidas);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void printSalida(int Id_orden_carga)
+        {
+            string path = string.Empty;
+            string pathImg = string.Empty;
+            string virtualPath = string.Empty;
+            ((MstCasc)this.Master).getUsrLoged().Id_print = Id_orden_carga.ToString();
+            try
+            {
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=ordCargaSal','_blank', 'toolbar=no');</script>");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        protected void ddlCliente_changed(object sender, EventArgs args)
+        {
+            int IdCliente = 0;
+            int.TryParse(ddlCliente.SelectedValue, out IdCliente);
+            if (IdCliente != 1)
+                Response.Redirect("~/operation/frmSalidas.aspx?_idCte=" + IdCliente.ToString());
+                
+        }
+
+        protected void btnGuardar_click(object sender, EventArgs args)
+        {
+            try
+            {
+                saveSalida();
+                Response.Redirect("frmEmbarqueOC.aspx?_kp=" + hf_id_salida_orden_carga.Value);
             }
             catch (Exception e)
             {

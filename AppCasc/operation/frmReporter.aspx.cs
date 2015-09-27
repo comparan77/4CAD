@@ -12,6 +12,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using ModelCasc.report.operation;
+using ModelCasc.catalog;
 
 namespace AppCasc.operation
 {
@@ -73,7 +74,6 @@ namespace AppCasc.operation
                         TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
                         DocSalida.getSalida(path, TemplatePath, (Salida)obj);
                         ShowPdf(path);
-                        //HTMLToPdf(getHtmlPdf(((Salida)obj)), path);
                         break;
                     case "remision":
                         obj = (Salida_remision)Session["SSalida_remision"];
@@ -83,7 +83,6 @@ namespace AppCasc.operation
                         TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateRemision.pdf");
                         DocRemision.getRemision(path, TemplatePath, (Salida_remision)obj);
                         ShowPdf(path);
-                        //HTMLToPdf(getHtmlPdf(((Salida)obj)), path);
                         break;
                     case "ordcarga":
                         
@@ -93,8 +92,16 @@ namespace AppCasc.operation
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
                         pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
                         TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateOrdenCarga.pdf");
-                        
                         DocOrdenCarga.getOrdenCarga(path, TemplatePath, (Salida_orden_carga)obj);
+                        ShowPdf(path);
+                        break;
+                    case "ordCargaSal":
+                        obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(((Usuario)Session["userCasc"]).Id_print));
+                        RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
+                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateOrdenCarga.pdf");
+                        DocSalida.getSalidaOC(path, TemplatePath, (Salida_orden_carga)obj);
                         ShowPdf(path);
                         break;
                     default:
