@@ -123,7 +123,7 @@ var MngOrdenCarga = function () {
 
         $('#hf_id_salida_trafico').val(data.Id);
         $('#txt_cita').val(data.Folio_cita + ", " + moment(data.Fecha_cita).format('DD-MM-YYYY') + ", " + data.Hora_cita);
-        $('#txt_destino').val(data.Destino);
+        $('#txt_destino').val(data.PSalidaDestino.Destino);
         $('#txt_linea').val(data.PTransporte.Nombre);
         $('#txt_unidad').val(data.PTransporteTipo.Nombre);
         $('#lnk_orden_carga').html(folio_orden_carga);

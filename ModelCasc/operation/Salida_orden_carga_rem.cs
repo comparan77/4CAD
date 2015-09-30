@@ -24,6 +24,7 @@ namespace ModelCasc.operation
         public Salida_remision PSalRem { get; set; }
         public int Pallet { get { return _pallet; } set { _pallet = value; } } 
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
+        public string Mercancia { get; set; }
         #endregion
 
         #region Constructores

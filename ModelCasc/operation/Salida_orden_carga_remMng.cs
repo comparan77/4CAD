@@ -51,6 +51,7 @@ namespace ModelCasc.operation
                 o.PSalRem.Referencia = dr["referencia"].ToString();
                 o.PSalRem.Codigo = dr["codigo"].ToString();
                 o.PSalRem.Orden = dr["orden"].ToString();
+                o.PSalRem.Mercancia = dr["mercancia"].ToString();
                 entero = 0;
                 if (dr["bultoE"] != DBNull.Value)
                 {

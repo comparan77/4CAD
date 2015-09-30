@@ -67,7 +67,7 @@
             <asp:BoundField HeaderText="Hora Carga Solicitada" DataField="hora_carga_solicitada" DataFormatString="{0:HH:mm:ss}" />
             <asp:BoundField HeaderText="Tipo Solicitado" DataField="Transporte_tipo" />
             <asp:BoundField HeaderText="Tipo Carga" DataField="tipo_carga" />
-            <asp:BoundField HeaderText="Destino" DataField="destino" />
+            <asp:BoundField HeaderText="Destino" DataField="PSalidaDestino.Destino" />
             
             <asp:TemplateField HeaderText="Sin Cita Proporcionada">
             <ItemTemplate>
@@ -167,7 +167,7 @@
             <asp:BoundField HeaderText="Hora Carga Solicitada" DataField="hora_carga_solicitada" DataFormatString="{0:HH:mm:ss}" />
             <asp:BoundField HeaderText="Tipo Solicitado" DataField="Transporte_tipo" />
             <asp:BoundField HeaderText="Tipo Carga" DataField="tipo_carga" />
-            <asp:BoundField HeaderText="Destino" DataField="destino" />
+            <asp:BoundField HeaderText="Destino" DataField="PSalidaDestino.Destino" />
             
             <asp:TemplateField HeaderText="Cita Proporcionada">
             <ItemTemplate>

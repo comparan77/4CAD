@@ -64,7 +64,7 @@ namespace ModelCasc.report.operation
 
                 o.TipoEnvio = (countDifPedimentos > 1 ? "COMPARTIDO" : "INDIVIDUAL");
                 fields.SetField("tipo_envio", o.TipoEnvio);
-                fields.SetField("destino", o.PSalidaTrafico.Destino);
+                fields.SetField("destino", o.PSalidaTrafico.PSalidaDestino.Destino);
 
                 for (int iRem = 0; iRem < lst.Count; iRem++)
                 {

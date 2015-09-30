@@ -240,7 +240,7 @@ namespace AppCasc.operation.embarques
             #region Cita
             txt_folio_cita.Text = oSOC.PSalidaTrafico.Folio_cita;
             txt_cita_fecha_hora.Text = CommonFunctions.FormatDate(Convert.ToDateTime(oSOC.PSalidaTrafico.Fecha_cita), "dd \\de MMMM \\de yyyy") + " " + oSOC.PSalidaTrafico.Hora_cita.ToString();
-            txt_destino.Text = oSOC.PSalidaTrafico.Destino;
+            txt_destino.Text = oSOC.PSalidaTrafico.PSalidaDestino.Direccion;
             #endregion
 
             #region Documentos

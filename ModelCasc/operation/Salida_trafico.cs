@@ -19,7 +19,7 @@ namespace ModelCasc.operation
         protected int _id_tipo_carga;
         protected int _id_usuario_solicita;
         protected int? _id_usuario_asigna;
-        protected string _destino;
+        protected int _id_salida_destino;
         protected DateTime? _fecha_cita;
         protected string _hora_cita;
         protected string _folio_cita;
@@ -42,7 +42,7 @@ namespace ModelCasc.operation
         public int Id_tipo_carga { get { return _id_tipo_carga; } set { _id_tipo_carga = value; } }
         public int Id_usuario_solicita { get { return _id_usuario_solicita; } set { _id_usuario_solicita = value; } }
         public int? Id_usuario_asigna { get { return _id_usuario_asigna; } set { _id_usuario_asigna = value; } }
-        public string Destino { get { return _destino; } set { _destino = value; } }
+        public int Id_salida_destino { get { return _id_salida_destino; } set { _id_salida_destino = value; } }
         public DateTime? Fecha_cita { get { return _fecha_cita; } set { _fecha_cita = value; } }
         public string Hora_cita { get { return _hora_cita; } set { _hora_cita = value; } }
         public string Folio_cita { get { return _folio_cita; } set { _folio_cita = value; } }
@@ -62,7 +62,8 @@ namespace ModelCasc.operation
         public List<Salida_remision> PLstSalRem { get; set; }
         public Transporte PTransporte { get; set; }
         public Transporte_tipo PTransporteTipo { get; set; }
-        public Salida_orden_carga PSalidaOrdenCarga { get; set; } 
+        public Salida_orden_carga PSalidaOrdenCarga { get; set; }
+        public Salida_destino PSalidaDestino { get; set; }
         #endregion
 
         #region Constructores
@@ -77,7 +78,7 @@ namespace ModelCasc.operation
             this._id_tipo_carga = 0;
             this._id_usuario_solicita = 0;
             this._id_usuario_asigna = null; 
-            this._destino = String.Empty;
+            this._id_salida_destino = 0;
             this._fecha_cita = null;
             this._hora_cita = null;
             this._folio_cita = null;

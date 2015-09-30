@@ -40,7 +40,7 @@ namespace AppCasc.operation
             o.Hora_carga_solicitada = txt_hora_carga_solicitada.Text;
             o.Id_transporte_tipo = Convert.ToInt32(ddlTipo_Transporte.SelectedValue);
             o.Id_tipo_carga = Convert.ToInt32(ddlTipoCarga.SelectedValue);
-            o.Destino = ddlDestino.SelectedItem.Text;
+            o.Id_salida_destino = Convert.ToInt32(ddlDestino.SelectedItem.Value);
             o.Id_usuario_solicita = ((MstCasc)this.Master).getUsrLoged().Id;
             return o;
         }

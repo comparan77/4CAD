@@ -85,9 +85,8 @@ namespace AppCasc.operation
                         ShowPdf(path);
                         break;
                     case "ordcarga":
-                        
                         //obj = (Salida_orden_carga)Session["SSalida_ord_carga"];
-                        obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(Request["id"].ToString()));
+                        obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(Request["id"].ToString()), false);
                         RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + ".pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
                         pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");

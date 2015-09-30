@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Model;
 using System.Data;
+using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
@@ -56,7 +57,7 @@ namespace ModelCasc.operation
             else
                 GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario_asigna", DbType.Int32, this._oSalida_trafico.Id_usuario_asigna);
 
-            GenericDataAccess.AddInParameter(this.comm, "?P_destino", DbType.String, this._oSalida_trafico.Destino);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_destino", DbType.Int32, this._oSalida_trafico.Id_salida_destino);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_cita", DbType.DateTime, this._oSalida_trafico.Fecha_cita);
             GenericDataAccess.AddInParameter(this.comm, "?P_hora_cita", DbType.String, this._oSalida_trafico.Hora_cita);
 
@@ -140,7 +141,12 @@ namespace ModelCasc.operation
                 {
                     o.Id_usuario_asigna = null;
                 }
-                o.Destino = dr["destino"].ToString();
+                if (dr["id_salida_destino"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_salida_destino"].ToString(), out entero);
+                    o.Id_salida_destino = entero;
+                    entero = 0;
+                }
                 if (dr["fecha_cita"] != DBNull.Value)
                 {
                     DateTime.TryParse(dr["fecha_cita"].ToString(), out fecha);
@@ -287,6 +293,7 @@ namespace ModelCasc.operation
                     o.Transporte = dr["transporte"].ToString();
                     o.Solicitante = dr["solicitante"].ToString();
                     o.Asignante = dr["asignante"].ToString();
+                    o.PSalidaDestino = new Salida_destino() { Destino = dr["destino"].ToString() };
                     this._lst.Add(o);
                 }
             }
@@ -326,6 +333,7 @@ namespace ModelCasc.operation
                     o.Transporte_tipo_cita = dr["transporte_tipo_cita"].ToString();
                     o.Tipo_carga = dr["tipo_carga"].ToString();
                     o.Transporte = dr["transporte"].ToString();
+                    o.PSalidaDestino = new Salida_destino() { Destino = dr["destino"].ToString() };
                     this._lst.Add(o);
                 }
             }

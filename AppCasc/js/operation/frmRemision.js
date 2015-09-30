@@ -455,7 +455,7 @@ var MngRemision = function () {
                         liCita += '&nbsp;<font color="#0d5fb3">Hora:</font>&nbsp;' + obj.Hora_cita;
                         liCita += '<div style="position: relative">';
                         liCita += '<ul>';
-                        liCita += '<li><b>Destino:</b> ' + obj.Destino + '</li>';
+                        liCita += '<li><b>Destino:</b> ' + obj.PSalidaDestino.Destino + '</li>';
                         liCita += '<li><b>Línea:</b> ' + obj.Transporte + '</li>';
                         liCita += '<li><b>Operador:</b> ' + obj.Operador + '</li>';
                         liCita += '<li><b>Tipo:</b> ' + obj.Transporte_tipo_cita + '</li>';

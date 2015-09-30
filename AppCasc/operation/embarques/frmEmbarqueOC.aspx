@@ -95,7 +95,7 @@
     </div>
     <div>
         <label>Destino:</label>
-        <asp:TextBox runat="server" ID="txt_destino" CssClass="txtNoBorder txtMedium"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txt_destino" CssClass="txtNoBorder txtLarge"></asp:TextBox>
     </div>
     <hr />
     <asp:GridView runat="server" ID="grd_rem" CssClass="grdCasc" AutoGenerateColumns="false" EmptyDataText="Sin remisiones" OnRowDataBound="grd_rem_databound" CellPadding="3">
@@ -136,7 +136,7 @@
 
         <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" HeaderText="Mercancía">
         <ItemTemplate>
-            <asp:TextBox runat="server" ID="txt_mercancia" TextMode="MultiLine" CssClass="requerido"></asp:TextBox>
+            <asp:TextBox runat="server" ID="txt_mercancia" Text='<%# Eval("PSalRem.Mercancia") %>' TextMode="MultiLine" CssClass="requerido"></asp:TextBox>
             <br />
             <span class="validator" style="visibility: hidden; color: Red;">Es necesario capturar la descripción de la mercanc&iacute;a</span>
         </ItemTemplate>

@@ -948,6 +948,10 @@ namespace ModelCasc.operation
                 Salida_traficoMng oMngST = new Salida_traficoMng() { O_Salida_trafico = o };
                 oMngST.selById();
 
+                o.PSalidaDestino = new Salida_destino() { Id = o.Id_salida_destino };
+                Salida_destinoMng oMngSD = new Salida_destinoMng() { O_Salida_destino = o.PSalidaDestino };
+                oMngSD.selById();
+
                 o.PTransporte = new Transporte() { Id = Convert.ToInt32(o.Id_transporte) };
                 TransporteMng oMngT = new TransporteMng() { O_Transporte = o.PTransporte };
                 oMngT.selById();
@@ -1059,6 +1063,10 @@ namespace ModelCasc.operation
                 Salida_traficoMng OSTMng = new Salida_traficoMng() { O_Salida_trafico = oST };
                 OSTMng.selById();
                 o.PSalidaTrafico = oST;
+
+                o.PSalidaTrafico.PSalidaDestino = new Salida_destino() { Id = o.PSalidaTrafico.Id_salida_destino };
+                Salida_destinoMng oMngSD = new Salida_destinoMng() { O_Salida_destino = o.PSalidaTrafico.PSalidaDestino };
+                oMngSD.selById();
 
                 Salida_orden_carga_remMng oRMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = Id } };
                 oRMng.selByIdSalOrdCarga(agrupado);
