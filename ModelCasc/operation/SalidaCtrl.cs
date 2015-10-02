@@ -443,20 +443,31 @@ namespace ModelCasc.operation
             try
             {
                 trans = GenericDataAccess.BeginTransaction();
+                int fol_ind = 65;
+                string folio = string.Empty;
                 foreach (Salida oS in lst)
                 {
                     Salida_compartidaMng oSCMng = new Salida_compartidaMng();
                     Salida_compartida oSCFI = new Salida_compartida();
                     string folioIndice = string.Empty;
-                    
-                    oS.Folio = FolioCtrl.getFolio(enumTipo.S, trans);
+
+                    if (fol_ind == 65)
+                    {
+                        oS.Folio = FolioCtrl.getFolio(enumTipo.S, trans);
+                        folio = oS.Folio;
+                    }
+                    else
+                    {
+                        oS.Folio = folio;
+                    }
 
                     if (EsCompartida(oS))
                     {
                         oSCFI.Folio = oS.Folio;
                         oSCMng.O_Salida_compartida = oSCFI;
-                        folioIndice = oSCMng.GetIndice(trans);
+                        folioIndice = fol_ind.ToString();
                         oS.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();
+                        fol_ind++;
                     }
 
                     //Salida de mercancia al almacen
@@ -483,23 +494,37 @@ namespace ModelCasc.operation
                     }
 
                     //Salida compartida, por el momento comparten pedimentos
-                    oSCMng = new Salida_compartidaMng();
-                    if (EsCompartida(oS))
+                    if (fol_ind == 66)
                     {
-                        Salida_compartida oSCA = new Salida_compartida();
-                        oSCA.Referencia = oS.Referencia;
-                        oSCA.Folio = oS.Folio;
-                        oSCA.Id_salida = oS.Id;
-                        oSCA.Id_usuario = oS.PUsuario.Id;
-                        oSCA.Capturada = true;
-                        oSCMng.O_Salida_compartida = oSCA;
-                        oSCMng.add(trans);
-                        foreach (Salida_compartida oSC in oS.PLstSalComp)
+                        oSCMng = new Salida_compartidaMng();
+                        if (EsCompartida(oS))
                         {
-                            oSC.Folio = oS.Folio;
-                            oSCMng.O_Salida_compartida = oSC;
+                            Salida_compartida oSCA = new Salida_compartida();
+                            oSCA.Referencia = oS.Referencia;
+                            oSCA.Folio = oS.Folio;
+                            oSCA.Id_salida = oS.Id;
+                            oSCA.Id_usuario = oS.PUsuario.Id;
+                            oSCA.Capturada = true;
+                            oSCMng.O_Salida_compartida = oSCA;
                             oSCMng.add(trans);
+                            foreach (Salida_compartida itemSC in oS.PLstSalComp)
+                            {
+                                itemSC.Folio = oS.Folio;
+                                oSCMng.O_Salida_compartida = itemSC;
+                                oSCMng.add(trans);
+                            }
                         }
+                    }
+                    else
+                    {
+                        //Salida compartida, por el momento comparten pedimentos
+                        oSCMng = new Salida_compartidaMng();
+                        Salida_compartida oSC = new Salida_compartida();
+                        oSC.Referencia = oS.Referencia;
+                        oSC.Id_salida = oS.Id;
+                        oSC.Folio = oS.Folio;
+                        oSCMng.O_Salida_compartida = oSC;
+                        oSCMng.udtSalidaCompartida(trans);
                     }
 
                     //Parcial

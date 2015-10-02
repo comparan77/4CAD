@@ -128,12 +128,16 @@ namespace ModelCasc.report.operation
             try
             {
                 List<string> files = new List<string>();
-                
+                int idSalida = 0;
                 foreach(Salida_orden_carga_rem item in o.LstRem)
                 {
-                    string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                    getSalida(fileName, TemplatePath, SalidaCtrl.getAllDataById(Convert.ToInt32(item.Id_salida)));
-                    files.Add(fileName);
+                    if (idSalida != item.Id_salida)
+                    {
+                        idSalida = Convert.ToInt32(item.Id_salida);
+                        string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                        getSalida(fileName, TemplatePath, SalidaCtrl.getAllDataById(idSalida));
+                        files.Add(fileName);
+                    }
                 }
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);

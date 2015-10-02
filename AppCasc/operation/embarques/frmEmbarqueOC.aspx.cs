@@ -107,7 +107,7 @@ namespace AppCasc.operation.embarques
                 foreach (GridViewRow row in grd_rem.Rows)
                 {
                     Salida o = new Salida();
-                    o = oS;
+                    o = (Salida) oS.Clone();
                     o.Referencia = row.Cells[0].Text;
                     HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
                     o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
@@ -115,17 +115,17 @@ namespace AppCasc.operation.embarques
                     //Numero de pallet
                     TextBox txt_no_pallet = row.FindControl("txt_no_pallet") as TextBox;
                     int.TryParse(CommonFunctions.NumbersOnly(txt_no_pallet.Text), out numero);
-                    oS.No_pallet = numero;
+                    o.No_pallet = numero;
                     numero = 0;
 
                     //Numero de bulto
                     int.TryParse(CommonFunctions.NumbersOnly(row.Cells[2].Text), out numero);
-                    oS.No_bulto = numero;
+                    o.No_bulto = numero;
                     numero = 0;
 
                     //Numero de pieza
                     int.TryParse(CommonFunctions.NumbersOnly(row.Cells[3].Text), out numero);
-                    oS.No_pieza = numero;
+                    o.No_pieza = numero;
                     numero = 0;
 
                     //Mercancia
@@ -149,15 +149,15 @@ namespace AppCasc.operation.embarques
                             oSP.Referencia = oS.Referencia;
                             oSP.Es_ultima = false;
                             oSP.Id_usuario = oS.PUsuario.Id;
-                            oS.PSalPar = oSP;
-                            oS.Es_unica = false;
+                            o.PSalPar = oSP;
+                            o.Es_unica = false;
                             break;
                         case -1:
                             oSP.Referencia = oS.Referencia;
                             oSP.Es_ultima = true;
                             oSP.Id_usuario = oS.PUsuario.Id;
-                            oS.PSalPar = oSP;
-                            oS.Es_unica = false;
+                            o.PSalPar = oSP;
+                            o.Es_unica = false;
                             break;
                     }
 

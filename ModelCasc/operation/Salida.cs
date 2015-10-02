@@ -6,7 +6,7 @@ using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
-    public class Salida
+    public class Salida: ICloneable
     {
         #region Campos
         protected int _id;
@@ -123,5 +123,32 @@ namespace ModelCasc.operation
         }
         #endregion
 
+
+        public object Clone()
+        {
+            Salida o = new Salida();
+            o.PUsuario = PUsuario;
+            o.Id_bodega = this._id_bodega;
+            o.Fecha = this._fecha;
+            o.Hora_salida = this._hora_salida;
+            o.Id_cortina = this._id_cortina;
+            o.Id_cliente = this._id_cliente;
+            o.Destino = this._destino;
+            o.Id_transporte = this.Id_transporte;
+            o.Id_transporte_tipo = this.Id_transporte_tipo;
+            o.Placa = this._placa;
+            o.Caja = this._caja;
+            o.Caja1 = this._caja1;
+            o.Caja2 = this._caja2;
+            o.Sello = this._sello;
+            o.Talon = this._talon;
+            o.Id_custodia = this._id_custodia;
+            o.Operador = this._operador;
+            o.Hora_carga = this._hora_carga;
+            o.Vigilante = this._vigilante;
+            o.Id_salida_orden_carga = this.Id_salida_orden_carga;
+
+            return o;
+        }
     }
 }
