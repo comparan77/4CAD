@@ -29,8 +29,19 @@ namespace AppCasc.report
                 ReportViewer1.Reset();
 
                 string rptSelected = ddl_reporte.SelectedValue;
+                ReportDataSource rptSource = null;
+                switch (ddl_reporte.SelectedValue)
+                {
+                    case "Maquila":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.MaquilaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        break;
+                    case "Piso":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        break;
+                    default:
+                        break;
+                }
 
-                ReportDataSource rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.MaquilaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                 ReportViewer1.LocalReport.DataSources.Add(rptSource);
                 ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
 
