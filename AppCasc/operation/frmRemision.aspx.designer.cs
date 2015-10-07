@@ -238,15 +238,6 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_mercancia_danada;
         
         /// <summary>
-        /// hf_id_entrada_maquila_detail_1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_entrada_maquila_detail_1;
-        
-        /// <summary>
         /// txt_bulto control.
         /// </summary>
         /// <remarks>
@@ -290,15 +281,6 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hf_mercancia_danadaInc;
-        
-        /// <summary>
-        /// hf_id_entrada_maquila_detail_2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_id_entrada_maquila_detail_2;
         
         /// <summary>
         /// txt_bultoInc control.

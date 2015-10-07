@@ -11,6 +11,10 @@ namespace ModelCasc.operation
         #region Campos
         protected int _id;
         protected int _id_salida_remision;
+<<<<<<< HEAD
+=======
+        //protected int _id_entrada_maquila_detail;
+>>>>>>> master
         protected int _bulto;
         protected int _piezaxbulto;
         protected int _piezas;
@@ -21,6 +25,10 @@ namespace ModelCasc.operation
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
         public int Id_salida_remision { get { return _id_salida_remision; } set { _id_salida_remision = value; } }
+<<<<<<< HEAD
+=======
+        //public int Id_entrada_maquila_detail { get { return _id_entrada_maquila_detail; } set { _id_entrada_maquila_detail = value; } }
+>>>>>>> master
         public int Bulto { get { return _bulto; } set { _bulto = value; } }
         public int Piezaxbulto { get { return _piezaxbulto; } set { _piezaxbulto = value; } }
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
@@ -32,6 +40,10 @@ namespace ModelCasc.operation
         public Salida_remision_detail()
         {
             this._id_salida_remision = 0;
+<<<<<<< HEAD
+=======
+            //this._id_entrada_maquila_detail = 0;
+>>>>>>> master
             this._bulto = 0;
             this._piezaxbulto = 0;
             this._piezas = 0;

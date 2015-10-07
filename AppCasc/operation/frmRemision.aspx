@@ -344,7 +344,7 @@
                             </td>
                             <td>
                                 <asp:HiddenField runat="server" ID="hf_mercancia_danada" Value="false" />
-                                <asp:HiddenField runat="server" ID="hf_id_entrada_maquila_detail_1" />
+                                <%--<asp:HiddenField runat="server" ID="hf_id_entrada_maquila_detail_1" />--%>
                                 <asp:TextBox runat="server" ID="txt_bulto" CssClass="txtNumber"  Text="0"></asp:TextBox>
                                 <label>Cartones</label>
                             </td>
@@ -364,7 +364,7 @@
                             </td>
                             <td>
                                 <asp:HiddenField runat="server" ID="hf_mercancia_danadaInc" Value="false" />
-                                <asp:HiddenField runat="server" ID="hf_id_entrada_maquila_detail_2" />
+                                <%--<asp:HiddenField runat="server" ID="hf_id_entrada_maquila_detail_2" />--%>
                                 <asp:TextBox runat="server" ID="txt_bultoInc" CssClass="txtNumber" Text="0" ></asp:TextBox>
                                 <label>Cartones</label>
                             </td>

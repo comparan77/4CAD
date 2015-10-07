@@ -11,6 +11,17 @@
         $('#ctl00_body_txt_fecha_ini, #ctl00_body_txt_fecha_fin').datepicker({
             'dateFormat': 'dd/mm/yy'
         }).val(currentDate);
+
+        $('#ctl00_body_ddl_reporte').change(function () {
+            switch ($(this).val()) {
+                case 'Maquila':
+                    $('#ctl00_body_txt_fecha_ini').val(currentDate);
+                    break;
+                case 'Piso':
+                    $('#ctl00_body_txt_fecha_ini').val('');
+                    break;
+            }
+        });
     }
 }
 
