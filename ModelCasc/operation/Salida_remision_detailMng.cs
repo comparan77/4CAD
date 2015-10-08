@@ -33,10 +33,6 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oSalida_remision_detail.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_remision", DbType.Int32, this._oSalida_remision_detail.Id_salida_remision);
-<<<<<<< HEAD
-=======
-            //GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada_maquila_detail", DbType.Int32, this._oSalida_remision_detail.Id_entrada_maquila_detail);
->>>>>>> master
             GenericDataAccess.AddInParameter(this.comm, "?P_bulto", DbType.Int32, this._oSalida_remision_detail.Bulto);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezaxbulto", DbType.Int32, this._oSalida_remision_detail.Piezaxbulto);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oSalida_remision_detail.Piezas);
@@ -60,10 +56,6 @@ namespace ModelCasc.operation
                     o.Id_salida_remision = entero;
                     entero = 0;
                 }
-<<<<<<< HEAD
-=======
-                
->>>>>>> master
                 if (dr["bulto"] != DBNull.Value)
                 {
                     int.TryParse(dr["bulto"].ToString(), out entero);

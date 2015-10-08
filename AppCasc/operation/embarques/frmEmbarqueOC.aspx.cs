@@ -146,16 +146,16 @@ namespace AppCasc.operation.embarques
                             o.Es_unica = true;
                             break;
                         case 1:
-                            oSP.Referencia = oS.Referencia;
+                            oSP.Referencia = o.Referencia;
                             oSP.Es_ultima = false;
-                            oSP.Id_usuario = oS.PUsuario.Id;
+                            oSP.Id_usuario = o.PUsuario.Id;
                             o.PSalPar = oSP;
                             o.Es_unica = false;
                             break;
                         case -1:
-                            oSP.Referencia = oS.Referencia;
+                            oSP.Referencia = o.Referencia;
                             oSP.Es_ultima = true;
-                            oSP.Id_usuario = oS.PUsuario.Id;
+                            oSP.Id_usuario = o.PUsuario.Id;
                             o.PSalPar = oSP;
                             o.Es_unica = false;
                             break;
