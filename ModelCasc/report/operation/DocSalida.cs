@@ -46,11 +46,13 @@ namespace ModelCasc.report.operation
                 if (string.Compare(oS.Placa, "N.A.") != 0)
                 {
                     strPlaca = "Placa: " + oS.Placa;
+                    if(string.Compare(oS.Caja, "N.A.")!=0)
+                        strPlaca += ", Caja: " + oS.Caja;
                     if (string.Compare(oS.Caja1, "N.A.") != 0)
                     {
-                        strPlaca += ", Caja 1: " + oS.Caja1;
+                        strPlaca += ", Cont. 1: " + oS.Caja1;
                         if (string.Compare(oS.Caja2, "N.A.") != 0)
-                            strPlaca += ", Caja2: " + oS.Caja2;
+                            strPlaca += ", Cont. 2: " + oS.Caja2;
                     }
                     fields.SetField("Placas", strPlaca);
                 }
