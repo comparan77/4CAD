@@ -37,7 +37,7 @@ namespace AppCasc.handlers
             context.Response.ContentType = "application/json";
             context.Response.ContentEncoding = Encoding.UTF8;
             string operation = context.Request["op"].ToString();
-            
+            Entrada_inventario_cambios oEIC = null;
             try
             {
                 switch (operation)
@@ -64,11 +64,21 @@ namespace AppCasc.handlers
                         response = JsonConvert.SerializeObject(EntradaCtrl.FondeoGetById(id));
                         break;
                     case "inventoryCodigo":
-                        int.TryParse(context.Request["key"].ToString(), out id);
-                        if(EntradaCtrl.InventarioCambiosChangeCodigo(id, ((Usuario)context.Session["userCasc"]).Id, context.Request["codigo"].ToString().Trim()) > -1)
-                            response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_mercanciafillByCliente(1, context.Request["codigo"].ToString().Trim()));
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        oEIC = JsonConvert.DeserializeObject<Entrada_inventario_cambios>(jsonData);
+                        oEIC.Id_usuario = ((Usuario)context.Session["userCasc"]).Id;
+                        oEIC.Codigo = oEIC.Codigo.Trim();
+                        if (EntradaCtrl.InventarioCambiosChangeCodigo(oEIC) > -1)
+                            response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_mercanciafillByCliente(1, oEIC.Codigo));
                         else
                             response = JsonConvert.SerializeObject("El código NO ha sido cambiado");
+                        break;
+                    case "inventoryOrden":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        oEIC = JsonConvert.DeserializeObject<Entrada_inventario_cambios>(jsonData);
+                        oEIC.Id_usuario = ((Usuario)context.Session["userCasc"]).Id;
+                        oEIC.Codigo = oEIC.Codigo.Trim();
+                        response = JsonConvert.SerializeObject(EntradaCtrl.InventarioCambiosChangeOrden(oEIC));
                         break;
                     case "maquilaGet":
                         int.TryParse(context.Request["key"].ToString(), out id);

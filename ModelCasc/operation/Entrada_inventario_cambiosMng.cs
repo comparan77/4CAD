@@ -172,5 +172,21 @@ namespace ModelCasc.operation
             }
             return success;
         }
+
+        internal int udtOrden()
+        {
+            int success = -1;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario_cambios");
+                addParameters(6);
+                success = GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+            return success;
+        }
     }
 }

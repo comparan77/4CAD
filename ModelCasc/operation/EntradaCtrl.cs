@@ -1512,12 +1512,31 @@ namespace ModelCasc.operation
 
         #region Entrada Inventario - Cambios
 
-        public static int InventarioCambiosChangeCodigo(int id, int id_usuario, string codigo)
+        public static int InventarioCambiosChangeCodigo(Entrada_inventario_cambios o)
         {
             try
             {
-                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng() { O_Entrada_inventario_cambios = new Entrada_inventario_cambios() { Id_entrada_inventario = id, Id_usuario = id_usuario, Codigo = codigo } };
+                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng()
+                {
+                    O_Entrada_inventario_cambios = o
+                };
                 return oMng.udtCodigo();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static int InventarioCambiosChangeOrden(Entrada_inventario_cambios o)
+        {
+            try
+            {
+                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng()
+                {
+                    O_Entrada_inventario_cambios = o
+                };
+                return oMng.udtOrden();
             }
             catch
             {

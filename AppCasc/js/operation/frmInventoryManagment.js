@@ -7,10 +7,20 @@ var BeanCodigoOrden = function (id, codigo, orden) {
     this.Codigo = codigo;
 }
 
+var BeanEntInvCambios = function (id_entrada_inventario, codigo, orden, observaciones) {
+    this.Id = 0;
+    this.Id_entrada_inventario = id_entrada_inventario;
+    this.Id_usuario = 0;
+    this.Codigo = codigo;
+    this.Orden = orden;
+    this.Observaciones = observaciones;
+}
+
 var MngInventoryManagment = function () {
     this.Init = init;
-    this.InventarioChangeCodigo = inventarioChangeCodigo;
-    this.Id_entrada_inventario = 0;
+    //    this.inventarioChange = inventarioChange;
+    //    this.Id_entrada_inventario = 0;
+    this.P_entrada_inventario_cambios = null;
     this.CtrlCM = null;
     this.OCtrSelected = null;
     this.Recall = recall;
@@ -21,34 +31,56 @@ var MngInventoryManagment = function () {
     }
 
     function recall(oCM, oCtrlCM) {
-        inventarioChangeCodigo(pag.Id_entrada_inventario, oCM.Codigo, oCtrlCM, pag.OCtrSelected);
+        //var o = new BeanEntInvCambios(pag.Id_entrada_inventario, oCM.Codigo, '', '');
+        inventarioChange(pag.P_entrada_inventario_cambios, oCtrlCM, pag.OCtrSelected, 'cod');
     }
 
-    function inventarioChangeCodigo(id_entrada_inventario, codigo, oCrtlCM, trSelected) {
+    function inventarioChange(oEntInvCambios, oCrtlCM, trSelected, cod_ord) {
+
+        var urlHandler = '';
+        if (cod_ord == 'cod')
+            urlHandler = '/handlers/Operation.ashx?op=inventoryCodigo';
+
+        if (cod_ord == 'ord')
+            urlHandler = '/handlers/Operation.ashx?op=inventoryOrden';
 
         $.ajax({
             type: "POST",
-            url: '/handlers/Operation.ashx?op=inventoryCodigo&codigo=' + codigo + '&key=' + id_entrada_inventario,
+            url: urlHandler,
             //data: id_entrada_inventario,
+            data: JSON.stringify(oEntInvCambios),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             complete: function () {
 
             },
             success: function (data) {
-                var n = data.indexOf("existe");
-                if (n > 0) {
-                    if (confirm(data + '. Desea dar de alta la nueva mercancía?')) {
-                        pag.Id_entrada_inventario = id_entrada_inventario;
-                        pag.CtrlCM = oCrtlCM;
-                        pag.OCtrSelected = trSelected;
-                        oCrtlCM.OpenFrm(codigo, pag);
+
+                if (cod_ord == 'cod') {
+
+                    var n = data.indexOf("existe");
+                    if (n > 0) {
+                        if (confirm(data + '. Desea dar de alta la nueva mercancía?')) {
+                            pag.P_entrada_inventario_cambios = oEntInvCambios;
+                            pag.CtrlCM = oCrtlCM;
+                            pag.OCtrSelected = trSelected;
+                            oCrtlCM.OpenFrm(oEntInvCambios.Codigo, pag);
+                        }
+                    }
+                    else {
+                        $('#txt_mer_nombre').val(data[0].Nombre);
+                        $(trSelected).children('td').first().html(oEntInvCambios.Codigo);
+                        $('#txt_mer_cod').val(oEntInvCambios.Codigo);
+                        $('#spn_close_cod').trigger('click');
+                        alert('El código ha sido cambiado exitosamente');
                     }
                 }
-                else {
-                    $('#txt_mer_nombre').val(data[0].Nombre);
-                    $(trSelected).children('td').first().html(codigo);
-                    alert('El código ha sido cambiado exitosamente');
+
+                if (cod_ord == 'ord') {
+                    $(trSelected).children('td:nth-child(2)').html(oEntInvCambios.Orden);
+                    $('#txt_mer_ord').val(oEntInvCambios.Orden);
+                    $('#spn_close_ord').trigger('click');
+                    alert('La orden de compra ha sido cambiado exitosamente');
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -57,7 +89,6 @@ var MngInventoryManagment = function () {
                 oErrorMessage.Init();
             }
         });
-
     }
 
     function fondeoGetById(idFondeo, oCrtlCM, trSelected) {
@@ -92,27 +123,42 @@ var MngInventoryManagment = function () {
                 });
 
                 $('#txt_mer_cod').val(data.PEntInv.Codigo);
-                $('#orden').val(data.PEntInv.Orden_compra);
+                $('#txt_mer_ord').val(data.PEntInv.Orden_compra);
 
+                //codigo
                 $('#spn_edit_codigo').attr('id_entrada_inventario', data.PEntInv.Id);
-
                 $('#spn_edit_codigo').unbind('click').click(function () {
                     if ($(this).hasClass('ui-icon-pencil')) {
-                        $(this).removeClass('ui-icon-pencil')
-                        $(this).addClass('ui-icon-disk')
-                        $(this).next().removeAttr('readonly');
-                        $(this).next().removeClass('txtNoBorder');
-                        $(this).attr('title', 'Guardar cambio');
+                        $(this).removeClass('ui-icon-pencil').removeClass('ui-icon');
+                        $('#div_udt_codigo').removeClass('hidden');
+
+                        var btn_save_code = $('#btn_save_code');
+                        $(btn_save_code).button().unbind('click').click(function () {
+                            var oEIC = new BeanEntInvCambios($('#spn_edit_codigo').attr('id_entrada_inventario'), $('#txt_new_code').val(), '', $('#txt_obs_code').val());
+                            if (cambioCodigoValido()) {
+                                inventarioChange(oEIC, oCrtlCM, trSelected, 'cod');
+                            }
+                            return false;
+                        });
                     }
-                    else {
+                });
 
-                        inventarioChangeCodigo($('#spn_edit_codigo').attr('id_entrada_inventario'), $(this).next().val(), oCrtlCM, trSelected);
+                //orden de compra
+                $('#spn_edit_orden').attr('id_entrada_inventario', data.PEntInv.Id);
+                $('#spn_edit_orden').unbind('click').click(function () {
+                    if ($(this).hasClass('ui-icon-pencil')) {
+                        $(this).removeClass('ui-icon-pencil').removeClass('ui-icon');
+                        $('#div_udt_orden').removeClass('hidden');
 
-                        $(this).removeClass('ui-icon-disk')
-                        $(this).addClass('ui-icon-pencil')
-                        $(this).next().attr('readonly', 'readonly');
-                        $(this).next().addClass('txtNoBorder');
-                        $(this).attr('title', 'Cambiar código');
+                        var btn_save_orden = $('#btn_save_orden');
+                        $(btn_save_orden).button().unbind('click').click(function () {
+                            var oEIC = new BeanEntInvCambios($('#spn_edit_orden').attr('id_entrada_inventario'), '', $('#txt_new_orden').val(), $('#txt_obs_orden').val());
+                            if (cambioOrdenValido()) {
+                                inventarioChange(oEIC, oCrtlCM, trSelected, 'ord');
+                                //La orden de compra cambia directo
+                            }
+                            return false;
+                        });
                     }
                 });
 
@@ -193,8 +239,9 @@ var MngInventoryManagment = function () {
             $(this).val('');
         });
 
-        $('#spn_edit_codigo').removeClass('ui-icon-save').addClass('ui-icon-pencil').next().attr('readonly', 'readonly').next().addClass('txtNoBorder').attr('title', 'Cambiar código');
-
+        //        $('#spn_edit_codigo').removeClass('ui-icon-save').addClass('ui-icon-pencil').next().attr('readonly', 'readonly').next().addClass('txtNoBorder').attr('title', 'Cambiar código');
+        $('#txt_mer_cod').trigger('click');
+        $('#txt_mer_ord').trigger('click');
     }
 
     function initControls() {
@@ -252,10 +299,65 @@ var MngInventoryManagment = function () {
                 load_Inf_Gral($(this).html());
                 return false;
             });
+        });
 
+        $('#spn_close_cod').click(function () {
+            $('#spn_edit_codigo').addClass('ui-icon-pencil').addClass('ui-icon');
+            $('#div_udt_codigo').addClass('hidden');
+        });
+
+        $('#spn_close_ord').click(function () {
+            $('#spn_edit_orden').addClass('ui-icon-pencil').addClass('ui-icon');
+            $('#div_udt_orden').addClass('hidden');
         });
     }
 
+    function cambioCodigoValido() {
+
+        if ($('#txt_new_code').val().trim().length == 0) {
+            alert('El nuevo código no puede estar vacío');
+            $('#txt_new_code').focus();
+            return false;
+        }
+
+        if ($('#txt_mer_cod').val() == $('#txt_new_code').val()) {
+            alert('El nuevo código no puede ser el mismo que el anterior');
+            $('#txt_new_code').focus();
+            return false;
+        }
+
+        if ($('#txt_obs_code').val().trim().length == 0) {
+            alert('El motivo no puede estar vacío');
+            $('#txt_obs_code').focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function cambioOrdenValido() {
+
+        if ($('#txt_new_orden').val().trim().length == 0) {
+            alert('La nueva orden de compra no puede estar vacía');
+            $('#txt_new_orden').focus();
+            return false;
+        }
+
+        if ($('#txt_mer_ord').val() == $('#txt_new_orden').val()) {
+            alert('La nueva orden de compra no puede ser la mismo que la anterior');
+            $('#txt_new_orden').focus();
+            return false;
+        }
+
+        if ($('#txt_obs_orden').val().trim().length == 0) {
+            alert('El motivo no puede estar vacío');
+            $('#txt_obs_orden').focus();
+            return false;
+        }
+
+        return true;
+
+    }
 }
 
 var master = new webApp.Master;

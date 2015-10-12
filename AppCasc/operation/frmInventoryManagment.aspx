@@ -105,12 +105,51 @@
             <input type="text" id="txt_val_fact" readonly="readonly" class="txtNoBorder txtClear txtLarge" />
         </div>
         <div>
-            <label>Mercanc&iacute;a C&oacute;digo:</label><span id="spn_edit_codigo" class="ui-icon ui-icon-pencil icon-button-action" title="Cambiar código"></span>
+            <label>Mercanc&iacute;a C&oacute;digo:</label>
             <input type="text" id="txt_mer_cod" readonly="readonly" class="txtNoBorder txtClear txtMedium" />
+            <span id="spn_edit_codigo" class="ui-icon ui-icon-pencil icon-button-action floatLeft" title="Cambiar código"></span>
+            <div id="div_udt_codigo" class="hidden">
+                <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Cambio de C&oacute;digo <span style="float: right;" id="spn_close_cod" class="ui-icon ui-icon-close icon-button-action"></span></h3>
+                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+                    <div>
+                        <label>Nuevo C&oacute;digo:</label>
+                        <input type="text" id="txt_new_code" class="txtMedium txtClear" />
+                    </div>
+                    <div>
+                        <label>Motivo:</label>
+                        <textarea class="txtClear" id="txt_obs_code" rows="3" cols="3"></textarea>
+                    </div>
+                    <div>
+                        <button id="btn_save_code">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
             <label>Mercanc&iacute;a Descripci&oacute;n:</label>
             <input type="text" id="txt_mer_nombre" readonly="readonly" class="txtNoBorder txtClear txtLarge" />
+        </div>
+        
+        <div>
+            <label>Orden de Compra:</label>
+            <input type="text" id="txt_mer_ord" readonly="readonly" class="txtNoBorder txtClear txtMedium" />
+            <span id="spn_edit_orden" class="ui-icon ui-icon-pencil icon-button-action floatLeft" title="Cambiar orden"></span>
+            <div id="div_udt_orden" class="hidden">
+                <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Cambio de Orden de compra<span style="float: right;" id="spn_close_ord" class="ui-icon ui-icon-close icon-button-action"></span></h3>
+                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+                    <div>
+                        <label>Nueva orden de compra:</label>
+                        <input type="text" id="txt_new_orden" class="txtMedium txtClear" />
+                    </div>
+                    <div>
+                        <label>Motivo:</label>
+                        <textarea class="txtClear" id="txt_obs_orden" rows="3" cols="3"></textarea>
+                    </div>
+                    <div>
+                        <button id="btn_save_orden">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
