@@ -93,6 +93,7 @@ namespace ModelCasc.report.operation
                     o.Referencia = dr["referencia"].ToString();
                     o.Orden = dr["orden_compra"].ToString();
                     o.Codigo = dr["codigo"].ToString();
+                    o.Clasificacion = dr["negocio"].ToString();
                     o.Mercancia = dr["mercancia"].ToString();
                     o.Vendor = dr["vendor"].ToString();
                     o.Proveedor = dr["proveedor"].ToString();
