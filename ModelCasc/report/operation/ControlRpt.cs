@@ -11,6 +11,56 @@ namespace ModelCasc.report.operation
     {
         private static DateTime fecha;
 
+        public static List<rptRemision> RemisionGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptRemision> lst = new List<rptRemision>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZRemision");
+
+                if (anio_ini == 1)
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                }
+                else
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                }
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptRemision o = new rptRemision();
+                    o.Fecha_remision = Convert.ToDateTime(dr["fecha_remision"]);
+                    o.Folio_remision = dr["folio_remision"].ToString();
+                    o.Referencia = dr["referencia"].ToString();
+                    o.Orden = dr["orden_compra"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+                    o.Mercancia = dr["mercancia"].ToString();
+                    o.Vendor = dr["vendor"].ToString();
+                    o.Proveedor = dr["proveedor"].ToString();
+                    o.Bultos = Convert.ToInt32(dr["bultos"]);
+                    o.Piezas = Convert.ToInt32(dr["piezas"]);
+                    DateTime.TryParse(dr["fecha_recibido"].ToString(), out fecha);
+                    o.Negocio = dr["negocio"].ToString();
+                    o.Fecha_recibido = fecha;
+                    fecha = default(DateTime);
+                    o.Etiqueta_rr = dr["etiqueta_rr"].ToString();
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+        
         public static List<rptPiso> PisoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
             List<rptPiso> lst = new List<rptPiso>();

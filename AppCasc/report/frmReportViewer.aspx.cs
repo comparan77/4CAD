@@ -38,6 +38,9 @@ namespace AppCasc.report
                     case "Piso":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         break;
+                    case "Remision":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RemisionGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        break;
                     default:
                         break;
                 }
