@@ -466,5 +466,22 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal bool editable()
+        {
+            bool es_editable = false;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_maquila");
+                addParameters(10);
+                es_editable = string.Compare(GenericDataAccess.ExecuteScalar(this.comm).ToString(), "1") == 0 ? true : false;
+            }
+            catch
+            {
+                throw;
+            }
+
+            return es_editable;
+        }
     }
 }
