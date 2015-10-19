@@ -9,6 +9,7 @@ namespace ModelCasc.report.operation
     {
         public DateTime Fecha_remision { get; set; }
         public string Folio_remision { get; set; }
+        public string Aduana { get; set; }
         public string Referencia { get; set; }
         public string Orden { get; set; }
         public string Codigo { get; set; }

@@ -38,6 +38,7 @@ namespace ModelCasc.report.operation
                     rptRemision o = new rptRemision();
                     o.Fecha_remision = Convert.ToDateTime(dr["fecha_remision"]);
                     o.Folio_remision = dr["folio_remision"].ToString();
+                    o.Aduana = dr["aduana"].ToString();
                     o.Referencia = dr["referencia"].ToString();
                     o.Orden = dr["orden_compra"].ToString();
                     o.Codigo = dr["codigo"].ToString();

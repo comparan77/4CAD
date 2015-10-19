@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmRR.aspx.cs" Inherits="AppCasc.operation.frmRR" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
-    <script src="../js/operation/frmRR.js" type="text/javascript"></script>
+    <script src="../js/operation/frmRR.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -128,7 +128,7 @@
                                     <tr>
                                         <td colspan="4">
                                             <div>
-                                                <label>Fecha:</label>
+                                                <label>Fecha de Recibo:</label>
                                                 <asp:TextBox runat="server" ID="txt_fecha_rr"></asp:TextBox>
                                             </div>
                                         </td>
