@@ -17,6 +17,7 @@
                 case 'Maquila':
                     $('#ctl00_body_txt_fecha_ini').val(currentDate);
                     break;
+                case 'Remision':
                 case 'Piso':
                     $('#ctl00_body_txt_fecha_ini').val('');
                     break;

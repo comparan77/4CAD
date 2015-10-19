@@ -10,6 +10,7 @@ namespace ModelCasc.report.operation
         public DateTime FechaEntrada { get; set; }
         public string Folio_entrada { get; set; }
         public string Referencia { get; set; }
+        public string Clasificacion { get; set; }
         public string Orden { get; set; }
         public string Codigo { get; set; }
         public string Mercancia { get; set; }

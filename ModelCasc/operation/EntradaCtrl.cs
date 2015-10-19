@@ -1512,12 +1512,31 @@ namespace ModelCasc.operation
 
         #region Entrada Inventario - Cambios
 
-        public static int InventarioCambiosChangeCodigo(int id, int id_usuario, string codigo)
+        public static int InventarioCambiosChangeCodigo(Entrada_inventario_cambios o)
         {
             try
             {
-                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng() { O_Entrada_inventario_cambios = new Entrada_inventario_cambios() { Id_entrada_inventario = id, Id_usuario = id_usuario, Codigo = codigo } };
+                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng()
+                {
+                    O_Entrada_inventario_cambios = o
+                };
                 return oMng.udtCodigo();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static int InventarioCambiosChangeOrden(Entrada_inventario_cambios o)
+        {
+            try
+            {
+                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng()
+                {
+                    O_Entrada_inventario_cambios = o
+                };
+                return oMng.udtOrden();
             }
             catch
             {
@@ -1570,12 +1589,13 @@ namespace ModelCasc.operation
             IDbTransaction trans = null;
             try
             {
-                trans = GenericDataAccess.BeginTransaction();
                 Entrada_maquilaMng oMng = new Entrada_maquilaMng();
                 oMng.O_Entrada_maquila = o;
-                oMng.udt(trans);
+                if (!oMng.editable())
+                    throw new Exception("La maquila sólo se puede modificar el día en que se realizó la captura.");
 
                 Entrada_maquila_detailMng oEMDMng = new Entrada_maquila_detailMng() { O_Entrada_maquila_detail = new Entrada_maquila_detail() { Id_entrada_maquila = o.Id } };
+                trans = GenericDataAccess.BeginTransaction();
                 oEMDMng.dltByEntMaq(trans);
 
                 foreach (Entrada_maquila_detail itemMD in o.LstEntMaqDet)
@@ -1587,12 +1607,14 @@ namespace ModelCasc.operation
                 }
 
                 //EntradaEstatusAdd(o.Id_entrada_inventario, o.Id_estatus, o.Id_usuario, o.Id, null, trans);
+                oMng.udt(trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch
             {
-                GenericDataAccess.RollbackTransaction(trans);
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
         }
