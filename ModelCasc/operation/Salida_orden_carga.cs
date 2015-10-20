@@ -13,6 +13,7 @@ namespace ModelCasc.operation
         protected int _id_usuario;
         protected int _id_salida_trafico;
         protected string _folio_orden_carga;
+        protected bool _tiene_salida;
         #endregion
 
         #region Propiedades
@@ -21,10 +22,12 @@ namespace ModelCasc.operation
         public int Id_usuario { get { return _id_usuario; } set { _id_usuario = value; } }
         public int Id_salida_trafico { get { return _id_salida_trafico; } set { _id_salida_trafico = value; } }
         public string Folio_orden_carga { get { return _folio_orden_carga; } set { _folio_orden_carga = value; } }
+        public bool Tiene_salida { get { return _tiene_salida; } set { _tiene_salida = value; } }
         public List<Salida_orden_carga_rem> LstRem { get; set; }
         public Salida_trafico PSalidaTrafico { get; set; }
         public string TipoCarga { get; set; }
         public string TipoEnvio { get; set; }
+        public List<Salida> LstSalida { get ; set; }
         #endregion
 
         #region Constructores
@@ -34,6 +37,7 @@ namespace ModelCasc.operation
 			this._id_usuario = 0;
 			this._id_salida_trafico = 0;
 			this._folio_orden_carga = String.Empty;
+            this._tiene_salida = false;
 		}
         #endregion
     }

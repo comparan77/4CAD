@@ -60,7 +60,7 @@
     <ol>
         <asp:Repeater runat="server" ID="rep_resultados" OnItemCommand="click_result"  OnItemDataBound="rep_resultados_ItemDataBound">
         <ItemTemplate>
-            <li><asp:LinkButton ID="LinkButton1" CssClass="lnk_result" runat="server" Text='<%# Eval("Folio_orden_carga") %>' CommandArgument='<%# Eval("Id") %>' CausesValidation="false"></asp:LinkButton></li>
+            <li><asp:LinkButton ID="LinkButton1" CssClass="lnk_result" runat="server" Text='<%# Eval("Folio_orden_carga") + " " + (Convert.ToBoolean(Eval("tiene_salida")) ? "La orden de carga ya cuenta con salida(s)" : "") %>' CommandArgument='<%# Eval("Id") %>' CausesValidation="false" Enabled='<%# !Convert.ToBoolean(Eval("tiene_salida")) %>' ></asp:LinkButton></li>
         </ItemTemplate>
         <FooterTemplate>
             <asp:Label runat="server" ID="lbl_resultados" Visible="false" Text="Sin resultados para el folio proporcionado"></asp:Label>

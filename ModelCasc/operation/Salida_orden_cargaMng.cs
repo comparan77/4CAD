@@ -36,6 +36,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oSalida_orden_carga.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_trafico", DbType.Int32, this._oSalida_orden_carga.Id_salida_trafico);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio_orden_carga", DbType.String, this._oSalida_orden_carga.Folio_orden_carga);
+            GenericDataAccess.AddInParameter(this.comm, "?P_tiene_salida", DbType.Boolean, this._oSalida_orden_carga.Tiene_salida);
         }
 
         protected void BindByDataRow(DataRow dr, Salida_orden_carga o)
@@ -64,6 +65,12 @@ namespace ModelCasc.operation
                     entero = 0;
                 }
                 o.Folio_orden_carga = dr["folio_orden_carga"].ToString();
+                if (dr["tiene_salida"] != DBNull.Value)
+                {
+                    logica = string.Compare(dr["tiene_salida"].ToString(), "1") == 0;
+                    o.Tiene_salida = logica;
+                    logica = false;
+                }
             }
             catch
             {
@@ -195,6 +202,20 @@ namespace ModelCasc.operation
             {
                 throw;
             }            
+        }
+
+        internal void udtTieneSalida(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga");
+                addParameters(6);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

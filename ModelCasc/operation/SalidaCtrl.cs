@@ -437,7 +437,7 @@ namespace ModelCasc.operation
             return lst;
         }
 
-        public static void salidaAddFromLst(List<Salida> lst)
+        public static void salidaAddFromLst(Salida_orden_carga oSOC)
         {
             IDbTransaction trans = null;
             try
@@ -445,7 +445,7 @@ namespace ModelCasc.operation
                 trans = GenericDataAccess.BeginTransaction();
                 int fol_ind = 65;
                 string folio = string.Empty;
-                foreach (Salida oS in lst)
+                foreach (Salida oS in oSOC.LstSalida)
                 {
                     Salida_compartidaMng oSCMng = new Salida_compartidaMng();
                     Salida_compartida oSCFI = new Salida_compartida();
@@ -542,6 +542,11 @@ namespace ModelCasc.operation
 
                     oS.IsActive = true;
                 } 
+
+                //Establece en true el parametro tiene_salida de la orden de carga
+                Salida_orden_cargaMng oSOCMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = oSOC };
+                oSOC.Tiene_salida = true;
+                oSOCMng.udtTieneSalida(trans);
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch

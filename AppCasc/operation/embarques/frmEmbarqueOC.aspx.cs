@@ -100,6 +100,8 @@ namespace AppCasc.operation.embarques
         {
             try
             {
+                Salida_orden_carga oSOC = new Salida_orden_carga();
+                oSOC.Id = Convert.ToInt32(hf_id_salida_orden_carga.Value);
                 List<Salida> lstSalidas = new List<Salida>();
                 Salida oS = getFormValues();
                 List<Salida_compartida> lstSalComp = new List<Salida_compartida>();
@@ -176,7 +178,8 @@ namespace AppCasc.operation.embarques
                         itemS.PLstSalComp = lstSalComp.FindAll(p => string.Compare(p.Referencia, itemS.Referencia) != 0);
                     }
 
-                SalidaCtrl.salidaAddFromLst(lstSalidas);
+                oSOC.LstSalida = lstSalidas;
+                SalidaCtrl.salidaAddFromLst(oSOC);
             }
             catch
             {

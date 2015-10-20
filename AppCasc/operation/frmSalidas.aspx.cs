@@ -836,7 +836,7 @@ namespace AppCasc.operation
                 ControlsMng.fillCliente(ddlCliente);
                 int IdCliente = 0;
 
-                //int.TryParse(Request.QueryString["_idCte"], out IdCliente);
+                int.TryParse(Request.QueryString["_idCte"], out IdCliente);
 
                 if (IdCliente == 0)
                     int.TryParse(ddlCliente.SelectedValue, out IdCliente);
@@ -891,8 +891,8 @@ namespace AppCasc.operation
         {
             int IdCliente = 0;
             int.TryParse(ddlCliente.SelectedValue, out IdCliente);
-            //if (IdCliente == 1)
-            //    Response.Redirect("~/operation/embarques/frmEmbarqueOC.aspx");
+            if (IdCliente == 1)
+                Response.Redirect("~/operation/embarques/frmEmbarqueOC.aspx");
             txt_referencia.Text = string.Empty;
             lst_documento_recibido.Items.Clear();
             VSLstSD.Clear();
