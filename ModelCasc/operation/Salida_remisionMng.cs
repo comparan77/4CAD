@@ -311,6 +311,18 @@ namespace ModelCasc.operation
                     
                     o.Mercancia = dr["mercancia"].ToString();
                     o.Mercancia += Entrada_inventario_loteMng.getLotesByIdEntradaInventario(Convert.ToInt32(o.Id_entrada_inventario));
+
+                    o.PTrafico = new Salida_trafico();
+                    entero = 0;
+                    if (dr["id_entrada"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_entrada"].ToString(), out entero);
+                        o.PTrafico.Id = entero;
+                        entero = 0;
+                    }
+
+                    o.PTrafico.Folio_cita = dr["folio_cita"].ToString();
+
                     this._lst.Add(o);
                 }
             }

@@ -19,7 +19,7 @@
 
                 $('#spn-piezatotal').html('');
 
-                var arrData = ['dano_especifico', 'etiqueta_rr', 'fecha_recibido'];
+                var arrData = ['dano_especifico', 'etiqueta_rr', 'fecha_recibido', 'folio_cita'];
                 var hf_element = $(this).next();
                 for (var data in arrData) {
                     $('#spn-' + arrData[data]).html($(hf_element).val());
@@ -52,11 +52,6 @@
 
                         $('#spn-piezatotal').html(piezaTotal);
 
-                        //                        var hf_EST_REM_SIN_APROBACION = $('#ctl00_body_hf_EST_REM_CON_APROBACION');
-                        //                        if (hf_EST_REM_SIN_APROBACION.val() == $('#spn-estatus').html()) {
-//                        if (eliminar_remision != undefined)
-//                            $(eliminar_remision).attr('disabled', 'true');
-                        //                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         var oErrorMessage = new ErrorMessage();
@@ -65,28 +60,12 @@
                     }
                 });
 
-                //                var arrData = ['bulto', 'piezaxbulto', 'pieza', 'bultoinc', 'piezaxbultoinc', 'piezainc', 'piezatotal', 'dano_especifico', 'etiqueta_rr', 'fecha_recibido', 'dlt', 'estatus'];
-                //                var hf_element = $(this).next();
-                //                for (var data in arrData) {
-                //                    $('#spn-' + arrData[data]).html($(hf_element).val());
-                //                    hf_element = $(hf_element).next();
-                //                }
-
-                //                if ($('#spn-etiqueta_rr').html() == '') {
-                //                    $('#spn-etiqueta_rr').html('-');
-                //                    $('#spn-fecha_recibido').html('-');
-                //                }
-
-                //                var hf_EST_REM_SIN_APROBACION = $('#ctl00_body_hf_EST_REM_CON_APROBACION');
-                //                if (hf_EST_REM_SIN_APROBACION.val() == $('#spn-estatus').html()) {
-                //                    $(eliminar_remision).attr('disabled', 'true');
-                //                }
-
                 return false;
             });
         });
 
-    }
+    } //fin showRemisionDetail
+
 
 }
 

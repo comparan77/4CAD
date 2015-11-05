@@ -43,8 +43,8 @@
             $('.activaGuardarCita').each(function () {
                 $(this).button({
                     disabled: true
-                }).click(function () { 
-                    
+                }).click(function () {
+
                 });
             });
 
