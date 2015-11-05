@@ -164,6 +164,7 @@ namespace AppCasc.operation
                         o.Id_salida_destino = Convert.ToInt32(hf_id_salida_destino.Value);
 
                         SalidaCtrl.TraficoSaveCita(o);
+
                         break;
                     case "dlt":
                         o.Id_usuario_solicita = ((MstCasc)this.Master).getUsrLoged().Id;
