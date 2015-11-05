@@ -91,6 +91,9 @@
                 <ItemTemplate>
                     <div class="divForm">
                         <div>
+                            <asp:HiddenField runat="server" ID="hf_id_salida_destino" Value='<%# Eval("id_salida_destino") %>' />
+                        </div>
+                        <div>
                             <label id='<%# "lbl_folio_cita_" + Eval("Id") %>'>Folio Cita:</label>
                             <asp:TextBox CssClass="citaReq" runat="server" ID="txt_folio_cita"></asp:TextBox>
                         </div>
@@ -195,6 +198,9 @@
             <asp:TemplateField HeaderText="Modificar datos de la cita">
                 <ItemTemplate>
                     <div class="divForm">
+                        <div>
+                            <asp:HiddenField runat="server" ID="hf_id_salida_destino" Value='<%# Eval("id_salida_destino") %>' />
+                        </div>
                         <div>
                             <label id='<%# "lbl_folio_cita_" + Eval("Id") %>'>Folio Cita:</label>
                             <asp:TextBox Enabled="false" CssClass="citaReq txtNoBorder" runat="server" ID="txt_folio_cita"></asp:TextBox>

@@ -151,7 +151,7 @@ var MngRemision = function () {
 
         $(div_tbl_folio_remision).dialog({
             autoOpen: false,
-            height: 270,
+            height: 290,
             width: 450,
             modal: true,
             resizable: false,
@@ -235,13 +235,13 @@ var MngRemision = function () {
             $(this).parent().parent().children('td:eq(1)').children('span').html('');
             $(this).parent().parent().children('td:eq(2)').children('span').html('');
 
-//            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
+            //            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
             $('#ctl00_body_txt_bulto').val('0');
             $('#ctl00_body_txt_piezasXbulto').val('0');
             $('#ctl00_body_hf_mercancia_danada').val('false');
             $('#ctl00_body_hf_lote_1').val('');
 
-//            $('#ctl00_body_hf_id_entrada_maquila_detail_2').val('0');
+            //            $('#ctl00_body_hf_id_entrada_maquila_detail_2').val('0');
             $('#ctl00_body_txt_bultoInc').val('0');
             $('#ctl00_body_txt_piezasXbultoInc').val('0');
             $('#ctl00_body_hf_mercancia_danadaInc').val('false');
@@ -269,7 +269,7 @@ var MngRemision = function () {
                         $('#ctl00_body_txt_piezasXbulto').val($('#spn_pzaXbulto-1').html());
                         $('#ctl00_body_hf_mercancia_danada').val($('#hf_danado-1').val());
                         $('#ctl00_body_hf_lote_1').val($('#spn_lote-1').html().replace('&nbsp;', ''));
-//                        $('#ctl00_body_hf_id_entrada_maquila_detail_1').val($('#hf_id_maquila_detail_1').val());
+                        //                        $('#ctl00_body_hf_id_entrada_maquila_detail_1').val($('#hf_id_maquila_detail_1').val());
                     }
                     else
                         CantBultoValido = false;
@@ -282,7 +282,7 @@ var MngRemision = function () {
                         $('#ctl00_body_txt_piezasXbultoInc').val($('#spn_pzaXbulto-2').html());
                         $('#ctl00_body_hf_mercancia_danadaInc').val($('#hf_danado-2').val());
                         $('#ctl00_body_hf_lote_2').val($('#spn_lote-2').html().replace('&nbsp;', ''));
-//                        $('#ctl00_body_hf_id_entrada_maquila_detail_2').val($('#hf_id_maquila_detail_2').val());
+                        //                        $('#ctl00_body_hf_id_entrada_maquila_detail_2').val($('#hf_id_maquila_detail_2').val());
                     }
                     else
                         CantBultoValido = false;
@@ -322,6 +322,10 @@ var MngRemision = function () {
             //height: 250,
             width: 450,
             modal: true
+        });
+
+        $('#spn-folio_cita').click(function () {
+            fillCitas(0);
         });
 
         $('#spn_folio_cita').click(function () {
@@ -427,7 +431,9 @@ var MngRemision = function () {
     }
 
     //Citas
-    function fillCitas() {
+    function fillCitas(NuevaRemision) {
+
+        NuevaRemision = typeof NuevaRemision !== 'undefined' ? NuevaRemision : 1;
 
         $('#ul_citas').html('');
         $('#spn_cita_sel').html('')
@@ -476,8 +482,15 @@ var MngRemision = function () {
                     $('.btn_sel_cita').each(function () {
                         $(this).button().click(function () {
                             var id = $(this).attr('id').split('_')[2];
-                            $('#ctl00_body_txt_folio_cita').val(id);
-                            $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
+                            if (NuevaRemision == 1) {
+                                $('#ctl00_body_txt_folio_cita').val(id);
+                                $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
+                            }
+                            else {
+                                if (confirm('Se va a modificar la cita de la remisión, desea continuar con la modificación?')) {
+                                    $('#spn-folio_cita').html($('#hf_folio_cita_' + id).val());
+                                }
+                            }
                             $('#div_citas').dialog('close');
                         });
                     });

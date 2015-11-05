@@ -160,6 +160,9 @@ namespace AppCasc.operation
                         DropDownList ddl_transporte = row.FindControl("ddl_transporte") as DropDownList;
                         o.Id_transporte_tipo_cita = Convert.ToInt32(ddl_transporte.SelectedValue);
 
+                        HiddenField hf_id_salida_destino = row.FindControl("hf_id_salida_destino") as HiddenField;
+                        o.Id_salida_destino = Convert.ToInt32(hf_id_salida_destino.Value);
+
                         SalidaCtrl.TraficoSaveCita(o);
                         break;
                     case "dlt":
