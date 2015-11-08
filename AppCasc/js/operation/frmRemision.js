@@ -330,7 +330,13 @@ var MngRemision = function () {
         });
 
         $('#spn-folio_cita').click(function () {
-            fillCitas(0);
+            //if('#spn-tieneOrdenCarga').html()
+            if ($('#spn-tieneOrdenCarga').html() != 'False') {
+                alert('La remision ya cuenta con orden de carga');
+            }
+            else {
+                fillCitas(0);
+            }
         });
 
         $('#spn_folio_cita').click(function () {

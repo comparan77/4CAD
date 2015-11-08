@@ -181,6 +181,7 @@
                 <input type="hidden" value='<%#Eval("etiqueta_rr") %>' />
                 <input type="hidden" value='<%#Eval("fecha_recibido", "{0:dd/MM/yyyy}") %>' />
                 <input type="hidden" value='<%#Eval("PTrafico.Folio_cita") %>' />
+                <input type="hidden" value='<%#Eval("tieneOrdenCarga") %>' />
                 <input type="hidden" value='<%#Eval("id") %>' />
             </li>
         </ItemTemplate>
@@ -264,6 +265,7 @@
         <div>
             <label>&nbsp;</label>
             <span class="hidden" id="spn-dlt"></span>
+            <span class="hidden" id="spn-tieneOrdenCarga"></span>
             <span class="hidden" id="spn-estatus"></span>
             <button class="floatLeft" id="imprimir-remision">Imprimir Remisi&oacute;n</button>
             <button class="floatRight" id="eliminar-remision">Eliminar Remisi&oacute;n</button>

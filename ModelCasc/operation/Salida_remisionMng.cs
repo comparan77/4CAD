@@ -321,6 +321,14 @@ namespace ModelCasc.operation
                         entero = 0;
                     }
 
+                    entero = 0;
+                    if (dr["tieneOrdenCarga"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["tieneOrdenCarga"].ToString(), out entero);
+                        o.TieneOrdenCarga = entero > 0;
+                        entero = 0;
+                    }
+
                     o.PTrafico.Folio_cita = dr["folio_cita"].ToString();
 
                     this._lst.Add(o);

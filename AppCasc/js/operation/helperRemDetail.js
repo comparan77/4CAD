@@ -19,7 +19,7 @@
 
                 $('#spn-piezatotal').html('');
 
-                var arrData = ['dano_especifico', 'etiqueta_rr', 'fecha_recibido', 'folio_cita'];
+                var arrData = ['dano_especifico', 'etiqueta_rr', 'fecha_recibido', 'folio_cita', 'tieneOrdenCarga'];
                 var hf_element = $(this).next();
                 for (var data in arrData) {
                     $('#spn-' + arrData[data]).html($(hf_element).val());

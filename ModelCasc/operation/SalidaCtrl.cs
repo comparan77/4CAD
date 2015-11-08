@@ -1006,8 +1006,8 @@ namespace ModelCasc.operation
             try
             {
                 Salida_trafico oST = new Salida_trafico() { Folio_cita = folio_cita };
-                Salida_traficoMng oSTMng = new Salida_traficoMng()  { O_Salida_trafico = oST };
-                oSTMng.selByCita() ;
+                Salida_traficoMng oSTMng = new Salida_traficoMng() { O_Salida_trafico = oST };
+                oSTMng.selByCita();
                 Salida_remisionMng oMng = new Salida_remisionMng() { O_Salida_remision = new Salida_remision() { Id = id_salida_remision, Id_salida_trafico = oST.Id } };
                 oMng.Udt_FolioCita();
             }
