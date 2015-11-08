@@ -24,6 +24,11 @@ var beanCliente_mercancia = function (codigo, nombre) {
     this.IsActive = false;
 }
 
+var CitaRemision = function (folio_cita, id_remision) {
+    this.Folio_cita = folio_cita;
+    this.Id_remision = id_remision;
+}
+
 var MngRemision = function () {
 
     this.Init = init;
@@ -151,7 +156,7 @@ var MngRemision = function () {
 
         $(div_tbl_folio_remision).dialog({
             autoOpen: false,
-            height: 270,
+            height: 290,
             width: 450,
             modal: true,
             resizable: false,
@@ -235,13 +240,13 @@ var MngRemision = function () {
             $(this).parent().parent().children('td:eq(1)').children('span').html('');
             $(this).parent().parent().children('td:eq(2)').children('span').html('');
 
-//            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
+            //            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
             $('#ctl00_body_txt_bulto').val('0');
             $('#ctl00_body_txt_piezasXbulto').val('0');
             $('#ctl00_body_hf_mercancia_danada').val('false');
             $('#ctl00_body_hf_lote_1').val('');
 
-//            $('#ctl00_body_hf_id_entrada_maquila_detail_2').val('0');
+            //            $('#ctl00_body_hf_id_entrada_maquila_detail_2').val('0');
             $('#ctl00_body_txt_bultoInc').val('0');
             $('#ctl00_body_txt_piezasXbultoInc').val('0');
             $('#ctl00_body_hf_mercancia_danadaInc').val('false');
@@ -269,7 +274,7 @@ var MngRemision = function () {
                         $('#ctl00_body_txt_piezasXbulto').val($('#spn_pzaXbulto-1').html());
                         $('#ctl00_body_hf_mercancia_danada').val($('#hf_danado-1').val());
                         $('#ctl00_body_hf_lote_1').val($('#spn_lote-1').html().replace('&nbsp;', ''));
-//                        $('#ctl00_body_hf_id_entrada_maquila_detail_1').val($('#hf_id_maquila_detail_1').val());
+                        //                        $('#ctl00_body_hf_id_entrada_maquila_detail_1').val($('#hf_id_maquila_detail_1').val());
                     }
                     else
                         CantBultoValido = false;
@@ -282,7 +287,7 @@ var MngRemision = function () {
                         $('#ctl00_body_txt_piezasXbultoInc').val($('#spn_pzaXbulto-2').html());
                         $('#ctl00_body_hf_mercancia_danadaInc').val($('#hf_danado-2').val());
                         $('#ctl00_body_hf_lote_2').val($('#spn_lote-2').html().replace('&nbsp;', ''));
-//                        $('#ctl00_body_hf_id_entrada_maquila_detail_2').val($('#hf_id_maquila_detail_2').val());
+                        //                        $('#ctl00_body_hf_id_entrada_maquila_detail_2').val($('#hf_id_maquila_detail_2').val());
                     }
                     else
                         CantBultoValido = false;
@@ -322,6 +327,10 @@ var MngRemision = function () {
             //height: 250,
             width: 450,
             modal: true
+        });
+
+        $('#spn-folio_cita').click(function () {
+            fillCitas(0);
         });
 
         $('#spn_folio_cita').click(function () {
@@ -427,7 +436,9 @@ var MngRemision = function () {
     }
 
     //Citas
-    function fillCitas() {
+    function fillCitas(NuevaRemision) {
+
+        NuevaRemision = typeof NuevaRemision !== 'undefined' ? NuevaRemision : 1;
 
         $('#ul_citas').html('');
         $('#spn_cita_sel').html('')
@@ -476,15 +487,48 @@ var MngRemision = function () {
                     $('.btn_sel_cita').each(function () {
                         $(this).button().click(function () {
                             var id = $(this).attr('id').split('_')[2];
-                            $('#ctl00_body_txt_folio_cita').val(id);
-                            $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
-                            $('#div_citas').dialog('close');
+                            if (NuevaRemision == 1) {
+                                $('#ctl00_body_txt_folio_cita').val(id);
+                                $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
+                                $('#div_citas').dialog('close');
+                            }
+                            else {
+                                if (confirm('Se va a modificar la cita de la remisión, desea continuar con la modificación?')) {
+                                    udtCita($('#hf_folio_cita_' + id).val(), $('#spn-dlt').html());
+                                }
+                            }
                         });
                     });
 
                 }
 
                 $('#div_citas').dialog('open');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
+    //Actualizacion de cita en remisiones
+    function udtCita(folio_cita, id_remision) {
+
+        var o = new CitaRemision(folio_cita, id_remision);
+
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=cita&opt=udtCita',
+            data: JSON.stringify(o),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+                $('#div_citas').dialog('close');
+            },
+            success: function (data) {
+                alert(data);
+                $('#spn-folio_cita').html(folio_cita);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();

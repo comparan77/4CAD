@@ -180,7 +180,7 @@
                 <input type="hidden" value='<%#Eval("dano_especifico") %>' />
                 <input type="hidden" value='<%#Eval("etiqueta_rr") %>' />
                 <input type="hidden" value='<%#Eval("fecha_recibido", "{0:dd/MM/yyyy}") %>' />
-                <input type="hidden" value='<%#Eval("id_estatus") %>' />
+                <input type="hidden" value='<%#Eval("PTrafico.Folio_cita") %>' />
                 <input type="hidden" value='<%#Eval("id") %>' />
             </li>
         </ItemTemplate>
@@ -256,6 +256,10 @@
         <div style="padding: 5px;">
             <label>Fecha Recibido:</label>
             <span id="spn-fecha_recibido"></span>
+        </div>
+        <div style="padding: 5px;">
+            <label>Folio Cita:</label>
+            <span id="spn-folio_cita" class="icon-button-action" style="color: #0d5fb3"></span>
         </div>
         <div>
             <label>&nbsp;</label>
