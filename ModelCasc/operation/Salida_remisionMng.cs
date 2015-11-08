@@ -444,5 +444,19 @@ namespace ModelCasc.operation
                 throw;
             }            
         }
+
+        internal void Udt_FolioCita()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
+                addParameters(10);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

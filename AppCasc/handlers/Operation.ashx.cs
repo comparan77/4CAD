@@ -184,8 +184,20 @@ namespace AppCasc.handlers
                     int.TryParse(context.Request["id_salida_trafico"].ToString(), out id);
                     response = JsonConvert.SerializeObject(SalidaCtrl.RemisionGetByIdTrafico(id));
                     break;
+                case "udtCita":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    CitaRemision citaRem = JsonConvert.DeserializeObject<CitaRemision>(jsonData);
+                    SalidaCtrl.RemisionUDT_FolioCita(citaRem.Id_remision, citaRem.Folio_cita);
+                    response = JsonConvert.SerializeObject("La cita para la remisión se actualizó correctamente");
+                    break;
             }
             return response;
+        }
+
+        internal class CitaRemision
+        {
+            public string Folio_cita { get; set; }
+            public int Id_remision { get; set; }
         }
 
         private string ordenCarga(HttpContext context)

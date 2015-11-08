@@ -24,6 +24,11 @@ var beanCliente_mercancia = function (codigo, nombre) {
     this.IsActive = false;
 }
 
+var CitaRemision = function (folio_cita, id_remision) {
+    this.Folio_cita = folio_cita;
+    this.Id_remision = id_remision;
+}
+
 var MngRemision = function () {
 
     this.Init = init;
@@ -485,19 +490,45 @@ var MngRemision = function () {
                             if (NuevaRemision == 1) {
                                 $('#ctl00_body_txt_folio_cita').val(id);
                                 $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
+                                $('#div_citas').dialog('close');
                             }
                             else {
                                 if (confirm('Se va a modificar la cita de la remisión, desea continuar con la modificación?')) {
-                                    $('#spn-folio_cita').html($('#hf_folio_cita_' + id).val());
+                                    udtCita($('#hf_folio_cita_' + id).val(), $('#spn-dlt').html());
                                 }
                             }
-                            $('#div_citas').dialog('close');
                         });
                     });
 
                 }
 
                 $('#div_citas').dialog('open');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
+    //Actualizacion de cita en remisiones
+    function udtCita(folio_cita, id_remision) {
+
+        var o = new CitaRemision(folio_cita, id_remision);
+
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=cita&opt=udtCita',
+            data: JSON.stringify(o),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+                $('#div_citas').dialog('close');
+            },
+            success: function (data) {
+                alert(data);
+                $('#spn-folio_cita').html(folio_cita);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
