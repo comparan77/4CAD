@@ -21,5 +21,7 @@ namespace ModelCasc.report.operation
         public int Piezas { get; set; }
         public DateTime? Fecha_recibido { get; set; }
         public string Etiqueta_rr { get; set; }
+        public DateTime? Fecha_salida { get; set; }
+        public string Folio_salida { get; set; }
     }
 }

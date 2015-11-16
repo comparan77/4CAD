@@ -48,10 +48,18 @@ namespace ModelCasc.report.operation
                     o.Bultos = Convert.ToInt32(dr["bultos"]);
                     o.Piezas = Convert.ToInt32(dr["piezas"]);
                     DateTime.TryParse(dr["fecha_recibido"].ToString(), out fecha);
-                    o.Negocio = dr["negocio"].ToString();
                     o.Fecha_recibido = fecha;
                     fecha = default(DateTime);
+
+                    o.Negocio = dr["negocio"].ToString();
                     o.Etiqueta_rr = dr["etiqueta_rr"].ToString();
+
+                    DateTime.TryParse(dr["fecha_salida"].ToString(), out fecha);
+                    o.Fecha_salida = fecha;
+                    fecha = default(DateTime);
+
+                    o.Folio_salida = dr["folio_salida"].ToString();
+
                     lst.Add(o);
                 }
             }
