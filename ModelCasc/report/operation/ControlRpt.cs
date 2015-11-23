@@ -175,5 +175,60 @@ namespace ModelCasc.report.operation
             }
             return lst;
         }
+
+        public static List<rptInventario> InventarioGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptInventario> lst = new List<rptInventario>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZInventario");
+
+                if (anio_ini == 1)
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                }
+                else
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                }
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptInventario o = new rptInventario();
+                    o.Codigo_cliente = dr["codigo_cliente"].ToString();
+                    o.Aduana = Convert.ToInt32(dr["aduana"]);
+                    o.Referencia = dr["referencia"].ToString();
+                    o.Ubicacion = dr["ubicacion"].ToString();
+                    o.FechaEntrada = Convert.ToDateTime(dr["fecha_entrada"]);
+                    o.Piezas_pedimento = Convert.ToInt32(dr["piezas_pedimento"]);
+                    o.Bultos_pedimento = Convert.ToInt32(dr["bultos_pedimento"]);
+                    o.Vendor = dr["vendor"].ToString();
+                    o.Proveedor = dr["proveedor"].ToString();
+                    o.Orden = dr["orden_compra"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+                    o.Mercancia = dr["mercancia"].ToString();
+                    o.Factura = dr["factura"].ToString();
+                    o.Costo_unitario = Convert.ToDecimal(dr["costo_unitario"]);
+                    o.Piezas_maquiladas = Convert.ToInt32(dr["piezas_maquiladas"]);
+                    o.Piezas_en_proceso = Convert.ToInt32(dr["piezas_en_proceso"]);
+                    o.Saldo_bultos = Convert.ToInt32(dr["saldo_bultos"]);
+
+                    o.Piezas_inventario = o.Piezas_maquiladas + o.Piezas_en_proceso;
+                    o.Valor_inventario = o.Costo_unitario * o.Piezas_inventario;
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
     }
 }

@@ -21,6 +21,11 @@
                 case 'Piso':
                     $('#ctl00_body_txt_fecha_ini').val('');
                     break;
+                case 'Inventario':
+                    var iniYear = new Date(moment(new Date()).year(), 0, 1)
+                    iniYear = moment(iniYear).format('DD/MM/YYYY');
+                    $('#ctl00_body_txt_fecha_ini').val(iniYear);
+                    break;
             }
         });
     }

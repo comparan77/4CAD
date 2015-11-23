@@ -19,6 +19,7 @@
             <asp:ListItem Text="Maquila" Value="Maquila"></asp:ListItem>
             <asp:ListItem Text="Piso" Value="Piso"></asp:ListItem>
             <asp:ListItem Text="Remision" Value="Remision"></asp:ListItem>
+            <asp:ListItem Text="Inventario" Value="Inventario"></asp:ListItem>
         </asp:DropDownList>
     </div>
     <div>

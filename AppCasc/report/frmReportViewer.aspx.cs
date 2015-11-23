@@ -41,6 +41,9 @@ namespace AppCasc.report
                     case "Remision":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RemisionGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         break;
+                    case "Inventario":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.InventarioGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        break;
                     default:
                         break;
                 }
