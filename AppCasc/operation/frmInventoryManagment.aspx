@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmInventoryManagment.aspx.cs" Inherits="AppCasc.operation.frmInventoryManagment" %>
 <%@ Register src="../webControls/usrControlClienteMercancia.ascx" tagname="usrControlClienteMercancia" tagprefix="uc1" %>
+<%@ Register src="../webControls/usrControlClienteVendor.ascx" tagname="usrControlClienteVendor" tagprefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
@@ -8,6 +9,7 @@
     <link href="../css/jquery.combobox.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery.combobox.js" type="text/javascript"></script>
     <script src="../js/webControls/ctrlClienteMercancia.js?v1.1.150619_1446" type="text/javascript"></script>
+    <script src="../js/webControls/ctrlClienteVendor.js?v1.1.150619_1446" type="text/javascript"></script>
 
     <script src="../js/operation/frmInventoryManagment.js" type="text/javascript"></script>
 </asp:Content>
@@ -91,6 +93,23 @@
         <div>
             <label>Vendor C&oacute;digo:</label>
             <input type="text" id="txt_codigo_vendor" readonly="readonly" class="txtNoBorder txtClear txtLarge" />
+            <span id="spn_edit_vendor" class="ui-icon ui-icon-pencil icon-button-action floatLeft" title="Cambiar vendor"></span>
+            <div id="div_udt_vendor" class="hidden">
+                <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Cambio de Vendor <span style="float: right;" id="spn_close_vendor" class="ui-icon ui-icon-close icon-button-action"></span></h3>
+                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+                    <div>
+                        <label>Nuevo C&oacute;digo:</label>
+                        <input type="text" id="txt_new_vendor" class="txtMedium txtClear" />
+                    </div>
+                    <div>
+                        <label>Motivo:</label>
+                        <textarea class="txtClear" id="txt_obs_vendor" rows="3" cols="3"></textarea>
+                    </div>
+                    <div>
+                        <button id="btn_save_vendor">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
             <label>Vendor Nombre:</label>
@@ -104,6 +123,7 @@
             <label>Valor Factura:</label>
             <input type="text" id="txt_val_fact" readonly="readonly" class="txtNoBorder txtClear txtLarge" />
         </div>
+
         <div>
             <label>Mercanc&iacute;a C&oacute;digo:</label>
             <input type="text" id="txt_mer_cod" readonly="readonly" class="txtNoBorder txtClear txtMedium" />
@@ -125,6 +145,7 @@
                 </div>
             </div>
         </div>
+
         <div>
             <label>Mercanc&iacute;a Descripci&oacute;n:</label>
             <input type="text" id="txt_mer_nombre" readonly="readonly" class="txtNoBorder txtClear txtLarge" />
@@ -157,8 +178,9 @@
     <div style="clear: left;">&nbsp;</div>
 
     <div>
-        <uc1:usrControlClienteMercancia ID="usrControlClienteMercancia1" 
-            runat="server" />
+        <uc1:usrControlClienteMercancia ID="usrControlClienteMercancia1" runat="server" />
+        <uc1:usrControlClienteVendor ID="usrControlClienteVendor1" runat="server" />
+
     </div>
 
   </div>

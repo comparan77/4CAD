@@ -80,6 +80,16 @@ namespace AppCasc.handlers
                         oEIC.Codigo = oEIC.Codigo.Trim();
                         response = JsonConvert.SerializeObject(EntradaCtrl.InventarioCambiosChangeOrden(oEIC));
                         break;
+                    case "inventoryVendor":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        oEIC = JsonConvert.DeserializeObject<Entrada_inventario_cambios>(jsonData);
+                        oEIC.Id_usuario = ((Usuario)context.Session["userCasc"]).Id;
+                        oEIC.Vendor = oEIC.Vendor.Trim();
+                        if (EntradaCtrl.InventarioCambiosChangeVendor(oEIC) > -1)
+                            response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_vendorfillByCliente(1, oEIC.Vendor));
+                        else
+                            response = JsonConvert.SerializeObject("El Vendor NO ha sido cambiado");
+                        break;
                     case "maquilaGet":
                         int.TryParse(context.Request["key"].ToString(), out id);
                         response = JsonConvert.SerializeObject(EntradaCtrl.MaquilaSelById(id));

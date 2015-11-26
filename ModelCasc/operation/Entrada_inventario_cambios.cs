@@ -13,6 +13,7 @@ namespace ModelCasc.operation
         protected int _id_usuario;
         protected string _codigo;
         protected string _orden;
+        protected string _vendor;
         protected string _observaciones;
         #endregion
 
@@ -22,6 +23,7 @@ namespace ModelCasc.operation
         public int Id_usuario { get { return _id_usuario; } set { _id_usuario = value; } }
         public string Codigo { get { return _codigo; } set { _codigo = value; } }
         public string Orden { get { return _orden; } set { _orden = value; } }
+        public string Vendor { get { return _vendor; } set { _vendor = value; } }
         public string Observaciones { get { return _observaciones; } set { _observaciones = value; } }
         #endregion
 
@@ -32,6 +34,7 @@ namespace ModelCasc.operation
 			this._id_usuario = 0;
 			this._codigo = String.Empty;
 			this._orden = String.Empty;
+            this._vendor = string.Empty;
 			this._observaciones = null;
 		}
         #endregion

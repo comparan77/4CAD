@@ -7,12 +7,13 @@ var BeanCodigoOrden = function (id, codigo, orden) {
     this.Codigo = codigo;
 }
 
-var BeanEntInvCambios = function (id_entrada_inventario, codigo, orden, observaciones) {
+var BeanEntInvCambios = function (id_entrada_inventario, codigo, orden, vendor, observaciones) {
     this.Id = 0;
     this.Id_entrada_inventario = id_entrada_inventario;
     this.Id_usuario = 0;
     this.Codigo = codigo;
     this.Orden = orden;
+    this.Vendor = vendor;
     this.Observaciones = observaciones;
 }
 
@@ -22,8 +23,10 @@ var MngInventoryManagment = function () {
     //    this.Id_entrada_inventario = 0;
     this.P_entrada_inventario_cambios = null;
     this.CtrlCM = null;
+    this.CtrlCV = null;
     this.OCtrSelected = null;
     this.Recall = recall;
+    this.TipoCambio = null;
 
     function init() {
         //$("html, body").animate({ scrollTop: $(document).height() }, "slow");
@@ -32,17 +35,20 @@ var MngInventoryManagment = function () {
 
     function recall(oCM, oCtrlCM) {
         //var o = new BeanEntInvCambios(pag.Id_entrada_inventario, oCM.Codigo, '', '');
-        inventarioChange(pag.P_entrada_inventario_cambios, oCtrlCM, pag.OCtrSelected, 'cod');
+        inventarioChange(pag.P_entrada_inventario_cambios, oCtrlCM, pag.OCtrSelected, pag.TipoCambio);
     }
 
-    function inventarioChange(oEntInvCambios, oCrtlCM, trSelected, cod_ord) {
+    function inventarioChange(oEntInvCambios, oCrtlCM, trSelected, tipo_cambio) {
 
         var urlHandler = '';
-        if (cod_ord == 'cod')
+        if (tipo_cambio == 'cod')
             urlHandler = '/handlers/Operation.ashx?op=inventoryCodigo';
 
-        if (cod_ord == 'ord')
+        if (tipo_cambio == 'ord')
             urlHandler = '/handlers/Operation.ashx?op=inventoryOrden';
+
+        if (tipo_cambio == 'ven')
+            urlHandler = '/handlers/Operation.ashx?op=inventoryVendor';
 
         $.ajax({
             type: "POST",
@@ -56,7 +62,7 @@ var MngInventoryManagment = function () {
             },
             success: function (data) {
 
-                if (cod_ord == 'cod') {
+                if (tipo_cambio == 'cod') {
 
                     var n = data.indexOf("existe");
                     if (n > 0) {
@@ -64,6 +70,7 @@ var MngInventoryManagment = function () {
                             pag.P_entrada_inventario_cambios = oEntInvCambios;
                             pag.CtrlCM = oCrtlCM;
                             pag.OCtrSelected = trSelected;
+                            pag.TipoCambio = tipo_cambio;
                             oCrtlCM.OpenFrm(oEntInvCambios.Codigo, pag);
                         }
                     }
@@ -76,12 +83,35 @@ var MngInventoryManagment = function () {
                     }
                 }
 
-                if (cod_ord == 'ord') {
+                if (tipo_cambio == 'ord') {
                     $(trSelected).children('td:nth-child(2)').html(oEntInvCambios.Orden);
                     $('#txt_mer_ord').val(oEntInvCambios.Orden);
                     $('#spn_close_ord').trigger('click');
                     alert('La orden de compra ha sido cambiado exitosamente');
                 }
+
+                if (tipo_cambio == 'ven') {
+
+                    var n = data.indexOf("existe");
+                    if (n > 0) {
+                        if (confirm(data + '. Desea dar de alta el nuevo vendor?')) {
+                            pag.P_entrada_inventario_cambios = oEntInvCambios;
+                            var oCtrlCV = new ctrlClienteVendor();
+                            pag.CtrlCV = oCtrlCV;
+                            pag.OCtrSelected = trSelected;
+                            pag.TipoCambio = tipo_cambio;
+                            oCtrlCV.OpenFrm(oEntInvCambios.Vendor, pag);
+                        }
+                    }
+                    else {
+                        $('#txt_nombre_vendor').val(data[0].Nombre);
+                        $(trSelected).children('td').first().html(oEntInvCambios.Vendor);
+                        $('#txt_codigo_vendor').val(oEntInvCambios.Vendor);
+                        $('#spn_close_vendor').trigger('click');
+                        alert('El vendor ha sido cambiado exitosamente');
+                    }
+                }
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
@@ -134,7 +164,7 @@ var MngInventoryManagment = function () {
 
                         var btn_save_code = $('#btn_save_code');
                         $(btn_save_code).button().unbind('click').click(function () {
-                            var oEIC = new BeanEntInvCambios($('#spn_edit_codigo').attr('id_entrada_inventario'), $('#txt_new_code').val(), '', $('#txt_obs_code').val());
+                            var oEIC = new BeanEntInvCambios($('#spn_edit_codigo').attr('id_entrada_inventario'), $('#txt_new_code').val(), '', '', $('#txt_obs_code').val());
                             if (cambioCodigoValido()) {
                                 inventarioChange(oEIC, oCrtlCM, trSelected, 'cod');
                             }
@@ -152,9 +182,28 @@ var MngInventoryManagment = function () {
 
                         var btn_save_orden = $('#btn_save_orden');
                         $(btn_save_orden).button().unbind('click').click(function () {
-                            var oEIC = new BeanEntInvCambios($('#spn_edit_orden').attr('id_entrada_inventario'), '', $('#txt_new_orden').val(), $('#txt_obs_orden').val());
+                            var oEIC = new BeanEntInvCambios($('#spn_edit_orden').attr('id_entrada_inventario'), '', $('#txt_new_orden').val(), '', $('#txt_obs_orden').val());
                             if (cambioOrdenValido()) {
                                 inventarioChange(oEIC, oCrtlCM, trSelected, 'ord');
+                                //La orden de compra cambia directo
+                            }
+                            return false;
+                        });
+                    }
+                });
+
+                //vendor
+                $('#spn_edit_vendor').attr('id_entrada_inventario', data.PEntInv.Id);
+                $('#spn_edit_vendor').unbind('click').click(function () {
+                    if ($(this).hasClass('ui-icon-pencil')) {
+                        $(this).removeClass('ui-icon-pencil').removeClass('ui-icon');
+                        $('#div_udt_vendor').removeClass('hidden');
+
+                        var btn_save_orden = $('#btn_save_vendor');
+                        $(btn_save_orden).button().unbind('click').click(function () {
+                            var oEIC = new BeanEntInvCambios($('#spn_edit_vendor').attr('id_entrada_inventario'), '', '', $('#txt_new_vendor').val(), $('#txt_obs_orden').val());
+                            if (cambioVendorValido()) {
+                                inventarioChange(oEIC, oCrtlCM, trSelected, 'ven');
                                 //La orden de compra cambia directo
                             }
                             return false;
@@ -310,6 +359,11 @@ var MngInventoryManagment = function () {
             $('#spn_edit_orden').addClass('ui-icon-pencil').addClass('ui-icon');
             $('#div_udt_orden').addClass('hidden');
         });
+
+        $('#spn_close_vendor').click(function () {
+            $('#spn_edit_vendor').addClass('ui-icon-pencil').addClass('ui-icon');
+            $('#div_udt_vendor').addClass('hidden');
+        });
     }
 
     function cambioCodigoValido() {
@@ -352,6 +406,30 @@ var MngInventoryManagment = function () {
         if ($('#txt_obs_orden').val().trim().length == 0) {
             alert('El motivo no puede estar vacío');
             $('#txt_obs_orden').focus();
+            return false;
+        }
+
+        return true;
+
+    }
+
+    function cambioVendorValido() {
+
+        if ($('#txt_new_vendor').val().trim().length == 0) {
+            alert('El nuevo código de vendor no puede estar vacía');
+            $('#txt_new_vendor').focus();
+            return false;
+        }
+
+        if ($('#txt_codigo_vendor').val() == $('#txt_new_vendor').val()) {
+            alert('El nuevo código de vendor, no puede ser el mismo que el anterior');
+            $('#txt_new_vendor').focus();
+            return false;
+        }
+
+        if ($('#txt_obs_vendor').val().trim().length == 0) {
+            alert('El motivo no puede estar vacío');
+            $('#txt_obs_vendor').focus();
             return false;
         }
 

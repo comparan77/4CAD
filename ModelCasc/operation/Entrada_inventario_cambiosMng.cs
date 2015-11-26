@@ -36,6 +36,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oEntrada_inventario_cambios.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_codigo", DbType.String, this._oEntrada_inventario_cambios.Codigo);
             GenericDataAccess.AddInParameter(this.comm, "?P_orden", DbType.String, this._oEntrada_inventario_cambios.Orden);
+            GenericDataAccess.AddInParameter(this.comm, "?P_vendor", DbType.String, this._oEntrada_inventario_cambios.Vendor);
             GenericDataAccess.AddInParameter(this.comm, "?P_observaciones", DbType.String, this._oEntrada_inventario_cambios.Observaciones);
         }
 
@@ -60,6 +61,7 @@ namespace ModelCasc.operation
                 }
                 o.Codigo = dr["codigo"].ToString();
                 o.Orden = dr["orden"].ToString();
+                o.Vendor = dr["vendor"].ToString();
                 o.Observaciones = dr["observaciones"].ToString();
             }
             catch
@@ -180,6 +182,22 @@ namespace ModelCasc.operation
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario_cambios");
                 addParameters(6);
+                success = GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+            return success;
+        }
+
+        internal int udtVendor()
+        {
+            int success = -1;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario_cambios");
+                addParameters(7);
                 success = GenericDataAccess.ExecuteNonQuery(this.comm);
             }
             catch

@@ -692,6 +692,28 @@ namespace ModelCasc.catalog
 
         #region Cliente mercancia
 
+
+        public static List<Cliente_vendor> Cliente_vendorfillByCliente(int IdClienteGrupo, string vendor = "")
+        {
+            List<Cliente_vendor> lst = new List<Cliente_vendor>();
+            try
+            {
+                Cliente_vendorMng oMng = new Cliente_vendorMng();
+                Cliente_vendor o = new Cliente_vendor();
+                o.Id_cliente_grupo = IdClienteGrupo;
+                if (vendor.Length > 0)
+                    o.Codigo = vendor;
+                oMng.O_Cliente_vendor = o;
+                oMng.fillLstByVendor();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         public static List<Cliente_mercancia> Cliente_mercanciafillByCliente(int IdClienteGrupo, string codigo = "")
         {
             List<Cliente_mercancia> lst = new List<Cliente_mercancia>();

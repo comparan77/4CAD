@@ -1544,6 +1544,22 @@ namespace ModelCasc.operation
             }
         }
 
+        public static int InventarioCambiosChangeVendor(Entrada_inventario_cambios o)
+        {
+            try
+            {
+                Entrada_inventario_cambiosMng oMng = new Entrada_inventario_cambiosMng()
+                {
+                    O_Entrada_inventario_cambios = o
+                };
+                return oMng.udtVendor();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Entrada Maquila - Control piso
