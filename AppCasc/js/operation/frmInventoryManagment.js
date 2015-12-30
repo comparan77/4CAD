@@ -201,7 +201,7 @@ var MngInventoryManagment = function () {
 
                         var btn_save_orden = $('#btn_save_vendor');
                         $(btn_save_orden).button().unbind('click').click(function () {
-                            var oEIC = new BeanEntInvCambios($('#spn_edit_vendor').attr('id_entrada_inventario'), '', '', $('#txt_new_vendor').val(), $('#txt_obs_orden').val());
+                            var oEIC = new BeanEntInvCambios($('#spn_edit_vendor').attr('id_entrada_inventario'), '', '', $('#txt_new_vendor').val(), $('#txt_obs_vendor').val());
                             if (cambioVendorValido()) {
                                 inventarioChange(oEIC, oCrtlCM, trSelected, 'ven');
                                 //La orden de compra cambia directo
