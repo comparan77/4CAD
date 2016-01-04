@@ -55,6 +55,7 @@ namespace ModelCasc.operation
         public int BultoTotal { get; set; }
         public int PiezaTotalInv { get; set; }
         public int BultoTotalInv { get; set; }
+        public int Pallet { get; set; }
         public int CantParciales { get; set; }
         public bool TieneOrdenCarga { get; set; }
         /// <summary>

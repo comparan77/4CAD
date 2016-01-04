@@ -28,6 +28,7 @@ namespace ModelCasc.operation
         protected double _valor_factura;
         protected int _piezas;
         protected int _bultos;
+        protected int _bultosxpallet;
         protected int _pallets;
 
         protected int _piezas_recibidas;
@@ -65,6 +66,7 @@ namespace ModelCasc.operation
         public double Valor_factura { get { return _valor_factura; } set { _valor_factura = value; } }
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
         public int Bultos { get { return _bultos; } set { _bultos = value; } }
+        public int Bultosxpallet { get { return _bultosxpallet; } set { _bultosxpallet = value; } }
         public int Pallets { get { return _pallets; } set { _pallets = value; } }
 
         public int Piezas_recibidas { get { return _piezas_recibidas; } set { _piezas_recibidas = value; } }
@@ -113,6 +115,7 @@ namespace ModelCasc.operation
             this._valor_factura = 0;
             this._piezas = 0;
             this._bultos = 0;
+            this._bultosxpallet = 0;
             this._pallets = 0;
 
             this._piezas_recibidas = 0;

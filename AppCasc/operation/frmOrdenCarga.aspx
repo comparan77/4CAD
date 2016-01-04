@@ -28,6 +28,7 @@
 <div id="guia_embarque" title="Orden de Carga" style="position: relative">
     <div id="div_orden_carga" style="position: absolute; top: 10px; right: 10px;">
         <a id="lnk_orden_carga" href="#"></a>
+        <span id="lnk_dlt_orden_carga" class="ui-icon ui-icon-trash icon-button-action dltDiaTrabajado floatRight"></span>
         <input type="hidden" id="h_orden_carga" value="0" />
     </div>
     <div class="divForm" style="margin-bottom: 10px;">
@@ -59,8 +60,8 @@
                 <th align="left">C&oacute;digo</th>
                 <th align="right">Piezas</th>
                 <th align="right">Bultos</th>
-                <%--<th align="center">Pallets</th>--%>
-                <th align="center">Seleccionar <input type="checkbox" id="chk_todo" /></th>
+                <th align="center">Pallets</th>
+                <%--<th align="center">Seleccionar <input type="checkbox" id="chk_todo" /></th>--%>
             </tr>
         </thead>
         <tbody id="tbody_remisiones">
@@ -71,8 +72,8 @@
                 <td colspan="4"></td>
                 <td align="right" id="td_pieza_total">0</td>
                 <td align="right" id="td_bulto_total">0</td>
-                <%--<td align="center" id="td_pallet_total">0</td>--%>
-                <td>&nbsp;</td>
+                <td align="center" id="td_pallet_total">0</td>
+                <%--<td>&nbsp;</td>--%>
             </tr>
         </tfoot>
     </table>

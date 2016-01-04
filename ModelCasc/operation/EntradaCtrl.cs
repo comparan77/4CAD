@@ -1180,6 +1180,29 @@ namespace ModelCasc.operation
 
         #region Entrada Inventario - Control piso
 
+        public static int InventarioGetPalletsByBultos(int id_entrada_inventario, int no_bultos)
+        {
+            double maxBultosXPallet = 0;
+            int numBultos = 0;
+            int numPallet = 0;
+            int residuoBulto = 0;
+
+            Entrada_inventario oEI = new Entrada_inventario() { Id = Convert.ToInt32(id_entrada_inventario) };
+            Entrada_inventarioMng oEIMng = new Entrada_inventarioMng() { O_Entrada_inventario = oEI };
+            oEIMng.selById();
+            maxBultosXPallet = oEI.Bultosxpallet * .1;
+            if (maxBultosXPallet < 1)
+                maxBultosXPallet = 1;
+
+            numBultos = no_bultos;
+            numPallet = numBultos / oEI.Bultosxpallet;
+            residuoBulto = numBultos % oEI.Bultosxpallet;
+            if (residuoBulto > maxBultosXPallet)
+                numPallet++;
+
+            return numPallet;
+        }
+
         public static void InventarioSave(Entrada_inventario o)
         {
             IDbTransaction trans = null;

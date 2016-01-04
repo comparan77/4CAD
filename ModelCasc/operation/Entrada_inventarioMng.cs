@@ -50,6 +50,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_valor_factura", DbType.Double, this._oEntrada_inventario.Valor_factura);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oEntrada_inventario.Piezas);
             GenericDataAccess.AddInParameter(this.comm, "?P_bultos", DbType.Int32, this._oEntrada_inventario.Bultos);
+            GenericDataAccess.AddInParameter(this.comm, "?P_bultosxpallet", DbType.Int32, this._oEntrada_inventario.Bultosxpallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_pallets", DbType.Int32, this._oEntrada_inventario.Pallets);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas_recibidas", DbType.Int32, this._oEntrada_inventario.Piezas_recibidas);
             GenericDataAccess.AddInParameter(this.comm, "?P_bultos_recibidos", DbType.Int32, this._oEntrada_inventario.Bultos_recibidos);
@@ -141,6 +142,12 @@ namespace ModelCasc.operation
                 {
                     int.TryParse(dr["bultos"].ToString(), out entero);
                     o.Bultos = entero;
+                    entero = 0;
+                }
+                if (dr["bultosxpallet"] != DBNull.Value)
+                {
+                    int.TryParse(dr["bultosxpallet"].ToString(), out entero);
+                    o.Bultosxpallet = entero;
                     entero = 0;
                 }
                 if (dr["pallets"] != DBNull.Value)

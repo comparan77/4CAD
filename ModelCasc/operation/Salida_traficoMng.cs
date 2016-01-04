@@ -395,5 +395,19 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void addPallet(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_trafico");
+                addParameters(10);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

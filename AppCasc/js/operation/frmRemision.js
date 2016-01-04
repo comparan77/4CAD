@@ -450,72 +450,87 @@ var MngRemision = function () {
         $('#spn_cita_sel').html('')
         $('#ctl00_body_txt_folio_cita').val('');
 
-        $.ajax({
-            type: 'GET',
-            url: '/handlers/Operation.ashx',
-            data: {
-                op: 'cita',
-                opt: 'getCitas'
-            },
-            complete: function () {
-                $('#div-info-codigo').removeClass('ajaxLoading');
-            },
-            success: function (data) {
+        var bultos = 0;
+        if (NuevaRemision == 1)
+            bultos = $('#ctl00_body_txt_bulto').val() * 1 + $('#ctl00_body_txt_bultoInc').val() * 1;
+        else
+            bultos = $('#spn-bulto-1').html() * 1 + $('#spn-bulto-2').html() * 1;
 
-                if (data.length == 0) {
-                    $('#ul_citas').append('<li>Sin citas <br /><a href="/operation/frmTrafico.aspx">Solicitar citas aqu&iacute;</a></li>');
-                }
-                else {
-                    $(data).each(function (i, obj) {
-                        var liCita = '<li>';
-                        liCita += '<font color="#0d5fb3">Folio:&nbsp;</font>' + obj.Folio_cita + '<font color="#0d5fb3">&nbsp;Fecha:&nbsp;</font>' + moment(obj.Fecha_cita).format("DD/MM/YYYY");
-                        liCita += '&nbsp;<font color="#0d5fb3">Hora:</font>&nbsp;' + obj.Hora_cita;
-                        liCita += '<div style="position: relative">';
-                        liCita += '<ul>';
-                        liCita += '<li><b>Destino:</b> ' + obj.PSalidaDestino.Destino + '</li>';
-                        liCita += '<li><b>Línea:</b> ' + obj.Transporte + '</li>';
-                        liCita += '<li><b>Operador:</b> ' + obj.Operador + '</li>';
-                        liCita += '<li><b>Tipo:</b> ' + obj.Transporte_tipo_cita + '</li>';
-                        liCita += '<li><b>Placa:</b> ' + obj.Placa + '</li>';
-                        liCita += '<li><b>Fecha Carga Solicitada:</b> ' + moment(obj.Fecha_carga_solicitada).format('DD/MM/YYYY') + '</li>';
-                        liCita += '<li><b>Hora Carga Solicitada:</b> ' + obj.Hora_carga_solicitada + '</li>';
-                        liCita += '</ul>'
-                        liCita += '<button class="btn_sel_cita" id="btn_cita_' + obj.Id + '" style="position: absolute; top: 20px; right: 20px;">Seleccionar</button>';
-                        liCita += '<span id="spn_pallet_' + obj.Id + '" style="position: absolute; top: 60px; right: 80px; font-size: 2.5em;">' + (!obj.Pallet ? '0' : obj.Pallet) + '</span>';
-                        liCita += '<span style="position: absolute; top: 100px; right: 60px;">Pallet(s)</span>';
-                        liCita += '<input type="hidden" id="hf_folio_cita_' + obj.Id + '" value="' + obj.Folio_cita + '" />';
-                        liCita += '</div></li>';
-                        liCita += '<hr />'
+        if (bultos > 0) {
 
-                        $('#ul_citas').append(liCita);
-                    });
+            $.ajax({
+                type: 'GET',
+                url: '/handlers/Operation.ashx',
+                data: {
+                    op: 'cita',
+                    opt: 'getCitas',
+                    id_entrada_inventario: $('#ctl00_body_hf_id_entrada_inventario').val(),
+                    bultos: bultos,
+                    folio_cita: NuevaRemision == 1 ? '' : $('#spn-folio_cita').html()
+                },
+                complete: function () {
+                    $('#div-info-codigo').removeClass('ajaxLoading');
+                },
+                success: function (data) {
 
-                    $('.btn_sel_cita').each(function () {
-                        $(this).button().click(function () {
-                            var id = $(this).attr('id').split('_')[2];
-                            if (NuevaRemision == 1) {
-                                $('#ctl00_body_txt_folio_cita').val(id);
-                                $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
-                                $('#div_citas').dialog('close');
-                            }
-                            else {
-                                if (confirm('Se va a modificar la cita de la remisión, desea continuar con la modificación?')) {
-                                    udtCita($('#hf_folio_cita_' + id).val(), $('#spn-dlt').html());
-                                }
-                            }
+                    if (data.length == 0) {
+                        $('#ul_citas').append('<li>Sin citas <br /><a href="/operation/frmTrafico.aspx">Solicitar citas aqu&iacute;</a></li>');
+                    }
+                    else {
+                        $(data).each(function (i, obj) {
+                            var liCita = '<li>';
+                            liCita += '<font color="#0d5fb3">Folio:&nbsp;</font>' + obj.Folio_cita + '<font color="#0d5fb3">&nbsp;Fecha:&nbsp;</font>' + moment(obj.Fecha_cita).format("DD/MM/YYYY");
+                            liCita += '&nbsp;<font color="#0d5fb3">Hora:</font>&nbsp;' + obj.Hora_cita;
+                            liCita += '<div style="position: relative">';
+                            liCita += '<ul>';
+                            liCita += '<li><b>Destino:</b> ' + obj.PSalidaDestino.Destino + '</li>';
+                            liCita += '<li><b>Línea:</b> ' + obj.Transporte + '</li>';
+                            liCita += '<li><b>Operador:</b> ' + obj.Operador + '</li>';
+                            liCita += '<li><b>Tipo:</b> ' + obj.Transporte_tipo_cita + '</li>';
+                            liCita += '<li><b>Placa:</b> ' + obj.Placa + '</li>';
+                            liCita += '<li><b>Fecha Carga Solicitada:</b> ' + moment(obj.Fecha_carga_solicitada).format('DD/MM/YYYY') + '</li>';
+                            liCita += '<li><b>Hora Carga Solicitada:</b> ' + obj.Hora_carga_solicitada + '</li>';
+                            liCita += '</ul>'
+                            liCita += '<button class="btn_sel_cita" id="btn_cita_' + obj.Id + '" style="position: absolute; top: 20px; right: 20px;">Seleccionar</button>';
+                            liCita += '<span id="spn_pallet_' + obj.Id + '" style="position: absolute; top: 60px; right: 80px; font-size: 2.5em; color:' + (!obj.Pallet ? 'black' : obj.Pallet < 21 ? 'black' : obj.Pallet == 22 ? 'yellow' : 'red') + '">' + (!obj.Pallet ? '0' : obj.Pallet) + '</span>';
+                            liCita += '<span style="position: absolute; top: 100px; right: 60px;">Pallet(s)</span>';
+                            liCita += '<input type="hidden" id="hf_folio_cita_' + obj.Id + '" value="' + obj.Folio_cita + '" />';
+                            liCita += '</div></li>';
+                            liCita += '<hr />'
+
+                            $('#ul_citas').append(liCita);
                         });
-                    });
 
+                        $('.btn_sel_cita').each(function () {
+                            $(this).button().click(function () {
+                                var id = $(this).attr('id').split('_')[2];
+                                if (NuevaRemision == 1) {
+                                    $('#ctl00_body_txt_folio_cita').val(id);
+                                    $('#spn_cita_sel').html($('#hf_folio_cita_' + id).val());
+                                    $('#div_citas').dialog('close');
+                                }
+                                else {
+                                    if (confirm('Se va a modificar la cita de la remisión, desea continuar con la modificación?')) {
+                                        udtCita($('#hf_folio_cita_' + id).val(), $('#spn-dlt').html());
+                                    }
+                                }
+                            });
+                        });
+
+                    }
+
+                    $('#div_citas').dialog('open');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var oErrorMessage = new ErrorMessage();
+                    oErrorMessage.SetError(jqXHR.responseText);
+                    oErrorMessage.Init();
                 }
-
-                $('#div_citas').dialog('open');
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                var oErrorMessage = new ErrorMessage();
-                oErrorMessage.SetError(jqXHR.responseText);
-                oErrorMessage.Init();
-            }
-        });
+            });
+        }
+        else {
+            alert('Es necesario seleccionar la maquila y proporcionar una cantidad de bultos');
+        }
     }
 
     //Actualizacion de cita en remisiones

@@ -166,6 +166,14 @@ namespace ModelCasc.operation
                     this._oSalida_remision.Proveedor_direccion = dr["Proveedor_direccion"].ToString();
                     this._oSalida_remision.Autorizo = dr["autorizo"].ToString();
                     this._oSalida_remision.Elaboro = dr["elaboro"].ToString();
+                    entero = 0;
+                    if (dr["id_salida_trafico"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_salida_trafico"].ToString(), out entero);
+                        this._oSalida_remision.Id_salida_trafico = entero;
+                        entero = 0;
+                    }
+                    
                     //this.O_Salida_remision.Lote = dr["lote"].ToString();
                     
                     DataTable dtDetail = ds.Tables[1];
@@ -252,6 +260,20 @@ namespace ModelCasc.operation
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
                 this._oSalida_remision.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void dlt(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
+                addParameters(4);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {
@@ -429,6 +451,13 @@ namespace ModelCasc.operation
                     //o.Codigo_cliente = dr["codigo_cliente"].ToString();
                     o.Codigo = dr["codigo"].ToString();
                     o.Orden = dr["orden"].ToString();
+
+                    if (dr["id_entrada_inventario"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_entrada_inventario"].ToString(), out entero);
+                        o.Id_entrada_inventario = entero;
+                        entero = 0;
+                    }
 
                     if (dr["pieza"] != DBNull.Value)
                     {

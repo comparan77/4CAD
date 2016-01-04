@@ -73,14 +73,25 @@ namespace ModelCasc.operation
             o.Id_cliente_grupo = id_cliente; //El procedimiento usará el parametro para asignar el id del cliente
             oMng.O_Cliente_codigo = o;
 
+            Cliente_codigo_canceladoMng oCCCMng = new Cliente_codigo_canceladoMng();
+
             try
             {
                 
                 switch (tipo)
                 {
                     case enumTipo.E:
-                        oMng.getRefEntByCliente(trans);
-                        referencia = o.Clave + addZero(o.Digitos, o.Consec_arribo, o.Anio_actual);
+                        Cliente_codigo_cancelado oCCC = new Cliente_codigo_cancelado() { Id_cliente = id_cliente, Tipo = tipo.ToString() };
+                        oCCCMng.O_Cliente_codigo_cancelado = oCCC;
+
+                        oCCCMng.getAvailable(trans);
+                        if (oCCC.Codigo.Length > 0)
+                            referencia = oCCC.Codigo;
+                        else
+                        {
+                            oMng.getRefEntByCliente(trans);
+                            referencia = o.Clave + addZero(o.Digitos, o.Consec_arribo, o.Anio_actual);
+                        }
                         break;
                     case enumTipo.S:
                         break;

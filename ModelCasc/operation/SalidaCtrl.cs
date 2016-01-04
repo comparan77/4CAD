@@ -856,6 +856,9 @@ namespace ModelCasc.operation
             IDbTransaction trans = null;
             try
             {
+                //Se obtiene el estandar de bultos por pallet
+                int numPallet = EntradaCtrl.InventarioGetPalletsByBultos(Convert.ToInt32(o.Id_entrada_inventario), o.LstSRDetail.Sum(p => p.Bulto));
+
                 Salida_remisionMng oMng = new Salida_remisionMng();
                 //Comienza la transaccion
                 trans = GenericDataAccess.BeginTransaction();
@@ -873,17 +876,12 @@ namespace ModelCasc.operation
                     oSRDMng.add(trans);
                 }
 
-                //EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(o.Id_entrada_inventario), o.Id_estatus, o.Id_usuario_elaboro, null, o.Id, trans);
-
                 Salida_remision oSR = SalidaCtrl.RemisionGetSumAvailable(Convert.ToInt32(o.Id_entrada_inventario), trans);
-                //if (oSR.PiezaTotal <=0)
-                //    EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(o.Id_entrada_inventario), Globals.EST_REM_TOTAL, o.Id_usuario_elaboro, null, null, trans);
+
+                Salida_traficoMng oSTMng = new Salida_traficoMng() { O_Salida_trafico = new Salida_trafico() { Id = o.Id_salida_trafico, Pallet = numPallet } };
+                oSTMng.addPallet(trans);
 
                 GenericDataAccess.CommitTransaction(trans);
-
-                
-                //if(oSR.PiezaTotal <= 0)
-
             }
             catch 
             {
@@ -927,15 +925,34 @@ namespace ModelCasc.operation
 
         public static void RemisionDlt(int id_remision)
         {
+            IDbTransaction trans = null;
             try
             {
-                
+
                 Salida_remision o = new Salida_remision() { Id = id_remision };
                 Salida_remisionMng oMng = new Salida_remisionMng() { O_Salida_remision = o };
-                oMng.dlt();
+                oMng.selById();
+
+                Salida_remision_detail oSRD = new Salida_remision_detail() { Id_salida_remision = id_remision };
+                Salida_remision_detailMng oSRDMng = new Salida_remision_detailMng() { O_Salida_remision_detail = oSRD };
+                oSRDMng.selByIdRemision();
+
+                o.LstSRDetail = oSRDMng.Lst;
+
+                //Se obtiene el estandar de bultos por pallet
+                int numPallet = EntradaCtrl.InventarioGetPalletsByBultos(Convert.ToInt32(o.Id_entrada_inventario), o.LstSRDetail.Sum(p => p.Bulto));
+
+                trans = GenericDataAccess.BeginTransaction();
+
+                Salida_traficoMng oSTMng = new Salida_traficoMng() { O_Salida_trafico = new Salida_trafico() { Id = o.Id_salida_trafico, Pallet = numPallet * -1 } };
+                oSTMng.addPallet(trans);
+
+                oMng.dlt(trans);
+                GenericDataAccess.CommitTransaction(trans);
             }
             catch
             {
+                GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
         }
@@ -993,6 +1010,19 @@ namespace ModelCasc.operation
                 Salida_remisionMng oMng = new Salida_remisionMng() { O_Salida_remision = new Salida_remision() { Id_salida_trafico = id_salida_trafico } };
                 oMng.selByIdSalidaTrafico();
                 o.PLstSalRem = oMng.Lst;
+
+                foreach (Salida_remision itemSR in oMng.Lst)
+                {
+                    Salida_remision_detail oSRD = new Salida_remision_detail() { Id_salida_remision = itemSR.Id };
+                    Salida_remision_detailMng oSRDMng = new Salida_remision_detailMng() { O_Salida_remision_detail = oSRD };
+                    oSRDMng.selByIdRemision();
+
+                    itemSR.LstSRDetail = oSRDMng.Lst;
+
+                    //Se obtiene el estandar de bultos por pallet
+                    int numPallet = EntradaCtrl.InventarioGetPalletsByBultos(Convert.ToInt32(itemSR.Id_entrada_inventario), itemSR.LstSRDetail.Sum(p => p.Bulto));
+                    itemSR.Pallet = numPallet;
+                }
             }
             catch
             {

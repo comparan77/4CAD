@@ -180,10 +180,20 @@ namespace AppCasc.handlers
             switch (option)
             {
                 case "getCitas": 
-                    string referencia = context.Request["ref"];
-                    //int id_cliente = 0;
+                    //string referencia = context.Request["ref"];
+                    int id_entrada_inventario = 0;
+                    int no_bultos = 0;
+                    string folio_cita;
+                    int.TryParse(context.Request["id_entrada_inventario"], out id_entrada_inventario);
+                    int.TryParse(context.Request["bultos"], out no_bultos);
+                    folio_cita = context.Request["folio_cita"].ToString();
                     //int.TryParse(context.Request["cliente"].ToString(), out id_cliente);
-                    response = JsonConvert.SerializeObject(SalidaCtrl.TraficoLstCita());
+                    int no_pallet = EntradaCtrl.InventarioGetPalletsByBultos(id_entrada_inventario, no_bultos);
+                    List<Salida_trafico> lstST = SalidaCtrl.TraficoLstCita();
+                    foreach (Salida_trafico itemST in lstST)
+                        itemST.Pallet += no_pallet;
+                    lstST = lstST.FindAll(p => string.Compare(folio_cita, p.Folio_cita) != 0);
+                    response = JsonConvert.SerializeObject(lstST);
                     break;
                 case "getWithRem":
                     DateTime firstDate = default(DateTime);

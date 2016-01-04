@@ -22,7 +22,7 @@ var BeanEntradaInventarioDetail = function (id, idEntradaInventario, bultos, pie
     this.Piezasxbulto = piezasxbulto;
 }
 
-var BeanEntradaInventario = function (id, idEntrada, idUsuario, idEntradaFondeo, codigoCliente, referencia, ordenCompra, codigo, idVendor, mercancia, idNom, solicitud, factura, valorUnitario, valorFactura, piezas, bultos, pallets, piezasRecibidas, bultosRecibidos, piezasFaltantes, piezasSobrantes, bultosFaltantes, bultosSobrantes, fechaMaquila, observaciones) {
+var BeanEntradaInventario = function (id, idEntrada, idUsuario, idEntradaFondeo, codigoCliente, referencia, ordenCompra, codigo, idVendor, mercancia, idNom, solicitud, factura, valorUnitario, valorFactura, piezas, bultos, bultosxpallet, pallets, piezasRecibidas, bultosRecibidos, piezasFaltantes, piezasSobrantes, bultosFaltantes, bultosSobrantes, fechaMaquila, observaciones) {
     this.Id = id;
     this.Id_entrada = idEntrada;
     this.Id_usuario = idUsuario;
@@ -40,6 +40,7 @@ var BeanEntradaInventario = function (id, idEntrada, idUsuario, idEntradaFondeo,
     this.Valor_factura = valorFactura;
     this.Piezas = piezas;
     this.Bultos = bultos;
+    this.Bultosxpallet = bultosxpallet;
     this.Pallets = pallets;
     this.Piezas_recibidas = piezasRecibidas;
     this.Bultos_recibidos = bultosRecibidos;
@@ -468,6 +469,7 @@ var MngInventario = function () {
                             $('#ctl00_body_piezasxbulto').val(data.PEntInv.Piezasxbulto);
                             $('#ctl00_body_piezasrecibidas').val(data.PEntInv.Piezas_recibidas);
                             $('#ctl00_body_bultosrecibidos').val(data.PEntInv.Bultos_recibidos);
+                            $('#bultosxpallet').val(data.PEntInv.Bultosxpallet);
                             $('#pallets').val(data.PEntInv.Pallets);
                             $('#piezasfaltantes').val(data.PEntInv.Piezas_falt);
                             $('#piezassobrantes').val(data.PEntInv.Piezas_sobr);
@@ -493,6 +495,20 @@ var MngInventario = function () {
 
                         $('#ctl00_body_bultos, #ctl00_body_piezasxbulto, #ctl00_body_piezasrecibidas, #ctl00_body_bultosrecibidos').change(function () {
                             calculateCantidades();
+                        });
+
+                        $('#bultosxpallet').unbind('change').change(function () {
+                            if (isNaN($(this).val())) {
+                                $(this).val('');
+                                $(this).focus();
+                                alert('Es necesario capturar un número');
+                            }
+                            else {
+                                var bt = $('#ctl00_body_bultosrecibidos').val() * 1;
+                                var pxb = $(this).val() * 1;
+                                var tot = bt / pxb;
+                                $('#pallets').val(Math.ceil(tot));
+                            }
                         });
 
                         calculateCantidades();
@@ -588,6 +604,7 @@ var MngInventario = function () {
                                     oCommon.GetOnlyDecimal($('#valorfactura').val()),
                                     oCommon.GetOnlyDecimal($('#piezasdeclaradas').val()),
                                     oCommon.GetOnlyDecimal($('#bultos').val()),
+                                    oCommon.GetOnlyDecimal($('#bultosxpallet').val()),
                                     (isNaN($('#pallets').val()) || $('#pallets').val().length < 1 ? 0 : $('#pallets').val()),
                                     oCommon.GetOnlyDecimal($('#ctl00_body_piezasrecibidas').val()),
                                     oCommon.GetOnlyDecimal($('#ctl00_body_bultosrecibidos').val()),
@@ -989,6 +1006,7 @@ var MngInventario = function () {
         $('#ctl00_body_piezasxbulto').val('');
         $('#ctl00_body_piezasrecibidas').val('');
         $('#ctl00_body_bultosrecibidos').val('');
+        $('#bultosxpallet').val('');
         $('#pallets').val('');
         $('#piezasfaltantes').val('');
         $('#piezassobrantes').val('');

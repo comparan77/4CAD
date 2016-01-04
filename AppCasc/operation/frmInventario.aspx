@@ -444,7 +444,10 @@
         <input type="text" id="bultosrecibidos" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_bultosrecibidos" ControlToValidate="bultosrecibidos" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>
-
+    <div>
+        <label for="bultosxpallet">Bultos X Pallet (Estandar):</label>
+        <input type="text" id="bultosxpallet" />
+    </div>
     <div>
         <label for="pallets">Pallets:</label>
         <input type="text" id="pallets" />

@@ -121,15 +121,49 @@ var MngOrdenCarga = function () {
             return false;
         });
 
+        $('#lnk_dlt_orden_carga').unbind('click').click(function () {
+            if (confirm('¿Desea eliminar el registro?')) {
+                //deleteOrdenCarga(calEvent);
+            }
+        });
+
         $('#hf_id_salida_trafico').val(data.Id);
         $('#txt_cita').val(data.Folio_cita + ", " + moment(data.Fecha_cita).format('DD-MM-YYYY') + ", " + data.Hora_cita);
         $('#txt_destino').val(data.PSalidaDestino.Destino);
         $('#txt_linea').val(data.PTransporte.Nombre);
         $('#txt_unidad').val(data.PTransporteTipo.Nombre);
         $('#lnk_orden_carga').html(folio_orden_carga);
+        $('#lnk_dlt_orden_carga').addClass('hidden');
+        if (folio_orden_carga.length > 0)
+            $('#lnk_dlt_orden_carga').removeClass('hidden');
         $('#h_orden_carga').val(id_orden_carga);
 
+        var pieza = 0;
+        var bulto = 0;
+        var pallet = 0;
+        var referencia = '';
+        var tdRowSpan = 1;
+        var cantRefEqual = 0;
+        var lstRefEqual = [];
+        var tdFirstSpan = true;
+        var sumRefEqualPallet = 0;
+
         $.each(data.PLstSalRem, function (i, obj) {
+
+            if (obj.Referencia != referencia) {
+                tdRowSpan = 1;
+                referencia = obj.Referencia;
+                lstRefEqual = $.grep(data.PLstSalRem, function (obj) {
+                    return obj.Referencia == referencia;
+                });
+                sumRefEqualPallet = 0;
+                $.each(lstRefEqual, function (i, obj) {
+                    sumRefEqualPallet += obj.Pallet;
+                });
+                tdRowSpan = lstRefEqual.length;
+                tdFirstSpan = true;
+            }
+
             var tr = '<tr id="rem_' + obj.Id + '">';
             tr += '<td align="left">' + obj.Referencia + '</td>';
             tr += '<td align="left">' + obj.Folio_remision + '</td>';
@@ -137,17 +171,35 @@ var MngOrdenCarga = function () {
             tr += '<td align="left">' + obj.Codigo + '</td>';
             tr += '<td id="td_pieza_' + obj.Id + '" align="right">' + obj.PiezaTotal + '</td>';
             tr += '<td id="td_bulto_' + obj.Id + '" align="right">' + obj.BultoTotal + '</td>';
-            // tr += '<td align="center"><input style="text-align: center;" class="txtSmall" type="text" value="0" id="txt_pallet_' + obj.Id + '" /></td>';
-            tr += '<td align="center"><input type="checkbox" class="chk_verificar_remisiones" id="chk_' + obj.Id + '" /></td>';
+            if (tdRowSpan > 1) {
+                if (tdFirstSpan) {
+                    tr += '<td rowspan="' + tdRowSpan + '" id="txt_pallet_' + obj.Id + '" align="center">' + sumRefEqualPallet + '</td>';
+                    tdFirstSpan = false;
+                }
+            }
+            else
+                tr += '<td id="txt_pallet_' + obj.Id + '" align="center">' + obj.Pallet + '</td>';
+            // tr += '<td align="center"><input type="checkbox" readonly="readonly" checked="checked" class="chk_verificar_remisiones" id="chk_' + obj.Id + '" /></td>';
             tr += '</tr>';
             $('#tbody_remisiones').append(tr);
+
+            pieza += obj.PiezaTotal;
+            bulto += obj.BultoTotal;
+            pallet += obj.Pallet;
+            var rem = new beanSalidaOrdenCargaRem(obj.Id, obj.Pallet);
+            lstRem.push(rem);
         });
 
-        $('.chk_verificar_remisiones').each(function () {
-            $(this).click(function () {
-                sumarSeleccionadas();
-            });
-        });
+        $('#td_pieza_total').html(pieza);
+        $('#td_bulto_total').html(bulto);
+        $('#td_pallet_total').html(pallet);
+        $('#btnSave').button('option', 'disabled', lstRem.length == 0);
+
+        //        $('.chk_verificar_remisiones').each(function () {
+        //            $(this).click(function () {
+        //                sumarSeleccionadas();
+        //            });
+        //        });
     }
 
     function sumarSeleccionadas() {
@@ -236,6 +288,31 @@ var MngOrdenCarga = function () {
 
     function printOC(id_orden_carga) {
         window.open('frmReporter.aspx?rpt=ordcarga&id=' + id_orden_carga, '_blank', 'toolbar=no');
+    }
+
+    function dltOrdenCarga(id_orden_carga, calEvent) {
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=dltOrdenCarga',
+            data: {
+                id_orden_carga: id_orden_carga
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+
+            },
+            success: function (data) {
+                
+                //$('#dates_calendar').fullCalendar('updateEvent', calEvent);
+                //$('#guia_embarque').dialog('close');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
     }
 
     function saveOrdenCarga(calEvent) {
