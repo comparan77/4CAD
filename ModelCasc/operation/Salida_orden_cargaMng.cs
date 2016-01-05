@@ -168,6 +168,30 @@ namespace ModelCasc.operation
 
         #endregion
 
+        internal void selById(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga");
+                addParameters(1);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oSalida_orden_carga);
+                    this._oSalida_orden_carga.TipoCarga = dr["tipocarga"].ToString();
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         internal void add(IDbTransaction trans)
         {
             try
@@ -176,6 +200,20 @@ namespace ModelCasc.operation
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
                 this._oSalida_orden_carga.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void dlt(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga");
+                addParameters(4);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {

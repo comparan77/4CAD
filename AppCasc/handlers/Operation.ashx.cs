@@ -139,6 +139,14 @@ namespace AppCasc.handlers
                         SalidaCtrl.OrdenCargaAdd(oSOC);
                         response = JsonConvert.SerializeObject(oSOC);
                         break;
+                    case "dltOrdenCarga":
+                        int.TryParse(context.Request["id_orden_carga"].ToString(), out id);
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Usuario_cancelacion oUC = JsonConvert.DeserializeObject<Usuario_cancelacion>(jsonData);
+                        oUC.Id_usuario  = ((Usuario)context.Session["userCasc"]).Id;
+                        SalidaCtrl.OrdenCargaDlt(id, oUC);
+                        response = JsonConvert.SerializeObject("Se eliminó correctamente el registro");
+                        break;
                     case "ordenCarga":
                         response = ordenCarga(context);
                         break;

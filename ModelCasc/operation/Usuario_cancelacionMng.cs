@@ -35,7 +35,6 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oUsuario_cancelacion.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio_operacion", DbType.String, this._oUsuario_cancelacion.Folio_operacion);
             GenericDataAccess.AddInParameter(this.comm, "?P_motivo_cancelacion", DbType.String, this._oUsuario_cancelacion.Motivo_cancelacion);
-            GenericDataAccess.AddInParameter(this.comm, "?P_fecha_cancelacion", DbType.String, this._oUsuario_cancelacion.Fecha_cancelacion);
         }
 
         protected void BindByDataRow(DataRow dr, Usuario_cancelacion o)
@@ -148,5 +147,20 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        internal void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Usuario_cancelacion");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oUsuario_cancelacion.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

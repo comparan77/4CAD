@@ -1187,6 +1187,40 @@ namespace ModelCasc.operation
             return lst;
         }
 
+        public static void OrdenCargaDlt(int id_salida_orden_carga, Usuario_cancelacion oUsrCan)
+        {
+            IDbTransaction trans = null;
+            string error = string.Empty;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+
+                Salida_orden_carga o = new Salida_orden_carga() { Id = id_salida_orden_carga };
+                Salida_orden_cargaMng oSOCMng = new Salida_orden_cargaMng();
+                oSOCMng.O_Salida_orden_carga = o;
+                oSOCMng.selById(trans);
+
+                error = "La orden de carga no puede eliminarse ya que esta cuenta con una salida.";
+                Salida_orden_cargaMng oMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = new Salida_orden_carga() { Id = id_salida_orden_carga } };
+                oMng.dlt(trans);
+                error = string.Empty;
+
+                oUsrCan.Folio_operacion = o.Folio_orden_carga;
+
+                Usuario_cancelacionMng oMngUC = new Usuario_cancelacionMng() { O_Usuario_cancelacion = oUsrCan } ;
+                oMngUC.add(trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch (Exception)
+            {
+                GenericDataAccess.RollbackTransaction(trans);
+                if (error.Length == 0)
+                    throw;
+                else throw new Exception(error);
+            }
+        }
+
         #endregion
 
         public static void actualizaDatos(Salida oS)

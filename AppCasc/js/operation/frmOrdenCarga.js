@@ -14,6 +14,13 @@ var beanSalidaOrdenCargaRem = function (id_salida_remision, pallet) {
     this.Referencia = '';
 }
 
+var beanUsuario_cancelacion = function (motivo_cancelacion) {
+    this.Id = 0;
+    this.Usuario_cancelacion = 0;
+    this.Folio_operacion = '';
+    this.Motivo_cancelacion = motivo_cancelacion;
+}
+
 var MngOrdenCarga = function () {
 
     this.Init = init;
@@ -122,9 +129,12 @@ var MngOrdenCarga = function () {
         });
 
         $('#lnk_dlt_orden_carga').unbind('click').click(function () {
-            if (confirm('¿Desea eliminar el registro?')) {
-                //deleteOrdenCarga(calEvent);
+            var motivo = prompt('Proporcione el motivo de la cancelación:', '')
+            if (motivo.length < 5) {
+                alert('El motivo es muy corto, proporcione un motivo descriptivo');
             }
+            else
+                dltOrdenCarga($('#h_orden_carga').val(), motivo, calEvent);
         });
 
         $('#hf_id_salida_trafico').val(data.Id);
@@ -150,19 +160,19 @@ var MngOrdenCarga = function () {
 
         $.each(data.PLstSalRem, function (i, obj) {
 
-            if (obj.Referencia != referencia) {
-                tdRowSpan = 1;
-                referencia = obj.Referencia;
-                lstRefEqual = $.grep(data.PLstSalRem, function (obj) {
-                    return obj.Referencia == referencia;
-                });
-                sumRefEqualPallet = 0;
-                $.each(lstRefEqual, function (i, obj) {
-                    sumRefEqualPallet += obj.Pallet;
-                });
-                tdRowSpan = lstRefEqual.length;
-                tdFirstSpan = true;
-            }
+            //            if (obj.Referencia != referencia) {
+            //                tdRowSpan = 1;
+            //                referencia = obj.Referencia;
+            //                lstRefEqual = $.grep(data.PLstSalRem, function (obj) {
+            //                    return obj.Referencia == referencia;
+            //                });
+            //                sumRefEqualPallet = 0;
+            //                $.each(lstRefEqual, function (i, obj) {
+            //                    sumRefEqualPallet += obj.Pallet;
+            //                });
+            //                tdRowSpan = lstRefEqual.length;
+            //                tdFirstSpan = true;
+            //            }
 
             var tr = '<tr id="rem_' + obj.Id + '">';
             tr += '<td align="left">' + obj.Referencia + '</td>';
@@ -171,15 +181,16 @@ var MngOrdenCarga = function () {
             tr += '<td align="left">' + obj.Codigo + '</td>';
             tr += '<td id="td_pieza_' + obj.Id + '" align="right">' + obj.PiezaTotal + '</td>';
             tr += '<td id="td_bulto_' + obj.Id + '" align="right">' + obj.BultoTotal + '</td>';
-            if (tdRowSpan > 1) {
-                if (tdFirstSpan) {
-                    tr += '<td rowspan="' + tdRowSpan + '" id="txt_pallet_' + obj.Id + '" align="center">' + sumRefEqualPallet + '</td>';
-                    tdFirstSpan = false;
-                }
-            }
-            else
-                tr += '<td id="txt_pallet_' + obj.Id + '" align="center">' + obj.Pallet + '</td>';
-            // tr += '<td align="center"><input type="checkbox" readonly="readonly" checked="checked" class="chk_verificar_remisiones" id="chk_' + obj.Id + '" /></td>';
+            //            if (tdRowSpan > 1) {
+            //                if (tdFirstSpan) {
+            //                    tr += '<td rowspan="' + tdRowSpan + '" id="txt_pallet_' + obj.Id + '" align="center">' + sumRefEqualPallet + '</td>';
+            //                    tdFirstSpan = false;
+            //                }
+            //            }
+            //            else
+            //                tr += '<td id="txt_pallet_' + obj.Id + '" align="center">' + obj.Pallet + '</td>';
+            tr += '<td id="td_pallet_' + obj.Id + '" align="center">' + obj.Pallet + '</td>';
+            tr += '<td align="center"><input type="checkbox" readonly="readonly" class="chk_verificar_remisiones" id="chk_' + obj.Id + '" /></td>';
             tr += '</tr>';
             $('#tbody_remisiones').append(tr);
 
@@ -190,16 +201,16 @@ var MngOrdenCarga = function () {
             lstRem.push(rem);
         });
 
-        $('#td_pieza_total').html(pieza);
-        $('#td_bulto_total').html(bulto);
-        $('#td_pallet_total').html(pallet);
-        $('#btnSave').button('option', 'disabled', lstRem.length == 0);
+        //        $('#td_pieza_total').html(pieza);
+        //        $('#td_bulto_total').html(bulto);
+        //        $('#td_pallet_total').html(pallet);
+        //        $('#btnSave').button('option', 'disabled', lstRem.length == 0);
 
-        //        $('.chk_verificar_remisiones').each(function () {
-        //            $(this).click(function () {
-        //                sumarSeleccionadas();
-        //            });
-        //        });
+        $('.chk_verificar_remisiones').each(function () {
+            $(this).click(function () {
+                sumarSeleccionadas();
+            });
+        });
     }
 
     function sumarSeleccionadas() {
@@ -212,7 +223,7 @@ var MngOrdenCarga = function () {
             if ($(this).is(':checked')) {
                 pieza += $('#td_pieza_' + $(this).attr('id').split('_')[1]).html() * 1;
                 bulto += $('#td_bulto_' + $(this).attr('id').split('_')[1]).html() * 1;
-                // pallet += $('#txt_pallet_' + $(this).attr('id').split('_')[1]).val() * 1;
+                pallet += $('#td_pallet_' + $(this).attr('id').split('_')[1]).html() * 1;
                 var rem = new beanSalidaOrdenCargaRem($(this).attr('id').split('_')[1] * 1, pallet);
                 lstRem.push(rem);
             }
@@ -290,22 +301,28 @@ var MngOrdenCarga = function () {
         window.open('frmReporter.aspx?rpt=ordcarga&id=' + id_orden_carga, '_blank', 'toolbar=no');
     }
 
-    function dltOrdenCarga(id_orden_carga, calEvent) {
+    function dltOrdenCarga(id_orden_carga, motivo, calEvent) {
+
+        var oUsrCancelacion = new beanUsuario_cancelacion(motivo);
+
         $.ajax({
             type: "POST",
-            url: '/handlers/Operation.ashx?op=dltOrdenCarga',
-            data: {
-                id_orden_carga: id_orden_carga
-            },
+            url: '/handlers/Operation.ashx?op=dltOrdenCarga&id_orden_carga=' + id_orden_carga,
+            data: JSON.stringify(oUsrCancelacion),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             complete: function () {
 
             },
             success: function (data) {
-                
-                //$('#dates_calendar').fullCalendar('updateEvent', calEvent);
-                //$('#guia_embarque').dialog('close');
+                alert(data);
+                if (data.indexOf('correctamente') > 0) {
+                    calEvent.color = 'orange';
+                    calEvent.idOC = 0;
+                    calEvent.folioOC = '';
+                    $('#dates_calendar').fullCalendar('updateEvent', calEvent);
+                }
+                $('#guia_embarque').dialog('close');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();

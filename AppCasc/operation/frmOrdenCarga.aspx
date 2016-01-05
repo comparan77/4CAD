@@ -61,7 +61,7 @@
                 <th align="right">Piezas</th>
                 <th align="right">Bultos</th>
                 <th align="center">Pallets</th>
-                <%--<th align="center">Seleccionar <input type="checkbox" id="chk_todo" /></th>--%>
+                <th align="center">Seleccionar <input type="checkbox" id="chk_todo" /></th>
             </tr>
         </thead>
         <tbody id="tbody_remisiones">
@@ -73,7 +73,7 @@
                 <td align="right" id="td_pieza_total">0</td>
                 <td align="right" id="td_bulto_total">0</td>
                 <td align="center" id="td_pallet_total">0</td>
-                <%--<td>&nbsp;</td>--%>
+                <td>&nbsp;</td>
             </tr>
         </tfoot>
     </table>
