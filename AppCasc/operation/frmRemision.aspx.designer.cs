@@ -382,24 +382,6 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.DropDownList ddl_autorizo;
         
         /// <summary>
-        /// txt_fecha_remision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_fecha_remision;
-        
-        /// <summary>
-        /// rfv_fecha_remision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_fecha_remision;
-        
-        /// <summary>
         /// txt_folio_cita control.
         /// </summary>
         /// <remarks>

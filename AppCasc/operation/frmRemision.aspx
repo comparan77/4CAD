@@ -95,6 +95,10 @@
     <span><a id="lnk_pedimento" class="icon-button-action" href="#"><%= oE.Referencia %></a></span>
 </div>
 <div>
+    <label>Bultos x Tarima (Estandar):</label>
+    <span><%= oEI.Bultosxpallet.ToString() %></span>
+</div>
+<div>
     <label>Estado de la Maquila:</label>
     <span id="spn_estado_maquila" title='<%= oEI.Maquila_abierta ? "" : "Abrir Maquila" %>' class='<%= "ui-icon ui-icon-" + (oEI.Maquila_abierta ? "unlocked" : "locked icon-button-action") %>'></span>
 </div>
@@ -423,11 +427,11 @@
             <asp:ListItem Text="Sandra Rodriguez" Value="30"></asp:ListItem>
         </asp:DropDownList>
     </div>
-    <div>
+   <%-- <div>
         <label>Fecha:</label>
         <asp:TextBox runat="server" ID="txt_fecha_remision"></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_fecha_remision" ErrorMessage="Es necesario proporcionar la fecha de remision" ControlToValidate="txt_fecha_remision"></asp:RequiredFieldValidator>
-    </div>
+    </div>--%>
     <div>
         <label>Folio Cita:</label><span id="spn_folio_cita" class="ui-icon ui-icon-calendar icon-button-action"></span><span id="spn_cita_sel"></span>
         <asp:TextBox CssClass="hidden" runat="server" ID="txt_folio_cita"></asp:TextBox>

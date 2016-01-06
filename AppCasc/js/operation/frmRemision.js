@@ -76,7 +76,7 @@ var MngRemision = function () {
         });
 
         var first_focus = $('#ctl00_body_txt_bulto');
-        var txt_fecha_remision = $('#ctl00_body_txt_fecha_remision');
+//        var txt_fecha_remision = $('#ctl00_body_txt_fecha_remision');
 
         var div_tbl_folio_remision = $('#div-tbl-folio-remision');
         var imprimir_remision = $('#imprimir-remision');
@@ -134,9 +134,9 @@ var MngRemision = function () {
         });
 
         //feha de remision
-        $(txt_fecha_remision).datepicker({
-            'dateFormat': 'dd/mm/yy'
-        });
+//        $(txt_fecha_remision).datepicker({
+//            'dateFormat': 'dd/mm/yy'
+//        });
 
         //folios-remisiones
         var oRemDetail = new RemDetail();

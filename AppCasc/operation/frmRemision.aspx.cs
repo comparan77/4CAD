@@ -224,9 +224,9 @@ namespace AppCasc.operation
                 o.LstSRDetail.Add(oSRD2);
                         
             //Fecha remision
-            DateTime.TryParse(txt_fecha_remision.Text, out fecha);
-            o.Fecha_remision = fecha;
-            fecha = default(DateTime);
+            //DateTime.TryParse(txt_fecha_remision.Text, out fecha);
+            o.Fecha_remision = DateTime.Now;
+            //fecha = default(DateTime);
 
             //o.Id_estatus = Globals.EST_REM_SIN_APROBACION;
             o.Id_estatus = Globals.EST_REM_PARCIAL;
