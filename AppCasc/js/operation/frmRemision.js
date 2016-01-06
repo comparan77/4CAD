@@ -147,8 +147,14 @@ var MngRemision = function () {
         });
 
         $(eliminar_remision).button().click(function () {
-            if (confirm('¿Desea eliminar el registro?')) {
+
+            var motivo = prompt('Proporcione el motivo de la cancelación:', '')
+            if (motivo.length < 5) {
+                alert('El motivo es muy corto, proporcione un motivo descriptivo');
+            }
+            else {
                 $('#ctl00_body_hf_id_remision').val($('#spn-dlt').html());
+                $('#ctl00_body_hf_motivo_cancelacion').val(motivo);
                 $('#ctl00_body_btnDltRemision').trigger('click');
             }
             return false;

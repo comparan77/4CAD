@@ -408,7 +408,12 @@ namespace AppCasc.operation
             {
                 int id_remision = 0;
                 int.TryParse(hf_id_remision.Value, out id_remision);
-                SalidaCtrl.RemisionDlt(id_remision);
+                Usuario_cancelacion oUsr = new Usuario_cancelacion()
+                {
+                    Id_usuario = ((MstCasc)this.Master).getUsrLoged().Id,
+                    Motivo_cancelacion = hf_motivo_cancelacion.Value,
+                };
+                SalidaCtrl.RemisionDlt(id_remision, oUsr);
                 ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('Se eliminó correctamente el registro');window.location.href='frmRemision.aspx?_fk=" + hf_id_entrada.Value + "&_pk=" + hf_id_entrada_inventario.Value + "';</script>");
             }
             catch (Exception e)

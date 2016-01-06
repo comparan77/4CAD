@@ -923,7 +923,7 @@ namespace ModelCasc.operation
             return o;
         }
 
-        public static void RemisionDlt(int id_remision)
+        public static void RemisionDlt(int id_remision, Usuario_cancelacion oUsr)
         {
             IDbTransaction trans = null;
             try
@@ -946,8 +946,12 @@ namespace ModelCasc.operation
 
                 Salida_traficoMng oSTMng = new Salida_traficoMng() { O_Salida_trafico = new Salida_trafico() { Id = o.Id_salida_trafico, Pallet = numPallet * -1 } };
                 oSTMng.addPallet(trans);
-
                 oMng.dlt(trans);
+
+                oUsr.Folio_operacion = o.Folio_remision;
+                Usuario_cancelacionMng oUsrCanMng = new Usuario_cancelacionMng() { O_Usuario_cancelacion = oUsr };
+                oUsrCanMng.add(trans);
+
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch

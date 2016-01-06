@@ -202,6 +202,15 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_id_remision;
         
         /// <summary>
+        /// hf_motivo_cancelacion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_motivo_cancelacion;
+        
+        /// <summary>
         /// hf_img_codigo control.
         /// </summary>
         /// <remarks>

@@ -191,6 +191,7 @@
     <div class="hidden">
         <asp:Button runat="server" ID="btnDltRemision" CausesValidation="false" OnClick="btnDltRemision_click" />
         <asp:HiddenField runat="server" ID="hf_id_remision" Value="0" />
+        <asp:HiddenField runat="server" ID="hf_motivo_cancelacion" />
     </div>
 
     <div id="div-tbl-folio-remision">
