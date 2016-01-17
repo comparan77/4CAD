@@ -62,9 +62,9 @@ namespace ModelCasc.report.operation
                 contentByte.AddImage(image, true);
 
                 //Código del folio de la remisión
-                //image = Image.GetInstance(BarCode.EncodeBytes(oSR1.Id.ToString(), true));
-                //image.SetAbsolutePosition(CTE_X_POS_INI + CTE_X_SPACE * 3 + 20, CTE_HEIGHT_CONST + 260);
-                //contentByte.AddImage(image);
+                image = Image.GetInstance(BarCode.EncodeBytes(oSR1.Folio_remision, false, 170, 40));
+                image.SetAbsolutePosition(CTE_X_POS_INI + CTE_X_SPACE * 3 - 40, 10);
+                contentByte.AddImage(image);
 
                 //Referencia
                 image = Image.GetInstance(BarCode.EncodeBytes(oSR1.Referencia, false));
