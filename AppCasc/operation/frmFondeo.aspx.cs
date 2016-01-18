@@ -8,11 +8,14 @@ using ModelCasc.webApp;
 using System.Data;
 using ModelCasc.exception;
 using ModelCasc.operation;
+using ModelCasc.webApp.gridviewhelper;
 
 namespace AppCasc.operation
 {
     public partial class frmFondeo : System.Web.UI.Page
     {
+        private GridViewHelper helper;
+
         private void loadFirsTime()
         {
             try
@@ -212,12 +215,54 @@ namespace AppCasc.operation
         {
             try
             {
-                List<Entrada_fondeo> lst = EntradaCtrl.FondeoGetByReferencia(txt_dato.Text.Trim(), false);
-                grd_fondeo.DataSource = lst;
+                grd_fondeo.DataSource = "";
                 grd_fondeo.DataBind();
+
+                GridViewHelper helper = new GridViewHelper(this.grd_fondeo);
+                
+                helper.RegisterGroup("Folio", true, true);
+                helper.GroupHeader += new GroupEvent(helper_GroupHeader);
+                helper.ApplyGroupSort();
             }
             catch (Exception e)
             {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        private void helper_GroupHeader(string groupName, object[] values, GridViewRow row)
+        {
+            if (groupName == "Folio")
+            {
+                row.ForeColor = System.Drawing.Color.FromName("#e69700");
+                row.Cells[0].Text = "&nbsp;&nbsp;" + row.Cells[0].Text + "<span id=" + row.Cells[0].Text.Trim() + " class='ui-icon ui-icon-trash icon-button-action dltFondeo floatRight'></span>";
+            }
+        }
+
+        protected void sortFondeo(object sender, GridViewSortEventArgs e)
+        {
+            List<Entrada_fondeo> lst = EntradaCtrl.FondeoGetByReferencia(txt_dato.Text.Trim(), false);
+            grd_fondeo.DataSource = lst.OrderBy(p => p.Folio);
+            grd_fondeo.DataBind();
+        }
+
+        protected void cancelFondeo(object sender, EventArgs args)
+        {
+            try
+            {
+                string folioFondeo = hf_folio_fondeo.Value;
+                Usuario_cancelacion oUsr = new Usuario_cancelacion()
+                {
+                    Id_usuario = ((MstCasc)this.Master).getUsrLoged().Id,
+                    Motivo_cancelacion = hf_motivo_cancelacion.Value,
+                };
+                EntradaCtrl.FondeoDelete(folioFondeo, oUsr);
+                ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('Se eliminó correctamente el registro');window.location.href='frmFondeo.aspx';</script>");
+            }
+            catch (Exception e)
+            {
+                grd_fondeo.DataSource = "";
+                grd_fondeo.DataBind();
                 ((MstCasc)this.Master).setError = e.Message;
             }
         }

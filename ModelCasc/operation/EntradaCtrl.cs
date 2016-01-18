@@ -1176,6 +1176,43 @@ namespace ModelCasc.operation
             return lst;
         }
 
+        public static void FondeoDelete(string folioFondeo, Usuario_cancelacion oUsr)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                Entrada_fondeoMng oMng = new Entrada_fondeoMng();
+                Entrada_fondeo o = new Entrada_fondeo() { Folio = folioFondeo };
+                oMng.O_Entrada_fondeo = o;
+                oMng.selByFolio();
+                o = oMng.Lst.First();
+                string referencia = o.Aduana + "-" + o.Referencia;
+
+                //En caso de que la referencia ya tenga una entrada , no se podrá eliminar el fondeo
+                EntradaMng oEMng = new EntradaMng();
+                Entrada oE = new Entrada() { Referencia = referencia, Id_cliente = 1 };
+                oEMng.O_Entrada = oE;
+                if (oEMng.Exists())
+                    throw new Exception("El fondeo no puede eliminarse debido a que ya se cuenta con una entrada asociada");
+
+                trans = GenericDataAccess.BeginTransaction();
+
+                oMng.dltByFolio(trans);
+
+                oUsr.Folio_operacion = folioFondeo;
+                Usuario_cancelacionMng oUsrCanMng = new Usuario_cancelacionMng() { O_Usuario_cancelacion = oUsr };
+                oUsrCanMng.add(trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
         #endregion
 
         #region Entrada Inventario - Control piso

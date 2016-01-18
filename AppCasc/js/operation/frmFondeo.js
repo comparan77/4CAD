@@ -28,6 +28,19 @@ var Fondeo = function () {
 
         //up_resultados <<ini>>
         $(up_resultados).panelReady(function () {
+            $('.dltFondeo').each(function () {
+                $(this).unbind('click').click(function () {
+                    var motivo = prompt('Proporcione el motivo de la cancelación del folio:' + $(this).attr('id'), '')
+                    if (motivo.length < 5) {
+                        alert('El motivo es muy corto, proporcione un motivo descriptivo');
+                    }
+                    else {
+                        $('#ctl00_body_hf_folio_fondeo').val($(this).attr('id'));
+                        $('#ctl00_body_hf_motivo_cancelacion').val(motivo);
+                        $('#ctl00_body_btnDltfondeo').trigger('click');
+                    }
+                });
+            });
             $(div_busqueda).removeClass('ajaxLoading');
         });
 
@@ -94,7 +107,7 @@ var Fondeo = function () {
         function capturaCodigoVendor() {
             var lbl_NoFoliosMsg = $('#ctl00_body_lbl_NoFoliosMsg');
             var grd_reviewFile = $('#ctl00_body_grd_reviewFile');
-            
+
             //codigos
             var idx = $(lbl_NoFoliosMsg).html().indexOf('codigos no existentes');
             if (idx > 0) {

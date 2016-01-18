@@ -117,9 +117,9 @@
         <asp:AsyncPostBackTrigger ControlID="btn_buscar" EventName="click" />
     </Triggers>
     <ContentTemplate>
-        <asp:GridView runat="server" ID="grd_fondeo" CssClass="grdCasc" EmptyDataText="El Pedimento no cuenta con fodeo" AutoGenerateColumns="false">
+        <asp:GridView AllowSorting="true" OnSorting="sortFondeo" runat="server" ID="grd_fondeo" CssClass="grdCasc" EmptyDataText="El Pedimento no cuenta con fodeo" AutoGenerateColumns="false">
         <Columns>
-            <asp:BoundField DataField="folio" HeaderText="Folio" />
+            <asp:BoundField DataField="folio" HeaderText="Folio"/>
             <asp:BoundField DataField="fecha" HeaderText="Fecha" DataFormatString="{0:dd-MM-yyyy}" />
             <asp:BoundField DataField="importador" HeaderText="Importador" />
             <asp:BoundField DataField="aduana" HeaderText="Aduana" ItemStyle-HorizontalAlign="Center" />
@@ -134,8 +134,14 @@
         </asp:GridView>
     </ContentTemplate>
     </asp:UpdatePanel>
+
+    <div class="hidden">
+            <asp:HiddenField runat="server" ID="hf_folio_fondeo" />
+            <asp:HiddenField runat="server" ID="hf_motivo_cancelacion" />
+            <asp:Button runat="server" ID="btnDltfondeo" OnClick="cancelFondeo" />
+        </div>
 </div>
-    
+ 
 </div>
 
 </asp:Content>

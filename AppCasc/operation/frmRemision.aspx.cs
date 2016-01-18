@@ -149,7 +149,7 @@ namespace AppCasc.operation
             Salida_remision o = new Salida_remision();
 
             int numero = 0;
-            DateTime fecha = default(DateTime);
+            //DateTime fecha = default(DateTime);
             bool logica = false;
 
             int.TryParse(hf_id_entrada.Value, out numero);
