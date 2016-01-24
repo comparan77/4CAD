@@ -1,10 +1,10 @@
 ﻿var lstRem = [];
-var beanSalidaOrdenCarga = function (id_tipo_carga, id_salida_trafico, lstRem) {
+var beanSalidaOrdenCarga = function (id_tipo_carga, id_salida_trafico, lstrem) {
     this.Id_tipo_carga = id_tipo_carga;
     this.Id_usuario = 0;
     this.Id_salida_trafico = id_salida_trafico;
     this.Folio_orden_carga = '';
-    this.LstRem = lstRem;
+    this.LstRem = lstrem;
 }
 
 var beanSalidaOrdenCargaRem = function (id_salida_remision, pallet) {
