@@ -92,7 +92,7 @@ var MngOrdenCarga = function () {
             success: function (data) {
 
                 fillTblRemisiones(data, id_orden_carga, folio_orden_carga, calEvent);
-
+                lstRem = [];
                 $('#guia_embarque').dialog('open');
             },
             error: function (jqXHR, textStatus, errorThrown) {
