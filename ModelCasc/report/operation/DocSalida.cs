@@ -30,7 +30,7 @@ namespace ModelCasc.report.operation
 
                 CultureInfo ci = new CultureInfo("es-MX");
 
-                fields.SetField("Fecha", oS.Fecha.ToString("dd \\de MMM \\de yy", ci));
+                fields.SetField("Fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
                 fields.SetField("Hora", oS.Hora_salida.ToString());
 
                 fields.SetField("Cliente", oS.PCliente.Razon);
