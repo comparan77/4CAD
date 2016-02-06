@@ -504,10 +504,15 @@ var MngInventario = function () {
                                 alert('Es necesario capturar un número');
                             }
                             else {
-                                var bt = $('#ctl00_body_bultosrecibidos').val() * 1;
                                 var pxb = $(this).val() * 1;
-                                var tot = bt / pxb;
-                                $('#pallets').val(Math.ceil(tot));
+                                if (pxb < 1) {
+                                    alert('Es necesario capturar un valor mayor a 0');
+                                }
+                                else {
+                                    var bt = $('#ctl00_body_bultosrecibidos').val() * 1;
+                                    var tot = bt / pxb;
+                                    $('#pallets').val(Math.ceil(tot));
+                                }
                             }
                         });
 
