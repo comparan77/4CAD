@@ -422,7 +422,6 @@ namespace AppCasc.operation
                 oEI.LstEntInvLote = lstEntInvLote;
 
                 oEI.Id_usuario = ((MstCasc)this.Master).getUsrLoged().Id;
-                //oEI.Id_estatus = Globals.EST_INV_CON_APROBACION;
                 EntradaCtrl.InventarioSave(oEI);
                 ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('Se guardó correctamente el registro');</script>");
                 //window.location.href='frmInventario.aspx?_kp=" + hf_id_entrada.Value + "';

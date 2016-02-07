@@ -448,7 +448,7 @@ var MngInventario = function () {
                         $('#orden').val(data.Orden);
                         $('#factura').val(data.Factura);
                         var oCommon = new Common();
-                        $('#valorunitario').val(oCommon.GetCurrencyFormat(data.Valorfactura / data.Piezas));
+                        $('#valorunitario').val('$' + (data.Valorfactura / data.Piezas));
                         $('#valorfactura').val(oCommon.GetCurrencyFormat(data.Valorfactura));
                         $('#piezasdeclaradas').val(data.Piezas);
 
@@ -754,6 +754,9 @@ var MngInventario = function () {
         });
 
         difLote = piezasLote - piezasRem;
+        //Solo se valida la diferencia de piezas en lotes cuando no tiene maquila
+        if ($('#idEntInv').val() * 1 > 0)
+            difLote = 0;
         $(txt_sumLotes).val(difLote);
         $(th_totLote).html(piezasLote);
 

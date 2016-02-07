@@ -2,7 +2,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="../js/common.js" type="text/javascript"></script>
     <script src="../js/catalog/frmLst.js" type="text/javascript"></script>
     <script src="../js/catalog/frmLstClienteMercancia.js" type="text/javascript"></script>
 </asp:Content>

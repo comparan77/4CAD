@@ -15,14 +15,15 @@
         return dato.replace(/[^0-9.]/g, '') * isNegative;
     }
 
-    function getCurrencyFormat(dato) {
+    function getCurrencyFormat(dato, decimals) {
+        var num_decimal = typeof decimals !== 'undefined' ? decimals : 2;
         var isNegative;
         if (dato < 0)
             isNegative = '-$';
         else
             isNegative = '$';
         dato = Math.abs(dato);
-        return isNegative + dato.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        return isNegative + dato.toFixed(num_decimal).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     }
 
     function getSeparatorComasNumber(dato) {
