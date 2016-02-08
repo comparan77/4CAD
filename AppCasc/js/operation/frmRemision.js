@@ -76,7 +76,7 @@ var MngRemision = function () {
         });
 
         var first_focus = $('#ctl00_body_txt_bulto');
-//        var txt_fecha_remision = $('#ctl00_body_txt_fecha_remision');
+        //        var txt_fecha_remision = $('#ctl00_body_txt_fecha_remision');
 
         var div_tbl_folio_remision = $('#div-tbl-folio-remision');
         var imprimir_remision = $('#imprimir-remision');
@@ -134,9 +134,9 @@ var MngRemision = function () {
         });
 
         //feha de remision
-//        $(txt_fecha_remision).datepicker({
-//            'dateFormat': 'dd/mm/yy'
-//        });
+        //        $(txt_fecha_remision).datepicker({
+        //            'dateFormat': 'dd/mm/yy'
+        //        });
 
         //folios-remisiones
         var oRemDetail = new RemDetail();
@@ -209,8 +209,8 @@ var MngRemision = function () {
                 var pxb1 = $('#spn_pzaXbulto-1').html();
                 var pxb2 = $('#spn_pzaXbulto-2').html();
 
-                $('#hf_danado-1').val('false');
-                $('#hf_danado-2').val('false');
+                //                $('#hf_danado-1').val('false');
+                //                $('#hf_danado-2').val('false');
 
                 if (pxb1 == '') {
                     $('#hf_id_maquila_detail_1').val(idEntrada_maquila_detail);
@@ -245,7 +245,7 @@ var MngRemision = function () {
         $('#spn_del-1, #spn_del-2').click(function () {
             $(this).parent().parent().children('td:eq(1)').children('span').html('');
             $(this).parent().parent().children('td:eq(2)').children('span').html('');
-
+            $(this).parent().parent().children('td:eq(3)').children('input').val('');
             //            $('#ctl00_body_hf_id_entrada_maquila_detail_1').val('0');
             $('#ctl00_body_txt_bulto').val('0');
             $('#ctl00_body_txt_piezasXbulto').val('0');
