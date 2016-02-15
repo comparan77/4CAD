@@ -42,7 +42,7 @@ namespace AppCasc.facturacion
             try
             {
                 Process app = new Process();
-                app.StartInfo.FileName = "C:/Users/win7/Documents/Visual Studio 2010/Projects/CASC/ConsoleAppCasc/bin/Debug/ConsoleAppCasc.exe";
+                app.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["ConsolePath"].ToString();
                 string result = Path.GetTempFileName().Replace("\\", "/").Replace(".tmp", ".xlsx");
                 app.StartInfo.Arguments = hf_path.Value.Replace("\\", "/") + " " + result;
 
