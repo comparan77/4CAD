@@ -48,7 +48,7 @@
       <!--<siteMapNode url="~/operation/frmReingreso.aspx" title="Reingresos"  description="Reingresos" />-->
       <siteMapNode url="~/operation/frmRelEntSal.aspx" title="Relación de Movimientos"  description="Relación de Movimientos" />
     </siteMapNode>
-    <siteMapNode roles="Super, Facturacion" title="Facturacion">
+    <siteMapNode roles="Super, Administracion" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />
     </siteMapNode>
     <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super" title="Inventario">

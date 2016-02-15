@@ -92,7 +92,7 @@ namespace ConsoleAppCasc.facturacion
 
             xlWorkBook = oEI.openBook(pathFacturas);
             List<factura> lst = new List<factura>();
-            for (int i = 1; i < xlWorkBook.Worksheets.Count; i++)
+            for (int i = 1; i <= xlWorkBook.Worksheets.Count; i++)
             {
                 try
                 {
