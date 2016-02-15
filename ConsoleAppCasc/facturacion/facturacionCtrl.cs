@@ -92,11 +92,15 @@ namespace ConsoleAppCasc.facturacion
 
             xlWorkBook = oEI.openBook(pathFacturas);
             List<factura> lst = new List<factura>();
-            for(int i = 1; i < xlWorkBook.Worksheets.Count; i++)
+            for (int i = 1; i < xlWorkBook.Worksheets.Count; i++)
             {
-                xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(i);
-                lst.Add(procesaHoja(xlWorkSheet));
-                xlWorkSheet = null;
+                try
+                {
+                    xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(i);
+                    lst.Add(procesaHoja(xlWorkSheet));
+                    xlWorkSheet = null;
+                }
+                catch { }
             }
 
             oEI.closeBook(xlWorkBook);
@@ -111,8 +115,12 @@ namespace ConsoleAppCasc.facturacion
             int fila = 2;
             foreach (factura item in lst)
             {
-                insertaFila(xlWorkSheet, fila, item);
-                fila++;
+                try
+                {
+                    insertaFila(xlWorkSheet, fila, item);
+                    fila++;
+                }
+                catch { }
             }
             Console.WriteLine("Escritura de facturas en la plantilla completa");
 

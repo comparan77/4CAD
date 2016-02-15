@@ -92,26 +92,4 @@
     </ContentTemplate>
     </asp:UpdatePanel>
 
-    <div id="importarFactruracion">
-    <asp:HiddenField runat="server" ID="hf_path" />
-    <asp:FileUpload runat="server" ID="fileup_facturacion" />
-    <asp:Button runat="server" Text="Importar Archivo" ID="btn_importar" OnClick="click_btn_importar" />
-    <asp:Button runat="server" ID="btn_process" Text="Procesar Archivo" OnClick="click_btn_processFile" />
-    <asp:UpdatePanel runat="server" ID="up_procesa" UpdateMode="Conditional">
-    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="btn_process" EventName="click" />
-    </Triggers>
-    <ContentTemplate>
-        <asp:HyperLink runat="server" ID="lnkFile"></asp:HyperLink>
-    </ContentTemplate>
-    </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" ID="up_procesa_prgss">
-    <ProgressTemplate>
-        
-        Generando el archivo...<span class="ui-icon ui-icon-clock" ></span>
-        
-    </ProgressTemplate>
-    </asp:UpdateProgress>
-    </div>
-
 </asp:Content>
