@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="AppCasc._Default" MasterPageFile="~/MstCasc.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
     <script src="js/jquery.updatepanel.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -90,5 +91,27 @@
     </div>
     </ContentTemplate>
     </asp:UpdatePanel>
+
+    <div id="importarFactruracion">
+    <asp:HiddenField runat="server" ID="hf_path" />
+    <asp:FileUpload runat="server" ID="fileup_facturacion" />
+    <asp:Button runat="server" Text="Importar Archivo" ID="btn_importar" OnClick="click_btn_importar" />
+    <asp:Button runat="server" ID="btn_process" Text="Procesar Archivo" OnClick="click_btn_processFile" />
+    <asp:UpdatePanel runat="server" ID="up_procesa" UpdateMode="Conditional">
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="btn_process" EventName="click" />
+    </Triggers>
+    <ContentTemplate>
+        <asp:HyperLink runat="server" ID="lnkFile"></asp:HyperLink>
+    </ContentTemplate>
+    </asp:UpdatePanel>
+    <asp:UpdateProgress runat="server" ID="up_procesa_prgss">
+    <ProgressTemplate>
+        
+        Generando el archivo...<span class="ui-icon ui-icon-clock" ></span>
+        
+    </ProgressTemplate>
+    </asp:UpdateProgress>
+    </div>
 
 </asp:Content>

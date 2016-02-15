@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ <tarifaTransporte>
+   <transporte tipo="Nissan Local">
+     <price>-1</price>
+   </transporte>
+   <transporte tipo="Camioneta 3.5 Local">
+     <price>-1</price>
+   </transporte>
+   <transporte tipo="Torton Local">
+     <price>1700</price>
+   </transporte>
+   <transporte tipo="Trailer Local">
+     <price>2500</price>
+   </transporte>
+ </tarifaTransporte>
