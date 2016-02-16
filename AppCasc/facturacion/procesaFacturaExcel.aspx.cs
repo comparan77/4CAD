@@ -48,6 +48,7 @@ namespace AppCasc.facturacion
 
                 app.Start();
                 bool creado = false;
+                int timeToBuild = 0;
                 while (!creado)
                 {
                     System.Threading.Thread.Sleep(10000);
@@ -59,7 +60,14 @@ namespace AppCasc.facturacion
                         string pathDirectory = HttpContext.Current.Server.MapPath("~/rpt/facturaAvon/") + nameFile;
                         File.Move(result, pathDirectory);
                         lnkFile.NavigateUrl = "~/rpt/facturaAvon/" + nameFile;
-                        lnkFile.Text = "Descargar archivo...!";
+                        lnkFile.Text = "Descargar archivo aqui";
+                    }
+
+                    timeToBuild++;
+                    if (timeToBuild == 12)
+                    {
+                        lnkFile.Text = "El archivo no pudo ser creado...!";
+                        creado = true;
                     }
                 }
             }
