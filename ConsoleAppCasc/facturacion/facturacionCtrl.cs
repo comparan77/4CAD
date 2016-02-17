@@ -89,7 +89,6 @@ namespace ConsoleAppCasc.facturacion
 
             lstTransTarifa = readTransporteTarifa();
             lstManioTarifa = readManiobraTarifa();
-
             xlWorkBook = oEI.openBook(pathFacturas);
             List<factura> lst = new List<factura>();
             for (int i = 1; i <= xlWorkBook.Worksheets.Count; i++)
@@ -105,6 +104,7 @@ namespace ConsoleAppCasc.facturacion
 
             oEI.closeBook(xlWorkBook);
             Console.WriteLine("Lectura de facturas completa");
+            
            
             #region Crea xls Avon
 

@@ -41,10 +41,16 @@ namespace AppCasc.facturacion
         {
             try
             {
+                string result = Path.GetTempFileName().Replace("\\", "/").Replace(".tmp", ".xlsx");
+                string fileName = System.Configuration.ConfigurationManager.AppSettings["ConsolePath"].ToString();
+                string nameFile = result.Split('/').Last().ToString();
+                result = System.Configuration.ConfigurationManager.AppSettings["tmpDir"].ToString() + nameFile;
+                //lnkFile.Text = result + " | " + fileName + " | " + hf_path.Value.Replace("\\", "/");
+
+                #region Procesa XLS
                 Process app = new Process();
                 app.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["ConsolePath"].ToString();
-                string result = Path.GetTempFileName().Replace("\\", "/").Replace(".tmp", ".xlsx");
-                app.StartInfo.Arguments = hf_path.Value.Replace("\\", "/") + " " + result;
+                app.StartInfo.Arguments = hf_path.Value + " " + result;
 
                 app.Start();
                 bool creado = false;
@@ -56,7 +62,6 @@ namespace AppCasc.facturacion
 
                     if (creado)
                     {
-                        string nameFile = result.Split('/').Last().ToString();
                         string pathDirectory = HttpContext.Current.Server.MapPath("~/rpt/facturaAvon/") + nameFile;
                         File.Move(result, pathDirectory);
                         lnkFile.NavigateUrl = "~/rpt/facturaAvon/" + nameFile;
@@ -70,6 +75,7 @@ namespace AppCasc.facturacion
                         creado = true;
                     }
                 }
+                #endregion
             }
             catch (Exception e)
             {

@@ -55,11 +55,19 @@ namespace ConsoleAppCasc
         public Workbook openBook(string path, bool readOnly = true)
         {
             Workbook xlWorkBook;
-            object misValue = System.Reflection.Missing.Value;
+            try
+            {
+                
+                object misValue = System.Reflection.Missing.Value;
 
-            xlApp = new Application();
-            xlWorkBook = xlApp.Workbooks.Open(path, 0, readOnly, 5, "", "", true, XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
-            
+                xlApp = new Application();
+                xlWorkBook = xlApp.Workbooks.Open(path, 0, readOnly, 5, "", "", true, XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+            }
+            catch (Exception e)
+            {
+                LogCtrl.writeLog("openBookError: " + e.Message);   
+                throw;
+            }
             return xlWorkBook;
         }
 
