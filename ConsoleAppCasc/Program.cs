@@ -24,7 +24,7 @@ namespace ConsoleAppCasc
                 destino = destino.Replace("/", @"\");
 
                 facturacionCtrl.procesaFacturacion(origen, destino);
-                //facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\facturacionCorta.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
+                //facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\conError.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
             }
             catch (Exception e)
             {

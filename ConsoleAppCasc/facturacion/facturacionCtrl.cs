@@ -389,7 +389,10 @@ namespace ConsoleAppCasc.facturacion
 
                 fila++;
                 dato = sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2;
-                esManiobra = dato.ToString().StartsWith("Maniobra");
+                if (dato != null)
+                    esManiobra = dato.ToString().StartsWith("Maniobra");
+                else
+                    esManiobra = false;
             }
             _maxColManiobras = o.LstManiobra.Count > _maxColManiobras ? o.LstManiobra.Count : _maxColManiobras;
 
@@ -397,6 +400,8 @@ namespace ConsoleAppCasc.facturacion
 
             #region Otros (Parte 1)
             dato = sheet.get_Range("D" + fila.ToString(), "D" + fila.ToString()).Value2;
+            if (dato == null)
+                dato = string.Empty;
             while (!dato.ToString().StartsWith("SUBTOTAL"))
             {
                 dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
@@ -410,6 +415,8 @@ namespace ConsoleAppCasc.facturacion
                 }
                 fila++;
                 dato = sheet.get_Range("D" + fila.ToString(), "D" + fila.ToString()).Value2;
+                if (dato == null)
+                    dato = string.Empty;
             }
             #endregion
 
