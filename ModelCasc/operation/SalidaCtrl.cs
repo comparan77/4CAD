@@ -1052,6 +1052,33 @@ namespace ModelCasc.operation
             }
         }
 
+        public static void RemisionDevolucion(Salida_remision o, Usuario_cancelacion oUC)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                bool esDevolucion = o.Es_devolucion;
+
+                Salida_remisionMng oMng = new Salida_remisionMng() { O_Salida_remision = o };
+                oMng.selById();
+
+                trans = GenericDataAccess.BeginTransaction();
+                o.Es_devolucion = esDevolucion;
+                oMng.setDevolucion(trans);
+
+                oUC.Folio_operacion = o.Folio_remision;
+                Usuario_cancelacionMng oUsrCanMng = new Usuario_cancelacionMng() { O_Usuario_cancelacion = oUC };
+                oUsrCanMng.add(trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
         #endregion
 
         #region Salida Remision Detail
@@ -1160,21 +1187,6 @@ namespace ModelCasc.operation
             return o;
         }
 
-        public static Salida_orden_carga_rem OrdenCargaGetRemision(int IdRemision)
-        {
-            Salida_orden_carga_rem o = new Salida_orden_carga_rem() { Id_salida_remision = IdRemision };
-            try
-            {
-                Salida_orden_carga_remMng oMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = o };
-                oMng.selByIdSalRemision();
-            }
-            catch 
-            {
-                throw;
-            }
-            return o;
-        }
-
         public static List<Salida_orden_carga> OrdenCargaGetByFolio(string folioOC)
         {
             List<Salida_orden_carga> lst = new List<Salida_orden_carga>();
@@ -1223,6 +1235,25 @@ namespace ModelCasc.operation
                     throw;
                 else throw new Exception(error);
             }
+        }
+
+        #endregion
+
+        #region Salida Orden Carga Remision
+
+        public static Salida_orden_carga_rem OrdenCargaRemGetRemision(int IdSalidaRemision)
+        {
+            Salida_orden_carga_rem o = new Salida_orden_carga_rem() { Id_salida_remision = IdSalidaRemision };
+            try
+            {
+                Salida_orden_carga_remMng oMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = o };
+                oMng.selByIdSalRemision();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
         }
 
         #endregion

@@ -47,6 +47,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_recibido", DbType.DateTime, this._oSalida_remision.Fecha_recibido);
             GenericDataAccess.AddInParameter(this.comm, "?P_dano_especifico", DbType.String, this._oSalida_remision.Dano_especifico);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_estatus", DbType.Int32, this._oSalida_remision.Id_estatus);
+            GenericDataAccess.AddInParameter(this.comm, "?P_es_devolucion", DbType.Boolean, this._oSalida_remision.Es_devolucion);
         }
 
         protected void BindByDataRow(DataRow dr, Salida_remision o)
@@ -118,6 +119,12 @@ namespace ModelCasc.operation
                     int.TryParse(dr["id_estatus"].ToString(), out entero);
                     o.Id_estatus = entero;
                     entero = 0;
+                }
+                if (dr["es_devolucion"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["es_devolucion"].ToString(), out logica);
+                    o.Es_devolucion = logica;
+                    logica = false;
                 }
             }
             catch
@@ -489,6 +496,20 @@ namespace ModelCasc.operation
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
                 addParameters(10);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void setDevolucion(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
+                addParameters(11);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {

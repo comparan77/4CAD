@@ -10,6 +10,7 @@ namespace ModelCasc.report.operation
     public class ControlRpt
     {
         private static DateTime fecha;
+        private static bool logica;
 
         public static List<rptRemision> RemisionGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
@@ -59,6 +60,10 @@ namespace ModelCasc.report.operation
                     fecha = default(DateTime);
 
                     o.Folio_salida = dr["folio_salida"].ToString();
+
+                    bool.TryParse(dr["es_devolucion"].ToString(), out logica);
+                    o.Es_devolucion = logica;
+                    logica = false;
 
                     lst.Add(o);
                 }

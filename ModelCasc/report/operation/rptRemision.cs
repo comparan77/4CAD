@@ -23,5 +23,6 @@ namespace ModelCasc.report.operation
         public string Etiqueta_rr { get; set; }
         public DateTime? Fecha_salida { get; set; }
         public string Folio_salida { get; set; }
+        public bool Es_devolucion { get; set; }
     }
 }

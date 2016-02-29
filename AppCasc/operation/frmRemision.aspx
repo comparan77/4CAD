@@ -172,7 +172,7 @@
         <asp:Repeater runat="server" ID="rep_remisiones" >
         <ItemTemplate>
             <li>
-                <a href="#" class="lnk-folio-remision" title='<%#Eval("fecha_remision","{0:dd/MM/yyyy}") %>' ><%# Eval("folio_remision") %></a>
+                <a href="#" id='<%# "lnkRem_" + Eval("id") %>' class="lnk-folio-remision" title='<%#Eval("fecha_remision","{0:dd/MM/yyyy}") %>' ><%# Eval("folio_remision") %></a>
                 <%--<input type="hidden" value='<%#Eval("bulto", "{0:N0}") %>' />
                 <input type="hidden" value='<%#Eval("piezaxbulto", "{0:N0}") %>' />
                 <input type="hidden" value='<%#Eval("pieza", "{0:N0}") %>' />
@@ -185,6 +185,7 @@
                 <input type="hidden" value='<%#Eval("fecha_recibido", "{0:dd/MM/yyyy}") %>' />
                 <input type="hidden" value='<%#Eval("PTrafico.Folio_cita") %>' />
                 <input type="hidden" value='<%#Eval("tieneOrdenCarga") %>' />
+                <input type="hidden" value='<%#Eval("es_devolucion") %>' />
                 <input type="hidden" value='<%#Eval("id") %>' />
             </li>
         </ItemTemplate>
@@ -198,6 +199,7 @@
     </div>
 
     <div id="div-tbl-folio-remision">
+    <input type="hidden" id="hf_id_salida_remision" />
         <table border="1" cellpadding="5" cellspacing="0" width="100%">
              <tbody>
                 <tr>
@@ -254,17 +256,24 @@
         <div style="padding: 5px;">
             <span style="background-color: Black; color: White;" id="spn-dano_especifico" ></span>
         </div>
-        <div style="padding: 5px;">
+        <div style="padding: 5px;" class="devOcultar">
             <label>Etiqueta RR:</label>
             <span id="spn-etiqueta_rr"></span>
         </div>
-        <div style="padding: 5px;">
+        <div style="padding: 5px;" class="devOcultar">
             <label>Fecha Recibido:</label>
             <span id="spn-fecha_recibido"></span>
         </div>
         <div style="padding: 5px;">
             <label>Folio Cita:</label>
             <span id="spn-folio_cita" class="icon-button-action" style="color: #0d5fb3"></span>
+        </div>
+        <div style="padding: 5px; width: 95px" class="devOcultar">
+            <label>Devoluci&oacute;n</label>
+            <span id="spn-devolucion" class="icon-button-action ui-icon ui-icon-arrowreturnthick-1-w" style="color: #0d5fb3; float: right"></span>
+        </div>
+        <div id="msg_dev" style="font-size: 2.3em;" class="hidden">
+            <span>Esta remisión tiene devoluci&oacute;n</span>
         </div>
         <div>
             <label>&nbsp;</label>

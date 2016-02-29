@@ -1,4 +1,11 @@
-﻿var beanEntrada_estatus = function (id, id_usuario, id_entrada_inventario, id_entrada_maquila, id_estatus_proceso, fecha) {
+﻿var beanUsuarioCancelacion = function (motivo_devolucion) {
+    this.Id = 0;
+    this.Usuario_cancelacion = 0;
+    this.Folio_operacion = '';
+    this.Motivo_cancelacion = motivo_devolucion;
+}
+
+var beanEntrada_estatus = function (id, id_usuario, id_entrada_inventario, id_entrada_maquila, id_estatus_proceso, fecha) {
 
     this.Id = id;
     this.Id_usuario = id_usuario;
@@ -162,7 +169,7 @@ var MngRemision = function () {
 
         $(div_tbl_folio_remision).dialog({
             autoOpen: false,
-            height: 290,
+            height: 320,
             width: 450,
             modal: true,
             resizable: false,
@@ -349,6 +356,15 @@ var MngRemision = function () {
             fillCitas();
         });
         //<<fin>> citas
+
+        //<ini>> Devolucion
+
+        $('#spn-devolucion').click(function () {
+            getSalidaOrdenCargaRem(div_tbl_folio_remision);
+            return false;
+        });
+
+        //<<fin>> Devolucion
 
         // Ordenes y códigos del pedimento
         $('#div_ordenescodigos').dialog({
@@ -556,6 +572,67 @@ var MngRemision = function () {
             success: function (data) {
                 alert(data);
                 $('#spn-folio_cita').html(folio_cita);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
+    //Devolución de Mercancía
+    function getSalidaOrdenCargaRem(div_tbl_folio_remision) {
+
+        $.ajax({
+            type: 'GET',
+            url: '/handlers/Operation.ashx',
+            data: {
+                op: 'ordenCargaRem',
+                id_salida_remision: $('#hf_id_salida_remision').val()
+            },
+            complete: function () {
+                $('#div-info-codigo').removeClass('ajaxLoading');
+            },
+            success: function (data) {
+                if (data.Id_salida != null) {
+                    var motivo = prompt('Proporcione el motivo de la devolución:', '')
+                    if (motivo.length < 5) {
+                        alert('El motivo es muy corto, proporcione un motivo descriptivo');
+                    }
+                    else {
+                        //dispara la devolucion
+                        devolucionRemision(data.Id_salida_remision, motivo, div_tbl_folio_remision);
+                    }
+                }
+                else {
+                    alert('La remisión no cuenta con una salida');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
+    //Devolucion de remision
+    function devolucionRemision(id_salida_remision, motivo, div_tbl_folio_remision) {
+        var oUsrDev = new beanUsuarioCancelacion(motivo);
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=salidaRemDev&id_salida_remision=' + id_salida_remision,
+            data: JSON.stringify(oUsrDev),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+
+            },
+            success: function (data) {
+                alert(data);
+                $(div_tbl_folio_remision).dialog('close');
+                location.reload(true);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();

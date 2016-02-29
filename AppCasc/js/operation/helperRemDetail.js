@@ -10,6 +10,22 @@
                 $(div_tbl_folio_remision).dialog('open');
 
                 var id_salida_remision = $(this).parent().children('input').last().val();
+                var es_devolucion = $(this).parent().children('input').last().prev().val();
+                
+                //Cuando es devolucion
+                $('.devOcultar').each(function () {
+                    if (es_devolucion == 'True')
+                        $(this).hide();
+                    else
+                        $(this).show();
+                });
+
+                if (es_devolucion == 'True')
+                    $('#msg_dev').show();
+                else
+                    $('#msg_dev').hide();
+
+                $('#hf_id_salida_remision').val(id_salida_remision);
                 $('#spn-dlt').html(id_salida_remision);
                 for (var iRes = 1; iRes <= 2; iRes++) {
                     $('#spn-bulto-' + iRes).html('');

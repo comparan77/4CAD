@@ -25,6 +25,7 @@ namespace ModelCasc.operation
         protected DateTime? _fecha_recibido;
         protected string _dano_especifico;
         protected int _id_estatus;
+        protected bool _es_devolucion;
         #endregion
 
         #region Propiedades
@@ -44,6 +45,8 @@ namespace ModelCasc.operation
         public DateTime? Fecha_recibido { get { return _fecha_recibido; } set { _fecha_recibido = value; } }
         public string Dano_especifico { get { return _dano_especifico; } set { _dano_especifico = value; } }
         public int Id_estatus { get { return _id_estatus; } set { _id_estatus = value; } }
+        public bool Es_devolucion { get { return _es_devolucion; } set { _es_devolucion = value; } }
+
         public List<Salida_remision_detail> LstSRDetail { get; set; }
         public string Mercancia { get; set; }
         public string Vendor { get; set; }
@@ -83,6 +86,7 @@ namespace ModelCasc.operation
             this._fecha_recibido = null;
             this._dano_especifico = null;
             this._id_estatus = 0;
+            this._es_devolucion = false;
         }
         #endregion
     }

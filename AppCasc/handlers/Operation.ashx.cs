@@ -21,6 +21,7 @@ namespace AppCasc.handlers
         string referencia = string.Empty;
         string jsonData = string.Empty;
         int id = 0;
+        
 
         public bool IsReusable
         {
@@ -38,6 +39,7 @@ namespace AppCasc.handlers
             context.Response.ContentEncoding = Encoding.UTF8;
             string operation = context.Request["op"].ToString();
             Entrada_inventario_cambios oEIC = null;
+            Usuario_cancelacion oUC = null;
             try
             {
                 switch (operation)
@@ -142,13 +144,27 @@ namespace AppCasc.handlers
                     case "dltOrdenCarga":
                         int.TryParse(context.Request["id_orden_carga"].ToString(), out id);
                         jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                        Usuario_cancelacion oUC = JsonConvert.DeserializeObject<Usuario_cancelacion>(jsonData);
+                        oUC = JsonConvert.DeserializeObject<Usuario_cancelacion>(jsonData);
                         oUC.Id_usuario  = ((Usuario)context.Session["userCasc"]).Id;
                         SalidaCtrl.OrdenCargaDlt(id, oUC);
                         response = JsonConvert.SerializeObject("Se eliminó correctamente el registro");
                         break;
                     case "ordenCarga":
                         response = ordenCarga(context);
+                        break;
+                    case "ordenCargaRem":
+                        id = 0;
+                        int.TryParse(context.Request["id_salida_remision"], out id);
+                        response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaRemGetRemision(id));
+                        break;
+                    case "salidaRemDev":
+                        id = 0;
+                        int.TryParse(context.Request["id_salida_remision"], out id);
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        oUC = JsonConvert.DeserializeObject<Usuario_cancelacion>(jsonData);
+                        oUC.Id_usuario  = ((Usuario)context.Session["userCasc"]).Id;
+                        SalidaCtrl.RemisionDevolucion(new Salida_remision() { Id = id, Es_devolucion = true }, oUC);
+                        response = JsonConvert.SerializeObject("La operación se realizó correctamente");
                         break;
                     default:
                         break;
