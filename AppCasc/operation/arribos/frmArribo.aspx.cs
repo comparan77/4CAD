@@ -84,7 +84,7 @@ namespace AppCasc.operation.arribos
                     hf_id_cliente.Value = oE.Id_cliente.ToString();
                     //ddlCliente.SelectedValue = 
                     
-                    txt_fecha.Text = oE.Fecha.ToString("dd MMM yy");
+                    txt_fecha.Text = oE.Fecha.ToString("dd MMMM yy");
                     txt_hora_llegada.Text = oE.Hora;
                     ddlCortina.SelectedValue = oE.Id_cortina.ToString();
                     txt_doc_req.Text = referencia;
@@ -382,7 +382,7 @@ namespace AppCasc.operation.arribos
                 hf_clientes.Value = JsonConvert.SerializeObject(CatalogCtrl.ClienteGetAll(), Formatting.Indented);
                 int idBodega = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
                 ControlsMng.fillCortinaByBodega(ddlCortina, idBodega);
-                txt_fecha.Text = DateTime.Today.ToString("dd MMM yy");
+                txt_fecha.Text = DateTime.Today.ToString("dd MMMM yy");
                 txt_bodega.Text = CatalogCtrl.BodegaGet(idBodega).Nombre;
                 ControlsMng.fillTipoCarga(ddlTipoCarga);
                 ddlTipoCarga.SelectedItem.Value = "2";// En arribos por lo general llegan a granel
