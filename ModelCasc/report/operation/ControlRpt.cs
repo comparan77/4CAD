@@ -12,6 +12,49 @@ namespace ModelCasc.report.operation
         private static DateTime fecha;
         private static bool logica;
 
+        public static List<rptFondeo> FondeoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptFondeo> lst = new List<rptFondeo>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZFondeo");
+
+                if (anio_ini == 1)
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                }
+                else
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                }
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptFondeo o = new rptFondeo();
+                    o.Fecha = Convert.ToDateTime(dr["fecha"]);
+                    o.Referencia = dr["referencia"].ToString();
+                    o.Factura = dr["factura"].ToString();
+                    o.Orden = dr["orden"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+                    o.Vendor = dr["vendor"].ToString();
+                    o.Piezas = Convert.ToInt32(dr["piezas"]);
+                    o.ValorFactura = Convert.ToDouble(dr["valorfactura"]);
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         public static List<rptRemision> RemisionGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
             List<rptRemision> lst = new List<rptRemision>();

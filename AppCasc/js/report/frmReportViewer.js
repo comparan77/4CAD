@@ -12,6 +12,10 @@
             'dateFormat': 'dd/mm/yy'
         }).val(currentDate);
 
+        var iniYear = new Date(moment(new Date()).year(), 0, 1)
+        iniYear = moment(iniYear).format('DD/MM/YYYY');
+        $('#ctl00_body_txt_fecha_ini').val(iniYear);
+
         $('#ctl00_body_ddl_reporte').change(function () {
             switch ($(this).val()) {
                 case 'Maquila':
@@ -22,6 +26,7 @@
                     $('#ctl00_body_txt_fecha_ini').val('');
                     break;
                 case 'Inventario':
+                case 'Fondeo':
                     var iniYear = new Date(moment(new Date()).year(), 0, 1)
                     iniYear = moment(iniYear).format('DD/MM/YYYY');
                     $('#ctl00_body_txt_fecha_ini').val(iniYear);

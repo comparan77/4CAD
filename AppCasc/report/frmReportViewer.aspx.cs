@@ -32,6 +32,9 @@ namespace AppCasc.report
                 ReportDataSource rptSource = null;
                 switch (ddl_reporte.SelectedValue)
                 {
+                    case "Fondeo":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.FondeoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        break;
                     case "Maquila":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.MaquilaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         break;
