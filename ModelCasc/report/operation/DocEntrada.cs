@@ -134,7 +134,7 @@ namespace ModelCasc.report.operation
 
                 fields.SetField("Almacen", oE.PUsuario.Nombre);
                 fields.SetField("Vigilante", oE.Vigilante);
-                fields.SetField("Observaciones", oE.Observaciones);
+                fields.SetField("Observaciones", "Se recibe unidad y/o contenedor sin daños o menoscabos. " + oE.Observaciones);
                 fields.SetField("tipo_carga", oE.PTipoCarga.Nombre);
 
                 stamper.FormFlattening = true;
