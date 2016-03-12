@@ -12,6 +12,56 @@ namespace ModelCasc.report.operation
         private static DateTime fecha;
         private static bool logica;
 
+        public static List<rptSalidaTrafico> CitasGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin, int id_salida_destino, int opcion)
+        {
+            List<rptSalidaTrafico> lst = new List<rptSalidaTrafico>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZTrafico");
+
+                GenericDataAccess.AddInParameter(comm, "?P_opcion", DbType.Int32, opcion);
+
+                if (anio_ini == 1)
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                }
+                else
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                }
+                if(id_salida_destino == 0)
+                    GenericDataAccess.AddInParameter(comm, "?P_id_salida_destino", DbType.Int32, DBNull.Value);
+                else
+                    GenericDataAccess.AddInParameter(comm, "?P_id_salida_destino", DbType.Int32, id_salida_destino);
+
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptSalidaTrafico o = new rptSalidaTrafico();
+                    o.Folio = dr["folio_cita"].ToString();
+                    o.Referencia = dr["referencia"].ToString();
+                    o.Codigo = dr["codigo"].ToString();
+                    o.Orden = dr["orden_compra"].ToString();
+                    o.Vendor = dr["vendor"].ToString();
+                    o.Piezas = Convert.ToInt32(dr["piezas"]);
+                    o.Mercancia = dr["mercancia"].ToString();
+                    o.lote = dr["lote"].ToString();
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         public static List<rptFondeo> FondeoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
             List<rptFondeo> lst = new List<rptFondeo>();

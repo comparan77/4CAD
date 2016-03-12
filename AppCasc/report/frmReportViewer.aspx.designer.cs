@@ -58,6 +58,24 @@ namespace AppCasc.report {
         protected global::System.Web.UI.WebControls.TextBox txt_fecha_fin;
         
         /// <summary>
+        /// ddlDestino control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlDestino;
+        
+        /// <summary>
+        /// ddlEstatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEstatus;
+        
+        /// <summary>
         /// btnGetRpt control.
         /// </summary>
         /// <remarks>

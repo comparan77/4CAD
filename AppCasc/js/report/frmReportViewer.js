@@ -16,7 +16,10 @@
         iniYear = moment(iniYear).format('DD/MM/YYYY');
         $('#ctl00_body_txt_fecha_ini').val(iniYear);
 
+        $('#div_destino, #div_estatus').hide();
+
         $('#ctl00_body_ddl_reporte').change(function () {
+            $('#div_destino, #div_estatus').hide();
             switch ($(this).val()) {
                 case 'Maquila':
                     $('#ctl00_body_txt_fecha_ini').val(currentDate);
@@ -24,6 +27,10 @@
                 case 'Remision':
                 case 'Piso':
                     $('#ctl00_body_txt_fecha_ini').val('');
+                    break;
+                case 'Trafico':
+                    $('#ctl00_body_txt_fecha_ini').val(currentDate);
+                    $('#div_destino, #div_estatus').show();
                     break;
                 case 'Inventario':
                 case 'Fondeo':

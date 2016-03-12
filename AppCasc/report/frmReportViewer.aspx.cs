@@ -6,11 +6,25 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Reporting.WebForms;
 using ModelCasc.report.operation;
+using ModelCasc.webApp;
 
 namespace AppCasc.report
 {
     public partial class frmReportViewer : System.Web.UI.Page
     {
+        private void loadFirstTime()
+        {
+            try
+            {
+                ControlsMng.fillSalidaDestino(ddlDestino);
+                ddlDestino.Items.Add(new ListItem("TODOS", "0"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         protected void clickGetRpt(object sender, EventArgs args)
         {
             try
@@ -28,6 +42,8 @@ namespace AppCasc.report
 
                 ReportViewer1.Reset();
 
+
+
                 string rptSelected = ddl_reporte.SelectedValue;
                 ReportDataSource rptSource = null;
                 switch (ddl_reporte.SelectedValue)
@@ -40,6 +56,9 @@ namespace AppCasc.report
                         break;
                     case "Piso":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        break;
+                    case "Trafico":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.CitasGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddlDestino.SelectedItem.Value), Convert.ToInt32(ddlEstatus.SelectedValue)));
                         break;
                     case "Remision":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RemisionGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
@@ -63,9 +82,17 @@ namespace AppCasc.report
             }
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs args)
         {
-
+            if (!IsPostBack)
+                try
+                {
+                    loadFirstTime();
+                }
+                catch (Exception e)
+                {
+                    ((MstCasc)this.Master).setError = e.Message;
+                }
         }
     }
 }

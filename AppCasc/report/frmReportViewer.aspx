@@ -18,6 +18,7 @@
         <asp:DropDownList runat="server" ID="ddl_reporte">
             <asp:ListItem Text="Fondeo sin Entrada" Value="Fondeo"></asp:ListItem>
             <asp:ListItem Text="Maquila" Value="Maquila"></asp:ListItem>
+            <asp:ListItem Text="Trafico" Value="Trafico"></asp:ListItem>
             <asp:ListItem Text="Piso" Value="Piso"></asp:ListItem>
             <asp:ListItem Text="Remision" Value="Remision"></asp:ListItem>
             <asp:ListItem Text="Inventario" Value="Inventario"></asp:ListItem>
@@ -30,6 +31,17 @@
     <div>
         <label>Fecha Final:</label>
         <asp:TextBox runat="server" ID="txt_fecha_fin"></asp:TextBox>
+    </div>
+    <div id="div_destino" style="display: none;">
+        <label>Destino:</label>
+        <asp:DropDownList runat="server" ID="ddlDestino"></asp:DropDownList>
+    </div>
+    <div id="div_estatus" style="display: none;">
+        <label>Estatus:</label>
+        <asp:DropDownList runat="server" ID="ddlEstatus">
+            <asp:ListItem Text="Por Entregar" Value="0"></asp:ListItem>
+            <asp:ListItem Text="Entregadas" Value="1"></asp:ListItem>
+        </asp:DropDownList>
     </div>
     <div>
         <asp:Button runat="server" ID="btnGetRpt" OnClick="clickGetRpt" Text="Obtener Reporte" />
