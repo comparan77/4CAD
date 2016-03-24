@@ -240,6 +240,10 @@ namespace AppCasc.operation.embarques
 
         private void fillControlsToOC(Salida_orden_carga oSOC)
         {
+            #region Bodega Ubicacion
+            ddlBodega.SelectedValue = oSOC.Id_bodega_ubicacion.ToString();
+            #endregion
+
             #region Cita
             txt_folio_cita.Text = oSOC.PSalidaTrafico.Folio_cita;
             txt_cita_fecha_hora.Text = CommonFunctions.FormatDate(Convert.ToDateTime(oSOC.PSalidaTrafico.Fecha_cita), "dd \\de MMMM \\de yyyy") + " " + oSOC.PSalidaTrafico.Hora_cita.ToString();

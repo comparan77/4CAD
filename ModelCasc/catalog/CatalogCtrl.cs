@@ -5,6 +5,8 @@ using System.Text;
 using ModelCasc.operation;
 using Newtonsoft.Json;
 using System.Web.Security;
+using System.Data;
+using Model;
 
 namespace ModelCasc.catalog
 {
@@ -939,6 +941,157 @@ namespace ModelCasc.catalog
             List<string> roles = Roles.GetRolesForUser(o.Clave).ToList();
             hasRol = roles.Exists(p => string.Compare(p.ToString(), rol.ToString()) == 0);
             return hasRol;
+        }
+
+        public static List<Usuario> usuarioFillAllList()
+        {
+            List<Usuario> lst = new List<Usuario>();
+            try
+            {
+                UsuarioMng oUMng = new UsuarioMng();
+                oUMng.fillAllLst();
+                lst = oUMng.Lst;
+            }
+            catch 
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        public static Usuario UsuarioSelByClaveContrasenia(string username, string password)
+        {
+            Usuario o = new Usuario();
+            try
+            {
+                o.Clave = username;
+                o.Contrasenia = password;
+                UsuarioMng oUMng = new UsuarioMng() { O_Usuario = o };
+                oUMng.selByClaveContrasenia();
+                if (o.Id <= 0)
+                    throw new Exception("El nombre de usuario y/o contraseña son incorrectos " + o.Id.ToString());
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static Usuario UsuarioSelById(int id_usuario)
+        {
+            Usuario o = new Usuario();
+            try
+            {
+                o.Id = id_usuario;
+                UsuarioMng oUMng = new UsuarioMng() { O_Usuario = o };
+                oUMng.selById();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static Usuario UsuarioChangeStatus(int id_usuario, bool status)
+        {
+            Usuario oU = new Usuario();
+            try
+            {
+                oU.Id = id_usuario;
+                UsuarioMng oBMng = new UsuarioMng();
+                oBMng.O_Usuario = oU;
+                oBMng.selById();
+
+                if (status)
+                    oBMng.dlt();
+                else
+                    oBMng.reactive();
+            }
+            catch
+            {
+                throw;
+            }
+            return oU;
+        }
+
+        public static void usuarioAdd(Usuario oU)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                UsuarioMng oUMng = new UsuarioMng();
+                oUMng.O_Usuario = oU;
+                oUMng.add(trans);
+
+                Usuario_bodegaMng OUBMng = new Usuario_bodegaMng();
+                foreach (Usuario_bodega itemUB in oU.PLstUsuarioBodega)
+                {
+                    OUBMng = new Usuario_bodegaMng() { O_Usuario_bodega = new Usuario_bodega() { Id_usuario = itemUB.Id_usuario, Id_bodega = itemUB.Id_bodega } };
+                    OUBMng.add(trans);
+                }
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void usuarioUdt(Usuario oU)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                UsuarioMng oUMng = new UsuarioMng();
+                oUMng.O_Usuario = oU;
+                oUMng.udt(trans);
+
+                Usuario_bodega oUB = new Usuario_bodega() { Id_usuario = oU.Id };
+                Usuario_bodegaMng OUBMng = new Usuario_bodegaMng() { O_Usuario_bodega = oUB };
+                OUBMng.deleteByUsuario(trans);
+
+                foreach (Usuario_bodega itemUB in oU.PLstUsuarioBodega)
+                {
+                    OUBMng = new Usuario_bodegaMng() { O_Usuario_bodega = new Usuario_bodega() { Id_usuario = itemUB.Id_usuario, Id_bodega = itemUB.Id_bodega } };
+                    OUBMng.add(trans);
+                }
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Usuario bodega
+
+        public static List<Usuario_bodega> usuarioBodegaFillByUsuario(int id_usuario)
+        {
+            List<Usuario_bodega> lst = new List<Usuario_bodega>();
+            try
+            {
+                Usuario_bodegaMng oMng = new Usuario_bodegaMng() { O_Usuario_bodega = new Usuario_bodega() { Id_usuario = id_usuario } };
+                oMng.fillLstByIdUsuario();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
         }
 
         #endregion

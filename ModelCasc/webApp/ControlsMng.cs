@@ -59,6 +59,15 @@ namespace ModelCasc.webApp
             ddlBodega.DataValueField = "codigo";
             ddlBodega.DataBind();
         }
+        public static void fillBodegaByUser(DropDownList ddlBodega, int id_usuario)
+        {
+            BodegaMng oMng = new BodegaMng();
+            oMng.fillLstByUsuario(id_usuario);
+            ddlBodega.DataSource = oMng.Lst;
+            ddlBodega.DataTextField = "nombre";
+            ddlBodega.DataValueField = "id";
+            ddlBodega.DataBind();
+        }
         public static void fillBodega(DropDownList ddlBodega)
         {
             BodegaMng oMng = new BodegaMng();

@@ -40,6 +40,15 @@ namespace AppCasc.operation.embarques {
         protected global::System.Web.UI.WebControls.HiddenField hfLstDocumento;
         
         /// <summary>
+        /// up_bodega control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel up_bodega;
+        
+        /// <summary>
         /// ddlBodega control.
         /// </summary>
         /// <remarks>
@@ -47,15 +56,6 @@ namespace AppCasc.operation.embarques {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlBodega;
-        
-        /// <summary>
-        /// rfvBodega control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBodega;
         
         /// <summary>
         /// txt_fecha control.

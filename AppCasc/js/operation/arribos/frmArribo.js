@@ -51,6 +51,15 @@ var MngArribo = function () {
         //Llena select de clientes
         fillLstCliente();
 
+        //Cambio de bodega
+        $('#ctl00_body_ddlBodega').change(function () {
+            $('#ctl00_body_up_bodega').addClass('ajaxLoading');
+        });
+
+        $('#ctl00_body_up_bodega').panelReady(function () {
+            $('#ctl00_body_up_bodega').removeClass('ajaxLoading');
+        });
+
         //Cambio de clientes
         $('#ctl00_body_ddlCliente').change(function () {
             validaCliente();
@@ -374,13 +383,6 @@ var MngArribo = function () {
             div_doc_requerido.children('label').html('');
             div_doc_requerido.children('input').unmask();
             div_doc_requerido.children('span').html('Es requerido');
-
-            //            var attrDisabled_docReq = div_doc_requerido.children('input').attr('disabled');
-            //            if (typeof attrDisabled_docReq !== typeof undefined && attrDisabled_docReq !== false) {
-
-            //            }
-            //            else
-            //                div_doc_requerido.children('input').val('');
 
             $('#txt_documento').val('');
 

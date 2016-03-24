@@ -16,11 +16,15 @@
 <div>
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Salida</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
-<div>
+<asp:UpdatePanel runat="server" ID="up_bodega" UpdateMode="Conditional">
+<Triggers>
+    <asp:AsyncPostBackTrigger ControlID="rep_resultados" EventName="ItemCommand" />
+</Triggers>
+<ContentTemplate>
     <label>Bodega:</label>
-    <asp:DropDownList runat="server" ID="ddlBodega" AutoPostBack="true" Enabled="false"></asp:DropDownList>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvBodega" ControlToValidate="ddlBodega" InitialValue="" ErrorMessage="Es necesario seleccionar una bodega"></asp:RequiredFieldValidator>
-</div>
+    <asp:DropDownList runat="server" ID="ddlBodega" Enabled="false" ></asp:DropDownList>
+</ContentTemplate>
+</asp:UpdatePanel>
 <div>
     <label>Fecha:</label>
     <asp:TextBox id="txt_fecha" ReadOnly="true" CssClass="txtDateTime" runat="server"></asp:TextBox>

@@ -29,20 +29,10 @@ namespace AppCasc
         {
             try
             {
-                Usuario oU = new Usuario();
-                oU.Clave = logCasc.UserName;
-                oU.Contrasenia = logCasc.Password;
-                UsuarioMng oUMng = new UsuarioMng();
-                oUMng.O_Usuario = oU;
-                oUMng.selByClaveContrasenia();
-                if (oU.Id <= 0)
-                    throw new Exception("El nombre de usuario y/o contraseña son incorrectos " + oU.Id.ToString());
-                else
-                {
-                    oU.Contrasenia = string.Empty;
-                    Session.Add("userCasc", oU);
-                    FormsAuthentication.RedirectFromLoginPage(oU.Clave, logCasc.RememberMeSet);
-                }
+                Usuario oU = CatalogCtrl.UsuarioSelByClaveContrasenia(logCasc.UserName, logCasc.Password);
+                oU.Contrasenia = string.Empty;
+                Session.Add("userCasc", oU);
+                FormsAuthentication.RedirectFromLoginPage(oU.Clave, logCasc.RememberMeSet);
             }
             catch (Exception ex)
             {

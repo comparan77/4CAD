@@ -93,7 +93,7 @@ namespace ModelCasc.operation
         {
             try
             {
-                ReferenciaNuevaValida(referencia, IdCliente);
+                //ReferenciaNuevaValida(referencia, IdCliente);
                 ReferenciaCompartidaValida(referencia, IdCliente);
             }
             catch

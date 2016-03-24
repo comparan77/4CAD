@@ -31,6 +31,8 @@ namespace ModelCasc.catalog
         public string Bodega { get; set; }
         public string Rol { get; set; }
         public string Id_print { get; set; }
+
+        public List<Usuario_bodega> PLstUsuarioBodega { get; set; }
         #endregion
 
         #region Constructores

@@ -121,13 +121,22 @@ namespace AppCasc.operation.arribos {
         protected global::System.Web.UI.WebControls.HiddenField hf_facturasAvon;
         
         /// <summary>
-        /// txt_bodega control.
+        /// ddlBodega control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_bodega;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBodega;
+        
+        /// <summary>
+        /// up_bodega control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel up_bodega;
         
         /// <summary>
         /// ddlCortina control.

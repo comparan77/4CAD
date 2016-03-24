@@ -45,12 +45,7 @@ namespace AppCasc
 
         private Usuario getTestUsr()
         {
-            Usuario usr = new Usuario();
-            usr.Id = 12;
-            UsuarioMng oUMng = new UsuarioMng();
-            oUMng.O_Usuario = usr;
-            oUMng.selById();
-            return usr;
+            return CatalogCtrl.UsuarioSelById(12);
         }
 
         public Usuario getUsrLoged()

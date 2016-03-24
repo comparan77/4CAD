@@ -7,7 +7,7 @@ using System.Data;
 
 namespace ModelCasc.catalog
 {
-    public class UsuarioMng: dbTable
+    internal class UsuarioMng: dbTable
     {
         #region Campos
         protected Usuario _oUsuario;
@@ -253,6 +253,35 @@ namespace ModelCasc.catalog
                     throw new Exception("Error de integridad");
                 else
                     throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Usuario");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oUsuario.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void udt(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Usuario");
+                addParameters(3);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {

@@ -17,9 +17,8 @@ namespace AppCasc.catalog
             {
                 try
                 {
-                    UsuarioMng oUMng = new UsuarioMng();
-                    oUMng.fillAllLst();
-                    fillCatalog(oUMng.Lst);
+                    
+                    fillCatalog(CatalogCtrl.usuarioFillAllList());
                 }
                 catch (Exception e)
                 {
@@ -80,22 +79,11 @@ namespace AppCasc.catalog
                 bool status = false;
                 bool.TryParse(args.CommandArgument.ToString(), out status);
 
-                Usuario oU = new Usuario();
-                oU.Id = Id;
-                UsuarioMng oBMng = new UsuarioMng();
-                oBMng.O_Usuario = oU;
-                oBMng.selById();
-
-                if (status)
-                    oBMng.dlt();
-                else
-                    oBMng.reactive();
+                Usuario oU = CatalogCtrl.UsuarioChangeStatus(Id, status);
 
                 updateMembershipUser(oU, status);
 
-                oBMng = new UsuarioMng();
-                oBMng.fillAllLst();
-                fillCatalog(oBMng.Lst);
+                fillCatalog(CatalogCtrl.usuarioFillAllList());
             }
             catch (Exception e)
             {

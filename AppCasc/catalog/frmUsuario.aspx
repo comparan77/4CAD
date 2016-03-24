@@ -1,11 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmUsuario.aspx.cs" Inherits="AppCasc.catalog.frmUsuario" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%--<link href="../css/common.css" rel="stylesheet" type="text/css" />
-    <link href="../css/redmond/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />--%>
-    <%--<link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />--%>
-
-    <%--<script src="../js/jquery.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>--%>
     <script src="../js/catalog/frm.js" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -38,8 +32,8 @@
         <asp:TextBox runat="server" ID="txt_email"></asp:TextBox>
     </div>
     <div>
-        <label>Bodega:</label>
-        <asp:DropDownList runat="server" ID="ddlBodega"></asp:DropDownList>
+        <label>Bodega(s) Asociada(s):</label>
+        <asp:ListBox runat="server" SelectionMode="Multiple" ID="lstBodega"></asp:ListBox>
     </div>
     <div>
         <label>Rol:</label>

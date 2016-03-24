@@ -28,6 +28,7 @@ namespace ModelCasc.operation
         public string TipoCarga { get; set; }
         public string TipoEnvio { get; set; }
         public List<Salida> LstSalida { get ; set; }
+        public int Id_bodega_ubicacion { get; set; }
         #endregion
 
         #region Constructores

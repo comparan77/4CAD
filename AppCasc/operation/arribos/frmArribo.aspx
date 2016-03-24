@@ -44,13 +44,18 @@
 </div>
 <div>
     <label>Bodega:</label>
-    <asp:TextBox runat="server" ID="txt_bodega" Enabled="false"></asp:TextBox>
+    <asp:DropDownList runat="server" ID="ddlBodega" AutoPostBack="true" OnSelectedIndexChanged="changeBodega" CausesValidation="false"></asp:DropDownList>
 </div>
-<div>
+<asp:UpdatePanel runat="server" ID="up_bodega" UpdateMode="Conditional">
+<Triggers>
+    <asp:AsyncPostBackTrigger ControlID="ddlBodega" EventName="SelectedIndexChanged" />
+</Triggers>
+<ContentTemplate>
     <label>Cortina:</label>
     <asp:DropDownList runat="server" ID="ddlCortina"></asp:DropDownList>
     <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvCortina" ControlToValidate="ddlCortina" InitialValue="" ErrorMessage="Es necesario seleccionar una cortina"></asp:RequiredFieldValidator>
-</div>
+</ContentTemplate>
+</asp:UpdatePanel>
 <div>
     <label>Fecha:</label>
     <asp:TextBox id="txt_fecha" ReadOnly="true" CssClass="txtDateTime" runat="server"></asp:TextBox>

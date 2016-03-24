@@ -46,10 +46,10 @@ namespace AppCasc.catalog
         {
             BodegaMng oMng = new BodegaMng();
             oMng.fillLst();
-            ddlBodega.DataSource = oMng.Lst;
-            ddlBodega.DataTextField = "nombre";
-            ddlBodega.DataValueField = "id";
-            ddlBodega.DataBind();
+            lstBodega.DataSource = oMng.Lst;
+            lstBodega.DataTextField = "nombre";
+            lstBodega.DataValueField = "id";
+            lstBodega.DataBind();
         }
 
         private void fillRol()
@@ -70,11 +70,7 @@ namespace AppCasc.catalog
             try
             {
 
-                UsuarioMng oUMng = new UsuarioMng();
-                Usuario oU = new Usuario();
-                oU.Id = Id;
-                oUMng.O_Usuario = oU;
-                oUMng.selById();
+                Usuario oU = CatalogCtrl.UsuarioSelById(Id);
 
                 txt_nombre.Text = oU.Nombre;
                 txt_clave.Text = oU.Clave;
@@ -82,7 +78,14 @@ namespace AppCasc.catalog
                 hf_old_pwd.Value = oU.Clave;
                 txt_contrasenia.Text = oU.Contrasenia;
 
-                ddlBodega.SelectedValue = oU.Id_bodega.ToString();
+                //ddlBodega.SelectedValue = oU.Id_bodega.ToString();
+                List<Usuario_bodega> lstUB = CatalogCtrl.usuarioBodegaFillByUsuario(oU.Id);
+
+                foreach (ListItem itemLstB in lstBodega.Items)
+                {
+                    itemLstB.Selected = lstUB.Exists(p => p.Id_bodega == Convert.ToInt32(itemLstB.Value));
+                }
+
                 MembershipUser user = Membership.GetUser(oU.Clave);
                 if (user != null)
                 {
@@ -114,11 +117,21 @@ namespace AppCasc.catalog
             oU.Email = txt_email.Text.Trim();
             oU.Contrasenia = txt_contrasenia.Text.Trim();
 
-            int.TryParse(ddlBodega.SelectedValue, out entero);
-            oU.Id_bodega = entero;
-            entero = 0;
+            //int.TryParse(ddlBodega.SelectedValue, out entero);
+            //oU.Id_bodega = entero;
+            //entero = 0;
 
-            //int.TryParse(ddlRol.SelectedValue, out entero);
+            List<Usuario_bodega> lstUB = new List<Usuario_bodega>();
+            foreach (ListItem itemB in lstBodega.Items)
+            {
+                if (itemB.Selected)
+                {
+                    Usuario_bodega oUB = new Usuario_bodega() { Id_usuario = oU.Id, Id_bodega = Convert.ToInt32(itemB.Value) };
+                    lstUB.Add(oUB);
+                }
+            }
+            oU.PLstUsuarioBodega = lstUB;
+            oU.Id_bodega = lstUB.First().Id_bodega;
             oU.Id_rol = entero;
             entero = 0;
 
@@ -156,10 +169,7 @@ namespace AppCasc.catalog
         {
             try
             {
-                UsuarioMng oUMng = new UsuarioMng();
-                oUMng.O_Usuario = oU;
-                oUMng.add();
-
+                CatalogCtrl.usuarioAdd(oU);
                 updateMembershipUser(oU);
             }
             catch
@@ -172,10 +182,7 @@ namespace AppCasc.catalog
         {
             try
             {
-                UsuarioMng oUMng = new UsuarioMng();
-                oUMng.O_Usuario = oU;
-                oUMng.udt();
-
+                CatalogCtrl.usuarioUdt(oU);
                 updateMembershipUser(oU);
             }
             catch

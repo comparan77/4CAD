@@ -172,6 +172,45 @@ namespace ModelCasc.catalog
             }
         }
 
+        public void fillLstByUsuario(int id_usuario)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                addParameters(0);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Bodega>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Bodega o = new Bodega();
+                    int.TryParse(dr["id"].ToString(), out entero);
+                    o.Id = entero;
+                    entero = 0;
+                    o.Nombre = dr["nombre"].ToString();
+                    o.Direccion = dr["direccion"].ToString();
+                    this._lst.Add(o);
+                }
+
+                Usuario_bodegaMng oUBMng = new Usuario_bodegaMng() { O_Usuario_bodega = new Usuario_bodega() { Id_usuario = id_usuario } };
+                oUBMng.fillLstByIdUsuario();
+                List<Usuario_bodega> lstUB = oUBMng.Lst;
+
+                this._lst = (from Item1 in this._lst
+                             join Item2 in lstUB
+                             on Item1.Id equals Item2.Id_bodega // join on some property
+                             select new Bodega() { 
+                                 Id = Item1.Id,
+                                 Nombre = Item1.Nombre,
+                                 Direccion = Item1.Direccion,
+                                 IsActive = Item1.IsActive
+                                 }).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

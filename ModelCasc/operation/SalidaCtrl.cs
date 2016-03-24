@@ -1179,6 +1179,10 @@ namespace ModelCasc.operation
                 Salida_orden_carga_remMng oRMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = Id } };
                 oRMng.selByIdSalOrdCarga(agrupado);
                 o.LstRem = oRMng.Lst;
+
+                //Solución temporal a la ubicacion de la mercancia
+                Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = new Salida_remision() { Id = o.LstRem.First().Id_salida_remision } };
+                o.Id_bodega_ubicacion = oSRMng.selUbicacionBodega();
             }
             catch
             {

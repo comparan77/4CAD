@@ -103,13 +103,13 @@ namespace AppCasc.catalog {
         protected global::System.Web.UI.WebControls.TextBox txt_email;
         
         /// <summary>
-        /// ddlBodega control.
+        /// lstBodega control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlBodega;
+        protected global::System.Web.UI.WebControls.ListBox lstBodega;
         
         /// <summary>
         /// chkLstRol control.

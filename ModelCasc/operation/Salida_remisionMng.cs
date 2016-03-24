@@ -516,5 +516,31 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal int selUbicacionBodega()
+        {
+            int id_bodega_ubicacion = 0;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
+                addParameters(12);
+                DataSet ds = GenericDataAccess.ExecuteMultSelectCommand(comm);
+                this.dt = ds.Tables[0];
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    id_bodega_ubicacion = Convert.ToInt32(dr["id_bodega"]);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+            return id_bodega_ubicacion;
+        }
     }
 }

@@ -166,7 +166,8 @@ namespace AppCasc.operation.arribos
                 o.PUsuario = ((MstCasc)this.Master).getUsrLoged();
 
                 //Bodega
-                o.Id_bodega = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
+                Int32.TryParse(ddlBodega.SelectedItem.Value, out numero);
+                o.Id_bodega = numero;
                 numero = 0;
 
                 //Fecha
@@ -283,7 +284,9 @@ namespace AppCasc.operation.arribos
 
                 //Bodega
                 Bodega oB = new Bodega();
-                oB.Id = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
+                Int32.TryParse(ddlBodega.SelectedItem.Value, out numero);
+                oB.Id = numero;
+                numero = 0;
                 BodegaMng oBMng = new BodegaMng();
                 oBMng.O_Bodega = oB;
                 oBMng.selById();
@@ -380,10 +383,14 @@ namespace AppCasc.operation.arribos
             try
             {
                 hf_clientes.Value = JsonConvert.SerializeObject(CatalogCtrl.ClienteGetAll(), Formatting.Indented);
-                int idBodega = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
-                ControlsMng.fillCortinaByBodega(ddlCortina, idBodega);
+                
+                //int idBodega = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
+                ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
+                ddlBodega.Items[0].Selected = true;
+
+                ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedItem.Value));
                 txt_fecha.Text = DateTime.Today.ToString("dd MMMM yy");
-                txt_bodega.Text = CatalogCtrl.BodegaGet(idBodega).Nombre;
+                //txt_bodega.Text = CatalogCtrl.BodegaGet(idBodega).Nombre;
                 ControlsMng.fillTipoCarga(ddlTipoCarga);
                 ddlTipoCarga.SelectedItem.Value = "2";// En arribos por lo general llegan a granel
                 hf_Documentos.Value = CatalogCtrl.DocumentoLstToJson();
@@ -478,6 +485,18 @@ namespace AppCasc.operation.arribos
                 ddlCustodia,
                 txt_operador
             });
+        }
+
+        protected void changeBodega(object sender, EventArgs args)
+        {
+            try
+            {
+                ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedItem.Value));
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
         }
 
         protected void btn_buscar_click(object sender, EventArgs args)
