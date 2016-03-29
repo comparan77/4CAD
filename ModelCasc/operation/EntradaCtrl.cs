@@ -245,8 +245,11 @@ namespace ModelCasc.operation
                     oE.Referencia = oE.Folio + oE.Folio_indice;
 
                 //obtiene la referencia de acuerdo al cliente
-                oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
-                oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
+                if (oE.Es_unica)
+                {
+                    oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
+                    oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
+                }
 
                 //Entrada de mercancia al almacen
                 EntradaMng oMng = new EntradaMng();
