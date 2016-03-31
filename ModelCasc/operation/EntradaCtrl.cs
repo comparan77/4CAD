@@ -340,7 +340,8 @@ namespace ModelCasc.operation
             try
             {
                 //Verifica la referencia sea valida (No se puede repetir la referencia)
-                ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
+                if(oE.PEntPar==null)
+                    ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
 
                 //Comienza la transaccion
                 trans = GenericDataAccess.BeginTransaction();

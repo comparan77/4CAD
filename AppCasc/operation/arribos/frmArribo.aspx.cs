@@ -467,6 +467,16 @@ namespace AppCasc.operation.arribos
                 Entrada oE = EntradaCtrl.getEntradaCompartida(args.CommandArgument.ToString());
                 fillEntradaCompartida(oE, btn.Text);
                 hf_click_Compartida.Value = "1";
+
+                if (EntradaCtrl.EsReferenciaParcial(btn.Text, 1))
+                {
+                    Entrada_parcial oEP = EntradaCtrl.ParcialGetByReferencia(btn.Text);
+                    if (oEP.Id_entrada == 0)
+                    {
+                        throw new Exception("El pedimento entro parcialmente y ya se ha capturado la última parcialidad.");
+                    }
+                    fillEntradaParcial(EntradaCtrl.getEntradaParcial(oEP.Id_entrada), oEP);
+                }
             }
             catch (Exception e)
             {
