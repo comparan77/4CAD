@@ -74,6 +74,7 @@ var MngMaquila = function () {
                 alert('Es necesario agregar detalle de la maquila');
                 return false;
             }
+            $(this).hide();
         });
         $(btn_cerrar_maquila).button();
 
