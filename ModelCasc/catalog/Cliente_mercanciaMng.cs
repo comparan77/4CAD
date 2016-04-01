@@ -264,5 +264,26 @@ namespace ModelCasc.catalog
             }
             return lstNegocio;
         }
+
+        internal void selByCode()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_mercancia");
+                addParameters(9);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oCliente_mercancia);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

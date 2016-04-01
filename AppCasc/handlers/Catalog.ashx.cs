@@ -35,13 +35,7 @@ namespace AppCasc.handlers
                 switch (catalogo)
                 {
                     case "cliente_mercancia":
-                        response = CatalogCtrl.ToCSV(CatalogCtrl.Cliente_mercanciafillByCliente(Convert.ToInt32(context.Request["Idcliente"]), context.Request["codigo"].ToString()).Cast<Object>().ToList());
-                        break;
-                    case "cliente_mercanciaAdd":
-                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                        Cliente_mercancia oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
-                        CatalogCtrl.Cliente_mercanciaAdd(oCM);
-                        response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
+                        response = clienteMercancia(context);
                         break;
                     case "cliente_vendorAdd":
                         jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
@@ -64,6 +58,31 @@ namespace AppCasc.handlers
             {
                 context.Response.Write(e.Message);
             }
+        }
+
+        private string clienteMercancia(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+
+            switch (option)
+            {
+                case "findByCode":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Cliente_mercancia o = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                    response = JsonConvert.SerializeObject(CatalogCtrl.cliente_mercanciaFindByCode(o));
+                    break;
+                case "Add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Cliente_mercancia oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                    CatalogCtrl.Cliente_mercanciaAdd(oCM);
+                    response = JsonConvert.SerializeObject(oCM);
+                    break;
+                default:
+                    response = CatalogCtrl.ToCSV(CatalogCtrl.Cliente_mercanciafillByCliente(Convert.ToInt32(context.Request["Idcliente"]), context.Request["codigo"].ToString()).Cast<Object>().ToList());
+                    break;
+            }
+            return response;
         }
     }
 }

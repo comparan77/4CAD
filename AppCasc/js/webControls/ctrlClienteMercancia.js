@@ -16,6 +16,7 @@
 var ctrlClienteMercancia = function () {
     this.Init = init;
     this.OpenFrm = openFrm;
+    this.FindByCode = findByCode;
 
     function init() {
     }
@@ -69,13 +70,36 @@ var ctrlClienteMercancia = function () {
         return valid;
     }
 
+    function findByCode(page, codigo, id_cliente_grupo) {
+
+        var oCM = new beanCliente_mercancia(id_cliente_grupo, codigo, '', '', '', '');
+
+        $.ajax({
+            type: 'POST',
+            url: '/handlers/Catalog.ashx?catalogo=cliente_mercancia&opt=findByCode',
+            //dataType: "jsonp",
+            data: JSON.stringify(oCM),
+            complete: function () {
+
+            },
+            success: function (data) {
+                page.Recall(data, page.CtrlCM);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
     function addMercancia(page) {
 
         var oCM = new beanCliente_mercancia(1, $('#txt_codigo').val(), $('#txt_nombre').val(), $('#txt_clase').next().children('input').val(), $('#txt_negocio').next().children('input').val(), $('#txt_unidad').next().children('input').val());
 
         $.ajax({
             type: "POST",
-            url: '/handlers/Catalog.ashx?catalogo=cliente_mercanciaAdd',
+            url: '/handlers/Catalog.ashx?catalogo=cliente_mercancia&opt=Add',
             data: JSON.stringify(oCM),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -83,10 +107,11 @@ var ctrlClienteMercancia = function () {
 
             },
             success: function (data) {
-                alert(data);
+                if (data.Id > 0)
+                    alert('Se guardo correctamente el registro');
                 $("#ctrlClienteMercancia").dialog('close');
                 if (page != null) {
-                    page.Recall(oCM, page.CtrlCM);
+                    page.Recall(data, page.CtrlCM);
                 }
                 // window.location.href = 'frmMaquila.aspx?_fk=' + id_entrada + "&_pk=" + id_entrada_inventario;
             },

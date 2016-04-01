@@ -690,11 +690,6 @@ namespace ModelCasc.catalog
             }
         }
 
-        #endregion
-
-        #region Cliente mercancia
-
-
         public static List<Cliente_vendor> Cliente_vendorfillByCliente(int IdClienteGrupo, string vendor = "")
         {
             List<Cliente_vendor> lst = new List<Cliente_vendor>();
@@ -715,6 +710,10 @@ namespace ModelCasc.catalog
             }
             return lst;
         }
+
+        #endregion
+
+        #region Cliente mercancia
 
         public static List<Cliente_mercancia> Cliente_mercanciafillByCliente(int IdClienteGrupo, string codigo = "")
         {
@@ -831,6 +830,20 @@ namespace ModelCasc.catalog
             {
                 throw;
             }
+        }
+
+        public static Cliente_mercancia cliente_mercanciaFindByCode(Cliente_mercancia o)
+        {
+            try
+            {
+                Cliente_mercanciaMng oMng = new Cliente_mercanciaMng() { O_Cliente_mercancia = o };
+                oMng.selByCode();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
         }
 
         #endregion
