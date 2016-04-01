@@ -88,7 +88,7 @@ namespace AppCasc.operation
                         oE.No_bulto_abierto += oEPartialInfo.No_bulto_abierto;
                         //bulto declarado tiene la misma cantidad por tal motivo se omite para avon
                         oE.No_bulto_recibido += oEPartialInfo.No_bulto_recibido;
-                        oE.No_bulto_declarado += oEPartialInfo.No_bulto_declarado;
+                        oE.No_bulto_declarado = oEPartialInfo.No_bulto_declarado;
                         //oE.No_pieza_declarada += oEPartialInfo.No_pieza_declarada;
                         
                         oE.No_pieza_recibida += oEPartialInfo.No_pieza_recibida;
