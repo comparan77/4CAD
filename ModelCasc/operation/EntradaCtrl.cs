@@ -245,7 +245,7 @@ namespace ModelCasc.operation
                     oE.Referencia = oE.Folio + oE.Folio_indice;
 
                 //obtiene la referencia de acuerdo al cliente
-                if (oE.Es_unica)
+                if (oE.Codigo.Length==0)
                 {
                     oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
                     oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
