@@ -296,6 +296,7 @@ namespace ModelCasc.operation
 
                 //Entrada transportes
                 Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
                 if (oE.PLstEntTrans.Count < 1)
                     throw new Exception("Es necesario agregar por lo menos un transporte");
                 foreach (Entrada_transporte oET in oE.PLstEntTrans)
@@ -303,6 +304,14 @@ namespace ModelCasc.operation
                     oET.Id_entrada = oE.Id;
                     oETMng.O_Entrada_transporte = oET;
                     oETMng.add(trans);
+
+                    //Condiciones
+                    foreach (Entrada_transporte_condicion oETC in oE.PLstEntTransCond)
+                    {
+                        oETC.Id_entrada_transporte = oET.Id;
+                        oETCMng.O_Entrada_transporte_condicion = oETC;
+                        oETCMng.add(trans);
+                    }
                 }
 
                 //Parcial

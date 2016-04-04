@@ -92,6 +92,7 @@ namespace ModelCasc.operation
         public List<Entrada_documento> PLstEntDoc { get; set; }
         public List<Entrada_parcial> PLstEntPar { get; set; }
         public List<Entrada_transporte> PLstEntTrans { get; set; }
+        public List<Entrada_transporte_condicion> PLstEntTransCond { get; set; }
         public Entrada_parcial PEntPar { get; set; }
         public Custodia PCustodia { get; set; }
         public Tipo_carga PTipoCarga { get; set; }

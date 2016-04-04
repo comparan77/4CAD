@@ -74,6 +74,17 @@ input[type=text], textarea, select, input[type=password]
     width: 100%;
 }
 
+.grdCascSmall
+{
+     border-collapse: collapse;
+     
+}
+
+.grdCascSmall, .grdCascSmall th, .grdCascSmall td {
+    border: 1px solid #fda100;
+    padding: 2px;
+}
+
 .grdCasc tbody tr td.number
 {
     padding-right: 10px;
