@@ -344,7 +344,7 @@ var MngInventario = function () {
 
             var valEntrada = td_entrada.html() * 1;
             var valTotal = td_total.children('span').children('input').val() * 1;
-            $(td_inventario).html(valTotal);
+//            $(td_inventario).html(valTotal);
 
             //                //alert(valEntrada + ', ' + valTotal);
 
