@@ -64,7 +64,7 @@ var ctrlClienteVendor = function () {
 
         $.ajax({
             type: "POST",
-            url: '/handlers/Catalog.ashx?catalogo=cliente_vendorAdd',
+            url: '/handlers/Catalog.ashx?catalogo=cliente_vendor&opt=Add',
             data: JSON.stringify(oCV),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

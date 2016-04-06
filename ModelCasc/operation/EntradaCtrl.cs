@@ -506,6 +506,13 @@ namespace ModelCasc.operation
                 oETMng.selByIdEntrada();
                 oE.PLstEntTrans = oETMng.Lst;
 
+                Entrada_transporte_condicion oETC = new Entrada_transporte_condicion();
+                Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
+                oETC.Id_entrada_transporte = oETMng.Lst.First().Id;
+                oETCMng.O_Entrada_transporte_condicion = oETC;
+                oETCMng.selByIdEntradaTransporte();
+                oE.PLstEntTransCond = oETCMng.Lst;
+
                 CustodiaMng oCdiaMng = new CustodiaMng();
                 Custodia oCdia = new Custodia();
                 oCdia.Id = oE.Id_custodia;
@@ -538,6 +545,20 @@ namespace ModelCasc.operation
                 oTCMng.O_Tipo_carga = oTC;
                 oTCMng.selById();
                 oE.PTipoCarga = oTC;
+
+                Cliente_mercancia oCM = new Cliente_mercancia();
+                Cliente_mercanciaMng oCMMng = new Cliente_mercanciaMng();
+                oCM.Codigo = oE.Mercancia;
+                oCMMng.O_Cliente_mercancia = oCM;
+                oCMMng.selByCode();
+                oE.PCliente.PClienteMercancia = oCM;
+
+                Tarima_almacenMng oTAMng = new Tarima_almacenMng();
+                Tarima_almacen oTA = new Tarima_almacen();
+                oTA.Id_entrada = oE.Id;
+                oTAMng.O_Tarima_almacen = oTA;
+                oTAMng.selByIdEntrada();
+                oE.PLstTarAlm = oTAMng.Lst;
 
                 oE.PUsuario = oU;
             }
@@ -577,6 +598,220 @@ namespace ModelCasc.operation
             lst = oMng.Lst;
             return lst;
         }
+
+        #region Entrada Almacen
+
+        public static void EntradaAlmacenAdd(Entrada oE)
+        {
+            IDbTransaction trans = null;
+            Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+            Entrada_compartida oECFI = new Entrada_compartida();
+            string folioIndice = string.Empty;
+            bool clienteDocumentoRequerido = false;
+            try
+            {
+                //Verifica la referencia sea valida (No se puede repetir la referencia a menos que sea parcial)
+                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
+                Cliente_documento oCD = new Cliente_documento();
+                oCD.Id_cliente = oE.Id_cliente;
+                oCDMng.O_Cliente_documento = oCD;
+                oCDMng.fillLstByCliente();
+                clienteDocumentoRequerido = oCDMng.Lst.Count > 0;
+
+                if (!EsReferenciaParcial(oE.Referencia, oE.Id_cliente) && clienteDocumentoRequerido)
+                {
+                    ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
+                }
+
+                //Verifica las referencias de las compartidas
+                foreach (Entrada_compartida oEC in oE.PLstEntComp)
+                {
+                    ReferenciaValida(oEC.Referencia, oE.Id_cliente);
+                }
+
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+                oE.Folio = FolioCtrl.getFolio(enumTipo.E, trans);
+
+                if (EsConsolidada(oE))
+                {
+                    oECFI.Folio = oE.Folio;
+                    oECMng.O_Entrada_compartida = oECFI;
+                    folioIndice = oECMng.GetIndice(trans);
+                    oE.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();//System.Text.Encoding.ASCII.GetChars(new byte[] { Convert.ToByte(folioIndice) }).ToString();
+                }
+
+                if (!clienteDocumentoRequerido)
+                    oE.Referencia = oE.Folio + oE.Folio_indice;
+
+                ////obtiene la referencia de acuerdo al cliente
+                //if (oE.Codigo == null || oE.Codigo.Length == 0)
+                //{
+                //    oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
+                //    oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
+                //}
+
+                //Entrada de mercancia al almacen
+                EntradaMng oMng = new EntradaMng();
+                oMng.O_Entrada = oE;
+                oMng.add(trans);
+
+                //Usuario que captura la entrada
+                Entrada_usuarioMng oEUMng = new Entrada_usuarioMng();
+                Entrada_usuario oEU = new Entrada_usuario();
+                oEU.Id_entrada = oE.Id;
+                oEU.Id_usuario = oE.PUsuario.Id;
+                oEU.Folio = oE.Folio + oE.Folio_indice;
+                oEUMng.O_Entrada_usuario = oEU;
+                oEUMng.add(trans);
+
+                //Documentos asociados a la entrada
+                Entrada_documentoMng oEdMng = new Entrada_documentoMng();
+                foreach (Entrada_documento oED in oE.PLstEntDoc)
+                {
+                    oED.Id_entrada = oE.Id;
+                    oEdMng.O_Entrada_documento = oED;
+                    oEdMng.add(trans);
+                }
+
+                //Entrada compartida, por el momento comparten pedimentos
+                oECMng = new Entrada_compartidaMng();
+                if (EsConsolidada(oE))
+                {
+                    Entrada_compartida oECA = new Entrada_compartida();
+                    oECA.Referencia = oE.Referencia;
+                    oECA.Folio = oE.Folio;
+                    oECA.Id_entrada = oE.Id;
+                    oECA.Id_usuario = oE.PUsuario.Id;
+                    oECA.Capturada = true;
+                    oECMng.O_Entrada_compartida = oECA;
+                    oECMng.add(trans);
+                    foreach (Entrada_compartida oEC in oE.PLstEntComp)
+                    {
+                        oEC.Folio = oE.Folio;
+                        oECMng.O_Entrada_compartida = oEC;
+                        oECMng.add(trans);
+                    }
+                }
+
+                //Entrada transportes
+                Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
+                if (oE.PLstEntTrans.Count < 1)
+                    throw new Exception("Es necesario agregar por lo menos un transporte");
+                foreach (Entrada_transporte oET in oE.PLstEntTrans)
+                {
+                    oET.Id_entrada = oE.Id;
+                    oETMng.O_Entrada_transporte = oET;
+                    oETMng.add(trans);
+
+                    //Condiciones
+                    foreach (Entrada_transporte_condicion oETC in oE.PLstEntTransCond)
+                    {
+                        oETC.Id_entrada_transporte = oET.Id;
+                        oETCMng.O_Entrada_transporte_condicion = oETC;
+                        oETCMng.add(trans);
+                    }
+                }
+
+                //Parcial
+                if (oE.PEntPar != null)
+                {
+                    Entrada_parcialMng oEPMng = new Entrada_parcialMng();
+                    oE.PEntPar.Id_entrada = oE.Id;
+                    oEPMng.O_Entrada_parcial = oE.PEntPar;
+                    oEPMng.add(trans);
+                    oE.Es_unica = false;
+                }
+
+                if (oE.Referencia.Length == 0)
+                    oE.Referencia = oE.Folio + oE.Folio_indice;
+
+                oE.IsActive = true;
+
+                TarimaAlmacenAdd(oE, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+
+        }
+
+        #endregion
+
+        #region Tarima Almacen
+
+        public static void TarimaAlmacenAdd(Entrada oE, IDbTransaction trans)
+        {
+            try
+            {
+                int btoResiduo = oE.No_bulto_recibido % oE.No_pieza_declarada;
+                int tarCompleta = oE.No_bulto_recibido / oE.No_pieza_declarada;
+                Tarima_almacen o;
+                Tarima_almacenMng oMng = new Tarima_almacenMng();
+                for (int iTar = 1; iTar <= tarCompleta; iTar++)
+                {
+                    o = new Tarima_almacen()
+                    {
+                        Id_entrada = oE.Id,
+                        Bultos = oE.No_pieza_declarada,
+                        Piezas = oE.No_pieza_declarada * oE.No_caja_cinta_aduanal,
+                        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
+                        Mercancia_codigo = oE.Mercancia,
+                        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
+                        Rr = oE.Referencia,
+                        Estandar = oE.No_pieza_declarada.ToString() + "*" + oE.No_caja_cinta_aduanal.ToString()
+                    };
+                    oMng.O_Tarima_almacen = o;
+                    oMng.add(trans);
+                }
+
+                if (btoResiduo != 0)
+                {
+                    o = new Tarima_almacen()
+                    {
+                        Id_entrada = oE.Id,
+                        Bultos = btoResiduo,
+                        Piezas = btoResiduo * oE.No_caja_cinta_aduanal,
+                        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
+                        Mercancia_codigo = oE.Mercancia,
+                        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
+                        Rr = oE.Referencia,
+                        Estandar = "1*" + btoResiduo.ToString()
+                    };
+                    oMng.O_Tarima_almacen = o;
+                    oMng.add(trans);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static List<Tarima_almacen> TarimaAlmacenGetByRR(string rr)
+        {
+            List<Tarima_almacen> lst = new List<Tarima_almacen>();
+            try
+            {
+                Tarima_almacen o = new Tarima_almacen() { Rr = rr };
+                Tarima_almacenMng oMng = new Tarima_almacenMng() { O_Tarima_almacen = o };
+                oMng.fillLstByRR(true);
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
 
         #region Compartidas
 

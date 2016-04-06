@@ -12,7 +12,8 @@ namespace ModelCasc.catalog
         R,
         REM,
         ORC,
-        FND
+        FND,
+        TAR
     }
     public class Folio
     {

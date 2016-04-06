@@ -10,7 +10,7 @@
 namespace AppCasc.operation.almacen {
     
     
-    public partial class frmArriboWH {
+    public partial class frmEmbarqueWH {
         
         /// <summary>
         /// hfTitleErr control.
@@ -31,40 +31,13 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
-        /// ddlBodega control.
+        /// hf_tarimas_agregadas control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlBodega;
-        
-        /// <summary>
-        /// up_bodega control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel up_bodega;
-        
-        /// <summary>
-        /// ddlCortina control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCortina;
-        
-        /// <summary>
-        /// rfvCortina control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCortina;
+        protected global::System.Web.UI.WebControls.HiddenField hf_tarimas_agregadas;
         
         /// <summary>
         /// txt_fecha control.
@@ -76,274 +49,67 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.TextBox txt_fecha;
         
         /// <summary>
-        /// txt_hora_llegada control.
+        /// txt_hora_salida control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_hora_llegada;
+        protected global::System.Web.UI.WebControls.TextBox txt_hora_salida;
         
         /// <summary>
-        /// rfvHora_llegada control.
+        /// rfvHora_salida control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvHora_llegada;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvHora_salida;
         
         /// <summary>
-        /// txt_rr control.
+        /// hf_destino control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_rr;
+        protected global::System.Web.UI.WebControls.HiddenField hf_destino;
         
         /// <summary>
-        /// rfv_codigo_rr control.
+        /// ddlDestino control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_codigo_rr;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDestino;
         
         /// <summary>
-        /// txt_mercancia_codigo control.
+        /// ddlTransporte control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_mercancia_codigo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTransporte;
         
         /// <summary>
-        /// rfv_mercancia_codigo control.
+        /// rfvTransporte control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_mercancia_codigo;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTransporte;
         
         /// <summary>
-        /// txt_mercancia_desc control.
+        /// upTipoTransporte control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_mercancia_desc;
-        
-        /// <summary>
-        /// rfv_mercancia_descripcion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_mercancia_descripcion;
-        
-        /// <summary>
-        /// hf_vendor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_vendor;
-        
-        /// <summary>
-        /// txt_proveedor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_proveedor;
-        
-        /// <summary>
-        /// rfv_proveedor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_proveedor;
-        
-        /// <summary>
-        /// txt_no_pallet control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_no_pallet;
-        
-        /// <summary>
-        /// rv_no_pallet control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_no_pallet;
-        
-        /// <summary>
-        /// txt_no_bulto_declarado control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_no_bulto_declarado;
-        
-        /// <summary>
-        /// rfv_no_bulto_declarado control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_no_bulto_declarado;
-        
-        /// <summary>
-        /// rv_no_bulto_declarado control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_no_bulto_declarado;
-        
-        /// <summary>
-        /// txt_no_bulto_recibido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_no_bulto_recibido;
-        
-        /// <summary>
-        /// rfv_no_bulto_recibido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_no_bulto_recibido;
-        
-        /// <summary>
-        /// rv_no_bulto_recibido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_no_bulto_recibido;
-        
-        /// <summary>
-        /// txt_pza_x_bulto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_pza_x_bulto;
-        
-        /// <summary>
-        /// rfv_pza_x_bulto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_pza_x_bulto;
-        
-        /// <summary>
-        /// rv_pza_x_bulto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_pza_x_bulto;
-        
-        /// <summary>
-        /// txt_bto_x_pallet control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_bto_x_pallet;
-        
-        /// <summary>
-        /// rfv_bto_x_pallet control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_bto_x_pallet;
-        
-        /// <summary>
-        /// rv_bto_x_pallet control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_bto_x_pallet;
-        
-        /// <summary>
-        /// txt_no_bulto_danado control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_no_bulto_danado;
-        
-        /// <summary>
-        /// rv_no_bulto_danado control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_no_bulto_danado;
-        
-        /// <summary>
-        /// txt_no_bulto_abierto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_no_bulto_abierto;
-        
-        /// <summary>
-        /// rv_no_bulto_abierto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rv_no_bulto_abierto;
-        
-        /// <summary>
-        /// pnl_addTransportes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnl_addTransportes;
+        protected global::System.Web.UI.UpdatePanel upTipoTransporte;
         
         /// <summary>
         /// ddlTipo_Transporte control.
@@ -355,31 +121,94 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.DropDownList ddlTipo_Transporte;
         
         /// <summary>
-        /// hf_entradaTransporte control.
+        /// rfv_tipo_transporte control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_entradaTransporte;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_tipo_transporte;
         
         /// <summary>
-        /// pnl_getTransportes control.
+        /// upDatosVehiculo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnl_getTransportes;
+        protected global::System.Web.UI.UpdatePanel upDatosVehiculo;
         
         /// <summary>
-        /// grd_transportes control.
+        /// txt_placa control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grd_transportes;
+        protected global::System.Web.UI.WebControls.TextBox txt_placa;
+        
+        /// <summary>
+        /// rfv_placa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_placa;
+        
+        /// <summary>
+        /// txt_caja control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_caja;
+        
+        /// <summary>
+        /// rfv_caja control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_caja;
+        
+        /// <summary>
+        /// txt_caja_1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_caja_1;
+        
+        /// <summary>
+        /// rfv_caja_1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_caja_1;
+        
+        /// <summary>
+        /// txt_caja_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_caja_2;
+        
+        /// <summary>
+        /// rfv_caja_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_caja_2;
         
         /// <summary>
         /// txt_sello control.
@@ -490,21 +319,12 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.TextBox txt_observaciones;
         
         /// <summary>
-        /// btn_save control.
+        /// btnGuardar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_save;
-        
-        /// <summary>
-        /// usrControlClienteMercancia1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AppCasc.webControls.usrControlClienteMercancia usrControlClienteMercancia1;
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
     }
 }

@@ -103,6 +103,25 @@ namespace AppCasc.operation
                         DocSalida.getSalidaOC(path, TemplatePath, (Salida_orden_carga)obj);
                         ShowPdf(path);
                         break;
+                    case "entradaAlm":
+                        obj = (Entrada)Session["SEntrada"];
+                        RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/entradaAlm/") + RptFileName;
+                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateEntradaAlmacen.pdf");
+                        string TemplatePathTarima = HttpContext.Current.Server.MapPath("~/rpt/TemplatePallet.pdf");
+                        DocEntrada.getEntradaAlm(path, TemplatePath, TemplatePathTarima, (Entrada)obj);
+                        ShowPdf(path);
+                        break;
+                    case "salidaAlm":
+                        obj = (Salida)Session["SSalida"];
+                        RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/salidas/") + RptFileName;
+                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalidaAlmacen.pdf");
+                        DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj);
+                        ShowPdf(path);
+                        break;
                     default:
                         break;
                 }

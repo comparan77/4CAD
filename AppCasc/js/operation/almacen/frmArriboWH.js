@@ -43,6 +43,9 @@ var MngArriboWH = function () {
             timeFormat: 'HH:ii:ss'
         });
 
+        //Carga catálogo de proveedores
+        fillCatalogo();
+
         //Mascara para el RR
         $.mask.definitions['a'] = "[A-Z]";
         $('#ctl00_body_txt_rr').mask('a99999');
@@ -66,8 +69,6 @@ var MngArriboWH = function () {
 
         var bto_declarado = $('#ctl00_body_txt_no_bulto_declarado');
         var bto_recibido = $('#ctl00_body_txt_no_bulto_recibido');
-        //        var pza_declarada = $('#ctl00_body_txt_no_pieza_declarada');
-        //        var pza_recibida = $('#ctl00_body_txt_no_pieza_recibida');
         var pza_x_bulto = $('#ctl00_body_txt_pza_x_bulto');
         var bto_x_pallet = $('#ctl00_body_txt_bto_x_pallet');
 
@@ -126,6 +127,37 @@ var MngArriboWH = function () {
 
             return IsValid;
 
+        });
+    }
+
+    function fillCatalogo() {
+        $('#ctl00_body_txt_proveedor').autocomplete({
+            minLength: 3,
+            source: function (request, response) {
+                $.ajax({
+                    type: 'GET',
+                    url: "/handlers/Catalog.ashx",
+                    //dataType: "jsonp",
+                    data: {
+                        catalogo: 'cliente_vendor',
+                        opt: 'autoComplete',
+                        w: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            }
+            ,
+            focus: function (event, ui) {
+                $('#ctl00_body_txt_proveedor').val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $('#ctl00_body_txt_proveedor').val(ui.item.label);
+                $('#ctl00_body_hf_vendor').val(ui.item.value);
+                return false;
+            }
         });
     }
 
@@ -198,7 +230,7 @@ var MngArriboWH = function () {
             return false;
 
         //var residuoPza = pzas % pza_x_bto;
-        var completaBto = Math.floor(pzas / pza_x_bto);
+        //var completaBto = Math.floor(pzas / pza_x_bto);
 
         var residuoBto = btos % bto_x_tarima;
         var completaTar = Math.floor(btos / bto_x_tarima);

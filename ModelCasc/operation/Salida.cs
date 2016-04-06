@@ -91,6 +91,8 @@ namespace ModelCasc.operation
         public Transporte_tipo PTransporteTipo { get; set; }
         public Custodia PCustodia { get; set; }
         public int Id_salida_orden_carga { get; set; }
+        public List<Tarima_almacen> PLstTarAlm { get; set; }
+        public List<Salida_transporte_condicion> PLstSalTransCond { get; set; }
         #endregion
 
         #region Constructores

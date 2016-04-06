@@ -166,6 +166,9 @@ namespace AppCasc.handlers
                         SalidaCtrl.RemisionDevolucion(new Salida_remision() { Id = id, Es_devolucion = true }, oUC);
                         response = JsonConvert.SerializeObject("La operación se realizó correctamente");
                         break;
+                    case "tarimaAlm":
+                        response = tarimaAlmacen(context);
+                        break;
                     default:
                         break;
                 }
@@ -259,6 +262,22 @@ namespace AppCasc.handlers
                 case "getById":
                     int.TryParse(context.Request["id_orden_carga"].ToString(), out idOc);
                     response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetById(idOc, false));
+                    break;
+            }
+            return response;
+        }
+
+        private string tarimaAlmacen(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string key = string.Empty;
+            switch (option)
+            {
+                case "getByRR": //Valida referencia
+                    key = context.Request["key"].ToString();
+                    response = JsonConvert.SerializeObject(EntradaCtrl.TarimaAlmacenGetByRR(key));
+                    ///response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetByFolio(folioOC));
                     break;
             }
             return response;

@@ -37,11 +37,8 @@ namespace AppCasc.handlers
                     case "cliente_mercancia":
                         response = clienteMercancia(context);
                         break;
-                    case "cliente_vendorAdd":
-                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                        Cliente_vendor oCV = JsonConvert.DeserializeObject<Cliente_vendor>(jsonData);
-                        CatalogCtrl.Cliente_vendorAdd(oCV);
-                        response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
+                    case "cliente_vendor":
+                        response = clienteVendor(context);
                         break;
                     case "documento":
                         response = CatalogCtrl.DocumentoLstToJson();
@@ -58,6 +55,27 @@ namespace AppCasc.handlers
             {
                 context.Response.Write(e.Message);
             }
+        }
+
+        private string clienteVendor(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string key = string.Empty;
+            switch (option)
+            {
+                case "autoComplete":
+                    key = context.Request["w"].ToString();
+                    response = CatalogCtrl.ToCSV((CatalogCtrl.Cliente_vendorfillByName(key)).Cast<Object>().ToList());
+                    break;
+                case "Add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Cliente_vendor oCV = JsonConvert.DeserializeObject<Cliente_vendor>(jsonData);
+                    CatalogCtrl.Cliente_vendorAdd(oCV);
+                    response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
+                    break;
+            }
+            return response;
         }
 
         private string clienteMercancia(HttpContext context)

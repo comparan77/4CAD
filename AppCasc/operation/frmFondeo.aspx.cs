@@ -14,7 +14,7 @@ namespace AppCasc.operation
 {
     public partial class frmFondeo : System.Web.UI.Page
     {
-        private GridViewHelper helper;
+        //private GridViewHelper helper;
 
         private void loadFirsTime()
         {

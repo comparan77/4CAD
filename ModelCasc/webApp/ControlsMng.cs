@@ -223,10 +223,17 @@ namespace ModelCasc.webApp
         {
             Salida_destinoMng OSDMng = new Salida_destinoMng();
             OSDMng.fillLst();
-            ddlDestino.DataSource = OSDMng.Lst;
-            ddlDestino.DataTextField = "destino";
-            ddlDestino.DataValueField = "id";
-            ddlDestino.DataBind();
+            foreach(Salida_destino item in OSDMng.Lst)
+            { 
+                ListItem li = new ListItem(item.Destino, item.Id.ToString());
+                li.Attributes.Add("direccion", item.Direccion);
+                ddlDestino.Items.Add(li);
+            }
+            //ddlDestino.DataSource = OSDMng.Lst;
+            //ddlDestino.DataTextField = "destino";
+            //ddlDestino.DataValueField = "id";
+            //ddlDestino.Attributes.Add("direccion",
+            //ddlDestino.DataBind();
         }
 
         public static void fillClienteByGrupo(DropDownList ddlCliente, int idGrupo)

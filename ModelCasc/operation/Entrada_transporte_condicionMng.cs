@@ -172,5 +172,26 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void selByIdEntradaTransporte()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_transporte_condicion");
+                addParameters(5);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Entrada_transporte_condicion>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entrada_transporte_condicion o = new Entrada_transporte_condicion();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

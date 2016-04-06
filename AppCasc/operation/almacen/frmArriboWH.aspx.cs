@@ -13,6 +13,16 @@ namespace AppCasc.operation.almacen
 {
     public partial class frmArriboWH : System.Web.UI.Page
     {
+        private Entrada SEntrada
+        {
+            set
+            {
+                if (Session["SEntrada"] != null)
+                    Session.Remove("SEntrada");
+                Session.Add("SEntrada", value);
+            }
+        }
+
         private void fillControls()
         {
             try
@@ -31,10 +41,36 @@ namespace AppCasc.operation.almacen
             }
         }
 
+        private void printEntrada(int IdEntrada)
+        {
+            Entrada oE = new Entrada();
+
+            string path = string.Empty;
+            string pathImg = string.Empty;
+            string virtualPath = string.Empty;
+            try
+            {
+                oE = EntradaCtrl.EntradaGetAllDataById(IdEntrada);
+                SEntrada = oE;
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=entradaAlm','_blank', 'toolbar=no');</script>");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private void loadFirstTime()
         {
             try
             {
+                int IdEntradaPrint = 0;
+                if (Request.QueryString["_kp"] != null)
+                {
+                    int.TryParse(Request.QueryString["_kp"].ToString(), out IdEntradaPrint);
+                    printEntrada(IdEntradaPrint);
+                }
+
                 fillControls();
             }
             catch
@@ -87,6 +123,9 @@ namespace AppCasc.operation.almacen
                 //Mercancia
                 o.Mercancia = txt_mercancia_codigo.Text;
 
+                //Vendor
+                o.Origen = hf_vendor.Value;
+
                 //Listado de transportes de la entrada
                 o.PLstEntTrans = lstEntTran;
 
@@ -132,6 +171,21 @@ namespace AppCasc.operation.almacen
                 o.No_bulto_recibido = numero;
                 numero = 0;
 
+                //Numero de bultos recibidos
+                int.TryParse(txt_pza_x_bulto.Text, out numero);
+                o.No_pieza_recibida = numero * o.No_bulto_recibido;
+                numero = 0;
+
+                //Piezas por bulto se guarda en numero de cajas con cinta aduanal
+                int.TryParse(txt_pza_x_bulto.Text, out numero);
+                o.No_caja_cinta_aduanal = numero;
+                numero = 0;
+
+                //Bultos por tarima se guarda en piezas declaradas
+                int.TryParse(txt_bto_x_pallet.Text, out numero);
+                o.No_pieza_declarada = numero;
+                numero = 0;
+
                 //Vigilante
                 o.Vigilante = txt_vigilante.Text.Trim();
 
@@ -163,6 +217,11 @@ namespace AppCasc.operation.almacen
                 oCMng.selById();
                 o.PCliente = oC;
 
+                //
+                Cliente_mercancia oCM = new Cliente_mercancia() { Codigo = o.Mercancia };
+                oCM = CatalogCtrl.cliente_mercanciaFindByCode(oCM);
+                o.PCliente.PClienteMercancia = oCM;
+
                 //Custodia
                 Custodia oCdia = new Custodia();
                 oCdia.Id = o.Id_custodia;
@@ -171,6 +230,8 @@ namespace AppCasc.operation.almacen
 
                 o.PLstEntComp = new List<Entrada_compartida>();
                 o.PLstEntDoc = new List<Entrada_documento>();
+
+                o.Id_tipo_carga = 2;
             }
             catch
             {
@@ -185,7 +246,7 @@ namespace AppCasc.operation.almacen
             try
             {
                 Entrada o = getEntradaFormValues();
-                EntradaCtrl.AddEntrada(o);
+                EntradaCtrl.EntradaAlmacenAdd(o);
                 return o;
             }
             catch

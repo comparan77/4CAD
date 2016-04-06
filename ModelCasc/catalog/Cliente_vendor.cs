@@ -48,7 +48,7 @@ namespace ModelCasc.catalog
 
         public override string ToString()
         {
-            return "{\"value\":\"" + this._id + "\", \"text\":\"" + this._nombre + "\", \"label\":\"" + this._codigo + "\"}";
+            return "{\"value\":\"" + this._codigo + "\", \"text\":\"" + this._nombre + "\", \"label\":\"" + this._nombre + "\"}";
         }
 
     }

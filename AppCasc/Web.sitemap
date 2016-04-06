@@ -2,7 +2,7 @@
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
   <siteMapNode roles="*">
     <siteMapNode roles="*" title="_hide">
-      <siteMapNode url="~/Default.aspx" title="Bienvenido"  description="Inicio" />
+      <siteMapNode url="~/Default.aspx" title="Bienvenid@"  description="Inicio" />
       <siteMapNode url="~/catalog/frmAduana.aspx" title="Aduana"  description="Aduana" />
       <siteMapNode url="~/catalog/frmBodega.aspx" title="Bodega"  description="Bodega" />
       <siteMapNode url="~/catalog/frmCortina.aspx" title="Cortina"  description="Cortina" />
@@ -50,7 +50,7 @@
     </siteMapNode>
     <siteMapNode roles="Operacion, GteAlmacen, Super" title="Almacén">
       <siteMapNode url="~/operation/almacen/frmArriboWH.aspx" title="Arribos"  description="Arribos" />
-      <siteMapNode url="~/operation/almacen/frmSalidasWH.aspx" title="Embarques"  description="Embarques" />
+      <siteMapNode url="~/operation/almacen/frmEmbarqueWH.aspx" title="Embarques"  description="Embarques" />
     </siteMapNode>
     <siteMapNode roles="Super, Administracion" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />

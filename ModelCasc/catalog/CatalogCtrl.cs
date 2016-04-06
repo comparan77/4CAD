@@ -590,6 +590,25 @@ namespace ModelCasc.catalog
 
         #region Cliente Vendor
 
+        public static List<Cliente_vendor> Cliente_vendorfillByName(string nombre)
+        {
+            List<Cliente_vendor> lst = new List<Cliente_vendor>();
+            try
+            {
+                Cliente_vendorMng oMng = new Cliente_vendorMng();
+                Cliente_vendor o = new Cliente_vendor();
+                o.Nombre = nombre;
+                oMng.O_Cliente_vendor = o;
+                oMng.fillLstByName();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+        
         public static List<Cliente_vendor> Cliente_vendorfill(int IdClienteGrupo)
         {
             List<Cliente_vendor> lst = new List<Cliente_vendor>();

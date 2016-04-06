@@ -60,6 +60,12 @@
         <asp:TextBox runat="server" ID="txt_mercancia_desc" CssClass="txtLarge"></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_mercancia_descripcion" ControlToValidate="txt_mercancia_desc" ErrorMessage="Es necesario proporcionar el código de de la Mercancía." ></asp:RequiredFieldValidator>
     </div>
+    <div>
+        <asp:HiddenField runat="server" ID="hf_vendor" />
+        <label>Proveedor:</label>
+        <asp:TextBox runat="server" ID="txt_proveedor" CssClass="txtLarge"></asp:TextBox>
+        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_proveedor" ControlToValidate="txt_proveedor" ErrorMessage="Es necesario proporcionar el proveedor la Mercancía." ></asp:RequiredFieldValidator>
+    </div>
     <hr style="border-color: transparent" />
     <div>
         <label>Pallets Armados:</label>
@@ -68,13 +74,13 @@
     </div>
     <hr style="border-color: transparent" />
     <div>
-        <label>Bultos Declarados:</label>
+        <label>Cajas Declaradas:</label>
         <asp:TextBox CssClass="txtNumber calculaDif confirmValue" id="txt_no_bulto_declarado" runat="server" ToolTip="Número de Bultos reportados en los documentos." Text="0"></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_no_bulto_declarado" ControlToValidate="txt_no_bulto_declarado" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_declarado" ControlToValidate="txt_no_bulto_declarado" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="10000"></asp:RangeValidator>
     </div>
     <div>
-        <label>Bultos Recibidos:</label>
+        <label>Cajas Recibidas:</label>
         <asp:TextBox CssClass="txtNumber calculaDif confirmValue" id="txt_no_bulto_recibido" runat="server" ToolTip="Conteo del número de los bultos en la descarga." Text="0"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_no_bulto_recibido" ControlToValidate="txt_no_bulto_recibido" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_recibido" ControlToValidate="txt_no_bulto_recibido" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="10000"></asp:RangeValidator>
@@ -94,13 +100,13 @@
     </div>--%>
     <hr style="border-color: transparent" />
     <div>
-        <label>Piezas por Bulto:</label>
+        <label>Piezas por Caja:</label>
         <asp:TextBox Text="0" CssClass="txtNumber calculaStd confirmValue" id="txt_pza_x_bulto" runat="server" ToolTip="Número de Piezas por bulto."></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_pza_x_bulto" ControlToValidate="txt_pza_x_bulto" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_pza_x_bulto" ControlToValidate="txt_pza_x_bulto" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
     </div>
     <div>
-        <label>Butos por Pallet:</label>
+        <label>Cajas por Tarima:</label>
         <asp:TextBox Text="0" CssClass="txtNumber calculaStd confirmValue" id="txt_bto_x_pallet" runat="server" ToolTip="Número de bultos por pallet."></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_bto_x_pallet" ControlToValidate="txt_bto_x_pallet" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_bto_x_pallet" ControlToValidate="txt_bto_x_pallet" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
@@ -122,7 +128,7 @@
                     <td align="center"><span id="pza_sobrante">0</span></td>
                 </tr>
                 <tr id="tr_bto_dif">
-                    <td>Bto</td>
+                    <td>Cja</td>
                     <td align="center"><span id="bto_faltante">0</span></td>
                     <td align="center"><span id="bto_sobrante">0</span></td>
                 </tr>
@@ -144,12 +150,12 @@
 
     <div class="hidden" id="cantidadesProblema">
         <div>
-            <label>Bultos Dañados:</label>
+            <label>Cajas Dañadas:</label>
             <asp:TextBox Text="0" CssClass="txtNumber" id="txt_no_bulto_danado" runat="server" ToolTip="Numero de bultos encontrados con daños físicos."></asp:TextBox>
             <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_danado" ControlToValidate="txt_no_bulto_danado" ErrorMessage="Es necesario capturar un número entre 0 y 10,000" MinimumValue="0" MaximumValue="10000"></asp:RangeValidator>
         </div>
         <div>
-            <label>Bultos Abiertos:</label>
+            <label>Cajas Abiertas:</label>
             <asp:TextBox Text="0" CssClass="txtNumber" id="txt_no_bulto_abierto" runat="server" ToolTip="Numero de bultos encontrados abiertos "></asp:TextBox>
             <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_abierto" ControlToValidate="txt_no_bulto_abierto" ErrorMessage="Es necesario capturar un número entre 0 y 10,000" MinimumValue="0" MaximumValue="10000"></asp:RangeValidator>
         </div>
@@ -244,7 +250,7 @@
 </div>
 
 <h3 id="H3" style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Informaci&oacute;n Adicional</h3>
-<div style="position: relative;" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
     <div>
         <label>Vigilante:</label>
         <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante" ToolTip="Nombre del vigilante en turno que supervisa la descarga"></asp:TextBox>

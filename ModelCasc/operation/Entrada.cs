@@ -99,6 +99,7 @@ namespace ModelCasc.operation
         public bool EsConsolidada { get; set; }
         public Entrada_inventario PEntInv { get; set; }
         public bool ConFondeo { get; set; }
+        public List<Tarima_almacen> PLstTarAlm { get; set; }
         #endregion
 
         #region Constructores

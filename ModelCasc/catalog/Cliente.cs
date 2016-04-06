@@ -31,6 +31,7 @@ namespace ModelCasc.catalog
         public string Mascara { get; set; }
         public string Documento { get; set; }
         public bool EsFondeo { get; set; }
+        public Cliente_mercancia PClienteMercancia { get; set; }
         #endregion
 
         #region Constructores

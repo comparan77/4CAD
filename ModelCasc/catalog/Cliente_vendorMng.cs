@@ -213,5 +213,26 @@ namespace ModelCasc.catalog
                 throw;
             }
         }
+
+        internal void fillLstByName()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_vendor");
+                addParameters(8);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Cliente_vendor>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Cliente_vendor o = new Cliente_vendor();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

@@ -228,6 +228,13 @@ namespace ModelCasc.operation
                 oTTMng.selById();
                 oS.PTransporteTipo = oTT;
 
+                Salida_transporte_condicion oSTC = new Salida_transporte_condicion();
+                Salida_transporte_condicionMng oSTCMng = new Salida_transporte_condicionMng();
+                oSTC.Id_salida = oS.Id;
+                oSTCMng.O_Salida_transporte_condicion = oSTC;
+                oSTCMng.selByIdSalida();
+                oS.PLstSalTransCond = oSTCMng.Lst;
+
                 CustodiaMng oCdiaMng = new CustodiaMng();
                 Custodia oCdia = new Custodia();
                 oCdia.Id = oS.Id_custodia;
@@ -246,6 +253,13 @@ namespace ModelCasc.operation
                 oU.Id = oSU.Id_usuario;
                 oUMng.O_Usuario = oU;
                 oUMng.selById();
+
+                //Tarima Almacen cuando existe
+                Tarima_almacenMng oTAMng = new Tarima_almacenMng();
+                Tarima_almacen oTA = new Tarima_almacen() { Id_salida = oS.Id };
+                oTAMng.O_Tarima_almacen = oTA;
+                oTAMng.selByIdSalida();
+                oS.PLstTarAlm = oTAMng.Lst;
 
                 oS.PUsuario = oU;
             }
@@ -1262,6 +1276,119 @@ namespace ModelCasc.operation
 
         #endregion
 
+        #region Salida Almacen
+
+        public static void SalidaAlmacenAdd(Salida oS)
+        {
+            IDbTransaction trans = null;
+            Salida_compartidaMng oSCMng = new Salida_compartidaMng();
+            Salida_compartida oSCFI = new Salida_compartida();
+            string folioIndice = string.Empty;
+            try
+            {
+
+                //ReferenciaIngresada(oS.Referencia, oS.Id_cliente);
+                //ReferenciaUnicaValida(oS.Referencia, oS.Id_cliente);
+                //SalidaRefValida(oS.Referencia, oS.Id_cliente);
+
+                //Comienza la transaccion
+                trans = GenericDataAccess.BeginTransaction();
+                oS.Folio = FolioCtrl.getFolio(enumTipo.S, trans);
+
+                //if (EsCompartida(oS))
+                //{
+                //    oSCFI.Folio = oS.Folio;
+                //    oSCMng.O_Salida_compartida = oSCFI;
+                //    folioIndice = oSCMng.GetIndice(trans);
+                //    oS.Folio_indice = ((char)Convert.ToInt32(folioIndice)).ToString();
+                //}
+
+                //Salida de mercancia al almacen
+                SalidaMng oMng = new SalidaMng();
+                oMng.O_Salida = oS;
+                oMng.add(trans);
+
+                //Condiciones del transporte
+                Salida_transporte_condicionMng oSTCMng = new Salida_transporte_condicionMng();
+                foreach (Salida_transporte_condicion itemSTC in oS.PLstSalTransCond)
+                {
+                    itemSTC.Id_salida = oS.Id;
+                    oSTCMng.O_Salida_transporte_condicion = itemSTC;
+                    oSTCMng.add(trans);
+                }
+
+                //Usuario que captura la Salida
+                Salida_usuarioMng oSUMng = new Salida_usuarioMng();
+                Salida_usuario oSU = new Salida_usuario();
+                oSU.Id_salida = oS.Id;
+                oSU.Id_usuario = oS.PUsuario.Id;
+                oSU.Folio = oS.Folio + oS.Folio_indice;
+                oSUMng.O_Salida_usuario = oSU;
+                oSUMng.add(trans);
+
+                //Documentos asociados a la Salida
+                //Salida_documentoMng oSdMng = new Salida_documentoMng();
+                //foreach (Salida_documento oSD in oS.PLstSalDoc)
+                //{
+                //    oSD.Id_salida = oS.Id;
+                //    oSdMng.O_Salida_documento = oSD;
+                //    oSdMng.add(trans);
+                //}
+
+                //Salida compartida, por el momento comparten pedimentos
+                //oSCMng = new Salida_compartidaMng();
+                //if (EsCompartida(oS))
+                //{
+                //    Salida_compartida oSCA = new Salida_compartida();
+                //    oSCA.Referencia = oS.Referencia;
+                //    oSCA.Folio = oS.Folio;
+                //    oSCA.Id_salida = oS.Id;
+                //    oSCA.Id_usuario = oS.PUsuario.Id;
+                //    oSCA.Capturada = true;
+                //    oSCMng.O_Salida_compartida = oSCA;
+                //    oSCMng.add(trans);
+                //    foreach (Salida_compartida oSC in oS.PLstSalComp)
+                //    {
+                //        oSC.Folio = oS.Folio;
+                //        oSCMng.O_Salida_compartida = oSC;
+                //        oSCMng.add(trans);
+                //    }
+                //}
+
+                ////Parcial
+                //if (oS.PSalPar != null)
+                //{
+                //    Salida_parcialMng oSPMng = new Salida_parcialMng();
+                //    oS.PSalPar.Id_salida = oS.Id;
+                //    oSPMng.O_Salida_parcial = oS.PSalPar;
+                //    oSPMng.add(trans);
+                //}
+
+                //Orden de carga
+                //Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id, Referencia = oS.Referencia } };
+                //oSOCR.setSalida(trans);
+                Tarima_almacenMng oTAMng = new Tarima_almacenMng();
+                foreach (Tarima_almacen itemTA in oS.PLstTarAlm)
+                {
+                    itemTA.Id_salida = oS.Id;
+                    oTAMng.O_Tarima_almacen = itemTA;
+                    oTAMng.udtSalida(trans);
+                }
+
+                oS.IsActive = true;
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        #endregion
+
         public static void actualizaDatos(Salida oS)
         {
             try
@@ -1275,5 +1402,7 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+       
     }
 }
