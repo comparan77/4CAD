@@ -225,12 +225,12 @@
         </tr>
         <tr>
             <td>Bultos</td>
-            <td id="td_bulto_inventario" align="center"><%= oEI.Bultos.ToString() %></td>
+            <td id="td_bulto_inventario" align="center"><%= oEI.Bultos_recibidos.ToString() %></td>
             <td align="center"><p style="margin: 0;"><span style="float: left;" class="ui-icon"></span><span id="td_bulto_maquilado"><%= oEM.Bulto.ToString() %></span></p></td>
         </tr>
         <tr>
             <td>Piezas Totales</td>
-            <td id="td_pieza_inventario" align="center"><%= oEI.Piezas.ToString() %></td>
+            <td id="td_pieza_inventario" align="center"><%= oEI.Piezas_recibidas.ToString() %></td>
             <td align="center"><p style="margin: 0;"><span style="float: left;" class="ui-icon"></span><span id="td_pieza_maquilado"><%= oEM.Pieza.ToString() %></span></p></td>
         </tr>
     </tbody>
