@@ -51,6 +51,7 @@
     <siteMapNode roles="Operacion, GteAlmacen, Super" title="Almacén">
       <siteMapNode url="~/operation/almacen/frmArriboWH.aspx" title="Arribos"  description="Arribos" />
       <siteMapNode url="~/operation/almacen/frmEmbarqueWH.aspx" title="Embarques"  description="Embarques" />
+      <siteMapNode url="~/operation/almacen/frmRptWH.aspx" title="Reportes"  description="Reportes" />
     </siteMapNode>
     <siteMapNode roles="Super, Administracion" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />

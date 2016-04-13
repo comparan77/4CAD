@@ -13,6 +13,8 @@ using iTextSharp.text.pdf;
 using System.IO;
 using ModelCasc.report.operation;
 using ModelCasc.catalog;
+using ModelCasc;
+using ModelCasc.report.almacen;
 
 namespace AppCasc.operation
 {
@@ -118,8 +120,17 @@ namespace AppCasc.operation
                         RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
                         pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalidaAlmacen.pdf");
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateResAlm.pdf");
                         DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj);
+                        ShowPdf(path);
+                        break;
+                    case "rptAlmRes":
+                        int anio = Convert.ToInt32(Request["anio"]);
+                        int mes = Convert.ToInt32(Request["mes"]);
+                        RptFileName = "Resumen_" + anio.ToString() + "_" + mes.ToString() + ".pdf";
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateResAlm.pdf");
+                        path = HttpContext.Current.Server.MapPath("~/rpt/rptAlm/") + RptFileName;
+                        DocAlmacenResumen.getAlmResumen(path, TemplatePath, anio, mes);
                         ShowPdf(path);
                         break;
                     default:

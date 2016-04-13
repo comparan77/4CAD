@@ -303,30 +303,25 @@ namespace ModelCasc.report.operation
 
         public static void ExportToPdf(List<Tarima_almacen> lst, string FilePath, string folioSalida)
         {
-            Document document = new Document();
+            Document document = new Document(PageSize.LEGAL, 20f, 20f, 55f, 20f);
             PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(FilePath, FileMode.Create));
             document.Open();
-
-            //header
-            PdfPTable Header = new PdfPTable(2);
-            PdfPCell headerCell = new PdfPCell();
-            headerCell.Colspan = 2;
-            Header.AddCell(headerCell);
-            headerCell = new PdfPCell(new Phrase("\nFOLIO SALIDA: " + folioSalida, iTextSharp.text.FontFactory.GetFont(FontFactory.COURIER_BOLD, 6)));
-            headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            headerCell.Colspan = 2;
-            Header.AddCell(headerCell);
+            
+            _events evtHeader = new _events("Folio:" + folioSalida);
+            writer.PageEvent = evtHeader;
 
 
             iTextSharp.text.Font font = iTextSharp.text.FontFactory.GetFont(FontFactory.COURIER_BOLD, 6);
 
             PdfPTable table = new PdfPTable(6);
+            
+            
             //PdfPRow row = null;
             float[] widths = new float[] { 1.5f, 2f, 2f, 6f, 2f, 2f };
 
             table.SetWidths(widths);
-
             table.WidthPercentage = 100;
+            table.SpacingAfter = 20;
             //int iCol = 0;
             //string colname = "";
             PdfPCell cell = new PdfPCell(new Phrase("Products"));
@@ -350,10 +345,42 @@ namespace ModelCasc.report.operation
                 table.AddCell(new PdfPCell() { Phrase = new Phrase(itemTA.Rr, font), HorizontalAlignment = PdfPCell.ALIGN_CENTER });
             }
 
-            document.Add(Header);
             document.Add(table);
-            
             document.Close();
+        }
+    }
+
+    class _events : PdfPageEventHelper
+    {
+        private string _title;
+        public _events(string title)
+        {
+            this._title = title;
+        }
+
+        public override void OnEndPage(PdfWriter writer, Document document)
+        {
+            PdfPTable table = new PdfPTable(1);
+            //table.WidthPercentage = 100; //PdfPTable.writeselectedrows below didn't like this
+            table.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin; //this centers [table]
+            PdfPTable table2 = new PdfPTable(2);
+
+            //logo
+            //PdfPCell cell2 = new PdfPCell(Image.GetInstance(@"C:\path\to\file.gif"));
+            PdfPCell cell2 = new PdfPCell();
+            cell2.Colspan = 2;
+            table2.AddCell(cell2);
+
+            //title
+            cell2 = new PdfPCell(new Phrase("\n" + this._title, iTextSharp.text.FontFactory.GetFont(FontFactory.COURIER_BOLD, 6)));
+            cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+            cell2.Colspan = 2;
+            table2.AddCell(cell2);
+
+            PdfPCell cell = new PdfPCell(table2);
+            table.AddCell(cell);
+
+            table.WriteSelectedRows(0, -1, document.LeftMargin, document.PageSize.Height - 36, writer.DirectContent);
         }
     }
 }
