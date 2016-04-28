@@ -305,14 +305,6 @@ namespace ModelCasc.operation
                     oET.Id_entrada = oE.Id;
                     oETMng.O_Entrada_transporte = oET;
                     oETMng.add(trans);
-
-                    //Condiciones
-                    foreach (Entrada_transporte_condicion oETC in oE.PLstEntTransCond)
-                    {
-                        oETC.Id_entrada_transporte = oET.Id;
-                        oETCMng.O_Entrada_transporte_condicion = oETC;
-                        oETCMng.add(trans);
-                    }
                 }
 
                 //Parcial
@@ -546,14 +538,7 @@ namespace ModelCasc.operation
                 oTCMng.O_Tipo_carga = oTC;
                 oTCMng.selById();
                 oE.PTipoCarga = oTC;
-
-                Cliente_mercancia oCM = new Cliente_mercancia();
-                Cliente_mercanciaMng oCMMng = new Cliente_mercanciaMng();
-                oCM.Codigo = oE.Mercancia;
-                oCMMng.O_Cliente_mercancia = oCM;
-                oCMMng.selByCode();
-                oE.PCliente.PClienteMercancia = oCM;
-
+                                
                 Tarima_almacenMng oTAMng = new Tarima_almacenMng();
                 Tarima_almacen oTA = new Tarima_almacen();
                 oTA.Id_entrada = oE.Id;
@@ -567,6 +552,16 @@ namespace ModelCasc.operation
                 oTAEMng.O_Tarima_almacen_estandar = oTAE;
                 oTAEMng.selByIdEntrada();
                 oE.PTarAlmEstd = oTAE;
+
+                if (oE.PLstTarAlm.Count > 0)
+                {
+                    Cliente_mercancia oCM = new Cliente_mercancia();
+                    Cliente_mercanciaMng oCMMng = new Cliente_mercanciaMng();
+                    oCM.Codigo = oE.Mercancia;
+                    oCMMng.O_Cliente_mercancia = oCM;
+                    oCMMng.selByCode();
+                    oE.PCliente.PClienteMercancia = oCM;
+                }
 
                 oE.PUsuario = oU;
             }
