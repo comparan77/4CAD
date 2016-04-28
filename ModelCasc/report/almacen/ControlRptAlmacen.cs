@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Model;
+using ModelCasc.operation.almacen;
+using System.Globalization;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace ModelCasc.report.almacen
 {
-    public class ControlRpt
+    public class ControlRptAlmacen
     {
         public static List<rptRelDiaSal> RelDiaSalGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
@@ -124,7 +127,7 @@ namespace ModelCasc.report.almacen
                         Cantidad_piezas = Convert.ToInt32(dr["cantidad_piezas"]),
                         Cantidad_tarimas = Convert.ToInt32(dr["cantidad_tarimas"]),
                         Piezas_calidad = Convert.ToInt32(dr["piezas_calidad"]),
-                        Tipo_produccion = dr["tipo_produccion"].ToString(),
+                        Tipo_producto = dr["tipo_producto"].ToString(),
                         Observaciones = dr["observaciones"].ToString()
                     };
                     lst.Add(o);
@@ -135,6 +138,102 @@ namespace ModelCasc.report.almacen
                 throw;
             }
             return lst;
+        }
+
+        public static void getRemision(string FilePath, string rptPath, DataSet ds, Tarima_almacen_remision o)
+        {
+            try
+            {
+                CultureInfo ci = new CultureInfo("es-MX");
+
+                ReportDocument reporte = new ReportDocument();
+                reporte.Load(rptPath);
+
+                foreach (Tarima_almacen_remision_detail itemTARDet in o.PLstTARDet)
+                {
+                    DataRow dr = ds.Tables["remision"].NewRow();
+                    dr["rr"] = itemTARDet.Rr;
+                    dr["estandar"] = itemTARDet.Estandar;
+                    dr["tarimas"] = itemTARDet.Tarimas;
+                    dr["cajas"] = itemTARDet.Cajas;
+                    dr["piezas"] = itemTARDet.Piezas;
+                    ds.Tables["remision"].Rows.Add(dr);
+                }
+
+                reporte.SetDataSource(ds.Tables["remision"]);
+
+                reporte.SetParameterValue("operador", o.PTarAlmTrafico.Operador);
+                reporte.SetParameterValue("linea", o.PTarAlmTrafico.PTransporte.Nombre);
+                StringBuilder sbET = new StringBuilder();
+                sbET.Append("Tipo: " + o.PTarAlmTrafico.PTransporteTipo.Nombre);
+                if (string.Compare(o.PTarAlmTrafico.Placa, "N.A.") != 0)
+                    sbET.Append(", Placa: " + o.PTarAlmTrafico.Placa);
+                if (string.Compare(o.PTarAlmTrafico.Caja, "N.A.") != 0)
+                    sbET.Append(", Caja: " + o.PTarAlmTrafico.Caja);
+                if (string.Compare(o.PTarAlmTrafico.Caja1, "N.A.") != 0)
+                    sbET.Append(", Contenedor 1: " + o.PTarAlmTrafico.Caja1);
+                if (string.Compare(o.PTarAlmTrafico.Caja2, "N.A.") != 0)
+                    sbET.Append(", Contenedor 2: " + o.PTarAlmTrafico.Caja2);
+                sbET.AppendLine();
+                reporte.SetParameterValue("transporte", sbET.ToString());
+
+                reporte.SetParameterValue("folio_cita", o.PTarAlmTrafico.Folio_cita);
+                reporte.SetParameterValue("fecha_cita", o.PTarAlmTrafico.Fecha_solicitud.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("cliente", "AVON COSMETICS MANUFACTURING S. DE RL DE C.V.");
+                reporte.SetParameterValue("mercancia_codigo", o.Mercancia_codigo);
+                //reporte.SetParameterValue("proveedor", o.PClienteVendor.Codigo);
+                //reporte.SetParameterValue("direccion", o.PClienteVendor.Direccion);
+                reporte.SetParameterValue("folio_remision", o.Folio);
+                reporte.SetParameterValue("elaboro", o.PUsuario.Nombre);
+
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, FilePath);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        public static void getCarga(string FilePath, string rptPath, DataSet ds, Tarima_almacen_carga o)
+        {
+            try
+            {
+                CultureInfo ci = new CultureInfo("es-MX");
+
+                ReportDocument reporte = new ReportDocument();
+                reporte.Load(rptPath);
+
+                foreach (Tarima_almacen_carga_format itemTACf in o.PLstTACRpt)
+                {
+                    DataRow dr = ds.Tables["carga"].NewRow();
+                    dr["folio_remision"] = itemTACf.Folio_remision;
+                    dr["codigo"] = itemTACf.Mercancia_codigo;
+                    dr["rr"] = itemTACf.Rr;
+                    dr["folio_tarima"] = itemTACf.Folio_tarima;
+                    dr["estandar"] = itemTACf.Estandar;
+                    dr["bultos"] = itemTACf.Bultos;
+                    dr["piezas"] = itemTACf.Piezas;
+                    ds.Tables["carga"].Rows.Add(dr);
+                }
+
+                reporte.SetDataSource(ds.Tables["carga"]);
+
+                reporte.SetParameterValue("folio", o.Folio_orden_carga);
+                //Datos de la cita de trafico
+                reporte.SetParameterValue("folio_cita", o.PTarAlmTrafico.Folio_cita);
+                reporte.SetParameterValue("fecha_cita", o.PTarAlmTrafico.Fecha_solicitud.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("hora_cita", o.PTarAlmTrafico.Hora_cita);
+                reporte.SetParameterValue("destino", o.PTarAlmTrafico.PSalidaDestino.Destino);
+                reporte.SetParameterValue("linea_transporte", o.PTarAlmTrafico.PTransporte.Nombre);
+                reporte.SetParameterValue("tipo_transporte", o.PTarAlmTrafico.PTransporteTipo.Nombre);
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, FilePath);
+            }
+            catch
+            {
+
+                throw;
+            }
         }
     }
 }

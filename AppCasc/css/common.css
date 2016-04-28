@@ -5,7 +5,7 @@
 
 .error 
 {
-    color: Red;
+    color: Red!important;
 }
 
 input[type=text], textarea, select, input[type=password]
@@ -18,6 +18,7 @@ input[type=text], textarea, select, input[type=password]
 .icon-button-action
 {
     cursor: pointer;
+    color: #0d5fb3;
 }
 
 .icon-button-search

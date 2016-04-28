@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using Model;
 
-namespace ModelCasc.operation
+namespace ModelCasc.operation.almacen
 {
     internal class Tarima_almacenMng: dbTable
     {
@@ -40,10 +40,11 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_estandar", DbType.String, this._oTarima_almacen.Estandar);
             GenericDataAccess.AddInParameter(this.comm, "?P_bultos", DbType.Int32, this._oTarima_almacen.Bultos);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oTarima_almacen.Piezas);
+            GenericDataAccess.AddInParameter(this.comm, "?P_es_resto", DbType.Boolean, this._oTarima_almacen.Es_resto);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oTarima_almacen.Id_salida);
         }
 
-        protected void BindByDataRow(DataRow dr, Tarima_almacen o)
+        public void BindByDataRow(DataRow dr, Tarima_almacen o)
         {
             try
             {
@@ -73,6 +74,7 @@ namespace ModelCasc.operation
                     o.Piezas = entero;
                     entero = 0;
                 }
+                o.Es_resto = Convert.ToBoolean(dr["es_resto"].ToString());
                 if (dr["id_salida"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_salida"].ToString(), out entero);
@@ -264,6 +266,119 @@ namespace ModelCasc.operation
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillLstDistinctBy()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
+                addParameters(10);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Tarima_almacen>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Tarima_almacen o = new Tarima_almacen();
+                    BindByDataRow(dr, o);
+                    if (dr["tarimas"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["tarimas"].ToString(), out entero);
+                        o.Tarimas = entero;
+                        entero = 0;
+                    }
+                    if (dr["tarRem"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["tarRem"].ToString(), out entero);
+                        o.TarRem = entero;
+                        entero = 0;
+                    }
+                    if (dr["btoRem"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["btoRem"].ToString(), out entero);
+                        o.BtoRem = entero;
+                        entero = 0;
+                    }
+                    if (dr["pzaRem"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["pzaRem"].ToString(), out entero);
+                        o.PzaRem = entero;
+                        entero = 0;
+                    }
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillLstByCode()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
+                addParameters(11);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Tarima_almacen>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Tarima_almacen o = new Tarima_almacen();
+                    BindByDataRow(dr, o);
+                    if (dr["tarimas"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["tarimas"].ToString(), out entero);
+                        o.Tarimas = entero;
+                        entero = 0;
+                    }
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillLstByEntrada()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
+                addParameters(12);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Tarima_almacen>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Tarima_almacen o = new Tarima_almacen();
+                    BindByDataRow(dr, o);
+                    if (dr["tarimas"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["tarimas"].ToString(), out entero);
+                        o.Tarimas = entero;
+                        entero = 0;
+                    }
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void SetSalida(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
+                addParameters(13);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {

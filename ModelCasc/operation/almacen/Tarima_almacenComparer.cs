@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModelCasc.operation
+namespace ModelCasc.operation.almacen
 {
     public class Tarima_almacenComparer : IEqualityComparer<Tarima_almacen>
     {

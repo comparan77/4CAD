@@ -50,13 +50,17 @@
     </siteMapNode>
     <siteMapNode roles="Operacion, GteAlmacen, Super" title="Almacén">
       <siteMapNode url="~/operation/almacen/frmArriboWH.aspx" title="Arribos"  description="Arribos" />
+      <siteMapNode url="~/operation/almacen/frmNaveWH.aspx" title="Distribución"  description="Distribución de la Mercancía" />
+      <siteMapNode url="~/operation/almacen/frmTraficoWH.aspx" title="Tráfico"  description="Tráfico" />
+      <siteMapNode url="~/operation/almacen/frmRemWH.aspx" title="Remisión"  description="Remisión de Mercancía" />
+      <siteMapNode url="~/operation/almacen/frmOCWH.aspx" title="Orden de Carga"  description="Orden de Carga" />
       <siteMapNode url="~/operation/almacen/frmEmbarqueWH.aspx" title="Embarques"  description="Embarques" />
       <siteMapNode url="~/operation/almacen/frmRptWH.aspx" title="Reportes"  description="Reportes" />
     </siteMapNode>
     <siteMapNode roles="Super, Administracion" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />
     </siteMapNode>
-    <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super" title="Inventario">
+    <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super" title="Logística">
       <siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
       <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
       <siteMapNode url="~/operation/frmMaquila.aspx" title="Maquila"  description="Maquila" />

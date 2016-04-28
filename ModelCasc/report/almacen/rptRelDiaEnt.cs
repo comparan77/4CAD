@@ -15,7 +15,7 @@ namespace ModelCasc.report.almacen
         public int Cantidad_piezas { get; set; }
         public int Cantidad_tarimas { get; set; }
         public int Piezas_calidad { get; set; }
-        public string Tipo_produccion { get; set; }
+        public string Tipo_producto { get; set; }
         public string Observaciones { get; set; }
     }
 }

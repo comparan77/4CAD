@@ -5,6 +5,7 @@ using System.Text;
 using ModelCasc.catalog;
 using System.Data;
 using Model;
+using ModelCasc.operation.almacen;
 
 namespace ModelCasc.operation
 {
@@ -1293,7 +1294,7 @@ namespace ModelCasc.operation
 
                 //Comienza la transaccion
                 trans = GenericDataAccess.BeginTransaction();
-                oS.Folio = FolioCtrl.getFolio(enumTipo.S, trans);
+                oS.Folio = FolioCtrl.getFolio(enumTipo.SA, trans);
 
                 //if (EsCompartida(oS))
                 //{
@@ -1367,13 +1368,15 @@ namespace ModelCasc.operation
                 //Orden de carga
                 //Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id, Referencia = oS.Referencia } };
                 //oSOCR.setSalida(trans);
-                Tarima_almacenMng oTAMng = new Tarima_almacenMng();
-                foreach (Tarima_almacen itemTA in oS.PLstTarAlm)
-                {
-                    itemTA.Id_salida = oS.Id;
-                    oTAMng.O_Tarima_almacen = itemTA;
-                    oTAMng.udtSalida(trans);
-                }
+                //Tarima_almacenMng oTAMng = new Tarima_almacenMng();
+                //foreach (Tarima_almacen itemTA in oS.PLstTarAlm)
+                //{
+                //    itemTA.Id_salida = oS.Id;
+                //    oTAMng.O_Tarima_almacen = itemTA;
+                //    oTAMng.udtSalida(trans);
+                //}
+
+                AlmacenCtrl.tarimaAlmacenSetSalida(oS.Id_salida_orden_carga, oS.Id, trans);
 
                 oS.IsActive = true;
 

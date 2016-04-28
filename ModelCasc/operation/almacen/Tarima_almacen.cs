@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModelCasc.operation
+namespace ModelCasc.operation.almacen
 {
     public class Tarima_almacen
     {
@@ -17,6 +17,7 @@ namespace ModelCasc.operation
         protected string _estandar;
         protected int _bultos;
         protected int _piezas;
+        protected bool _es_resto;
         protected int? _id_salida;
         #endregion
 
@@ -30,8 +31,14 @@ namespace ModelCasc.operation
         public string Estandar { get { return _estandar; } set { _estandar = value; } }
         public int Bultos { get { return _bultos; } set { _bultos = value; } }
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
+        public bool Es_resto { get { return _es_resto; } set { _es_resto = value; } }
         public int? Id_salida { get { return _id_salida; } set { _id_salida = value; } }
-
+        public int Tarimas { get; set; }
+        public List<Tarima_almacen_resto> PLTAResto { get; set; }
+        public int TarRem { get; set; }
+        public int BtoRem { get; set; }
+        public int PzaRem { get; set; }
+        public int Seleccionado { get; set; }
         /// <summary>
         /// Para autocomplete de jquery
         /// </summary>
@@ -50,6 +57,7 @@ namespace ModelCasc.operation
             this._estandar = String.Empty;
             this._bultos = 0;
             this._piezas = 0;
+            this._es_resto = false;
             this._id_salida = null;
         }
         #endregion

@@ -148,6 +148,24 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_mercancia_descripcion;
         
         /// <summary>
+        /// txt_negocio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_negocio;
+        
+        /// <summary>
+        /// rgv_negocio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rgv_negocio;
+        
+        /// <summary>
         /// hf_vendor control.
         /// </summary>
         /// <remarks>
@@ -218,6 +236,33 @@ namespace AppCasc.operation.almacen {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rv_no_bulto_declarado;
+        
+        /// <summary>
+        /// txt_no_pieza_declarada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_no_pieza_declarada;
+        
+        /// <summary>
+        /// rfv_no_pieza_declarada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_no_pieza_declarada;
+        
+        /// <summary>
+        /// rv_no_pieza_declarada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rv_no_pieza_declarada;
         
         /// <summary>
         /// txt_no_bulto_recibido control.
@@ -301,6 +346,24 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.RangeValidator rv_bto_x_pallet;
         
         /// <summary>
+        /// hf_resto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_resto;
+        
+        /// <summary>
+        /// hf_restos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_restos;
+        
+        /// <summary>
         /// txt_no_bulto_danado control.
         /// </summary>
         /// <remarks>
@@ -335,6 +398,15 @@ namespace AppCasc.operation.almacen {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rv_no_bulto_abierto;
+        
+        /// <summary>
+        /// txt_folio_cita_transporte control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_folio_cita_transporte;
         
         /// <summary>
         /// pnl_addTransportes control.
@@ -461,6 +533,24 @@ namespace AppCasc.operation.almacen {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hf_condiciones_transporte;
+        
+        /// <summary>
+        /// txt_hora_descarga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_hora_descarga;
+        
+        /// <summary>
+        /// rfvHoraDescarga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvHoraDescarga;
         
         /// <summary>
         /// txt_vigilante control.

@@ -31,13 +31,22 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
-        /// hf_tarimas_agregadas control.
+        /// hf_id_entrada control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hf_tarimas_agregadas;
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_entrada;
+        
+        /// <summary>
+        /// hf_id_orden_carga control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_orden_carga;
         
         /// <summary>
         /// txt_fecha control.
@@ -92,15 +101,6 @@ namespace AppCasc.operation.almacen {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTransporte;
-        
-        /// <summary>
-        /// rfvTransporte control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTransporte;
         
         /// <summary>
         /// upTipoTransporte control.
@@ -326,5 +326,14 @@ namespace AppCasc.operation.almacen {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGuardar;
+        
+        /// <summary>
+        /// hf_click_save control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_click_save;
     }
 }

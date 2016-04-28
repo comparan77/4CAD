@@ -9,11 +9,46 @@ using System.IO;
 using ModelCasc.operation;
 using System.Globalization;
 using ModelCasc.catalog;
+using ModelCasc.operation.almacen;
+
+using CrystalDecisions.CrystalReports.Engine;
+using System.Data;
+using ModelCasc.webApp;
 
 namespace ModelCasc.report.operation
 {
     public class DocEntrada
     {
+        private static void addBarCodes(PdfStamper stamper, Tarima_almacen tarAlm1, Tarima_almacen tarAlm2)
+        {
+            PdfContentByte contentByte;
+            try
+            {
+                contentByte = stamper.GetOverContent(1);
+                int CTE_HEIGHT_CONST = 400;
+                int CTE_X_POS_INI = 165;
+                int CTE_Y_SPACE = -350;
+
+                Image image = Image.GetInstance(BarCode.EncodeBytes(tarAlm1.Folio, false, 300, 50));
+                image.SetAbsolutePosition(CTE_X_POS_INI, CTE_HEIGHT_CONST);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
+                //image.ScaleToFit(200, 25);
+                contentByte.AddImage(image);
+
+                //setAbsolutePosition 54 + 127
+                if (tarAlm2.Folio.Length > 0)
+                {
+                    image = Image.GetInstance(BarCode.EncodeBytes(tarAlm2.Folio, false, 300, 50));
+                    image.SetAbsolutePosition(CTE_X_POS_INI, CTE_HEIGHT_CONST + CTE_Y_SPACE);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
+                    //image.ScaleToFit(200, 25);
+                    contentByte.AddImage(image);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public static void getEntrada(string FilePath, string TemplatePath, Entrada oE)
         {
             PdfReader reader = null;
@@ -151,13 +186,14 @@ namespace ModelCasc.report.operation
             }
         }
 
-        public static void getEntradaAlm(string FilePath, string TemplatePath, string TemplatePathPallet, Entrada oE)
+        public static void getEntradaAlm(string FilePath, string TemplatePath, string TemplatePathPallet, Entrada oE, DataSet ds)
         {
             try
             {
                 List<string> files = new List<string>();
                 string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                fillEntradaAlm(fileName, TemplatePath, oE);
+
+                fillEntradaAlm(fileName, TemplatePath, oE, ds);
                 files.Add(fileName);
 
                 Tarima_almacen oTA1 = null;
@@ -166,7 +202,7 @@ namespace ModelCasc.report.operation
                 for (int indTar = 1; indTar <= oE.PLstTarAlm.Count; indTar += 2)
                 {
                     oTA1 = oE.PLstTarAlm[indTar - 1];
-                    
+
                     if (indTar < oE.PLstTarAlm.Count)
                         oTA2 = oE.PLstTarAlm[indTar];
                     else
@@ -175,16 +211,6 @@ namespace ModelCasc.report.operation
                     fillEntradaAlmTar(fileName, TemplatePathPallet, oTA1, oTA2, oE);
                     files.Add(fileName);
                 }
-
-                //int btoResiduo = oE.No_bulto_recibido % oE.No_pieza_declarada;
-                //if (btoResiduo != 0)
-                //{
-                //    oTA1 = oE.PLstTarAlm[oE.PLstTarAlm.Count - 1];
-                //    oTA2 = new Tarima_almacen();
-                //    fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                //    fillEntradaAlmTar(fileName, TemplatePathPallet, oTA1, oTA2, oE);
-                //    files.Add(fileName);
-                //}
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);
             }
@@ -195,32 +221,104 @@ namespace ModelCasc.report.operation
             }
         }
 
-        private static void fillEntradaAlm(string FilePath, string TemplatePath, Entrada oE)
+        private static void fillEntradaAlm(string FilePath, string rptPath, Entrada oE, DataSet ds)
         {
-            PdfReader reader = null;
-            PdfStamper stamper = null;
+            
             try
             {
-                reader = new PdfReader(TemplatePath);
-                stamper = new PdfStamper(reader, new FileStream(FilePath, FileMode.Create));
-
-                AcroFields fields = stamper.AcroFields;
-
-                // set form fields
-
-                fields.SetField("BodegaDireccion", oE.PBodega.Direccion);
-                fields.SetField("Bodega", oE.PBodega.Nombre);
-                fields.SetField("Cortina", oE.PCortina.Nombre);
-                fields.SetField("Folio", oE.Folio + oE.Folio_indice);
-
                 CultureInfo ci = new CultureInfo("es-MX");
+                ReportDocument reporte = new ReportDocument();
+                
+                reporte.Load(rptPath);
+                //reader = new PdfReader(TemplatePath);
+                //stamper = new PdfStamper(reader, new FileStream(FilePath, FileMode.Create));
 
-                fields.SetField("Fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
-                fields.SetField("Hora", oE.Hora.ToString());
+                //AcroFields fields = stamper.AcroFields;
 
-                fields.SetField("Cliente", oE.PCliente.Razon);
-                //fields.SetField("Origen", oE.Origen);
+                //// set form fields
+                List<Entrada_transporte_condicion> lstETC = AlmacenCtrl.entradaTransporteCondicionGet(oE.PLstEntTrans.First().Id);
 
+                foreach (Entrada_transporte_condicion itemETC in lstETC)
+                {
+                    DataRow dr = ds.Tables["entrada_transporte_condicion"].NewRow();
+                    dr["condicion"] = itemETC.Condicion;
+                    dr["si_no"] = itemETC.Si_no;
+                    ds.Tables["entrada_transporte_condicion"].Rows.Add(dr);
+                }
+
+                List<Tarima_almacen> lstTA = AlmacenCtrl.tarimaAlacenFillByEntrada(oE.Id);
+                foreach (Tarima_almacen itemTA in lstTA)
+                {
+                    DataRow drTA = ds.Tables["entrada_tarima"].NewRow();
+                    drTA["tarima"] = itemTA.Tarimas;
+                    drTA["estandar"] = itemTA.Estandar;
+                    drTA["cajas"] = itemTA.Bultos;
+                    drTA["piezas"] = itemTA.Piezas;
+                    ds.Tables["entrada_tarima"].Rows.Add(drTA);
+                }
+
+                //reporte.Subreports[0].SetDataSource(ds);
+                reporte.Subreports[0].SetDataSource(ds.Tables["entrada_transporte_condicion"]);
+                reporte.SetDataSource(ds.Tables["entrada_tarima"]);
+
+                //fields.SetField("BodegaDireccion", oE.PBodega.Direccion);
+                reporte.SetParameterValue("direccion_bodega", oE.PBodega.Direccion);
+                //fields.SetField("Bodega", oE.PBodega.Nombre);
+                reporte.SetParameterValue("bodega", oE.PBodega.Nombre);
+                //fields.SetField("Cortina", oE.PCortina.Nombre);
+                reporte.SetParameterValue("cortina", oE.PCortina.Nombre);
+                //fields.SetField("Cliente", oE.PCliente.Razon);
+                reporte.SetParameterValue("cliente", oE.PCliente.Razon);
+                //fields.SetField("Folio", oE.Folio + oE.Folio_indice);
+                reporte.SetParameterValue("folio", oE.Folio);
+                //fields.SetField("Fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                //fields.SetField("Hora", oE.Hora.ToString());
+                reporte.SetParameterValue("hora", oE.Hora.ToString());
+                //fields.SetField("proveedor", CatalogCtrl.Cliente_vendorfillByCliente(1, oE.Origen).First().Nombre);
+                reporte.SetParameterValue("proveedor", CatalogCtrl.Cliente_vendorfillByCliente(1, oE.Origen).First().Nombre);
+                //fields.SetField("MercanciaCodigo", oE.PCliente.PClienteMercancia.Codigo);
+                reporte.SetParameterValue("mercancia_codigo", oE.PCliente.PClienteMercancia.Codigo);
+                //fields.SetField("Mercancia", oE.PCliente.PClienteMercancia.Nombre);
+                reporte.SetParameterValue("mercancia_descripcion", oE.PCliente.PClienteMercancia.Nombre);
+                reporte.SetParameterValue("mercancia_tipo", oE.PCliente.PClienteMercancia.Negocio);
+
+                reporte.SetParameterValue("caja_declarada", oE.No_bulto_declarado);
+                reporte.SetParameterValue("caja_recibida", oE.No_bulto_recibido);
+
+                int diferenciaBulto = oE.No_bulto_declarado - oE.No_bulto_recibido;
+                reporte.SetParameterValue("caja_faltante", 0);
+                reporte.SetParameterValue("caja_sobrante", 0);
+
+                if (diferenciaBulto > 0)
+                    reporte.SetParameterValue("caja_faltante", diferenciaBulto);
+                if (diferenciaBulto < 0)
+                    reporte.SetParameterValue("caja_sobrante", Math.Abs(diferenciaBulto));
+
+                reporte.SetParameterValue("pieza_declarada", oE.No_pieza_declarada);
+                reporte.SetParameterValue("pieza_recibida", oE.No_pieza_recibida);
+                int diferenciaCaja = oE.No_pieza_declarada - oE.No_pieza_recibida;
+                reporte.SetParameterValue("pieza_faltante", 0);
+                reporte.SetParameterValue("pieza_sobrante", 0);
+
+                if (diferenciaCaja > 0)
+                    reporte.SetParameterValue("pieza_faltante", diferenciaCaja);
+                if (diferenciaCaja < 0)
+                    reporte.SetParameterValue("pieza_sobrante", Math.Abs(diferenciaCaja));
+
+                //fields.SetField("caja_dan", oE.No_bulto_danado.ToString());
+                reporte.SetParameterValue("caja_danada", oE.No_bulto_danado);
+                //fields.SetField("caja_abi", oE.No_bulto_abierto.ToString());
+                reporte.SetParameterValue("caja_abierta", oE.No_bulto_abierto);
+                //fields.SetField("codigoRR", oE.Referencia);
+                reporte.SetParameterValue("rr", oE.Referencia);
+
+                reporte.SetParameterValue("piezaxcaja", oE.PTarAlmEstd.Piezasxcaja);
+                reporte.SetParameterValue("cajaxtarima", oE.PTarAlmEstd.Cajasxtarima);
+
+                #region Transporte
+                //fields.SetField("Operador", oE.Operador);
+                reporte.SetParameterValue("operador", oE.Operador);
                 StringBuilder sbET = new StringBuilder();
                 foreach (Entrada_transporte oET in oE.PLstEntTrans)
                 {
@@ -235,95 +333,107 @@ namespace ModelCasc.report.operation
                         sbET.Append(", Contenedor 2: " + oET.Caja2);
                     sbET.AppendLine();
                 }
-                fields.SetField("Transporte", sbET.ToString());
+                //fields.SetField("Transporte", sbET.ToString());
+                reporte.SetParameterValue("transporte", sbET.ToString());
+                //fields.SetField("Custodia", oE.PCustodia.Nombre);
+                reporte.SetParameterValue("custodia", oE.PCustodia.Nombre);
+                //fields.SetField("Sello", oE.Sello);
+                reporte.SetParameterValue("sello", oE.Sello);
+                //fields.SetField("Talon", oE.Talon);
+                reporte.SetParameterValue("carta_porte", oE.Talon);
 
-                for (int iETC = 1; iETC <= oE.PLstEntTransCond.Count; iETC++)
-                {
-                    Entrada_transporte_condicion oETC = oE.PLstEntTransCond[iETC - 1];
-                    fields.SetField(iETC.ToString() + "_" + (oETC.Si_no ? "si" : "no"), "X");
-                }
+                #endregion
 
+                reporte.SetParameterValue("hora_descarga", oE.Hora_descarga);
+                //fields.SetField("Observaciones", oE.Observaciones);
+                reporte.SetParameterValue("observaciones", oE.Observaciones);
+                //fields.SetField("Almacen", oE.PUsuario.Nombre);
+                reporte.SetParameterValue("usuario", oE.PUsuario.Nombre);
+                //fields.SetField("Vigilante", oE.Vigilante);
+                reporte.SetParameterValue("vigilante", oE.Vigilante);
+                ////fields.SetField("Origen", oE.Origen);
+                //DataTable dtTC = new DataTable();
+                //dtTC.Columns.Add("condicion", typeof(string));
+                //dtTC.Columns.Add("si_no", typeof(bool));
 
-
-                fields.SetField("codigoRR", oE.Referencia);
-
-                fields.SetField("MercanciaCodigo", oE.PCliente.PClienteMercancia.Codigo);
-                fields.SetField("Mercancia", oE.PCliente.PClienteMercancia.Nombre);
-
-                fields.SetField("proveedor", CatalogCtrl.Cliente_vendorfillByCliente(1, oE.Origen).First().Nombre);
-
-                fields.SetField("Sello", oE.Sello);
-                fields.SetField("Talon", oE.Talon);
-                fields.SetField("Custodia", oE.PCustodia.Nombre);
-                fields.SetField("Operador", oE.Operador);
-
-
-                fields.SetField("tar", oE.No_pallet.ToString());
-                fields.SetField("totalBultos", oE.No_bulto_recibido.ToString());
-                fields.SetField("bul", oE.No_bulto_recibido.ToString());
-                fields.SetField("totalPiezas", oE.No_pieza_recibida.ToString());
-                fields.SetField("pza", oE.No_pieza_recibida.ToString());
-                fields.SetField("pzaXcaja", oE.No_caja_cinta_aduanal.ToString());
-                fields.SetField("bultosXtarima", oE.No_pieza_declarada.ToString());
-
-                //Calculo del estandar por tarima
-                //int btoCompleto = oE.No_pieza_recibida / oE.No_caja_cinta_aduanal;
-                int btoResiduo = oE.No_bulto_recibido % oE.No_pieza_declarada;
-                int tarCompleta = oE.No_bulto_recibido / oE.No_pieza_declarada;
-                fields.SetField("1_tar", tarCompleta.ToString());
-                fields.SetField("1_bul", oE.No_pieza_declarada.ToString());
-                fields.SetField("1_pzaXcaja", oE.No_caja_cinta_aduanal.ToString());
-                fields.SetField("1_pieza_tot", (tarCompleta * oE.No_pieza_declarada * oE.No_caja_cinta_aduanal).ToString());
-
-                fields.SetField("2_tar", "0");
-                fields.SetField("2_bul", "0");
-                fields.SetField("2_pzaXcaja", "0");
-                fields.SetField("2_pieza_tot", "0");
-
-                if (btoResiduo != 0)
-                {
-                    fields.SetField("2_tar", "1");
-                    fields.SetField("2_bul", btoResiduo.ToString());
-                    fields.SetField("2_pzaXcaja", oE.No_caja_cinta_aduanal.ToString());
-                    fields.SetField("2_pieza_tot", (btoResiduo * oE.No_caja_cinta_aduanal).ToString());
-                }
-
-                int diferenciaBulto = oE.No_bulto_declarado - oE.No_bulto_recibido;
-                fields.SetField("caja_sob", "0");
-                fields.SetField("caja_fal", "0");
-
-                fields.SetField("pieza_sob", "0");
-                fields.SetField("pieza_fal", "0");
-
-                if (diferenciaBulto > 0)
-                {
-                    fields.SetField("caja_fal", diferenciaBulto.ToString());
-                    fields.SetField("pieza_fal", (diferenciaBulto * oE.No_caja_cinta_aduanal).ToString());
-                }
-                if (diferenciaBulto < 0)
-                {
-                    fields.SetField("caja_sob", Math.Abs(diferenciaBulto).ToString());
-                    fields.SetField("pieza_sob", Math.Abs(diferenciaBulto * oE.No_caja_cinta_aduanal).ToString());
-                }
+                //for (int iETC = 1; iETC <= oE.PLstEntTransCond.Count; iETC++)
+                //{
+                //    Entrada_transporte_condicion oETC = oE.PLstEntTransCond[iETC - 1];
+                //    fields.SetField(iETC.ToString() + "_" + (oETC.Si_no ? "si" : "no"), "X");
+                //}
 
 
-                fields.SetField("caja_dan", oE.No_bulto_danado.ToString());
-                fields.SetField("caja_abi", oE.No_bulto_abierto.ToString());
 
-                fields.SetField("Almacen", oE.PUsuario.Nombre);
-                fields.SetField("Vigilante", oE.Vigilante);
-                fields.SetField("Observaciones", oE.Observaciones);
 
-                stamper.FormFlattening = true;
+
+                //fields.SetField("proveedor", CatalogCtrl.Cliente_vendorfillByCliente(1, oE.Origen).First().Nombre);
+
+
+
+
+                //fields.SetField("tar", oE.No_pallet.ToString());
+                //fields.SetField("totalBultos", oE.No_bulto_recibido.ToString());
+                //fields.SetField("bul", oE.No_bulto_recibido.ToString());
+                //fields.SetField("totalPiezas", oE.No_pieza_recibida.ToString());
+                //fields.SetField("pza", oE.No_pieza_recibida.ToString());
+                ////fields.SetField("pzaXcaja", oE.No_caja_cinta_aduanal.ToString());
+                ////fields.SetField("bultosXtarima", oE.No_pieza_declarada.ToString());
+
+                ////Calculo del estandar por tarima
+                ////int btoCompleto = oE.No_pieza_recibida / oE.No_caja_cinta_aduanal;
+                //int btoResiduo = oE.No_bulto_recibido % oE.No_pieza_declarada;
+                //int tarCompleta = oE.No_bulto_recibido / oE.No_pieza_declarada;
+                //fields.SetField("1_tar", tarCompleta.ToString());
+                //fields.SetField("1_bul", oE.No_pieza_declarada.ToString());
+                //fields.SetField("1_pzaXcaja", oE.No_caja_cinta_aduanal.ToString());
+                //fields.SetField("1_pieza_tot", (tarCompleta * oE.No_pieza_declarada * oE.No_caja_cinta_aduanal).ToString());
+
+                //fields.SetField("2_tar", "0");
+                //fields.SetField("2_bul", "0");
+                //fields.SetField("2_pzaXcaja", "0");
+                //fields.SetField("2_pieza_tot", "0");
+
+                //if (btoResiduo != 0)
+                //{
+                //    fields.SetField("2_tar", "1");
+                //    fields.SetField("2_bul", btoResiduo.ToString());
+                //    fields.SetField("2_pzaXcaja", oE.No_caja_cinta_aduanal.ToString());
+                //    fields.SetField("2_pieza_tot", (btoResiduo * oE.No_caja_cinta_aduanal).ToString());
+                //}
+
+                //int diferenciaBulto = oE.No_bulto_declarado - oE.No_bulto_recibido;
+                //fields.SetField("caja_sob", "0");
+                //fields.SetField("caja_fal", "0");
+
+                //fields.SetField("pieza_sob", "0");
+                //fields.SetField("pieza_fal", "0");
+
+                //if (diferenciaBulto > 0)
+                //{
+                //    fields.SetField("caja_fal", diferenciaBulto.ToString());
+                //    fields.SetField("pieza_fal", (diferenciaBulto * oE.No_caja_cinta_aduanal).ToString());
+                //}
+                //if (diferenciaBulto < 0)
+                //{
+                //    fields.SetField("caja_sob", Math.Abs(diferenciaBulto).ToString());
+                //    fields.SetField("pieza_sob", Math.Abs(diferenciaBulto * oE.No_caja_cinta_aduanal).ToString());
+                //}
+
+
+                //fields.SetField("caja_dan", oE.No_bulto_danado.ToString());
+                //fields.SetField("caja_abi", oE.No_bulto_abierto.ToString());
+
+                //stamper.FormFlattening = true;
+
+                //reporte.ExportToHttpResponse(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, Response, false, "Test");
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, FilePath);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
             finally
             {
-                stamper.Close();
-                reader.Close();
             }
         }
 
@@ -333,6 +443,7 @@ namespace ModelCasc.report.operation
             PdfStamper stamper = null;
             try
             {
+                CultureInfo ci = new CultureInfo("es-MX");
                 reader = new PdfReader(TemplatePath);
                 stamper = new PdfStamper(reader, new FileStream(FilePath, FileMode.Create));
 
@@ -343,7 +454,6 @@ namespace ModelCasc.report.operation
                 fields.SetField("descripcion_1", tarAlm1.Mercancia_nombre);
                 fields.SetField("estandar_1", tarAlm1.Estandar);
                 fields.SetField("rr_1", tarAlm1.Rr);
-                CultureInfo ci = new CultureInfo("es-MX");
                 fields.SetField("fecha_1", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
 
                 fields.SetField("pallet_2", tarAlm2.Folio);
@@ -352,6 +462,8 @@ namespace ModelCasc.report.operation
                 fields.SetField("estandar_2", tarAlm2.Estandar);
                 fields.SetField("rr_2", tarAlm2.Rr);
                 fields.SetField("fecha_2", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
+
+                addBarCodes(stamper, tarAlm1, tarAlm2);
 
                 stamper.FormFlattening = true;
             }

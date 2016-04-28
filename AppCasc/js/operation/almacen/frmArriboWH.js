@@ -1,7 +1,36 @@
 ﻿var lstEntTran = [];
 var lstCondTran = [];
+var lstTarAlmResto = [];
+var lstTarAlm = [];
+
 var idEntradaTransporte = 0;
 var arrCondTran = ['Paredes Limpias', 'Pisos Limpios', 'Techos Limpios', 'Presencia de grietas, huecos, astillas, agujeros', 'Presencia de plagas en la unidad', 'Presencia de olores extraños', 'Unidad exterior limpia', 'Cuenta el transporte con certificado de fumigación'];
+
+var idTarimaAlmacen = 1;
+var idTarimaAlmacenResto = 1;
+
+var BeanTarimaAlmacen = function (id, id_entrada, folio, mercancia_codigo, mercancia_nombre, rr, estandar, bultos, piezas, es_resto, id_salida, lstTAResto) {
+    this.Id = id;
+    this.Id_entrada = id_entrada;
+    this.Folio = folio;
+    this.Mercancia_codigo = mercancia_codigo;
+    this.Mercancia_nombre = mercancia_nombre;
+    this.Rr = rr;
+    this.Estandar = estandar;
+    this.Bultos = bultos;
+    this.Piezas = piezas;
+    this.Es_resto = es_resto;
+    this.Id_salida = id_salida;
+    this.PLTAResto = lstTAResto;
+}
+
+var BeanTarimaAlmacenResto = function (id, id_tarima_almacen, cajas, piezasxcaja, piezas) {
+    this.Id = id;
+    this.Id_tarima_almacen = id_tarima_almacen;
+    this.Cajas = cajas;
+    this.Piezasxcaja = piezasxcaja;
+    this.Piezas = piezas;
+}
 
 var BeanEntradaTransporte = function (id, transporteLinea, idTransporteTipo, transporteTipo, placa, caja, caja1, caja2) {
     this.Id = id;
@@ -97,7 +126,9 @@ var MngArriboWH = function () {
         }).trigger('change');
 
         $('#btn_add_tipoTransporte').click(function () {
-            addTransporte();
+            if (lstEntTran.length < 1) {
+                addTransporte();
+            }
             verificaTranportes();
             return false;
         });
@@ -128,6 +159,121 @@ var MngArriboWH = function () {
             return IsValid;
 
         });
+
+        //Restos
+
+        $('#div_restos').dialog({
+            autoOpen: false,
+            height: 320,
+            width: 295,
+            modal: true,
+            resizable: false,
+            open: function (event, ui) {
+                $('#caja_resto').focus().select();
+            },
+            close: function (event, ui) {
+                $('#caja_resto').val(0);
+                $('#piezaXcaja_resto').val(0);
+                $('#t_resto').html('');
+                //$("html, body").animate({ scrollTop: $(document).height() }, "slow");
+            }
+        });
+
+        $('#btn_restos').button().click(function () {
+            $('#div_restos').dialog('open');
+            return false;
+        });
+
+        $('#addTarima_resto').button().click(function () {
+            addTarimaResto();
+            lstTarAlmResto = [];
+            $('#div_restos').dialog('close');
+            return false;
+        });
+
+        $('#addTarima_resto').button('disable');
+
+        $('#addResto').button().click(function () {
+
+            var piezasXcaja = $('#piezaXcaja_resto').val() * 1;
+            var cajas = $('#caja_resto').val() * 1;
+
+            if (!numeroValido(cajas, $('#caja_resto')))
+                return false;
+
+            if (!numeroValido(piezasXcaja, $('#piezaXcaja_resto')))
+                return false;
+
+            lstTarAlmRestoExistente = $.grep(lstTarAlmResto, function (obj) {
+                if (piezasXcaja == obj.Piezasxcaja) {
+                    obj.Cajas += cajas;
+                    obj.Piezas = obj.Cajas * piezasXcaja;
+                    return obj;
+                }
+            });
+
+            if (lstTarAlmRestoExistente.length == 0) {
+
+                var o = new BeanTarimaAlmacenResto(
+                idTarimaAlmacenResto,
+                idTarimaAlmacen,
+                cajas,
+                piezasXcaja,
+                cajas * piezasXcaja
+                );
+                idTarimaAlmacenResto++;
+                lstTarAlmResto.push(o);
+            }
+            fillTblResto();
+            return false;
+        });
+    }
+
+    function fillTblResto() {
+        var tr = '';
+        var addTarimaEstatus = 'enable';
+        if (lstTarAlmResto.length <= 0)
+            addTarimaEstatus = 'disable';
+        $('#addTarima_resto').button(addTarimaEstatus);
+
+        $.each(lstTarAlmResto, function (i, o) {
+            tr += '<tr id="ta_' + o.Id + '">';
+            tr += '<td>' + o.Cajas + '</td>';
+            tr += '<td>' + o.Piezasxcaja + '</td>';
+            tr += '<td>' + o.Piezas + '</td>';
+            tr += '<td><span class="ui-icon ui-icon-trash icon-button-action remResto"></span></td>';
+        });
+        $('#t_resto').html('');
+        $('#t_resto').append(tr);
+
+        $('.remResto').click(function () {
+            var Id = $(this).parent().parent().attr('id').split('_')[1];
+            lstTarAlmResto = $.grep(lstTarAlmResto, function (obj) {
+                return obj.Id != Id;
+            });
+            fillTblResto();
+        });
+    }
+
+    function addTarimaResto() {
+
+        var lstTarAlmRestoByTarima = $.grep(lstTarAlmResto, function (obj) {
+            return obj.IdTarimaAlmacen != idTarimaAlmacen;
+        });
+
+        var pzaTotTar = 0;
+        var btoTotTar = 0;
+
+        $.each(lstTarAlmRestoByTarima, function (i, obj) {
+            btoTotTar += obj.Cajas;
+            pzaTotTar += obj.Piezas;
+        });
+
+        var oBTA = new BeanTarimaAlmacen(idTarimaAlmacen, 0, '', '', '', '', 'RESTO', btoTotTar, pzaTotTar, true, 0, lstTarAlmRestoByTarima);
+        lstTarAlm.push(oBTA);
+        idTarimaAlmacen++;
+        fillTblRestos();
+
     }
 
     function fillCatalogo() {
@@ -184,6 +330,16 @@ var MngArriboWH = function () {
     function recall(obj, oCtrlCM) {
         if (obj.Id > 0) {
             $('#ctl00_body_txt_mercancia_desc').val(obj.Nombre);
+            $('#ctl00_body_txt_negocio').val(obj.Negocio);
+            switch (obj.Negocio) {
+                case 'PR':
+                case 'PT':
+                    break;
+                default:
+                    alert('Es necesario corregir el negoio de la mercancía en el catálogo. \nPor el momento sólo puede ser PR o PT.');
+                    oCrtlCM.OpenFrmUdt(obj, pag);
+                    break;
+            }
         }
         else {
             oCrtlCM.OpenFrm(obj.Codigo, pag);
@@ -385,6 +541,60 @@ var MngArriboWH = function () {
             lstCondTran.push(o);
         });
         $('#ctl00_body_hf_condiciones_transporte').val(JSON.stringify(lstCondTran));
+    }
+
+    //Llena tabla de restos
+    function fillTblRestos() {
+        var tr = '';
+        $('#tbody_resto_tarima').html('');
+        $.each(lstTarAlm, function (i, obj) {
+            tr += '<tr id="tares_' + obj.Id + '">';
+            tr += '<td>1</td>';
+            tr += '<td>Tarima</td>';
+            tr += '<td>X</td>';
+            tr += '<td>' + obj.Bultos + '</td>';
+            tr += '<td>Caja(s) por Tarima</td>';
+            tr += '<td>=</td>';
+            tr += '<td>' + obj.Bultos + '</td>';
+            tr += '<td>Caja(s)</td>';
+            tr += '<td>&nbsp;</td>';
+            tr += '<td>' + obj.Piezas + '</td>';
+            tr += '<td>Pieza(s)</td>';
+            tr += '<td><span class="ui-icon ui-icon-trash delTarResto"></span></td>';
+        });
+        $('#tbody_resto_tarima').append(tr);
+
+        $('.delTarResto').each(function () {
+            $(this).click(function () {
+                var idTarAlm = $(this).parent().parent().attr('id').split('_')[1] * 1;
+                lstTarAlm = $.grep(lstTarAlm, function (obj) {
+                    return obj.Id != idTarAlm;
+                });
+                fillTblRestos();
+            });
+        });
+
+        $('#ctl00_body_hf_restos').val(JSON.stringify(lstTarAlm));
+    }
+
+    //Valida numero
+    function numeroValido(dato, obj) {
+        if (isNaN(dato)) {
+            alert('La cantidad debe ser numérica');
+            $(obj).focus().select();
+            return false;
+        }
+
+        if (dato <= 0) {
+            alert('La cantidad debe ser mayor a 0');
+            $(obj).focus().select();
+            return false;
+        }
+        //        if (cantidad > cantidadMaxima) {
+        //            alert('La cantidad debe ser menor a ' + cantidadMaxima);
+        //            return false;
+        //        }
+        return true;
     }
 }
 

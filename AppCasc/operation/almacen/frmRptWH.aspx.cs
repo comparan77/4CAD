@@ -52,13 +52,13 @@ namespace AppCasc.operation.almacen
                 switch (ddl_reporte.SelectedValue)
                 {
                     case "InvTotDia":
-                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RelInvTotDiaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRptAlmacen.RelInvTotDiaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         break;
                     case "RelDiaEnt":
-                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RelDiaEntGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRptAlmacen.RelDiaEntGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         break;
                     case "RelDiaSal":
-                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RelDiaSalGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRptAlmacen.RelDiaSalGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         break;
                 }
 

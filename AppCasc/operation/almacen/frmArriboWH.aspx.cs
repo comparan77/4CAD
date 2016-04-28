@@ -8,6 +8,7 @@ using ModelCasc.webApp;
 using ModelCasc.operation;
 using Newtonsoft.Json;
 using ModelCasc.catalog;
+using ModelCasc.operation.almacen;
 
 namespace AppCasc.operation.almacen
 {
@@ -52,7 +53,7 @@ namespace AppCasc.operation.almacen
             {
                 oE = EntradaCtrl.EntradaGetAllDataById(IdEntrada);
                 SEntrada = oE;
-                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=entradaAlm','_blank', 'toolbar=no');</script>");
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReportViewer.aspx?rpt=entradaAlm','_blank', 'toolbar=no');</script>");
             }
             catch (Exception)
             {
@@ -89,7 +90,18 @@ namespace AppCasc.operation.almacen
                 if (lstEntTran == null || lstEntTran.Count == 0)
                     throw new Exception("Es necesario agregar al menos un trasporte");
 
+                //Condiciones del transporte
                 List<Entrada_transporte_condicion> lstEntTranCond = JsonConvert.DeserializeObject<List<Entrada_transporte_condicion>>(hf_condiciones_transporte.Value);
+                
+                //Restos
+                o.PLstTarAlm = JsonConvert.DeserializeObject<List<Tarima_almacen>>(hf_restos.Value);
+                if (o.PLstTarAlm == null)
+                    o.PLstTarAlm = new List<Tarima_almacen>();
+                for (int iResto = 0; iResto < o.PLstTarAlm.Count; iResto++)
+                {
+                    Tarima_almacen oTAResto = o.PLstTarAlm[iResto];
+                    oTAResto.Estandar = oTAResto.Estandar + " " + (iResto + 1).ToString();
+                }
 
                 int numero;
 
@@ -106,7 +118,6 @@ namespace AppCasc.operation.almacen
 
                 //Hora
                 o.Hora = txt_hora_llegada.Text;
-                o.Hora_descarga = o.Hora;
 
                 //Cortina
                 int.TryParse(ddlCortina.SelectedValue, out numero);
@@ -146,6 +157,9 @@ namespace AppCasc.operation.almacen
                 //Operador de la custodia
                 o.Operador = txt_operador.Text;
 
+                //Folio cita transporte
+                o.Codigo = txt_folio_cita_transporte.Text;
+
                 //Numero de pallet
                 int.TryParse(txt_no_pallet.Text, out numero);
                 o.No_pallet = numero;
@@ -176,15 +190,26 @@ namespace AppCasc.operation.almacen
                 o.No_pieza_recibida = numero * o.No_bulto_recibido;
                 numero = 0;
 
+                o.PTarAlmEstd = new Tarima_almacen_estandar();
                 //Piezas por bulto se guarda en numero de cajas con cinta aduanal
                 int.TryParse(txt_pza_x_bulto.Text, out numero);
-                o.No_caja_cinta_aduanal = numero;
+                o.PTarAlmEstd.Piezasxcaja = numero;
                 numero = 0;
 
                 //Bultos por tarima se guarda en piezas declaradas
                 int.TryParse(txt_bto_x_pallet.Text, out numero);
+                o.PTarAlmEstd.Cajasxtarima = numero;
+                numero = 0;
+
+                //Cliente vendor
+                o.PTarAlmEstd.Proveedor = o.Origen;
+
+                //Piezas declaradas
+                int.TryParse(txt_no_pieza_declarada.Text, out numero);
                 o.No_pieza_declarada = numero;
                 numero = 0;
+
+                o.Hora_descarga = txt_hora_descarga.Text;
 
                 //Vigilante
                 o.Vigilante = txt_vigilante.Text.Trim();
@@ -246,7 +271,8 @@ namespace AppCasc.operation.almacen
             try
             {
                 Entrada o = getEntradaFormValues();
-                EntradaCtrl.EntradaAlmacenAdd(o);
+                string mailFrom = System.Configuration.ConfigurationManager.AppSettings["mailFrom"].ToString();
+                EntradaCtrl.EntradaAlmacenAdd(o, mailFrom);
                 return o;
             }
             catch

@@ -8,6 +8,7 @@ using ModelCasc.catalog;
 using ModelCasc.operation;
 using ModelCasc.webApp;
 using Newtonsoft.Json;
+using ModelCasc.operation.almacen;
 
 namespace AppCasc.operation.almacen
 {
@@ -29,17 +30,14 @@ namespace AppCasc.operation.almacen
             int numero;
             //double doble;
 
-            //Tarimas almacen
-            List<Tarima_almacen> lstTarAlm = JsonConvert.DeserializeObject<List<Tarima_almacen>>(hf_tarimas_agregadas.Value);
-            if (lstTarAlm == null || lstTarAlm.Count == 0)
-                throw new Exception("Es necesario agregar al menos una tarima");
 
             List<Salida_transporte_condicion> lstSalTranCond = JsonConvert.DeserializeObject<List<Salida_transporte_condicion>>(hf_condiciones_transporte.Value);
 
-            oS.PLstTarAlm = lstTarAlm;
+            //Se asigna la orden de carga
+            oS.Id_salida_orden_carga = Convert.ToInt32(hf_id_orden_carga.Value);
 
             //Se obtiene la bodega a partir de la entrada
-            Entrada oE = EntradaCtrl.EntradaGetAllDataById(lstTarAlm.First().Id_entrada);
+            Entrada oE = EntradaCtrl.EntradaGetAllDataById(Convert.ToInt32(hf_id_entrada.Value));
             //Bodega
             Bodega oB = new Bodega();
             oB.Id = Convert.ToInt32(oE.Id_bodega);
@@ -74,16 +72,6 @@ namespace AppCasc.operation.almacen
             //Mercancia
             oS.Mercancia = string.Empty;
 
-            //Linea de Transporte
-            int.TryParse(ddlTransporte.SelectedValue, out numero);
-            oS.Id_transporte = numero;
-            numero = 0;
-
-            //Tipo de transporte
-            int.TryParse(ddlTipo_Transporte.SelectedValue, out numero);
-            oS.Id_transporte_tipo = numero;
-            numero = 0;
-
             //Placa
             oS.Placa = txt_placa.Text;
 
@@ -95,6 +83,16 @@ namespace AppCasc.operation.almacen
 
             //Caja2
             oS.Caja2 = txt_caja_2.Text;
+
+            //Linea de Transporte
+            int.TryParse(ddlTransporte.SelectedValue, out numero);
+            oS.Id_transporte = numero;
+            numero = 0;
+
+            //Tipo de transporte
+            int.TryParse(ddlTipo_Transporte.SelectedValue, out numero);
+            oS.Id_transporte_tipo = numero;
+            numero = 0;
 
             //Condiciones de transporte de la entrada
             oS.PLstSalTransCond = lstSalTranCond;
@@ -114,16 +112,16 @@ namespace AppCasc.operation.almacen
             oS.Operador = txt_operador.Text;
 
             //Numero de pallet
-            oS.No_pallet = lstTarAlm.Count;
-            numero = 0;
+            //oS.No_pallet = lstTarAlm.Count;
+            //numero = 0;
 
             //Numero de bulto
-            oS.No_bulto = lstTarAlm.Sum(p=> p.Bultos);
-            numero = 0;
+            //oS.No_bulto = lstTarAlm.Sum(p=> p.Bultos);
+            //numero = 0;
 
             //Numero de pieza
-            oS.No_pieza = lstTarAlm.Sum(p=> p.Piezas);
-            numero = 0;
+            //oS.No_pieza = lstTarAlm.Sum(p=> p.Piezas);
+            //numero = 0;
 
             //Peso unitario
             oS.Peso_unitario = 0;
@@ -226,7 +224,7 @@ namespace AppCasc.operation.almacen
             {
                 txt_fecha.Text = DateTime.Today.ToString("dd MMM yy");
                 ControlsMng.fillSalidaDestino(ddlDestino);
-                ddlDestino.SelectedValue = "3";
+                
                 ControlsMng.fillTransporte(ddlTransporte);
                 ControlsMng.fillTipoTransporte(ddlTipo_Transporte, ddlTransporte);
                 int IdTransporteTipo = 0;
@@ -264,7 +262,7 @@ namespace AppCasc.operation.almacen
         {
             try
             {
-                if (IdTransporteTipo > 0)
+                if (IdTransporteTipo > 0 && string.Compare(hf_click_save.Value,"1")!=0)
                 {
                     Transporte_tipoMng oMng = new Transporte_tipoMng();
                     Transporte_tipo o = new Transporte_tipo();

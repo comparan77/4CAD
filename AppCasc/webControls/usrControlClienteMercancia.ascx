@@ -27,5 +27,7 @@
             <option value="CJ">CJ</option>
         </select>
     </div>
-
+    <div>
+        <input type="hidden" id="h_id_cliente_mercancia" />
+    </div>
 </div>

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using ModelCasc;
 using ModelCasc.catalog;
+using ModelCasc.operation.almacen;
 
 namespace AppCasc.handlers
 {
@@ -276,7 +277,7 @@ namespace AppCasc.handlers
             {
                 case "getByRR": //Valida referencia
                     key = context.Request["key"].ToString();
-                    response = JsonConvert.SerializeObject(EntradaCtrl.TarimaAlmacenGetByRR(key));
+                    response = JsonConvert.SerializeObject(AlmacenCtrl.tarimaAlmacenGetByRR(key));
                     ///response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetByFolio(folioOC));
                     break;
             }

@@ -150,7 +150,7 @@
                 <th>&nbsp;</th>
                 <th class="t_border_br t_border_tl">Faltantes</th>
                 <th class="t_border_br t_border_t">Sobrantes</th>
-                <th class="t_border_br t_border_t">Dañados</th>
+                <th class="t_border_br t_border_t">Da&ntilde;ados</th>
             </tr>
         </thead>
 

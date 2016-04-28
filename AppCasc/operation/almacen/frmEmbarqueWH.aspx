@@ -12,42 +12,46 @@
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
 
-<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Informaci&oacute;n de la Mercanc&iacute;a</h3>
-<div style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Orden de Carga</h3>
+<div id="div_orde_carga" style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
     <div>
-        <label>C&oacute;digo RR:</label>
-        <input type="text" id="txt_rr" />
+        <label>Folio de Orden de Carga:</label>
+        <input type="text" id="txt_folio_oc" />
     </div>
-    <div>
-        <label>Tarimas Disponibles:</label>
+    <div style="margin-top: 10px;">
+        <button id="btnBuscaOC">Cargar orden de Compra</button>
     </div>
-    <div>
-        <ul id="ul_tarima"></ul>
-    </div>
-    
-    <div>
-        <asp:HiddenField runat="server" ID="hf_tarimas_agregadas" />
-        <label>Tarimas Agregadas:</label>
-    </div>
-    <hr style="border-color: transparent; clear: left;" />
-    <div>
+    <div style="margin-top: 10px;">
         <table class="grdCascSmall">
             <thead>
                 <tr>
-                    <th>RR</th>
+                    <th>Remisi&oacute;n</th>
+                    <th>Mercanc&iacute;a</th>
+                    <th>Descripci&oacute;n</th>
                     <th>Tarimas</th>
                     <th>Cajas</th>
                     <th>Piezas</th>
                 </tr>
             </thead>
-            <tbody id="tbody_tarAgregadas"></tbody>
+            <tbody id="tbodyRemByOc">
+            
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                    <td><span id="spn_tarimas"></span></td>
+                    <td><span id="spn_cajas"></span></td>
+                    <td><span id="spn_piezas"></span></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
+    <asp:HiddenField runat="server" ID="hf_id_entrada" />
+    <asp:HiddenField runat="server" ID="hf_id_orden_carga" />
 </div>
 
-
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Datos Generales</h3>
-<div style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+<div id="div_generales" style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
     <%--<div>
         <label>Bodega:</label>
         <asp:TextBox runat="server" ID="txt_bodega" CssClass="txtLarge" ></asp:TextBox>
@@ -76,12 +80,12 @@
 </div>
 
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Informaci&oacute;n del Transporte</h3>
-<div style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+<div id="div_transporte" style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
 
     <div>
         <label>Transporte:</label>
+        <%--<asp:DropDownList runat="server" ID="ddlTransporte" AutoPostBack="true" OnSelectedIndexChanged="ddlTransporte_changed"></asp:DropDownList>--%>
         <asp:DropDownList runat="server" ID="ddlTransporte" AutoPostBack="true" OnSelectedIndexChanged="ddlTransporte_changed"></asp:DropDownList>
-        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvTransporte" ControlToValidate="ddlTransporte" InitialValue="" ErrorMessage="Es necesario seleccionar un transporte"></asp:RequiredFieldValidator>
     </div>
     <div>
         <label>Tipo de Transporte:</label>
@@ -181,6 +185,7 @@
 
 <div>
     <asp:Button runat="server" ID="btnGuardar" Text="Guardar" OnClick="btnGuardar_click" />
+    <asp:HiddenField runat="server" ID="hf_click_save" />
 </div>
 
 </asp:Content>

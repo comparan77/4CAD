@@ -1,6 +1,6 @@
-﻿var beanCliente_mercancia = function (id_cliente_grupo, codigo, nombre, clase, negocio, unidad) {
+﻿var beanCliente_mercancia = function (id, id_cliente_grupo, codigo, nombre, clase, negocio, unidad) {
 
-    this.Id = 0;
+    this.Id = id;
     this.Id_cliente_grupo = id_cliente_grupo;
     this.Codigo = codigo;
     this.Nombre = nombre;
@@ -16,12 +16,13 @@
 var ctrlClienteMercancia = function () {
     this.Init = init;
     this.OpenFrm = openFrm;
+    this.OpenFrmUdt = openFrmUdt;
     this.FindByCode = findByCode;
 
     function init() {
     }
 
-    function initControls(page) {
+    function initControls(page, action) {
         dialog = $("#ctrlClienteMercancia").dialog({
             autoOpen: false,
             //height: 300,
@@ -31,29 +32,37 @@ var ctrlClienteMercancia = function () {
             buttons: {
                 "Guardar Mercancía": function () {
                     if (validaRequeridos())
-                        addMercancia(page);
+                        MngMercancia(page, action);
                 },
                 "Cancelar": function () {
                     $(this).dialog('close');
                 }
-            },
-            close: function () {
-                $(this).dialog("destroy");
-                // form[0].reset();
-                // allFields.removeClass("ui-state-error");
             }
         });
+    }
+
+    function openFrm(cod, page) {
+        initControls(page, 'ist');
+        $('#txt_codigo').val(cod);
+        $('#h_id_cliente_mercancia').val('0');
+        $("#ctrlClienteMercancia").dialog('open');
 
         $('#txt_clase').combobox({ maxLength: 3 });
         $('#txt_negocio').combobox({ maxLength: 3 });
         $('#txt_unidad').combobox({ maxLength: 2 });
     }
 
-    function openFrm(cod, page) {
-        initControls(page);
-        $('#txt_codigo').val(cod);
+    function openFrmUdt(obj, page) {
+        initControls(page, 'udt');
+        $('#txt_codigo').val(obj.Codigo);
+        $('#txt_nombre').val(obj.Nombre);
+        $('#h_id_cliente_mercancia').val(obj.Id);
+        $('#txt_negocio').val(obj.Negocio);
         $("#ctrlClienteMercancia").dialog('open');
 
+        $('#txt_clase').combobox({ maxLength: 3 });
+        $('#txt_negocio').combobox({ maxLength: 3 });
+        $('#txt_unidad').combobox({ maxLength: 2 });
     }
 
     function validaRequeridos() {
@@ -72,7 +81,7 @@ var ctrlClienteMercancia = function () {
 
     function findByCode(page, codigo, id_cliente_grupo) {
 
-        var oCM = new beanCliente_mercancia(id_cliente_grupo, codigo, '', '', '', '');
+        var oCM = new beanCliente_mercancia(0, id_cliente_grupo, codigo, '', '', '', '');
 
         $.ajax({
             type: 'POST',
@@ -93,13 +102,17 @@ var ctrlClienteMercancia = function () {
         });
     }
 
-    function addMercancia(page) {
+    function getCliente_mercancia() {
+        return new beanCliente_mercancia($('#h_id_cliente_mercancia').val(), 1, $('#txt_codigo').val(), $('#txt_nombre').val(), $('#txt_clase').next().children('input').val(), $('#txt_negocio').next().children('input').val(), $('#txt_unidad').next().children('input').val());
+    }
 
-        var oCM = new beanCliente_mercancia(1, $('#txt_codigo').val(), $('#txt_nombre').val(), $('#txt_clase').next().children('input').val(), $('#txt_negocio').next().children('input').val(), $('#txt_unidad').next().children('input').val());
+    function MngMercancia(page, action) {
+
+        var oCM = getCliente_mercancia();
 
         $.ajax({
             type: "POST",
-            url: '/handlers/Catalog.ashx?catalogo=cliente_mercancia&opt=Add',
+            url: '/handlers/Catalog.ashx?catalogo=cliente_mercancia&opt=' + action,
             data: JSON.stringify(oCM),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

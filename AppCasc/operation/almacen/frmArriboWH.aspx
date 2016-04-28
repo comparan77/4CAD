@@ -61,6 +61,11 @@
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_mercancia_descripcion" ControlToValidate="txt_mercancia_desc" ErrorMessage="Es necesario proporcionar el código de de la Mercancía." ></asp:RequiredFieldValidator>
     </div>
     <div>
+        <label>Negocio:</label>
+        <asp:TextBox runat="server" ID="txt_negocio" CssClass="txtSmall" ReadOnly="true"></asp:TextBox>
+        <asp:RegularExpressionValidator runat="server" ID="rgv_negocio" ControlToValidate="txt_negocio" ValidationExpression="^(PT|PR)$" ErrorMessage="El negocio sólo puede ser PR o PT"></asp:RegularExpressionValidator>
+    </div>
+    <div>
         <asp:HiddenField runat="server" ID="hf_vendor" />
         <label>Proveedor:</label>
         <asp:TextBox runat="server" ID="txt_proveedor" CssClass="txtLarge"></asp:TextBox>
@@ -80,12 +85,19 @@
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_declarado" ControlToValidate="txt_no_bulto_declarado" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="10000"></asp:RangeValidator>
     </div>
     <div>
+        <label>Piezas Declaradas:</label>
+        <asp:TextBox CssClass="txtNumber calculaDif confirmValue" id="txt_no_pieza_declarada" runat="server" ToolTip="Número de piezas reportados en los documentos." Text="0"></asp:TextBox>
+        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_no_pieza_declarada" ControlToValidate="txt_no_pieza_declarada" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
+        <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_pieza_declarada" ControlToValidate="txt_no_pieza_declarada" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="1000000"></asp:RangeValidator>
+    </div>
+    
+    <hr style="border-color: transparent" />
+    <div>
         <label>Cajas Recibidas:</label>
         <asp:TextBox CssClass="txtNumber calculaDif confirmValue" id="txt_no_bulto_recibido" runat="server" ToolTip="Conteo del número de los bultos en la descarga." Text="0"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_no_bulto_recibido" ControlToValidate="txt_no_bulto_recibido" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_recibido" ControlToValidate="txt_no_bulto_recibido" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="10000"></asp:RangeValidator>
     </div>
-    <hr style="border-color: transparent" />
     <%--<div>
         <label>Piezas Declaradas:</label>
         <asp:TextBox CssClass="txtNumber calculaDif confirmValue" id="txt_no_pieza_declarada" runat="server" ToolTip="Número de Piezas declaradas en los documentos." Text="0"></asp:TextBox>
@@ -139,9 +151,49 @@
     <div id="div_build_tarima" style="position: absolute; top: 160px; right: 15px">
         <table class="grdCascSmall">
             <tbody id="tbody_build_tarima">
-            
             </tbody>
         </table>
+    </div>
+    <hr style="border-color: transparent" />
+    <div>
+        <button id="btn_restos">Restos</button>
+    </div>
+    <div id="div_restos" title="Captura de restos por tarima" class="divForm">
+        <div>
+            <label>Cajas:</label>
+            <input type="text" class="txtNumber" id="caja_resto" value="0" />
+        </div>
+        <div>
+            <label>Piezas por Caja:</label>
+            <input type="text" class="txtNumber" id="piezaXcaja_resto" value="0" />
+        </div>
+        <div>
+            <button id="addResto">Agregar Resto a la tarima</button>
+        </div>
+        <hr style="border-color: transparent" />
+        <table class="grdCascSmall">
+            <thead>
+                <tr>
+                    <th>Cajas</th>
+                    <th>Piezas X Caja</th>
+                    <th>Piezas</th>
+                    <th><span class="ui-icon ui-icon-trash"></span></th>
+                </tr>
+            </thead>
+            <tbody id="t_resto">
+            </tbody>
+        </table>
+        <hr style="border-color: transparent;" />
+        <div>
+            <button id="addTarima_resto">Agregar Tarima</button>
+            <asp:HiddenField runat="server" ID="hf_resto" />
+        </div>
+    </div>
+    <div id="div_resto_tarima" style="position: absolute; bottom: 60px; right: 15px">
+        <table class="grdCascSmall">
+            <tbody id="tbody_resto_tarima"></tbody>
+        </table>
+        <asp:HiddenField runat="server" ID="hf_restos" />
     </div>
     <hr style="border-color: transparent" />
     <div>
@@ -166,12 +218,17 @@
 <h3 id="H2" style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Informaci&oacute;n del transporte</h3>
 <div style="position: relative;" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
     
+    <div style="margin-bottom: 15px">
+        <label>Folio Cita:</label>
+        <asp:TextBox runat="server" ID="txt_folio_cita_transporte"></asp:TextBox>
+    </div>
+
     <asp:Panel runat="server" ID="pnl_addTransportes" Visible="true">
     <table class="grdCascSmall">
         <thead>
             <tr>
                 <th>L&iacute;nea:</th>
-                <th>Tipo:</th>
+                <th>Tipo de Transporte:</th>
                 <th>Placa:</th>
                 <th>Caja:</th>
                 <th>Contenedor 1:</th>
@@ -251,6 +308,12 @@
 
 <h3 id="H3" style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Informaci&oacute;n Adicional</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+    <div>
+        <label>Hora descarga:</label>
+        <asp:TextBox CssClass="horaPicker" id="txt_hora_descarga" runat="server"></asp:TextBox>
+        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvHoraDescarga" ControlToValidate="txt_hora_descarga" ErrorMessage="Es necesario proporcionar una hora" ></asp:RequiredFieldValidator>
+        <span class="hidden error">Es necesario proporcionar una hora</span>
+    </div>
     <div>
         <label>Vigilante:</label>
         <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante" ToolTip="Nombre del vigilante en turno que supervisa la descarga"></asp:TextBox>

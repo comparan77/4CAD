@@ -44,8 +44,8 @@
           <DataField>Piezas_calidad</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="Tipo_produccion">
-          <DataField>Tipo_produccion</DataField>
+        <Field Name="Tipo_producto">
+          <DataField>Tipo_producto</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Observaciones">
@@ -367,7 +367,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Tipo produccion</Value>
+                              <Value>Tipo de producto</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -687,14 +687,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Tipo_produccion">
+                    <Textbox Name="Tipo_producto">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Tipo_produccion.Value</Value>
+                              <Value>=Fields!Tipo_producto.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -703,7 +703,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Tipo_produccion</rd:DefaultName>
+                      <rd:DefaultName>Tipo_producto</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -715,6 +715,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -779,7 +780,7 @@
         <Top>1.39383cm</Top>
         <Left>0.81174cm</Left>
         <Height>1.2cm</Height>
-        <Width>44.3675cm</Width>
+        <Width>44.36747cm</Width>
         <Style>
           <Border>
             <Style>None</Style>

@@ -10,6 +10,7 @@ using System.IO;
 using ModelCasc.exception;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using ModelCasc.operation.almacen;
 
 namespace ModelCasc.operation
 {
@@ -560,6 +561,13 @@ namespace ModelCasc.operation
                 oTAMng.selByIdEntrada();
                 oE.PLstTarAlm = oTAMng.Lst;
 
+                Tarima_almacen_estandarMng oTAEMng = new Tarima_almacen_estandarMng();
+                Tarima_almacen_estandar oTAE = new Tarima_almacen_estandar();
+                oTAE.Id_entrada = oE.Id;
+                oTAEMng.O_Tarima_almacen_estandar = oTAE;
+                oTAEMng.selByIdEntrada();
+                oE.PTarAlmEstd = oTAE;
+
                 oE.PUsuario = oU;
             }
             catch
@@ -601,7 +609,7 @@ namespace ModelCasc.operation
 
         #region Entrada Almacen
 
-        public static void EntradaAlmacenAdd(Entrada oE)
+        public static void EntradaAlmacenAdd(Entrada oE, string mailFrom)
         {
             IDbTransaction trans = null;
             Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
@@ -623,15 +631,9 @@ namespace ModelCasc.operation
                     ReferenciaNuevaValida(oE.Referencia, oE.Id_cliente);
                 }
 
-                //Verifica las referencias de las compartidas
-                foreach (Entrada_compartida oEC in oE.PLstEntComp)
-                {
-                    ReferenciaValida(oEC.Referencia, oE.Id_cliente);
-                }
-
                 //Comienza la transanccion
                 trans = GenericDataAccess.BeginTransaction();
-                oE.Folio = FolioCtrl.getFolio(enumTipo.E, trans);
+                oE.Folio = FolioCtrl.getFolio(enumTipo.EA, trans);
 
                 if (EsConsolidada(oE))
                 {
@@ -643,13 +645,6 @@ namespace ModelCasc.operation
 
                 if (!clienteDocumentoRequerido)
                     oE.Referencia = oE.Folio + oE.Folio_indice;
-
-                ////obtiene la referencia de acuerdo al cliente
-                //if (oE.Codigo == null || oE.Codigo.Length == 0)
-                //{
-                //    oE.Codigo = FolioCtrl.ClienteReferenciaGet(oE.Id_cliente, enumTipo.E, trans);
-                //    oE.Codigo = oE.Codigo.Length == 0 ? oE.Folio + oE.Folio_indice : oE.Codigo;
-                //}
 
                 //Entrada de mercancia al almacen
                 EntradaMng oMng = new EntradaMng();
@@ -729,8 +724,14 @@ namespace ModelCasc.operation
 
                 oE.IsActive = true;
 
-                TarimaAlmacenAdd(oE, trans);
-
+                
+                AlmacenCtrl.tarimaAlmacenEstandarAdd(oE, trans);
+                AlmacenCtrl.tarimaAlmacenAdd(oE, trans);
+                //Mail por incidencias
+#if !DEBUG
+                if (oE.No_bulto_recibido != oE.No_bulto_declarado || oE.No_bulto_danado > 0 || oE.No_bulto_abierto > 0)
+                    IncidenciaCtrl.AlmacenWH(oE, oE.PLstTarAlm.First(), mailFrom);
+#endif
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch
@@ -740,75 +741,6 @@ namespace ModelCasc.operation
                 throw;
             }
 
-        }
-
-        #endregion
-
-        #region Tarima Almacen
-
-        public static void TarimaAlmacenAdd(Entrada oE, IDbTransaction trans)
-        {
-            try
-            {
-                int btoResiduo = oE.No_bulto_recibido % oE.No_pieza_declarada;
-                int tarCompleta = oE.No_bulto_recibido / oE.No_pieza_declarada;
-                Tarima_almacen o;
-                Tarima_almacenMng oMng = new Tarima_almacenMng();
-                for (int iTar = 1; iTar <= tarCompleta; iTar++)
-                {
-                    o = new Tarima_almacen()
-                    {
-                        Id_entrada = oE.Id,
-                        Bultos = oE.No_pieza_declarada,
-                        Piezas = oE.No_pieza_declarada * oE.No_caja_cinta_aduanal,
-                        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
-                        Mercancia_codigo = oE.Mercancia,
-                        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
-                        Rr = oE.Referencia,
-                        Estandar = oE.No_pieza_declarada.ToString() + "*" + oE.No_caja_cinta_aduanal.ToString()
-                    };
-                    oMng.O_Tarima_almacen = o;
-                    oMng.add(trans);
-                }
-
-                if (btoResiduo != 0)
-                {
-                    o = new Tarima_almacen()
-                    {
-                        Id_entrada = oE.Id,
-                        Bultos = btoResiduo,
-                        Piezas = btoResiduo * oE.No_caja_cinta_aduanal,
-                        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
-                        Mercancia_codigo = oE.Mercancia,
-                        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
-                        Rr = oE.Referencia,
-                        Estandar = "1*" + btoResiduo.ToString()
-                    };
-                    oMng.O_Tarima_almacen = o;
-                    oMng.add(trans);
-                }
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public static List<Tarima_almacen> TarimaAlmacenGetByRR(string rr)
-        {
-            List<Tarima_almacen> lst = new List<Tarima_almacen>();
-            try
-            {
-                Tarima_almacen o = new Tarima_almacen() { Rr = rr };
-                Tarima_almacenMng oMng = new Tarima_almacenMng() { O_Tarima_almacen = o };
-                oMng.fillLstByRR(true);
-                lst = oMng.Lst;
-            }
-            catch
-            {
-                throw;
-            }
-            return lst;
         }
 
         #endregion

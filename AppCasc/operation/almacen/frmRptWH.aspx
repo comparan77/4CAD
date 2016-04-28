@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
      <script src="../../js/moment.min.js" type="text/javascript"></script>
-    <script src="../../js/operation/almacen/frmRptWH.js" type="text/javascript"></script>
+    <script src="../../js/operation/almacen/frmRptWH.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 

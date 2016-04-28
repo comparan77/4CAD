@@ -7,29 +7,8 @@ using System.Web.UI.WebControls;
 using ModelCasc.catalog;
 using ModelCasc.operation;
 
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-
-
 namespace AppCasc
 {
-    public class HeaderFooter : PdfPageEventHelper
-    {
-        public override void OnStartPage(PdfWriter wrt, Document document)
-        {
-            Paragraph footer = new Paragraph("THANK YOU", FontFactory.GetFont(FontFactory.TIMES, 10, iTextSharp.text.Font.NORMAL));
-            footer.Alignment = Element.ALIGN_RIGHT;
-            PdfPTable footerTbl = new PdfPTable(1);
-            footerTbl.TotalWidth = 300;
-            footerTbl.HorizontalAlignment = Element.ALIGN_CENTER;
-            PdfPCell cell = new PdfPCell(footer);
-            cell.Border = 0;
-            cell.PaddingLeft = 10;
-            footerTbl.AddCell(cell);
-            footerTbl.WriteSelectedRows(0, -1, 415, 30, wrt.DirectContent);
-        }
-    }
-
     public partial class _Default : System.Web.UI.Page
     {
         private class DiasSel
@@ -87,20 +66,5 @@ namespace AppCasc
                 throw e;
             }
         }
-
-        
-
-        //protected void Page_load(object sender, EventArgs args)
-        //{
-        //    try
-        //    {
-        //        ModelCasc.Mail.SendMail("Incidencia", "<h1>Incidencia</h1>", "gcruz@casc.com.mx");
-        //    }
-        //    catch (Exception)
-        //    {
-                
-        //        throw;
-        //    }
-        //}
     }
 }

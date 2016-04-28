@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModelCasc.catalog;
+using ModelCasc.operation.almacen;
 
 namespace ModelCasc.operation
 {
@@ -100,6 +101,7 @@ namespace ModelCasc.operation
         public Entrada_inventario PEntInv { get; set; }
         public bool ConFondeo { get; set; }
         public List<Tarima_almacen> PLstTarAlm { get; set; }
+        public Tarima_almacen_estandar PTarAlmEstd { get; set; }
         #endregion
 
         #region Constructores

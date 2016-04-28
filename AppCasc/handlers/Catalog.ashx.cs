@@ -82,7 +82,7 @@ namespace AppCasc.handlers
         {
             string response = string.Empty;
             string option = context.Request["opt"].ToString();
-
+            Cliente_mercancia oCM = new Cliente_mercancia();
             switch (option)
             {
                 case "findByCode":
@@ -90,10 +90,16 @@ namespace AppCasc.handlers
                     Cliente_mercancia o = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
                     response = JsonConvert.SerializeObject(CatalogCtrl.cliente_mercanciaFindByCode(o));
                     break;
-                case "Add":
+                case "ist":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    Cliente_mercancia oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                    oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
                     CatalogCtrl.Cliente_mercanciaAdd(oCM);
+                    response = JsonConvert.SerializeObject(oCM);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    oCM = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                    CatalogCtrl.Cliente_mercanciaUdt(oCM);
                     response = JsonConvert.SerializeObject(oCM);
                     break;
                 default:

@@ -46,9 +46,21 @@ var MngEmbarqueWH = function () {
         });
 
         //Mascara para el RR
-        $.mask.definitions['a'] = "[A-Z]";
-        $('#txt_rr').mask('a99999').blur(function () {
-            getTarimaByRR($(this).val());
+        $.mask.definitions['u'] = "[1-9]";
+        var anioAct = new Date();
+        var digAnio = anioAct.getFullYear().toString().substr(2, 2);
+        $('#txt_folio_oc').mask('OCA-99999u-' + digAnio);
+
+        $('#btnBuscaOC').button().click(function () {
+            if ($('#txt_folio_oc').val().length == 0) {
+                alert('Es necesario proporcionar el folio de la orden de carga');
+                $('#txt_folio_oc').focus();
+            }
+            else {
+                $('#div_orde_carga, #div_generales, #div_transporte').addClass('ajaxLoading');
+                fillDataByOC($('#txt_folio_oc').val());
+            }
+            return false;
         });
 
         $('#ctl00_body_btnGuardar').change(function () {
@@ -74,107 +86,177 @@ var MngEmbarqueWH = function () {
             });
 
             if (IsValid) {
+                $('#ctl00_body_hf_click_save').val('1');
                 $(this).hide();
             }
         });
     }
 
-    function getTarimaByRR(rr) {
-
+    function fillDataByOC(folio_oc) {
+        $('#tbodyRemByOc').html('');
         $.ajax({
             type: 'GET',
-            url: "/handlers/Operation.ashx",
+            url: "/handlers/Almacen.ashx",
             //dataType: "jsonp",
             data: {
-                op: 'tarimaAlm',
-                opt: 'getByRR',
-                key: rr
+                'case': 'carga',
+                opt: 'getForArribo',
+                key: folio_oc
             },
             complete: function () {
-
+                $('#div_orde_carga, #div_generales').removeClass('ajaxLoading');
             },
             success: function (data) {
-                fill_liTarima(data, rr);
+
+                if (typeof (data) != 'string')
+                    fillFormWithOC(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
                 oErrorMessage.SetError(jqXHR.responseText);
-                oErrorMessage.Init();
+                oErrorMessage.Init()
             }
         });
     }
 
-    function fill_liTarima(data, rr) {
-        $('#ul_tarima').html('');
-        var li = '';
-        $.each(data, function (i, obj) {
-            li = '<li class="floatLeft ' + (i % 2 == 0 ? '' : 'liOdd') + '" style="margin-right: 20px; margin-bottom: 2px; width: 300px;"><span>Folio: ' + obj.Folio + '; Estandar: ' + obj.Estandar + '</span><input idEnt="' + obj.Id_entrada + '" codigo="' + obj.Mercancia_codigo + '" descripcion="' + obj.Mercancia_nombre + '" rr="' + obj.Rr + '" bto="' + obj.Bultos + '" pza="' + obj.Piezas + '" id="tar_' + obj.Id + '" type="checkbox" class="tarSel"/></li>';
-            $('#ul_tarima').append(li);
+    function fillFormWithOC(data) {
+
+        var tr;
+        var acumTar;
+        var acumCja;
+        var acumPza;
+
+        $('#ctl00_body_hf_id_orden_carga').val(data.Id);
+
+        $.each(data.PLstTACRpt, function (i, obj) {
+            tr += '<tr>';
+            tr += '<td>' + obj.Folio_remision + '</td>';
+            tr += '<td>' + obj.Mercancia_codigo + '</td>';
+            tr += '<td>' + obj.Mercancia_nombre + '</td>';
+            tr += '<td>' + obj.Tarimas + '</td>';
+            tr += '<td>' + obj.Bultos + '</td>';
+            tr += '<td>' + obj.Piezas + '</td>';
+            tr += '</tr>';
+
+            acumTar += obj.Tarimas;
+            acumCja += obj.Bultos;
+            acumPza += obj.Piezas;
         });
+        $('#tbodyRemByOc').append(tr);
+        //id bodega
+        $('#ctl00_body_hf_id_entrada').val(data.PLstTACRpt[0].Id_entrada);
+        //Destino
+        $('#ctl00_body_ddlDestino').val(data.PTarAlmTrafico.PSalidaDestino.Id);
+        //Transporte
+        $('#ctl00_body_ddlTransporte').val(data.PTarAlmTrafico.PTransporte.Id).trigger('change');
 
-        clearTarimaByRR(rr);
-
-        $('.tarSel').each(function () {
-            $(this).click(function () {
-                var cajas = 0;
-                var piezas = 0;
-                var lstExiste = [];
-                $('.tarSel').each(function () {
-                    var v_Id = $(this).attr('id').split('_')[1] * 1;
-                    var cajas = $(this).attr('bto') * 1;
-                    var piezas = $(this).attr('pza') * 1;
-                    var v_IdEntrada = $(this).attr('idEnt') * 1;
-                    if ($(this).is(':checked')) {
-                        lstExiste = $.grep(lstTar, function (obj) {
-                            return obj.Id == v_Id;
-                        });
-                        if (lstExiste.length == 0) {
-                            var oBeanTarima = new beanTarima(v_Id, v_IdEntrada, cajas, piezas, $(this).attr('rr'));
-                            lstTar.push(oBeanTarima);
-                        }
-                    }
-                    else {
-                        lstTar = $.grep(lstTar, function (obj) {
-                            return obj.Id != v_Id;
-                        });
-                    }
-                });
-                fillTarimaByRR(rr);
-                $('#ctl00_body_hf_tarimas_agregadas').val(JSON.stringify(lstTar));
-            });
+        $('#ctl00_body_upTipoTransporte').panelReady(function () {
+            $('#ctl00_body_ddlTipo_Transporte').val(data.PTarAlmTrafico.PTransporteTipo.Id);
+            $('#ctl00_body_txt_placa').val(data.PTarAlmTrafico.Placa);
+            $('#ctl00_body_txt_caja').val(data.PTarAlmTrafico.Caja);
+            $('#ctl00_body_txt_caja_1').val(data.PTarAlmTrafico.Caja1);
+            $('#ctl00_body_txt_caja_2').val(data.PTarAlmTrafico.Caja2);
+            $('#ctl00_body_txt_operador').val(data.PTarAlmTrafico.Operador);
+            $('#div_transporte').removeClass('ajaxLoading');
         });
     }
 
-    function fillTarimaByRR(rr) {
-        var cajas = 0;
-        var piezas = 0;
-        var tarimas = 0;
-        var lstTarByRR = [];
+    //    function getTarimaByRR(rr) {
 
-        clearTarimaByRR(rr);
+    //        $.ajax({
+    //            type: 'GET',
+    //            url: "/handlers/Operation.ashx",
+    //            //dataType: "jsonp",
+    //            data: {
+    //                op: 'tarimaAlm',
+    //                opt: 'getByRR',
+    //                key: rr
+    //            },
+    //            complete: function () {
 
-        lstTarByRR = $.grep(lstTar, function (obj) {
-            return obj.Rr == rr;
-        });
+    //            },
+    //            success: function (data) {
+    //                fill_liTarima(data, rr);
+    //            },
+    //            error: function (jqXHR, textStatus, errorThrown) {
+    //                var oErrorMessage = new ErrorMessage();
+    //                oErrorMessage.SetError(jqXHR.responseText);
+    //                oErrorMessage.Init();
+    //            }
+    //        });
+    //    }
 
-        $.each(lstTarByRR, function (i, obj) {
-            cajas += obj.Bultos;
-            piezas += obj.Piezas;
-            tarimas++;
-        });
+    //    function fill_liTarima(data, rr) {
+    //        $('#ul_tarima').html('');
+    //        var li = '';
+    //        $.each(data, function (i, obj) {
+    //            li = '<li class="floatLeft ' + (i % 2 == 0 ? '' : 'liOdd') + '" style="margin-right: 20px; margin-bottom: 2px; width: 300px;"><span>Folio: ' + obj.Folio + '; Estandar: ' + obj.Estandar + '</span><input idEnt="' + obj.Id_entrada + '" codigo="' + obj.Mercancia_codigo + '" descripcion="' + obj.Mercancia_nombre + '" rr="' + obj.Rr + '" bto="' + obj.Bultos + '" pza="' + obj.Piezas + '" id="tar_' + obj.Id + '" type="checkbox" class="tarSel"/></li>';
+    //            $('#ul_tarima').append(li);
+    //        });
 
-        var tr = '<tr class="tarAgregada_' + rr + '">';
-        tr += '<td align="center">' + rr + '</td>';
-        tr += '<td align="center">' + tarimas + '</td>';
-        tr += '<td align="center">' + cajas + '</td>';
-        tr += '<td align="center">' + piezas + '</td>';
-        tr += '</tr>';
-        $('#tbody_tarAgregadas').append(tr);
-    }
+    //        clearTarimaByRR(rr);
 
-    function clearTarimaByRR(rr) {
-        $('.tarAgregada_' + rr).remove();
-    }
+    //        $('.tarSel').each(function () {
+    //            $(this).click(function () {
+    //                var cajas = 0;
+    //                var piezas = 0;
+    //                var lstExiste = [];
+    //                $('.tarSel').each(function () {
+    //                    var v_Id = $(this).attr('id').split('_')[1] * 1;
+    //                    var cajas = $(this).attr('bto') * 1;
+    //                    var piezas = $(this).attr('pza') * 1;
+    //                    var v_IdEntrada = $(this).attr('idEnt') * 1;
+    //                    if ($(this).is(':checked')) {
+    //                        lstExiste = $.grep(lstTar, function (obj) {
+    //                            return obj.Id == v_Id;
+    //                        });
+    //                        if (lstExiste.length == 0) {
+    //                            var oBeanTarima = new beanTarima(v_Id, v_IdEntrada, cajas, piezas, $(this).attr('rr'));
+    //                            lstTar.push(oBeanTarima);
+    //                        }
+    //                    }
+    //                    else {
+    //                        lstTar = $.grep(lstTar, function (obj) {
+    //                            return obj.Id != v_Id;
+    //                        });
+    //                    }
+    //                });
+    //                fillTarimaByRR(rr);
+    //                $('#ctl00_body_hf_tarimas_agregadas').val(JSON.stringify(lstTar));
+    //            });
+    //        });
+    //    }
+
+    //    function fillTarimaByRR(rr) {
+    //        var cajas = 0;
+    //        var piezas = 0;
+    //        var tarimas = 0;
+    //        var lstTarByRR = [];
+
+    //        clearTarimaByRR(rr);
+
+    //        lstTarByRR = $.grep(lstTar, function (obj) {
+    //            return obj.Rr == rr;
+    //        });
+
+    //        $.each(lstTarByRR, function (i, obj) {
+    //            cajas += obj.Bultos;
+    //            piezas += obj.Piezas;
+    //            tarimas++;
+    //        });
+
+    //        var tr = '<tr class="tarAgregada_' + rr + '">';
+    //        tr += '<td align="center">' + rr + '</td>';
+    //        tr += '<td align="center">' + tarimas + '</td>';
+    //        tr += '<td align="center">' + cajas + '</td>';
+    //        tr += '<td align="center">' + piezas + '</td>';
+    //        tr += '</tr>';
+    //        $('#tbody_tarAgregadas').append(tr);
+    //    }
+
+    //    function clearTarimaByRR(rr) {
+    //        $('.tarAgregada_' + rr).remove();
+    //    }
 
     function setDestino() {
         $('#ctl00_body_hf_destino').val($('#ctl00_body_ddlDestino option:selected').attr('direccion'));

@@ -8,6 +8,7 @@ using iTextSharp.text.pdf;
 using System.IO;
 using ModelCasc.operation;
 using System.Globalization;
+using ModelCasc.operation.almacen;
 
 namespace ModelCasc.report.operation
 {
@@ -330,7 +331,7 @@ namespace ModelCasc.report.operation
             table.AddCell(new PdfPCell() { Phrase = new Phrase("RENGLÓN", font), HorizontalAlignment = PdfPCell.ALIGN_CENTER });
             table.AddCell(new PdfPCell() { Phrase = new Phrase("CODIGO", font), HorizontalAlignment = PdfPCell.ALIGN_CENTER });
             table.AddCell(new PdfPCell() { Phrase = new Phrase("PALLET", font), HorizontalAlignment = PdfPCell.ALIGN_CENTER });
-            table.AddCell(new PdfPCell() { Phrase = new Phrase("RENGLÓN", font), HorizontalAlignment = PdfPCell.ALIGN_LEFT });
+            table.AddCell(new PdfPCell() { Phrase = new Phrase("MERCANCÍA", font), HorizontalAlignment = PdfPCell.ALIGN_LEFT });
             table.AddCell(new PdfPCell() { Phrase = new Phrase("ESTÁNDAR", font), HorizontalAlignment = PdfPCell.ALIGN_CENTER });
             table.AddCell(new PdfPCell() { Phrase = new Phrase("RR", font), HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
