@@ -53,7 +53,6 @@ namespace ModelCasc.report.almacen
                 fields.SetField("saldoIni", Convert.ToDouble(dr["saldoIni"]).ToString("N0"));
                 fields.SetField("entradas", Convert.ToDouble(dr["entradas"]).ToString("N0"));
                 fields.SetField("salidas", Convert.ToDouble(dr["salidas"]).ToString("N0"));
-                fields.SetField("salidas", Convert.ToDouble(dr["salidas"]).ToString("N0"));
                 fields.SetField("saldo", Convert.ToDouble(dr["saldoFin"]).ToString("N0"));
                 fields.SetField("piezasTot", Convert.ToDouble(dr["saldoTot"]).ToString("N0"));
 
