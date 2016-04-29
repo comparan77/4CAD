@@ -221,6 +221,119 @@ namespace ModelCasc.report.operation
             }
         }
 
+        //private static void fillEntradaAlm(string FilePath, string rptPath, Entrada oE, DataSet ds)
+        //{
+
+        //    try
+        //    {
+        //        CultureInfo ci = new CultureInfo("es-MX");
+        //        ReportDocument reporte = new ReportDocument();
+
+        //        reporte.Load(rptPath);
+        //        List<Entrada_transporte_condicion> lstETC = AlmacenCtrl.entradaTransporteCondicionGet(oE.PLstEntTrans.First().Id);
+
+        //        foreach (Entrada_transporte_condicion itemETC in lstETC)
+        //        {
+        //            DataRow dr = ds.Tables["entrada_transporte_condicion"].NewRow();
+        //            dr["condicion"] = itemETC.Condicion;
+        //            dr["si_no"] = itemETC.Si_no;
+        //            ds.Tables["entrada_transporte_condicion"].Rows.Add(dr);
+        //        }
+
+        //        List<Tarima_almacen> lstTA = AlmacenCtrl.tarimaAlacenFillByEntrada(oE.Id);
+        //        foreach (Tarima_almacen itemTA in lstTA)
+        //        {
+        //            DataRow drTA = ds.Tables["entrada_tarima"].NewRow();
+        //            drTA["tarima"] = itemTA.Tarimas;
+        //            drTA["estandar"] = itemTA.Estandar;
+        //            drTA["cajas"] = itemTA.Bultos;
+        //            drTA["piezas"] = itemTA.Piezas;
+        //            ds.Tables["entrada_tarima"].Rows.Add(drTA);
+        //        }
+
+        //        reporte.Subreports[0].SetDataSource(ds.Tables["entrada_transporte_condicion"]);
+        //        reporte.SetDataSource(ds.Tables["entrada_tarima"]);
+
+        //        reporte.SetParameterValue("direccion_bodega", oE.PBodega.Direccion);
+        //        reporte.SetParameterValue("bodega", oE.PBodega.Nombre);
+        //        reporte.SetParameterValue("cortina", oE.PCortina.Nombre);
+        //        reporte.SetParameterValue("cliente", oE.PCliente.Razon);
+        //        reporte.SetParameterValue("folio", oE.Folio);
+        //        reporte.SetParameterValue("fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+        //        reporte.SetParameterValue("hora", oE.Hora.ToString());
+        //        reporte.SetParameterValue("proveedor", CatalogCtrl.Cliente_vendorfillByCliente(1, oE.Origen).First().Nombre);
+        //        reporte.SetParameterValue("mercancia_codigo", oE.PCliente.PClienteMercancia.Codigo);
+        //        reporte.SetParameterValue("mercancia_descripcion", oE.PCliente.PClienteMercancia.Nombre);
+        //        reporte.SetParameterValue("mercancia_tipo", oE.PCliente.PClienteMercancia.Negocio);
+
+        //        reporte.SetParameterValue("caja_declarada", oE.No_bulto_declarado);
+        //        reporte.SetParameterValue("caja_recibida", oE.No_bulto_recibido);
+
+        //        int diferenciaBulto = oE.No_bulto_declarado - oE.No_bulto_recibido;
+        //        reporte.SetParameterValue("caja_faltante", 0);
+        //        reporte.SetParameterValue("caja_sobrante", 0);
+
+        //        if (diferenciaBulto > 0)
+        //            reporte.SetParameterValue("caja_faltante", diferenciaBulto);
+        //        if (diferenciaBulto < 0)
+        //            reporte.SetParameterValue("caja_sobrante", Math.Abs(diferenciaBulto));
+
+        //        reporte.SetParameterValue("pieza_declarada", oE.No_pieza_declarada);
+        //        reporte.SetParameterValue("pieza_recibida", oE.No_pieza_recibida);
+        //        int diferenciaCaja = oE.No_pieza_declarada - oE.No_pieza_recibida;
+        //        reporte.SetParameterValue("pieza_faltante", 0);
+        //        reporte.SetParameterValue("pieza_sobrante", 0);
+
+        //        if (diferenciaCaja > 0)
+        //            reporte.SetParameterValue("pieza_faltante", diferenciaCaja);
+        //        if (diferenciaCaja < 0)
+        //            reporte.SetParameterValue("pieza_sobrante", Math.Abs(diferenciaCaja));
+
+        //        reporte.SetParameterValue("caja_danada", oE.No_bulto_danado);
+        //        reporte.SetParameterValue("caja_abierta", oE.No_bulto_abierto);
+        //        reporte.SetParameterValue("rr", oE.Referencia);
+
+        //        reporte.SetParameterValue("piezaxcaja", oE.PTarAlmEstd.Piezasxcaja);
+        //        reporte.SetParameterValue("cajaxtarima", oE.PTarAlmEstd.Cajasxtarima);
+
+        //        #region Transporte
+        //        reporte.SetParameterValue("operador", oE.Operador);
+        //        StringBuilder sbET = new StringBuilder();
+        //        foreach (Entrada_transporte oET in oE.PLstEntTrans)
+        //        {
+        //            sbET.Append("Linea: " + oET.Transporte_linea + ", Tipo: " + oET.Transporte_tipo);
+        //            if (string.Compare(oET.Placa, "N.A.") != 0)
+        //                sbET.Append(", Placa: " + oET.Placa);
+        //            if (string.Compare(oET.Caja, "N.A.") != 0)
+        //                sbET.Append(", Caja: " + oET.Caja);
+        //            if (string.Compare(oET.Caja1, "N.A.") != 0)
+        //                sbET.Append(", Contenedor 1: " + oET.Caja1);
+        //            if (string.Compare(oET.Caja2, "N.A.") != 0)
+        //                sbET.Append(", Contenedor 2: " + oET.Caja2);
+        //            sbET.AppendLine();
+        //        }
+        //        reporte.SetParameterValue("transporte", sbET.ToString());
+        //        reporte.SetParameterValue("custodia", oE.PCustodia.Nombre);
+        //        reporte.SetParameterValue("sello", oE.Sello);
+        //        reporte.SetParameterValue("carta_porte", oE.Talon);
+
+        //        #endregion
+
+        //        reporte.SetParameterValue("hora_descarga", oE.Hora_descarga);
+        //        reporte.SetParameterValue("observaciones", oE.Observaciones);
+        //        reporte.SetParameterValue("usuario", oE.PUsuario.Nombre);
+        //        reporte.SetParameterValue("vigilante", oE.Vigilante);
+        //        reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, FilePath);
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //    }
+        //}
+
         private static void fillEntradaAlm(string FilePath, string rptPath, Entrada oE, DataSet ds)
         {
             
