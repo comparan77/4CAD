@@ -343,6 +343,15 @@ namespace ModelCasc.report.operation
                 ReportDocument reporte = new ReportDocument();
                 reporte.Load(rptPath);
 
+                List<Entrada_transporte_condicion> lstETC = AlmacenCtrl.entradaTransporteCondicionGet(oE.PLstEntTrans.First().Id);
+                foreach (Entrada_transporte_condicion itemETC in lstETC)
+                {
+                    DataRow dr = ds.Tables["entrada_transporte_condicion"].NewRow();
+                    dr["condicion"] = itemETC.Condicion;
+                    dr["si_no"] = itemETC.Si_no;
+                    ds.Tables["entrada_transporte_condicion"].Rows.Add(dr);
+                }
+
                 List<Tarima_almacen> lstTA = AlmacenCtrl.tarimaAlacenFillByEntrada(oE.Id);
                 foreach (Tarima_almacen itemTA in lstTA)
                 {
@@ -354,7 +363,7 @@ namespace ModelCasc.report.operation
                     ds.Tables["entrada_tarima"].Rows.Add(drTA);
                 }
 
-                //        reporte.Subreports[0].SetDataSource(ds.Tables["entrada_transporte_condicion"]);
+                reporte.Subreports[0].SetDataSource(ds.Tables["entrada_transporte_condicion"]);
                 reporte.SetDataSource(ds.Tables["entrada_tarima"]);
 
                 reporte.SetParameterValue("direccion_bodega", oE.PBodega.Direccion);
