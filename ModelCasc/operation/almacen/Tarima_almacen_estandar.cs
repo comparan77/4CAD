@@ -10,6 +10,7 @@ namespace ModelCasc.operation.almacen
         #region Campos
         protected int _id;
         protected int _id_entrada;
+        protected string _rr;
         protected int _cajasxtarima;
         protected int _piezasxcaja;
         protected string _proveedor;
@@ -18,6 +19,7 @@ namespace ModelCasc.operation.almacen
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
         public int Id_entrada { get { return _id_entrada; } set { _id_entrada = value; } }
+        public string Rr { get { return _rr; } set { _rr = value; } }
         public int Cajasxtarima { get { return _cajasxtarima; } set { _cajasxtarima = value; } }
         public int Piezasxcaja { get { return _piezasxcaja; } set { _piezasxcaja = value; } }
         public string Proveedor { get { return _proveedor; } set { _proveedor = value; } }
@@ -27,6 +29,7 @@ namespace ModelCasc.operation.almacen
         public Tarima_almacen_estandar()
         {
             this._id_entrada = 0;
+            this._rr = String.Empty;
             this._cajasxtarima = 0;
             this._piezasxcaja = 0;
             this._proveedor = String.Empty;

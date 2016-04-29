@@ -33,6 +33,7 @@ namespace ModelCasc.operation.almacen
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oTarima_almacen_estandar.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada", DbType.Int32, this._oTarima_almacen_estandar.Id_entrada);
+            GenericDataAccess.AddInParameter(this.comm, "?P_rr", DbType.String, this._oTarima_almacen_estandar.Rr);
             GenericDataAccess.AddInParameter(this.comm, "?P_cajasxtarima", DbType.Int32, this._oTarima_almacen_estandar.Cajasxtarima);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezasxcaja", DbType.Int32, this._oTarima_almacen_estandar.Piezasxcaja);
             GenericDataAccess.AddInParameter(this.comm, "?P_proveedor", DbType.String, this._oTarima_almacen_estandar.Proveedor);
@@ -51,6 +52,7 @@ namespace ModelCasc.operation.almacen
                     o.Id_entrada = entero;
                     entero = 0;
                 }
+                o.Rr = dr["rr"].ToString();
                 if (dr["cajasxtarima"] != DBNull.Value)
                 {
                     int.TryParse(dr["cajasxtarima"].ToString(), out entero);

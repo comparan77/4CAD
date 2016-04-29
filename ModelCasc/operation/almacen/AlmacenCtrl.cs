@@ -18,6 +18,7 @@ namespace ModelCasc.operation.almacen
             {
                 Tarima_almacen_estandar o = oE.PTarAlmEstd;
                 o.Id_entrada = oE.Id;
+                o.Rr = oE.Referencia;
                 Tarima_almacen_estandarMng oMng = new Tarima_almacen_estandarMng()
                 {
                     O_Tarima_almacen_estandar = o
