@@ -196,21 +196,21 @@ namespace ModelCasc.report.operation
                 fillEntradaAlm(fileName, TemplatePath, oE, ds);
                 files.Add(fileName);
 
-                //Tarima_almacen oTA1 = null;
-                //Tarima_almacen oTA2 = null;
+                Tarima_almacen oTA1 = null;
+                Tarima_almacen oTA2 = null;
 
-                //for (int indTar = 1; indTar <= oE.PLstTarAlm.Count; indTar += 2)
-                //{
-                //    oTA1 = oE.PLstTarAlm[indTar - 1];
+                for (int indTar = 1; indTar <= oE.PLstTarAlm.Count; indTar += 2)
+                {
+                    oTA1 = oE.PLstTarAlm[indTar - 1];
 
-                //    if (indTar < oE.PLstTarAlm.Count)
-                //        oTA2 = oE.PLstTarAlm[indTar];
-                //    else
-                //        oTA2 = new Tarima_almacen();
-                //    fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                //    fillEntradaAlmTar(fileName, TemplatePathPallet, oTA1, oTA2, oE);
-                //    files.Add(fileName);
-                //}
+                    if (indTar < oE.PLstTarAlm.Count)
+                        oTA2 = oE.PLstTarAlm[indTar];
+                    else
+                        oTA2 = new Tarima_almacen();
+                    fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                    fillEntradaAlmTar(fileName, TemplatePathPallet, oTA1, oTA2, oE);
+                    files.Add(fileName);
+                }
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);
             }
