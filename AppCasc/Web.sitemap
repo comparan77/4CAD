@@ -56,6 +56,7 @@
       <siteMapNode url="~/operation/almacen/frmOCWH.aspx" title="Orden de Carga"  description="Orden de Carga" />
       <siteMapNode url="~/operation/almacen/frmEmbarqueWH.aspx" title="Embarques"  description="Embarques" />
       <siteMapNode url="~/operation/almacen/frmRptWH.aspx" title="Reportes"  description="Reportes" />
+      <siteMapNode url="~/operation/almacen/frmPrintOpWH.aspx" title="Rel. Movimientos"  description="Reimpresión de Movimientos." />
     </siteMapNode>
     <siteMapNode roles="Super, Administracion" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />

@@ -10,6 +10,34 @@ namespace ModelCasc.operation.almacen
 {
     public class AlmacenCtrl
     {
+        #region Arribos
+
+        public static List<SearchResMov> tarimaAlmacenArriboSearchMov(SearchResMov o)
+        {
+            List<SearchResMov> lst = new List<SearchResMov>();
+            try
+            {
+                Tarima_almacenMng oMng = new Tarima_almacenMng();
+                Tarima_almacen oTa = new Tarima_almacen()
+                {
+                    Estandar = o.Cita,
+                    Rr = o.Rr,
+                    Mercancia_codigo = o.Mercancia,
+                    Folio = o.Folio
+                };
+                oMng.O_Tarima_almacen = oTa;
+                oMng.fillLstArriboSRM();
+                lst = oMng.LstSRM;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
         #region Tarima Almacen
 
         public static void tarimaAlmacenEstandarAdd(Entrada oE, IDbTransaction trans)

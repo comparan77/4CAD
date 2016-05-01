@@ -11,12 +11,16 @@ namespace ModelCasc.operation.almacen
     {
         #region Campos
         protected Tarima_almacen _oTarima_almacen;
+        //protected SearchResMov _oSearchResMov;
         protected List<Tarima_almacen> _lst;
+        protected List<SearchResMov> _lstSRM;
         #endregion
 
         #region Propiedades
         public Tarima_almacen O_Tarima_almacen { get { return _oTarima_almacen; } set { _oTarima_almacen = value; } }
+        //public SearchResMov O_SearchResMov { get { return _oSearchResMov; } set { _oSearchResMov = value; } }
         public List<Tarima_almacen> Lst { get { return _lst; } set { _lst = value; } }
+        public List<SearchResMov> LstSRM { get { return _lstSRM; } set { _lstSRM = value; } }
         #endregion
 
         #region Constructores
@@ -42,6 +46,25 @@ namespace ModelCasc.operation.almacen
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oTarima_almacen.Piezas);
             GenericDataAccess.AddInParameter(this.comm, "?P_es_resto", DbType.Boolean, this._oTarima_almacen.Es_resto);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oTarima_almacen.Id_salida);
+        }
+
+        private void BindByDataRowSRM(DataRow dr, SearchResMov o)
+        {
+            try
+            {
+                int.TryParse(dr["id"].ToString(), out entero);
+                o.Id = entero;
+                entero = 0;
+                o.Cita = dr["cita"].ToString();
+                o.Rr = dr["rr"].ToString();
+                o.Folio = dr["folio"].ToString();
+                o.Mercancia = dr["mercancia"].ToString();
+                o.Nombre = dr["nombre"].ToString();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public void BindByDataRow(DataRow dr, Tarima_almacen o)
@@ -379,6 +402,27 @@ namespace ModelCasc.operation.almacen
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
                 addParameters(13);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillLstArriboSRM()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
+                addParameters(14);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lstSRM = new List<SearchResMov>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    SearchResMov o = new SearchResMov();
+                    BindByDataRowSRM(dr, o);
+                    this._lstSRM.Add(o);
+                }
             }
             catch
             {

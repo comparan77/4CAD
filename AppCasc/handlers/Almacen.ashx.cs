@@ -29,6 +29,9 @@ namespace AppCasc.handlers
             {
                 switch (operation)
                 {
+                    case "arribo":
+                        arribo(context);
+                        break;
                     case "almacen":
                         almacen(context);
                         break;
@@ -47,12 +50,64 @@ namespace AppCasc.handlers
                     case "carga_det":
                         cargaDetail(context);
                         break;
+                    case "embarque":
+                        embarque(context);
+                        break;
                 }
                 context.Response.Write(response);
             }
             catch (Exception e)
             {
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
+            }
+        }
+
+        private void arribo(HttpContext context)
+        {
+            try
+            {
+                option = context.Request["opt"].ToString();
+                string folio_cita = context.Request["folio_cita"].ToString();
+                string rr = context.Request["rr"].ToString();
+                string mercancia_codigo = context.Request["mercancia_codigo"].ToString();
+                string folio = context.Request["folio"].ToString();
+                switch (option)
+                {
+                    case "getBy":
+                        response = JsonConvert.SerializeObject(AlmacenCtrl.tarimaAlmacenArriboSearchMov(new SearchResMov()
+                        {
+                            Cita = folio_cita,
+                            Folio = folio,
+                            Rr = rr,
+                            Mercancia = mercancia_codigo
+                        }));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void embarque(HttpContext context)
+        {
+            try
+            {
+                option = context.Request["opt"].ToString();
+                switch (option)
+                {
+                    case "getBy":
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
 

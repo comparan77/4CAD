@@ -59,18 +59,25 @@ namespace AppCasc.operation.almacen
             string virtualPath = string.Empty;
             string RptFileName = string.Empty;
             string TemplatePath = string.Empty;
+            bool withDet = true;
             object obj;
             dsReport ds = new dsReport();
             switch (rpt)
             {
                 case "entradaAlm":
                     obj = (Entrada)Session["SEntrada"];
+                    if (obj == null)
+                    {
+                        int idEnt = Convert.ToInt32(Request["_key"].ToString());
+                        withDet = Convert.ToBoolean(Request["_wdet"].ToString());
+                        obj = EntradaCtrl.EntradaGetAllDataById(idEnt);
+                    }
                     RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/entradasAlm/") + RptFileName;
                     //pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
                     TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/ealm.rpt");
                     string TemplatePathTarima = HttpContext.Current.Server.MapPath("~/rpt/TemplatePallet.pdf");
-                    DocEntrada.getEntradaAlm(path, TemplatePath, TemplatePathTarima, (Entrada)obj, ds);
+                    DocEntrada.getEntradaAlm(path, TemplatePath, TemplatePathTarima, (Entrada)obj, ds, withDet);
                     //this.getRpt(path, TemplatePath, (Entrada)obj, ds);
                     //ReportDocument reporte = new ReportDocument();
                     //reporte.Load(HttpContext.Current.Server.MapPath("~/report/Almacen/EntradaAlm.rpt"));
