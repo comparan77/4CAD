@@ -118,6 +118,14 @@ namespace AppCasc.handlers
                 option = context.Request["opt"].ToString();
                 switch (option)
                 {
+                    case "calcTarimas":
+                        response = JsonConvert.SerializeObject(AlmacenCtrl.tarimaAlacenCalcTar(
+                            Convert.ToInt32(context.Request["CjXTr"]),
+                            Convert.ToInt32(context.Request["PzXCj"]),
+                            Convert.ToInt32(context.Request["CjRec"]),
+                            Convert.ToInt32(context.Request["PzRec"]),
+                            Convert.ToInt32(context.Request["UbRes"]), true));
+                        break;
                     default:
                         break;
                 }

@@ -73,10 +73,23 @@
     </div>
     <hr style="border-color: transparent" />
     <div>
+        <label>Cajas por Tarima:</label>
+        <asp:TextBox Text="0" CssClass="txtNumber calculaStd confirmValue" id="txt_bto_x_pallet" runat="server" ToolTip="Número de bultos por pallet."></asp:TextBox>
+        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_bto_x_pallet" ControlToValidate="txt_bto_x_pallet" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
+        <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_bto_x_pallet" ControlToValidate="txt_bto_x_pallet" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
+    </div>
+    <div>
+        <label>Piezas por Caja:</label>
+        <asp:TextBox Text="0" CssClass="txtNumber calculaStd confirmValue" id="txt_pza_x_bulto" runat="server" ToolTip="Número de Piezas por bulto."></asp:TextBox>
+        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_pza_x_bulto" ControlToValidate="txt_pza_x_bulto" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
+        <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_pza_x_bulto" ControlToValidate="txt_pza_x_bulto" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
+    </div>
+
+    <%--<div>
         <label>Pallets Armados:</label>
         <asp:TextBox CssClass="txtNumber" id="txt_no_pallet" runat="server" ToolTip="Número de pallets o tarimas"></asp:TextBox>
         <asp:RangeValidator CssClass="validator" runat="server" Type="Integer" ID="rv_no_pallet" ControlToValidate="txt_no_pallet" ErrorMessage="Es necesario capturar un número." MinimumValue="0" MaximumValue="1000"></asp:RangeValidator>
-    </div>
+    </div>--%>
     <hr style="border-color: transparent" />
     <div>
         <label>Cajas Declaradas:</label>
@@ -111,18 +124,7 @@
         <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_pieza_recibida" ControlToValidate="txt_no_pieza_recibida" ErrorMessage="Es necesario capturar un número entre 1 y 5,000,000" MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
     </div>--%>
     <hr style="border-color: transparent" />
-    <div>
-        <label>Piezas por Caja:</label>
-        <asp:TextBox Text="0" CssClass="txtNumber calculaStd confirmValue" id="txt_pza_x_bulto" runat="server" ToolTip="Número de Piezas por bulto."></asp:TextBox>
-        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_pza_x_bulto" ControlToValidate="txt_pza_x_bulto" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
-        <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_pza_x_bulto" ControlToValidate="txt_pza_x_bulto" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
-    </div>
-    <div>
-        <label>Cajas por Tarima:</label>
-        <asp:TextBox Text="0" CssClass="txtNumber calculaStd confirmValue" id="txt_bto_x_pallet" runat="server" ToolTip="Número de bultos por pallet."></asp:TextBox>
-        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_bto_x_pallet" ControlToValidate="txt_bto_x_pallet" ErrorMessage="Es necesario capturar un valor"></asp:RequiredFieldValidator>
-        <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_bto_x_pallet" ControlToValidate="txt_bto_x_pallet" ErrorMessage="Es necesario capturar un número." MinimumValue="1" MaximumValue="5000000"></asp:RangeValidator>
-    </div>
+    
 
     <div style="position: absolute; top: 15px; right: 15px;">
         <table id="tbl_dif" class="grdCascSmall">
@@ -150,27 +152,44 @@
 
     <div id="div_build_tarima" style="position: absolute; top: 160px; right: 15px">
         <table class="grdCascSmall">
+            <thead>
+                <tr>
+                    <th colspan="14"><span id="clearTableRestoTar" class="ui-icon ui-icon-trash icon-button-action" ></span></th>
+                </tr>
+            </thead>
             <tbody id="tbody_build_tarima">
             </tbody>
+            <tfoot>
+                <tr>
+                    <th id="tf_tarimas"></th>
+                    <th>Tarimas</th>
+                    <th colspan="4">&nbsp;</th>
+                    <th id="tf_cajas"></th>
+                    <th>Cajas</th>
+                    <th colspan="4">&nbsp;</th>
+                    <th id="tf_piezas"></th>
+                    <th>Piezas</th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <hr style="border-color: transparent" />
-    <div>
+    <%--<div>
         <button id="btn_restos">Restos</button>
-    </div>
-    <div id="div_restos" title="Captura de restos por tarima" class="divForm">
-        <div>
+    </div>--%>
+    <div id="div_restos" title="Captura de restos" class="divForm">
+        <%--<div>
             <label>Cajas:</label>
             <input type="text" class="txtNumber" id="caja_resto" value="0" />
-        </div>
-        <div>
-            <label>Piezas por Caja:</label>
+        </div>--%>
+        <%--<div>
+            <label>Piezas:</label>
             <input type="text" class="txtNumber" id="piezaXcaja_resto" value="0" />
-        </div>
-        <div>
+        </div>--%>
+        <%--<div>
             <button id="addResto">Agregar Resto a la tarima</button>
-        </div>
-        <hr style="border-color: transparent" />
+        </div>--%>
+        <%--<hr style="border-color: transparent" />
         <table class="grdCascSmall">
             <thead>
                 <tr>
@@ -183,24 +202,30 @@
             <tbody id="t_resto">
             </tbody>
         </table>
-        <hr style="border-color: transparent;" />
+        <hr style="border-color: transparent;" />--%>
+        <hr style="border-color: transparent" />
         <div>
-            <button id="addTarima_resto">Agregar Tarima</button>
-            <asp:HiddenField runat="server" ID="hf_resto" />
+            <button id="restoTarNueva">Resto en tarima independiente</button>
+            <%--<asp:HiddenField runat="server" ID="hf_resto" />--%>
         </div>
+        <hr style="border-color: transparent" />
+        <div>
+            <button id="restoTarExistente">Resto en tarima existente</button>
+        </div>
+        
     </div>
     <div id="div_resto_tarima" style="position: absolute; bottom: 60px; right: 15px">
         <table class="grdCascSmall">
             <tbody id="tbody_resto_tarima"></tbody>
         </table>
-        <asp:HiddenField runat="server" ID="hf_restos" />
+        
     </div>
-    <hr style="border-color: transparent" />
+    <%--<hr style="border-color: transparent" />
     <div>
         <button id="btn_show_cantidadesProblema">Bultos con Incidencias</button>
-    </div>
+    </div>--%>
 
-    <div class="hidden" id="cantidadesProblema">
+    <%--<div class="hidden" id="cantidadesProblema">
         <div>
             <label>Cajas Dañadas:</label>
             <asp:TextBox Text="0" CssClass="txtNumber" id="txt_no_bulto_danado" runat="server" ToolTip="Numero de bultos encontrados con daños físicos."></asp:TextBox>
@@ -211,7 +236,7 @@
             <asp:TextBox Text="0" CssClass="txtNumber" id="txt_no_bulto_abierto" runat="server" ToolTip="Numero de bultos encontrados abiertos "></asp:TextBox>
             <asp:RangeValidator Type="Integer" CssClass="validator" runat="server" ID="rv_no_bulto_abierto" ControlToValidate="txt_no_bulto_abierto" ErrorMessage="Es necesario capturar un número entre 0 y 10,000" MinimumValue="0" MaximumValue="10000"></asp:RangeValidator>
         </div>
-    </div>
+    </div>--%>
 
 </div>
 
@@ -327,6 +352,8 @@
 
 <div>
     <asp:Button runat="server" ID="btn_save" Text="Guardar Entrada" OnClick="save_entrada" />
+    <asp:HiddenField runat="server" ID="hf_restos" Value="0" />
+    <asp:HiddenField runat="server" ID="h_ubica_resto" Value="0" />
 </div>
 
 <div>

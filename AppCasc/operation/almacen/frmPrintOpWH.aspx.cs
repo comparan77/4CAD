@@ -11,7 +11,16 @@ namespace AppCasc.operation.almacen
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            try
+            {
+                if (Session["SEntrada"] != null)
+                    Session.Remove("SEntrada");
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace ModelCasc.operation.almacen
         protected string _estandar;
         protected int _bultos;
         protected int _piezas;
-        protected bool _es_resto;
+        protected int _resto;
         protected int? _id_salida;
         #endregion
 
@@ -31,7 +31,7 @@ namespace ModelCasc.operation.almacen
         public string Estandar { get { return _estandar; } set { _estandar = value; } }
         public int Bultos { get { return _bultos; } set { _bultos = value; } }
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
-        public bool Es_resto { get { return _es_resto; } set { _es_resto = value; } }
+        public int Resto { get { return _resto; } set { _resto = value; } }
         public int? Id_salida { get { return _id_salida; } set { _id_salida = value; } }
         public int Tarimas { get; set; }
         public List<Tarima_almacen_resto> PLTAResto { get; set; }
@@ -57,7 +57,7 @@ namespace ModelCasc.operation.almacen
             this._estandar = String.Empty;
             this._bultos = 0;
             this._piezas = 0;
-            this._es_resto = false;
+            this._resto = 0;
             this._id_salida = null;
         }
         #endregion

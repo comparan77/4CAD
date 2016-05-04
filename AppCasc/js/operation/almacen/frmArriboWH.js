@@ -100,17 +100,18 @@ var MngArriboWH = function () {
         var bto_recibido = $('#ctl00_body_txt_no_bulto_recibido');
         var pza_x_bulto = $('#ctl00_body_txt_pza_x_bulto');
         var bto_x_pallet = $('#ctl00_body_txt_bto_x_pallet');
+        var piezaDeclarada = $('#ctl00_body_txt_no_pieza_declarada');
 
         $('.calculaDif').each(function () {
             $(this).blur(function () {
                 calculaDif(bto_declarado, bto_recibido, $(pza_x_bulto).val());
-                calculaStd($(pza_x_bulto).val(), $(bto_x_pallet).val(), $(bto_recibido).val());
+                calculaStd($(pza_x_bulto).val(), $(bto_x_pallet).val(), $(bto_recibido).val(), $(piezaDeclarada).val());
             });
         });
 
         $('.calculaStd').each(function () {
             $(this).blur(function () {
-                calculaStd($(pza_x_bulto).val(), $(bto_x_pallet).val(), $(bto_recibido).val());
+                calculaStd($(pza_x_bulto).val(), $(bto_x_pallet).val(), $(bto_recibido).val(), $(piezaDeclarada).val());
             });
         });
 
@@ -164,116 +165,38 @@ var MngArriboWH = function () {
 
         $('#div_restos').dialog({
             autoOpen: false,
-            height: 320,
-            width: 295,
+            height: 180,
+            width: 300,
             modal: true,
             resizable: false,
+            closeOnEscape: false,
             open: function (event, ui) {
-                $('#caja_resto').focus().select();
             },
             close: function (event, ui) {
-                $('#caja_resto').val(0);
-                $('#piezaXcaja_resto').val(0);
-                $('#t_resto').html('');
-                //$("html, body").animate({ scrollTop: $(document).height() }, "slow");
-            }
-        });
-
-        $('#btn_restos').button().click(function () {
-            $('#div_restos').dialog('open');
-            return false;
-        });
-
-        $('#addTarima_resto').button().click(function () {
-            addTarimaResto();
-            lstTarAlmResto = [];
-            $('#div_restos').dialog('close');
-            return false;
-        });
-
-        $('#addTarima_resto').button('disable');
-
-        $('#addResto').button().click(function () {
-
-            var piezasXcaja = $('#piezaXcaja_resto').val() * 1;
-            var cajas = $('#caja_resto').val() * 1;
-
-            if (!numeroValido(cajas, $('#caja_resto')))
-                return false;
-
-            if (!numeroValido(piezasXcaja, $('#piezaXcaja_resto')))
-                return false;
-
-            lstTarAlmRestoExistente = $.grep(lstTarAlmResto, function (obj) {
-                if (piezasXcaja == obj.Piezasxcaja) {
-                    obj.Cajas += cajas;
-                    obj.Piezas = obj.Cajas * piezasXcaja;
-                    return obj;
+                var ur = $('#ctl00_body_h_ubica_resto').val() * 1;
+                if (ur == 0) {
+                    alert('Es necesario seleccionar la ubicación del resto');
+                    $('#div_restos').dialog('open');
                 }
-            });
-
-            if (lstTarAlmRestoExistente.length == 0) {
-
-                var o = new BeanTarimaAlmacenResto(
-                idTarimaAlmacenResto,
-                idTarimaAlmacen,
-                cajas,
-                piezasXcaja,
-                cajas * piezasXcaja
-                );
-                idTarimaAlmacenResto++;
-                lstTarAlmResto.push(o);
             }
-            fillTblResto();
-            return false;
-        });
-    }
-
-    function fillTblResto() {
-        var tr = '';
-        var addTarimaEstatus = 'enable';
-        if (lstTarAlmResto.length <= 0)
-            addTarimaEstatus = 'disable';
-        $('#addTarima_resto').button(addTarimaEstatus);
-
-        $.each(lstTarAlmResto, function (i, o) {
-            tr += '<tr id="ta_' + o.Id + '">';
-            tr += '<td>' + o.Cajas + '</td>';
-            tr += '<td>' + o.Piezasxcaja + '</td>';
-            tr += '<td>' + o.Piezas + '</td>';
-            tr += '<td><span class="ui-icon ui-icon-trash icon-button-action remResto"></span></td>';
-        });
-        $('#t_resto').html('');
-        $('#t_resto').append(tr);
-
-        $('.remResto').click(function () {
-            var Id = $(this).parent().parent().attr('id').split('_')[1];
-            lstTarAlmResto = $.grep(lstTarAlmResto, function (obj) {
-                return obj.Id != Id;
-            });
-            fillTblResto();
-        });
-    }
-
-    function addTarimaResto() {
-
-        var lstTarAlmRestoByTarima = $.grep(lstTarAlmResto, function (obj) {
-            return obj.IdTarimaAlmacen != idTarimaAlmacen;
         });
 
-        var pzaTotTar = 0;
-        var btoTotTar = 0;
-
-        $.each(lstTarAlmRestoByTarima, function (i, obj) {
-            btoTotTar += obj.Cajas;
-            pzaTotTar += obj.Piezas;
+        $('#restoTarNueva').button().click(function () {
+            $('#ctl00_body_h_ubica_resto').val(1);
+            $('#div_restos').dialog('close');
+            calculaStd($(pza_x_bulto).val(), $(bto_x_pallet).val(), $(bto_recibido).val(), $(piezaDeclarada).val());
+        });
+        $('#restoTarExistente').button().click(function () {
+            $('#ctl00_body_h_ubica_resto').val(2)
+            $('#div_restos').dialog('close');
+            calculaStd($(pza_x_bulto).val(), $(bto_x_pallet).val(), $(bto_recibido).val(), $(piezaDeclarada).val());
         });
 
-        var oBTA = new BeanTarimaAlmacen(idTarimaAlmacen, 0, '', '', '', '', 'RESTO', btoTotTar, pzaTotTar, true, 0, lstTarAlmRestoByTarima);
-        lstTarAlm.push(oBTA);
-        idTarimaAlmacen++;
-        fillTblRestos();
-
+        //Limpiar tabla de tarimas
+        $('#clearTableRestoTar').click(function () {
+            $('#ctl00_body_h_ubica_resto').val('0');
+            clearTableTarima();
+        });
     }
 
     function fillCatalogo() {
@@ -372,68 +295,242 @@ var MngArriboWH = function () {
             $.notify('Diferencia en Bultos y piezas', 'error');
     }
 
-    function calculaStd(pza_x_bto, bto_x_tarima, btos) {
+    function clearTableTarima() {
+        $('#tbody_build_tarima').html('');
+        $('#tf_tarimas').html('');
+        $('#tf_cajas').html('');
+        $('#tf_piezas').html('');
+    }
 
-        if (isNaN(pza_x_bto) || isNaN(bto_x_tarima) || isNaN(btos))
+    function calculaStd(pza_x_bto, bto_x_tarima, btos, pza_declarada) {
+
+        clearTableTarima();
+
+        var tbody = $('#tbody_build_tarima');
+
+        if (isNaN(pza_x_bto) || isNaN(bto_x_tarima) || isNaN(btos) || isNaN(pza_declarada))
             return false;
 
         pza_x_bto = pza_x_bto * 1;
         bto_x_tarima = bto_x_tarima * 1;
         pzas = btos * pza_x_bto;
         btos = btos * 1;
+        pza_declarada = pza_declarada * 1;
 
-        if (pza_x_bto <= 0 || bto_x_tarima <= 0 || btos <= 0)
+        if (pza_x_bto <= 0 || bto_x_tarima <= 0 || btos <= 0 || pza_declarada <= 0)
             return false;
 
-        //var residuoPza = pzas % pza_x_bto;
-        //var completaBto = Math.floor(pzas / pza_x_bto);
+        if (pza_declarada > btos * pza_x_bto) {
+            alert('La cantidad de piezas (' + pza_declarada + ') no debe exceder el estandar (' + btos * pza_x_bto + ') para las cajas declaradas');
+            $('#ctl00_body_txt_no_pieza_declarada').focus();
+            return false;
+        }
+        var pzaMin = ((btos - 1) * pza_x_bto) + 1;
+        if (pza_declarada < pzaMin) {
+            alert('La cantidad de piezas (' + pza_declarada + ') no debe ser menor al estandar para las cajas declaradas (' + pzaMin + ')');
+            $('#ctl00_body_txt_no_pieza_declarada').focus();
+            return false;
+        }
 
         var residuoBto = btos % bto_x_tarima;
+        var residuoPza = (btos * pza_x_bto) % pza_declarada;
+        if (pza_declarada < pza_x_bto)
+            residuoPza = pza_declarada;
+
         var completaTar = Math.floor(btos / bto_x_tarima);
 
-        var tbody = $('#tbody_build_tarima');
-        $(tbody).html('');
-        //Arma tarimas
-        var tr = '<tr>';
-        var td = '<td>' + completaTar + '</td>';
-        td += '<td>Tarima(s)</td>';
-        td += '<td>X</td>';
-        td += '<td>' + bto_x_tarima + '</td>';
-        td += '<td>Caja(s) por Tarima</td>';
-        td += '<td>=</td>';
-        td += '<td>' + completaTar * bto_x_tarima + '</td>';
-        td += '<td>Caja(s)</td>';
-        td += '<td>X</td>';
-        td += '<td>' + pza_x_bto + '</td>';
-        td += '<td>Pza(s) por Caja</td>';
-        td += '<td>=</td>';
-        td += '<td>' + completaTar * bto_x_tarima * pza_x_bto + '</td>';
-        td += '<td>Pieza(s)</td>';
-        tr += td;
-        tr += '</tr>';
-        $(tbody).append(tr);
+        var tf_tarimas = completaTar;
+        var tf_cajas = completaTar * bto_x_tarima;
+        var tf_piezas = completaTar * bto_x_tarima * pza_x_bto;
 
-        //Resto
-        if (residuoBto != 0) {
-            tr = '<tr>';
-            td = '<td>1</td>';
-            td += '<td>Tarima</td>';
+        //        if (residuoPza != 0) { //Hay restos
+        //            if (residuoBto != 0 && $('#ctl00_body_h_ubica_resto').val() * 1 == 0) //Si existen tarimas que no estan completas, se puede dar la opción al usuario para seleccionar en que tarima viene el resto
+        //                $('#div_restos').dialog('open');
+        //            residuoBto--;
+        //        }
+
+        residuoBto = (pza_declarada / pza_x_bto) % bto_x_tarima;
+
+        if (residuoPza != 0) { //Hay restos
+            if (residuoBto != 0 && $('#ctl00_body_h_ubica_resto').val() * 1 == 0)
+                $('#div_restos').dialog('open');
+            else
+                getTarByData(bto_x_tarima, pza_x_bto, btos, pza_declarada, residuoBto == 0 ? 1 : $('#ctl00_body_h_ubica_resto').val() * 1);
+        }
+        else {
+            getTarByData(bto_x_tarima, pza_x_bto, btos, pza_declarada, $('#ctl00_body_h_ubica_resto').val() * 1);
+        }
+
+
+
+        //        //Arma tarimas con estandar
+        //        if (residuoBto > 0) {
+        //            var tr = '<tr>';
+        //            var td = '<td>' + completaTar + '</td>';
+        //            td += '<td>Tarima(s)</td>';
+        //            td += '<td>X</td>';
+        //            td += '<td>' + bto_x_tarima + '</td>';
+        //            td += '<td>Caja(s) por Tarima</td>';
+        //            td += '<td>=</td>';
+        //            td += '<td>' + completaTar * bto_x_tarima + '</td>';
+        //            td += '<td>Caja(s)</td>';
+        //            td += '<td>X</td>';
+        //            td += '<td>' + pza_x_bto + '</td>';
+        //            td += '<td>Pza(s) por Caja</td>';
+        //            td += '<td>=</td>';
+        //            td += '<td>' + completaTar * bto_x_tarima * pza_x_bto + '</td>';
+        //            td += '<td>Pieza(s)</td>';
+        //            tr += td;
+        //            tr += '</tr>';
+        //            $(tbody).append(tr);
+
+        //            //arma tarimas sin estandar (tarimas que no tienen la cantidad de cajas por tarima)
+        //            if (residuoBto != 0) {
+        //                tf_tarimas++;
+        //                tf_cajas += residuoBto;
+        //                tf_piezas += residuoBto * pza_x_bto;
+        //                tr = '<tr>';
+        //                td = '<td>1</td>';
+        //                td += '<td>Tarima</td>';
+        //                td += '<td>X</td>';
+        //                td += '<td>' + residuoBto + '</td>';
+        //                td += '<td>Caja(s) por Tarima</td>';
+        //                td += '<td>=</td>';
+        //                td += '<td>' + residuoBto + '</td>';
+        //                td += '<td>Cajas</td>';
+        //                td += '<td>X</td>';
+        //                td += '<td>' + pza_x_bto + '</td>';
+        //                td += '<td>Pza(s) por Caja</td>';
+        //                td += '<td>=</td>';
+        //                td += '<td>' + residuoBto * pza_x_bto + '</td>';
+        //                td += '<td>Pieza(s)</td>';
+        //                tr += td;
+        //                tr += '</tr>';
+        //                $(tbody).append(tr);
+        //            }
+        //        }
+        //        else {
+        //            tf_piezas = pza_declarada;
+        //        }
+
+        //        var tarNueva = true;
+        //        if (residuoPza != 0) {
+        //            if (residuoBto != 0) {
+        //                switch ($('#ctl00_body_h_ubica_resto').val() * 1) {
+        //                    case 1:
+        //                        tarNueva = true;
+        //                        break;
+        //                    case 2:
+        //                        tarNueva = false;
+        //                        break;
+        //                }
+        //            }
+
+        //            if (residuoBto > 0) {
+        //                tf_cajas++;
+        //                tf_piezas += residuoPza;
+        //            }
+
+        //            tr = '<tr>';
+        //            if (tarNueva) {
+        //                td = '<td>1</td>';
+        //                if (residuoBto > 0)
+        //                    tf_tarimas++;
+        //            }
+        //            else
+        //                td = '<td>0</td>';
+        //            td += '<td>Tarima</td>';
+        //            td += '<td>X</td>';
+        //            td += '<td>1</td>';
+        //            td += '<td>Caja por Tarima</td>';
+        //            td += '<td>=</td>';
+        //            td += '<td>1</td>';
+        //            td += '<td>Caja</td>';
+        //            td += '<td>X</td>';
+        //            td += '<td>' + residuoPza + '</td>';
+        //            td += '<td>Pza(s) por Caja</td>';
+        //            td += '<td>=</td>';
+        //            td += '<td>' + residuoPza + '</td>';
+        //            td += '<td>Pieza(s)</td>';
+        //            tr += td;
+        //            tr += '</tr>';
+
+
+        //            $(tbody).append(tr);
+        //        }
+
+        //        $('#tf_tarimas').html(tf_tarimas);
+        //        $('#tf_cajas').html(tf_cajas);
+        //        $('#tf_piezas').html(tf_piezas);
+    }
+
+    function getTarByData(CjXTr, PzXCj, CjRec, PzRec, UbRes) {
+        $.ajax({
+            type: 'GET',
+            url: "/handlers/Almacen.ashx",
+            //dataType: "jsonp",
+            data: {
+                'case': 'almacen',
+                opt: 'calcTarimas',
+                CjXTr: CjXTr,
+                PzXCj: PzXCj,
+                CjRec: CjRec,
+                PzRec: PzRec,
+                UbRes: UbRes
+            },
+            complete: function () {
+                $('#div_orde_carga, #div_generales').removeClass('ajaxLoading');
+            },
+            success: function (data) {
+                fillTblTar(data, CjXTr, PzXCj);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init()
+            }
+        });
+    }
+
+    function fillTblTar(data, bto_x_tarima, pza_x_bto) {
+
+        clearTableTarima();
+
+        var tbody = $('#tbody_build_tarima');
+        var tf_tarimas = 0;
+        var tf_cajas = 0;
+        var tf_piezas = 0;
+
+        $.each(data, function (i, obj) {
+
+            tf_tarimas += obj.Id;
+            tf_cajas += obj.Bultos;
+            tf_piezas += obj.Piezas;
+
+            var tr = '<tr>';
+            var td = '<td>' + obj.Id + '</td>';
+            td += '<td>Tarima(s)</td>';
             td += '<td>X</td>';
-            td += '<td>' + residuoBto + '</td>';
+            td += '<td>' + bto_x_tarima + '</td>';
             td += '<td>Caja(s) por Tarima</td>';
             td += '<td>=</td>';
-            td += '<td>' + residuoBto + '</td>';
-            td += '<td>Cajas</td>';
+            td += '<td>' + obj.Bultos + '</td>';
+            td += '<td>Caja(s)</td>';
             td += '<td>X</td>';
             td += '<td>' + pza_x_bto + '</td>';
             td += '<td>Pza(s) por Caja</td>';
             td += '<td>=</td>';
-            td += '<td>' + residuoBto * pza_x_bto + '</td>';
+            td += '<td>' + obj.Piezas + '</td>';
             td += '<td>Pieza(s)</td>';
             tr += td;
             tr += '</tr>';
+
             $(tbody).append(tr);
-        }
+        });
+
+        $('#tf_tarimas').html(tf_tarimas);
+        $('#tf_cajas').html(tf_cajas);
+        $('#tf_piezas').html(tf_piezas);
     }
 
     function addTransporte() {
@@ -541,40 +638,6 @@ var MngArriboWH = function () {
             lstCondTran.push(o);
         });
         $('#ctl00_body_hf_condiciones_transporte').val(JSON.stringify(lstCondTran));
-    }
-
-    //Llena tabla de restos
-    function fillTblRestos() {
-        var tr = '';
-        $('#tbody_resto_tarima').html('');
-        $.each(lstTarAlm, function (i, obj) {
-            tr += '<tr id="tares_' + obj.Id + '">';
-            tr += '<td>1</td>';
-            tr += '<td>Tarima</td>';
-            tr += '<td>X</td>';
-            tr += '<td>' + obj.Bultos + '</td>';
-            tr += '<td>Caja(s) por Tarima</td>';
-            tr += '<td>=</td>';
-            tr += '<td>' + obj.Bultos + '</td>';
-            tr += '<td>Caja(s)</td>';
-            tr += '<td>&nbsp;</td>';
-            tr += '<td>' + obj.Piezas + '</td>';
-            tr += '<td>Pieza(s)</td>';
-            tr += '<td><span class="ui-icon ui-icon-trash delTarResto"></span></td>';
-        });
-        $('#tbody_resto_tarima').append(tr);
-
-        $('.delTarResto').each(function () {
-            $(this).click(function () {
-                var idTarAlm = $(this).parent().parent().attr('id').split('_')[1] * 1;
-                lstTarAlm = $.grep(lstTarAlm, function (obj) {
-                    return obj.Id != idTarAlm;
-                });
-                fillTblRestos();
-            });
-        });
-
-        $('#ctl00_body_hf_restos').val(JSON.stringify(lstTarAlm));
     }
 
     //Valida numero

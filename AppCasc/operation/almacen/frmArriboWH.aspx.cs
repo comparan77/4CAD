@@ -94,14 +94,14 @@ namespace AppCasc.operation.almacen
                 List<Entrada_transporte_condicion> lstEntTranCond = JsonConvert.DeserializeObject<List<Entrada_transporte_condicion>>(hf_condiciones_transporte.Value);
                 
                 //Restos
-                o.PLstTarAlm = JsonConvert.DeserializeObject<List<Tarima_almacen>>(hf_restos.Value);
-                if (o.PLstTarAlm == null)
-                    o.PLstTarAlm = new List<Tarima_almacen>();
-                for (int iResto = 0; iResto < o.PLstTarAlm.Count; iResto++)
-                {
-                    Tarima_almacen oTAResto = o.PLstTarAlm[iResto];
-                    oTAResto.Estandar = oTAResto.Estandar + " " + (iResto + 1).ToString();
-                }
+                //o.PLstTarAlm = JsonConvert.DeserializeObject<List<Tarima_almacen>>(hf_restos.Value);
+                //if (o.PLstTarAlm == null)
+                //    o.PLstTarAlm = new List<Tarima_almacen>();
+                //for (int iResto = 0; iResto < o.PLstTarAlm.Count; iResto++)
+                //{
+                //    Tarima_almacen oTAResto = o.PLstTarAlm[iResto];
+                //    oTAResto.Estandar = oTAResto.Estandar + " " + (iResto + 1).ToString();
+                //}
 
                 int numero;
 
@@ -161,18 +161,18 @@ namespace AppCasc.operation.almacen
                 o.Codigo = txt_folio_cita_transporte.Text;
 
                 //Numero de pallet
-                int.TryParse(txt_no_pallet.Text, out numero);
+                //int.TryParse(txt_no_pallet.Text, out numero);
                 o.No_pallet = numero;
                 numero = 0;
 
                 //Numero de bultos danados
-                int.TryParse(txt_no_bulto_danado.Text, out numero);
-                o.No_bulto_danado = numero;
+                //int.TryParse(txt_no_bulto_danado.Text, out numero);
+                o.No_bulto_danado = 0;
                 numero = 0;
 
                 //Numero de bultos abiertos
-                int.TryParse(txt_no_bulto_abierto.Text, out numero);
-                o.No_bulto_abierto = numero;
+                //int.TryParse(txt_no_bulto_abierto.Text, out numero);
+                o.No_bulto_abierto = 0;
                 numero = 0;
 
                 //Numero de bultos declarados
@@ -208,6 +208,10 @@ namespace AppCasc.operation.almacen
                 int.TryParse(txt_no_pieza_declarada.Text, out numero);
                 o.No_pieza_declarada = numero;
                 numero = 0;
+
+                o.PLstTarAlm = AlmacenCtrl.tarimaAlacenCalcTar(o.PTarAlmEstd.Cajasxtarima, o.PTarAlmEstd.Piezasxcaja, o.No_bulto_recibido, o.No_pieza_declarada, Convert.ToInt32(h_ubica_resto.Value));
+
+                o.No_pieza_recibida = o.PLstTarAlm.Sum(p => p.Piezas);
 
                 o.Hora_descarga = txt_hora_descarga.Text;
 

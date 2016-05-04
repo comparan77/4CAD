@@ -404,8 +404,10 @@ namespace ModelCasc.report.operation
                 if (diferenciaCaja < 0)
                     reporte.SetParameterValue("pieza_sobrante", Math.Abs(diferenciaCaja));
 
-                reporte.SetParameterValue("caja_danada", oE.No_bulto_danado);
-                reporte.SetParameterValue("caja_abierta", oE.No_bulto_abierto);
+
+
+                reporte.SetParameterValue("caja_danada", oE.PLstTarAlm.Count(p => p.Resto > 0));
+                reporte.SetParameterValue("caja_abierta", oE.PLstTarAlm.Sum(p=> p.Resto));
                 reporte.SetParameterValue("rr", oE.Referencia);
 
                 reporte.SetParameterValue("piezaxcaja", oE.PTarAlmEstd.Piezasxcaja);
@@ -466,16 +468,22 @@ namespace ModelCasc.report.operation
                 fields.SetField("pallet_1", tarAlm1.Folio);
                 fields.SetField("codigo_1", tarAlm1.Mercancia_codigo);
                 fields.SetField("descripcion_1", tarAlm1.Mercancia_nombre);
+                fields.SetField("bto_1", tarAlm1.Bultos.ToString());
+                fields.SetField("resto_1", (tarAlm1.Piezas % (tarAlm1.Bultos * oE.PTarAlmEstd.Piezasxcaja)).ToString() + " Pz");
                 fields.SetField("estandar_1", tarAlm1.Estandar);
                 fields.SetField("rr_1", tarAlm1.Rr);
                 fields.SetField("fecha_1", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
-
-                fields.SetField("pallet_2", tarAlm2.Folio);
-                fields.SetField("codigo_2", tarAlm2.Mercancia_codigo);
-                fields.SetField("descripcion_2", tarAlm2.Mercancia_nombre);
-                fields.SetField("estandar_2", tarAlm2.Estandar);
-                fields.SetField("rr_2", tarAlm2.Rr);
-                fields.SetField("fecha_2", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
+                if (tarAlm2.Folio.Length > 0)
+                {
+                    fields.SetField("pallet_2", tarAlm2.Folio);
+                    fields.SetField("codigo_2", tarAlm2.Mercancia_codigo);
+                    fields.SetField("descripcion_2", tarAlm2.Mercancia_nombre);
+                    fields.SetField("bto_2", tarAlm2.Bultos.ToString());
+                    fields.SetField("resto_2", (tarAlm2.Piezas % (tarAlm2.Bultos * oE.PTarAlmEstd.Piezasxcaja)).ToString() + " Pz");
+                    fields.SetField("estandar_2", tarAlm2.Estandar);
+                    fields.SetField("rr_2", tarAlm2.Rr);
+                    fields.SetField("fecha_2", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
+                }
 
                 addBarCodes(stamper, tarAlm1, tarAlm2);
 

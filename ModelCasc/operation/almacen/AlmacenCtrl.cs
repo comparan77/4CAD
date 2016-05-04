@@ -63,62 +63,80 @@ namespace ModelCasc.operation.almacen
         {
             try
             {
-                int btoResiduo = oE.No_bulto_recibido % oE.PTarAlmEstd.Cajasxtarima;
-                int tarCompleta = oE.No_bulto_recibido / oE.PTarAlmEstd.Cajasxtarima;
-                Tarima_almacen o;
                 Tarima_almacenMng oMng = new Tarima_almacenMng();
-                for (int iTar = 1; iTar <= tarCompleta; iTar++)
+                foreach (Tarima_almacen itemTA in oE.PLstTarAlm)
                 {
-                    o = new Tarima_almacen()
-                    {
-                        Id_entrada = oE.Id,
-                        Bultos = oE.PTarAlmEstd.Cajasxtarima,
-                        Piezas = oE.PTarAlmEstd.Cajasxtarima * oE.PTarAlmEstd.Piezasxcaja,
-                        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
-                        Mercancia_codigo = oE.Mercancia,
-                        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
-                        Rr = oE.Referencia,
-                        Estandar = oE.PTarAlmEstd.Cajasxtarima + "*" + oE.PTarAlmEstd.Piezasxcaja.ToString()
-                    };
-                    oMng.O_Tarima_almacen = o;
+                    itemTA.Id_entrada = oE.Id;
+                    itemTA.Folio = FolioCtrl.getFolio(enumTipo.TAR, trans);
+                    itemTA.Mercancia_codigo = oE.Mercancia;
+                    itemTA.Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre;
+                    itemTA.Rr = oE.Referencia;
+                    itemTA.Estandar = oE.PTarAlmEstd.Cajasxtarima + "*" + oE.PTarAlmEstd.Piezasxcaja.ToString();
+                    oMng.O_Tarima_almacen = itemTA;
                     oMng.add(trans);
                 }
 
-                if (btoResiduo != 0)
-                {
-                    o = new Tarima_almacen()
-                    {
-                        Id_entrada = oE.Id,
-                        Bultos = btoResiduo,
-                        Piezas = btoResiduo * oE.PTarAlmEstd.Piezasxcaja,
-                        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
-                        Mercancia_codigo = oE.Mercancia,
-                        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
-                        Rr = oE.Referencia,
-                        Estandar = btoResiduo.ToString() + "*" + oE.PTarAlmEstd.Piezasxcaja.ToString()
-                    };
-                    oMng.O_Tarima_almacen = o;
-                    oMng.add(trans);
-                }
+                //int btoResiduo = oE.No_bulto_recibido % oE.PTarAlmEstd.Cajasxtarima;
+                //int tarCompleta = oE.No_bulto_recibido / oE.PTarAlmEstd.Cajasxtarima;
+                //Tarima_almacen o;
+                //Tarima_almacenMng oMng = new Tarima_almacenMng();
 
-                Tarima_almacen_restoMng oTARestoMng = new Tarima_almacen_restoMng();
-                foreach (Tarima_almacen itemTAResto in oE.PLstTarAlm)
-                {
-                    itemTAResto.Id_entrada = oE.Id;
-                    itemTAResto.Folio = FolioCtrl.getFolio(enumTipo.TAR, trans);
-                    itemTAResto.Mercancia_codigo = oE.Mercancia;
-                    itemTAResto.Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre;
-                    itemTAResto.Rr = oE.Referencia;
-                    itemTAResto.Id_salida = null;
-                    oMng.O_Tarima_almacen = itemTAResto;
-                    oMng.add(trans);
-                    foreach (Tarima_almacen_resto itemTARestoDet in itemTAResto.PLTAResto)
-                    {
-                        itemTARestoDet.Id_tarima_almacen = itemTAResto.Id;
-                        oTARestoMng.O_Tarima_almacen_resto = itemTARestoDet;
-                        oTARestoMng.add(trans);
-                    }
-                }
+
+
+                //for (int iTar = 1; iTar <= tarCompleta; iTar++)
+                //{
+                //    o = new Tarima_almacen()
+                //    {
+                //        Id_entrada = oE.Id,
+                //        Bultos = oE.PTarAlmEstd.Cajasxtarima,
+                //        Piezas = oE.PTarAlmEstd.Cajasxtarima * oE.PTarAlmEstd.Piezasxcaja,
+                //        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
+                //        Mercancia_codigo = oE.Mercancia,
+                //        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
+                //        Rr = oE.Referencia,
+                //        Estandar = oE.PTarAlmEstd.Cajasxtarima + "*" + oE.PTarAlmEstd.Piezasxcaja.ToString()
+                //    };
+                //    oMng.O_Tarima_almacen = o;
+                //    oMng.add(trans);
+                //}
+
+                //if (btoResiduo != 0)
+                //{
+                //    o = new Tarima_almacen()
+                //    {
+                //        Id_entrada = oE.Id,
+                //        Bultos = btoResiduo,
+                //        Piezas = btoResiduo * oE.PTarAlmEstd.Piezasxcaja,
+                //        Folio = FolioCtrl.getFolio(enumTipo.TAR, trans),
+                //        Mercancia_codigo = oE.Mercancia,
+                //        Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre,
+                //        Rr = oE.Referencia,
+                //        Estandar = btoResiduo.ToString() + "*" + oE.PTarAlmEstd.Piezasxcaja.ToString()
+                //    };
+                //    oMng.O_Tarima_almacen = o;
+                //    oMng.add(trans);
+                //}
+
+                //#region Restos
+                //Tarima_almacen_restoMng oTARestoMng = new Tarima_almacen_restoMng();
+                //foreach (Tarima_almacen itemTAResto in oE.PLstTarAlm)
+                //{
+                //    itemTAResto.Id_entrada = oE.Id;
+                //    itemTAResto.Folio = FolioCtrl.getFolio(enumTipo.TAR, trans);
+                //    itemTAResto.Mercancia_codigo = oE.Mercancia;
+                //    itemTAResto.Mercancia_nombre = oE.PCliente.PClienteMercancia.Nombre;
+                //    itemTAResto.Rr = oE.Referencia;
+                //    itemTAResto.Id_salida = null;
+                //    oMng.O_Tarima_almacen = itemTAResto;
+                //    oMng.add(trans);
+                //    foreach (Tarima_almacen_resto itemTARestoDet in itemTAResto.PLTAResto)
+                //    {
+                //        itemTARestoDet.Id_tarima_almacen = itemTAResto.Id;
+                //        oTARestoMng.O_Tarima_almacen_resto = itemTARestoDet;
+                //        oTARestoMng.add(trans);
+                //    }
+                //}
+                //#endregion
             }
             catch
             {
@@ -606,5 +624,99 @@ namespace ModelCasc.operation.almacen
         }
 
         #endregion
+
+        public static List<Tarima_almacen> tarimaAlacenCalcTar(int CjXTr, int PzXCj, int CjRec, int PzRec, int UbRes, bool concentrado = false)
+        {
+            List<Tarima_almacen> lst = new List<Tarima_almacen>();
+            int BtoCompleto;
+            int Resto;
+            int TarCompleta;
+            int BtoSobrante = 0;
+            try
+            {
+                //Validar cantidad de piezas declaradas vs estandar
+                if (PzRec > CjRec * PzXCj)
+                    throw new Exception("La cantidad de piezas excede el estandar para las cajas declaradas");
+
+                if(PzRec < (CjRec -1) * PzXCj - 1)
+                    throw new Exception("La cantidad de piezas no debe ser menor al estandar para las cajas declaradas");
+
+                //Calcular cajas con estandar
+                BtoCompleto = PzRec / PzXCj;
+                Resto = PzRec % PzXCj;
+
+                //Calcular tarimas completas
+                TarCompleta = BtoCompleto / CjXTr;
+
+                //Calcular tarima con espacio
+                BtoSobrante = BtoCompleto % CjXTr;
+                //if (Resto > 0)
+                //    BtoSobrante--;
+
+                Tarima_almacen o;
+
+                int tarCon = 0;
+                int cjaCon = 0;
+                int pzaCon = 0;
+
+                for (int iTC = 1; iTC <= TarCompleta; iTC++)
+                {
+                    if (concentrado)
+                    {
+                        tarCon++;
+                        cjaCon += CjXTr;
+                        pzaCon += CjXTr * PzXCj;
+                    }
+                    else
+                    {
+                        o = new Tarima_almacen() { Bultos = CjXTr, Piezas = CjXTr * PzXCj };
+                        lst.Add(o);
+                    }
+                }
+
+                if (concentrado)
+                {
+                    o = new Tarima_almacen() { Id = tarCon, Bultos = cjaCon, Piezas = pzaCon };
+                    lst.Add(o);
+                }
+
+                if (BtoSobrante > 0)
+                {
+                    o = new Tarima_almacen() { Id = 1, Bultos = BtoSobrante, Piezas = BtoSobrante * PzXCj };
+                    lst.Add(o);
+                }
+
+                if (Resto > 0)
+                {
+                    switch (UbRes)
+                    {
+                        case 1:
+                            o = new Tarima_almacen() { Id = 1, Bultos = 1, Piezas = Resto, Resto = Resto };
+                            lst.Add(o);
+                            break;
+                        case 2:
+                            if (lst.Count > 0 && BtoSobrante > 0)
+                            {
+                                o = lst.Last();
+                                o.Bultos++;
+                                o.Piezas += Resto;
+                                o.Resto = Resto;
+                            }
+                            else
+                            {
+                                o = new Tarima_almacen() { Id = 1, Bultos = 1, Piezas = Resto, Resto = Resto };
+                                lst.Add(o);
+                            }
+                            break;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            return lst;
+        }
     }
 }

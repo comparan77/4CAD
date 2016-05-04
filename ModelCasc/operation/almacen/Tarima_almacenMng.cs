@@ -44,7 +44,7 @@ namespace ModelCasc.operation.almacen
             GenericDataAccess.AddInParameter(this.comm, "?P_estandar", DbType.String, this._oTarima_almacen.Estandar);
             GenericDataAccess.AddInParameter(this.comm, "?P_bultos", DbType.Int32, this._oTarima_almacen.Bultos);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oTarima_almacen.Piezas);
-            GenericDataAccess.AddInParameter(this.comm, "?P_es_resto", DbType.Boolean, this._oTarima_almacen.Es_resto);
+            GenericDataAccess.AddInParameter(this.comm, "?P_resto", DbType.Int32, this._oTarima_almacen.Resto);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oTarima_almacen.Id_salida);
         }
 
@@ -97,7 +97,12 @@ namespace ModelCasc.operation.almacen
                     o.Piezas = entero;
                     entero = 0;
                 }
-                o.Es_resto = Convert.ToBoolean(dr["es_resto"].ToString());
+                if (dr["resto"] != DBNull.Value)
+                {
+                    int.TryParse(dr["resto"].ToString(), out entero);
+                    o.Resto = entero;
+                    entero = 0;
+                }
                 if (dr["id_salida"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_salida"].ToString(), out entero);
