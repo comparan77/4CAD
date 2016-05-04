@@ -469,7 +469,7 @@ namespace ModelCasc.report.operation
                 fields.SetField("codigo_1", tarAlm1.Mercancia_codigo);
                 fields.SetField("descripcion_1", tarAlm1.Mercancia_nombre);
                 fields.SetField("bto_1", tarAlm1.Bultos.ToString());
-                fields.SetField("resto_1", (tarAlm1.Piezas % (tarAlm1.Bultos * oE.PTarAlmEstd.Piezasxcaja)).ToString() + " Pz");
+                fields.SetField("resto_1", tarAlm1.Resto.ToString() + " Pz");
                 fields.SetField("estandar_1", tarAlm1.Estandar);
                 fields.SetField("rr_1", tarAlm1.Rr);
                 fields.SetField("fecha_1", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
@@ -479,7 +479,7 @@ namespace ModelCasc.report.operation
                     fields.SetField("codigo_2", tarAlm2.Mercancia_codigo);
                     fields.SetField("descripcion_2", tarAlm2.Mercancia_nombre);
                     fields.SetField("bto_2", tarAlm2.Bultos.ToString());
-                    fields.SetField("resto_2", (tarAlm2.Piezas % (tarAlm2.Bultos * oE.PTarAlmEstd.Piezasxcaja)).ToString() + " Pz");
+                    fields.SetField("resto_2", tarAlm2.Resto.ToString() + " Pz");
                     fields.SetField("estandar_2", tarAlm2.Estandar);
                     fields.SetField("rr_2", tarAlm2.Rr);
                     fields.SetField("fecha_2", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));

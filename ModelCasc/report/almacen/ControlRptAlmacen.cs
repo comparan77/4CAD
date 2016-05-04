@@ -77,12 +77,18 @@ namespace ModelCasc.report.almacen
                 {
                     rptInvTotDia o = new rptInvTotDia()
                     {
+                        Fecha = Convert.ToDateTime(dr["fecha"]),
                         Codigo = dr["codigo"].ToString(),
                         Pallet = dr["pallet"].ToString(),
                         Descripcion = dr["descripcion"].ToString(),
+                        Cajas = Convert.ToInt32(dr["cajas"]),
                         Piezas = Convert.ToInt32(dr["piezas"]),
+                        Resto = Convert.ToInt32(dr["resto"]),
+                        Total_piezas = Convert.ToInt32(dr["total_piezas"]),
                         Tarima = dr["tarima"].ToString(),
-                        Tipo = dr["tipo"].ToString()
+                        Tipo = dr["tipo"].ToString(),
+                        Rr = dr["rr"].ToString(),
+                        Ubicacion = dr["ubicacion"].ToString()
                     };
                     lst.Add(o);
                 }
