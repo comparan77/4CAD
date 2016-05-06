@@ -37,7 +37,7 @@
     </div>
     <div>
         <label>Rol:</label>
-        <asp:CheckBoxList runat="server" ID="chkLstRol"></asp:CheckBoxList>
+        <asp:CheckBoxList runat="server" ID="chkLstRol" CssClass="grdCascSmall"></asp:CheckBoxList>
         <%--<asp:DropDownList runat="server" ID="ddlRol"></asp:DropDownList>--%>
     </div>
     <hr />
