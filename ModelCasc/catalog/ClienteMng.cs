@@ -204,5 +204,28 @@ namespace ModelCasc.catalog
                 throw;
             }
         }
+
+        internal void selById(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                addParameters(1);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oCliente);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

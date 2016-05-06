@@ -68,11 +68,6 @@ namespace ModelCasc.operation
             string referencia = string.Empty;
             string errMsg = string.Empty;
 
-            Cliente_codigoMng oMng = new Cliente_codigoMng();
-            Cliente_codigo o = new Cliente_codigo();
-            o.Id_cliente_grupo = id_cliente; //El procedimiento usará el parametro para asignar el id del cliente
-            oMng.O_Cliente_codigo = o;
-
             Cliente_codigo_canceladoMng oCCCMng = new Cliente_codigo_canceladoMng();
 
             try
@@ -89,8 +84,20 @@ namespace ModelCasc.operation
                             referencia = oCCC.Codigo;
                         else
                         {
-                            oMng.getRefEntByCliente(trans);
-                            referencia = o.Clave + addZero(o.Digitos, o.Consec_arribo, o.Anio_actual);
+                            ClienteMng oCMng = new ClienteMng();
+                            Cliente oC = new Cliente() { Id = id_cliente };
+                            oCMng.O_Cliente = oC;
+                            oCMng.selById(trans);
+
+                            Cliente_codigoMng oCCMng = new Cliente_codigoMng();
+                            Cliente_codigo oCC = new Cliente_codigo();
+                            oCC.Id_cliente_grupo = oC.Id_cliente_grupo; //El procedimiento usará el parametro para asignar el id del cliente
+                            oCCMng.O_Cliente_codigo = oCC;
+                            
+                            oCCMng.getRefEntByCliente(trans);
+                            referencia = oCC.Clave + addZero(oCC.Digitos, oCC.Consec_arribo, oCC.Anio_actual);
+
+                            oCCMng.udtRef(trans);
                         }
                         break;
                     case enumTipo.S:

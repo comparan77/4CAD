@@ -326,7 +326,7 @@ namespace AppCasc.operation.arribos
                     oEP.Id_usuario = o.PUsuario.Id;
                     o.PEntPar = oEP;
                     o.Es_unica = false;
-                    o.Codigo = hf_codigo_cliente.Value;
+                    o.Codigo = hf_codigo_cliente.Value == "0" ? "" : hf_codigo_cliente.Value;
                 }
 
                 //tipo carga

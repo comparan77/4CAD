@@ -203,5 +203,19 @@ namespace ModelCasc.catalog
                 throw;
             }
         }
+
+        internal void udtRef(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_codigo");
+                addParameters(6);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
