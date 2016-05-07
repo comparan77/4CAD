@@ -142,7 +142,6 @@ var MngArriboWH = function () {
             var IsValid = true;
             //valida transportes
             verificaTranportes();
-            condicionesTransporteSet();
 
             $('.validator').each(function () {
                 if ($(this).css('visibility') == 'visible') {
@@ -154,8 +153,10 @@ var MngArriboWH = function () {
                 }
             });
 
-            if (IsValid)
+            if (IsValid) {
+                condicionesTransporteSet();
                 $(this).hide();
+            }
 
             return IsValid;
 
@@ -630,6 +631,7 @@ var MngArriboWH = function () {
 
     //Condiciones del transporte
     function condicionesTransporteSet() {
+        lstCondTran = [];
         $('#tbody_condiciones').children('tr').each(function () {
             var id = $(this).attr('id').split('_')[1];
             var val = $('input[name="name_' + id + '"]:checked', '#tbody_condiciones').val();

@@ -73,7 +73,6 @@ var MngEmbarqueWH = function () {
         //Boton guardar
         $('#ctl00_body_btnGuardar').button().click(function () {
             var IsValid = true;
-            condicionesTransporteSet();
 
             $('.validator').each(function () {
                 if ($(this).css('visibility') == 'visible') {
@@ -86,6 +85,7 @@ var MngEmbarqueWH = function () {
             });
 
             if (IsValid) {
+                condicionesTransporteSet();
                 $('#ctl00_body_hf_click_save').val('1');
                 $(this).hide();
             }
@@ -284,6 +284,7 @@ var MngEmbarqueWH = function () {
 
     //Condiciones del transporte
     function condicionesTransporteSet() {
+        lstCondTran = [];
         $('#tbody_condiciones').children('tr').each(function () {
             var id = $(this).attr('id').split('_')[1] * 1;
             var val = $('input[name="name_' + id + '"]:checked', '#tbody_condiciones').val();
