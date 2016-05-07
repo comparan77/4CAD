@@ -15,7 +15,7 @@ namespace ModelCasc.report.almacen
         public int Piezas { get; set; }
         public int Resto { get; set; }
         public int Total_piezas { get; set; }
-        public string Tarima { get; set; }
+        public int Tarima { get; set; }
         public string Tipo { get; set; }
         public string Rr { get; set; }
         public string Ubicacion { get; set; }

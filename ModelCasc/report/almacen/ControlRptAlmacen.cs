@@ -85,7 +85,7 @@ namespace ModelCasc.report.almacen
                         Piezas = Convert.ToInt32(dr["piezas"]),
                         Resto = Convert.ToInt32(dr["resto"]),
                         Total_piezas = Convert.ToInt32(dr["total_piezas"]),
-                        Tarima = dr["tarima"].ToString(),
+                        Tarima = Convert.ToInt32(dr["tarima"]),
                         Tipo = dr["tipo"].ToString(),
                         Rr = dr["rr"].ToString(),
                         Ubicacion = dr["ubicacion"].ToString()
