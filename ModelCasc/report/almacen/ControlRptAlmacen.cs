@@ -168,7 +168,7 @@ namespace ModelCasc.report.almacen
 
                 reporte.SetDataSource(ds.Tables["remision"]);
 
-                reporte.SetParameterValue("operador", o.PTarAlmTrafico.Operador);
+                //reporte.SetParameterValue("operador", o.PTarAlmTrafico.Operador);
                 reporte.SetParameterValue("linea", o.PTarAlmTrafico.PTransporte.Nombre);
                 StringBuilder sbET = new StringBuilder();
                 sbET.Append("Tipo: " + o.PTarAlmTrafico.PTransporteTipo.Nombre);

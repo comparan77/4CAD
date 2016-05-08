@@ -16,14 +16,14 @@ namespace AppCasc.report.Almacen {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class EntTranspCond : ReportClass {
+    public class ralm : ReportClass {
         
-        public EntTranspCond() {
+        public ralm() {
         }
         
         public override string ResourceName {
             get {
-                return "EntTranspCond.rpt";
+                return "ralm.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace AppCasc.report.Almacen {
         
         public override string FullResourceName {
             get {
-                return "AppCasc.report.Almacen.EntTranspCond.rpt";
+                return "AppCasc.report.Almacen.ralm.rpt";
             }
             set {
                 // Do nothing
@@ -87,12 +87,76 @@ namespace AppCasc.report.Almacen {
                 return this.ReportDefinition.Sections[4];
             }
         }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_linea {
+            get {
+                return this.DataDefinition.ParameterFields[0];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_transporte {
+            get {
+                return this.DataDefinition.ParameterFields[1];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_folio_cita {
+            get {
+                return this.DataDefinition.ParameterFields[2];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_fecha_cita {
+            get {
+                return this.DataDefinition.ParameterFields[3];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_mercancia_codigo {
+            get {
+                return this.DataDefinition.ParameterFields[4];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_cliente {
+            get {
+                return this.DataDefinition.ParameterFields[5];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_folio_remision {
+            get {
+                return this.DataDefinition.ParameterFields[6];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_elaboro {
+            get {
+                return this.DataDefinition.ParameterFields[7];
+            }
+        }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedEntTranspCond : Component, ICachedReport {
+    public class Cachedralm : Component, ICachedReport {
         
-        public CachedEntTranspCond() {
+        public Cachedralm() {
         }
         
         [Browsable(false)]
@@ -129,7 +193,7 @@ namespace AppCasc.report.Almacen {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            EntTranspCond rpt = new EntTranspCond();
+            ralm rpt = new ralm();
             rpt.Site = this.Site;
             return rpt;
         }

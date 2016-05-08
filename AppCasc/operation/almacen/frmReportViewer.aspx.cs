@@ -92,7 +92,7 @@ namespace AppCasc.operation.almacen
                     Tarima_almacen_remision o = AlmacenCtrl.tarimaRemisionGetAllInfoById(idRem);
                     RptFileName = o.Folio + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/remisionAlm/") + RptFileName;
-                    TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/Remision.rpt");
+                    TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/ralm.rpt");
                     ControlRptAlmacen.getRemision(path, TemplatePath, ds, o);
                     ShowPdf(path);
                     break;
