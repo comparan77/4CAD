@@ -75,7 +75,10 @@ namespace AppCasc.operation.almacen
                     RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/entradasAlm/") + RptFileName;
                     //pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                    TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/ealm.rpt");
+                    if(((Entrada)obj).IsActive)
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/ealm.rpt");
+                    else
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/ealmCan.rpt");
                     string TemplatePathTarima = HttpContext.Current.Server.MapPath("~/rpt/TemplatePallet.pdf");
                     DocEntrada.getEntradaAlm(path, TemplatePath, TemplatePathTarima, (Entrada)obj, ds, withDet);
                     //this.getRpt(path, TemplatePath, (Entrada)obj, ds);

@@ -473,6 +473,8 @@ namespace ModelCasc.report.operation
                 fields.SetField("estandar_1", tarAlm1.Estandar);
                 fields.SetField("rr_1", tarAlm1.Rr);
                 fields.SetField("fecha_1", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
+                if(!oE.IsActive)
+                    fields.SetField("cancelado_1", "CANCELADO");
                 if (tarAlm2.Folio.Length > 0)
                 {
                     fields.SetField("pallet_2", tarAlm2.Folio);
@@ -483,6 +485,8 @@ namespace ModelCasc.report.operation
                     fields.SetField("estandar_2", tarAlm2.Estandar);
                     fields.SetField("rr_2", tarAlm2.Rr);
                     fields.SetField("fecha_2", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
+                    if (!oE.IsActive)
+                        fields.SetField("cancelado_2", "CANCELADO");
                 }
 
                 addBarCodes(stamper, tarAlm1, tarAlm2);
