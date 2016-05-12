@@ -7,6 +7,7 @@ namespace ModelCasc.report.almacen
 {
     public class rptRelDiaEnt
     {
+        public string Rr { get; set; }
         public string Proveedor { get; set; }
         public string Referencia { get; set; }
         public DateTime Fecha_ingreso { get; set; }

@@ -125,6 +125,7 @@ namespace ModelCasc.report.almacen
                 {
                     rptRelDiaEnt o = new rptRelDiaEnt()
                     {
+                        Rr = dr["rr"].ToString(),
                         Proveedor = dr["proveedor"].ToString(),
                         Referencia = dr["referencia"].ToString(),
                         Fecha_ingreso = Convert.ToDateTime(dr["fecha_ingreso"]),
