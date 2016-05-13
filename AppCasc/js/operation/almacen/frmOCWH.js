@@ -99,7 +99,7 @@ var MngOCWH = function () {
                 //$('#up_cantidades').removeClass('ajaxLoading');
             },
             success: function (data) {
-
+                id_orden_carga = data.PCarga != null ? data.PCarga.Id : 0;
                 fillTblRemisiones(data, id_orden_carga, folio_orden_carga, calEvent);
                 lstRem = [];
                 $('#guia_embarque').dialog('open');
@@ -259,7 +259,7 @@ var MngOCWH = function () {
 
                 $('.selectRemDet').each(function () {
                     $(this).click(function () {
-                        selectRemDet($(this).attr('id').split('_')[1] * 1, folio, $(this).attr('est'), id_rem, $(this).attr('sol'));
+                        selectRemDet($(this).attr('id').split('_')[1] * 1, folio, $(this).attr('est'), id_rem, $(this).attr('sol'), calEvent);
                     });
                 });
 
@@ -272,7 +272,7 @@ var MngOCWH = function () {
         });
     }
 
-    function selectRemDet(id_rem_det, folio, est, id_rem, solicitadas) {
+    function selectRemDet(id_rem_det, folio, est, id_rem, solicitadas, callEvent) {
 
         $('#ul_tarimas_disp').html('');
         $('#txt_estandar_sel').val('');
@@ -293,7 +293,7 @@ var MngOCWH = function () {
             },
             success: function (data) {
 
-                $('#spn_rem_det_selected').html('<< ' + folio).unbind('click').click(function () { selectRem(id_rem, folio); });
+                $('#spn_rem_det_selected').html('<< ' + folio).unbind('click').click(function () { selectRem(id_rem, folio, callEvent); });
                 $('#txt_estandar_sel').val(est);
                 $('#txt_tar_sol').val(solicitadas);
 
@@ -319,7 +319,7 @@ var MngOCWH = function () {
 
                 $('.liTarAlm').each(function () {
                     $(this).click(function () {
-                        saveTarAlmOC(id_rem_det, folio, est, id_rem, solicitadas, $(this).attr('id').split('_')[1] * 1);
+                        saveTarAlmOC(id_rem_det, folio, est, id_rem, solicitadas, $(this).attr('id').split('_')[1] * 1, callEvent);
                     });
                 });
 
@@ -332,7 +332,7 @@ var MngOCWH = function () {
         });
     }
 
-    function saveTarAlmOC(id_rem_det, folio, est, id_rem, solicitadas, id_tar_alm) {
+    function saveTarAlmOC(id_rem_det, folio, est, id_rem, solicitadas, id_tar_alm, callEvent) {
 
         var obeanTarAlmCargaDet = new beanTarAlmCargaDet(id_rem_det, id_tar_alm);
 
@@ -346,7 +346,7 @@ var MngOCWH = function () {
 
             },
             success: function (data) {
-                selectRemDet(id_rem_det, folio, est, id_rem, solicitadas);
+                selectRemDet(id_rem_det, folio, est, id_rem, solicitadas, callEvent);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
@@ -483,7 +483,6 @@ var MngOCWH = function () {
     }
 
     function saveOrdenCarga(calEvent) {
-        //        var oOC = new beanSalidaOrdenCarga($('#ctl00_body_ddl_tipo_carga').val(), $('#hf_id_salida_trafico').val(), lstRem);
         $.ajax({
             type: "POST",
             url: '/handlers/Almacen.ashx?case=carga&opt=udtFolioProv',

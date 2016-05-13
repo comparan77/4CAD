@@ -318,6 +318,12 @@ namespace ModelCasc.operation.almacen
                     //int numPallet = EntradaCtrl.InventarioGetPalletsByBultos(Convert.ToInt32(itemSR.Id_entrada_inventario), itemSR.LstSRDetail.Sum(p => p.Bulto));
                     //itemSR.Pallet = numPallet;
                 }
+
+                Tarima_almacen_carga oTAC = new Tarima_almacen_carga() { Id_tarima_almacen_trafico = id_tarima_almacen_trafico };
+                Tarima_almacen_cargaMng oTACMng = new Tarima_almacen_cargaMng() { O_Tarima_almacen_carga = oTAC };
+                oTACMng.selByIdTrafico();
+
+                o.PCarga = oTAC;
             }
             catch
             {

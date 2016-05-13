@@ -223,7 +223,7 @@ namespace ModelCasc.operation.almacen
 
         #endregion
 
-        internal void selByIdTrafico(IDbTransaction trans)
+        internal void selByIdTrafico(IDbTransaction trans = null)
         {
             try
             {
