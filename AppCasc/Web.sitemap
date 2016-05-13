@@ -51,8 +51,8 @@
     <siteMapNode roles="AlmAvonSuper, Super" title="Almacén">
       <siteMapNode url="~/operation/almacen/frmArriboWH.aspx" title="Arribos"  description="Arribos" />
       <siteMapNode url="~/operation/almacen/frmNaveWH.aspx" title="Distribución"  description="Distribución de la Mercancía" />
-      <siteMapNode url="~/operation/almacen/frmTraficoWH.aspx" title="Tráfico"  description="Tráfico" />
-      <siteMapNode url="~/operation/almacen/frmRemWH.aspx" title="Remisión"  description="Remisión de Mercancía" />
+      <siteMapNode url="~/operation/almacen/frmTraficoWH.aspx" title="Tráfico Almacén"  description="Tráfico" />
+      <siteMapNode url="~/operation/almacen/frmRemWH.aspx" title="Remisión Almacén"  description="Remisión de Mercancía" />
       <siteMapNode url="~/operation/almacen/frmOCWH.aspx" title="Orden de Carga"  description="Orden de Carga" />
       <siteMapNode url="~/operation/almacen/frmEmbarqueWH.aspx" title="Embarques"  description="Embarques" />
       <siteMapNode url="~/operation/almacen/frmRptWH.aspx" title="Reportes"  description="Reportes" />

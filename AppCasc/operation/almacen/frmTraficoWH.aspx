@@ -56,7 +56,7 @@
 <div>
     <label>Operador:</label>
     <asp:TextBox runat="server" ID="txt_operador" CssClass="txtLarge"></asp:TextBox>
-    <asp:RequiredFieldValidator runat="server" ID="rfv_opeardor" ControlToValidate="txt_operador" ErrorMessage="Es necesario proporcionar este dato"></asp:RequiredFieldValidator>
+    <%--<asp:RequiredFieldValidator runat="server" ID="rfv_opeardor" ControlToValidate="txt_operador" ErrorMessage="Es necesario proporcionar este dato"></asp:RequiredFieldValidator>--%>
 </div>    
     
 <div>
@@ -76,6 +76,7 @@
     </ContentTemplate>
     </asp:UpdatePanel>
 
+    <div class="hidden">
     <asp:UpdatePanel runat="server" ID="upDatosVehiculo" UpdateMode="Conditional">
     <Triggers>
     <asp:AsyncPostBackTrigger ControlID="ddlTipo_Transporte" EventName="SelectedIndexChanged" />
@@ -84,25 +85,26 @@
     <div>
         <label>Placa:</label>
         <asp:TextBox id="txt_placa" runat="server" MaxLength="50"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_placa" ControlToValidate="txt_placa" ErrorMessage="Es necesario capturar la placa para este tipo de vehículo"></asp:RequiredFieldValidator>
+        <%--<asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_placa" ControlToValidate="txt_placa" ErrorMessage="Es necesario capturar la placa para este tipo de vehículo"></asp:RequiredFieldValidator>--%>
     </div>
     <div>
         <label>Caja:</label>
         <asp:TextBox id="txt_caja" runat="server" MaxLength="50"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja" ControlToValidate="txt_caja" ErrorMessage="Es necesario capturar la placa de la caja para este tipo de vehículo"></asp:RequiredFieldValidator>
+        <%--<asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja" ControlToValidate="txt_caja" ErrorMessage="Es necesario capturar la placa de la caja para este tipo de vehículo"></asp:RequiredFieldValidator>--%>
     </div>
     <div>
         <label>Contenedor 1:</label>
         <asp:TextBox id="txt_caja_1" runat="server" MaxLength="50"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_1" ControlToValidate="txt_caja_1" ErrorMessage="Es necesario capturar el número de contenedor 1 para este tipo de vehículo"></asp:RequiredFieldValidator>
+        <%--<asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_1" ControlToValidate="txt_caja_1" ErrorMessage="Es necesario capturar el número de contenedor 1 para este tipo de vehículo"></asp:RequiredFieldValidator>--%>
     </div>
     <div>
         <label>Contenedor 2:</label>
         <asp:TextBox id="txt_caja_2" runat="server" MaxLength="50"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_2" ControlToValidate="txt_caja_2" ErrorMessage="Es necesario capturar el número de contenedor 2 para este tipo de vehículo"></asp:RequiredFieldValidator>
+        <%--<asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_caja_2" ControlToValidate="txt_caja_2" ErrorMessage="Es necesario capturar el número de contenedor 2 para este tipo de vehículo"></asp:RequiredFieldValidator>--%>
     </div>
     </ContentTemplate>
     </asp:UpdatePanel>
+    </div>
 
 <div>
     <label>Tipo de carga:</label>
