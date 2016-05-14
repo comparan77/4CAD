@@ -314,7 +314,7 @@
     <hr style="border-color: transparent" />
     <div style="margin-left: 205px; margin-top: 10px;">
     <asp:HiddenField runat="server" ID="hf_condiciones_transporte" />
-    <span style="color: Red; visibility: hidden;" class="validator" id="rfv_condiciones_transporte">Es necesario proporcionar las condiciones del transporte.</span>
+    <span style="color: Red; visibility: hidden;" class="validator" id="rfv_condiciones_transporte">Es necesario proporcionar TODAS LAS CONDICIONES del transporte.</span>
         <table class="grdCascSmall">
             <thead>
                 <tr>

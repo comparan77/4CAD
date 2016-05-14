@@ -21,6 +21,9 @@
     <div style="margin-top: 10px;">
         <button id="btnBuscaOC">Cargar orden de Compra</button>
     </div>
+    <div>
+        <span style="color: Red; visibility: hidden;" class="validator" id="spn_rfv_oc">Es necesario proporcionar la orden de carga.</span>
+    </div>
     <div style="margin-top: 10px;">
         <table class="grdCascSmall">
             <thead>
@@ -153,7 +156,7 @@
     
     <div style="margin-left: 205px; margin-top: 10px;">
     <asp:HiddenField runat="server" ID="hf_condiciones_transporte" />
-    <span style="color: Red; visibility: hidden;" class="validator" id="rfv_condiciones_transporte">Es necesario proporcionar las condiciones del transporte.</span>
+    <span style="color: Red; visibility: hidden;" class="validator" id="rfv_condiciones_transporte">Es necesario proporcionar TODAS LAS CONDICIONES del transporte.</span>
         <table class="grdCascSmall">
             <thead>
                 <tr>

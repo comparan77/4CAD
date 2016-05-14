@@ -1378,6 +1378,8 @@ namespace ModelCasc.operation
 
                 AlmacenCtrl.tarimaAlmacenSetSalida(oS.Id_salida_orden_carga, oS.Id, trans);
 
+                AlmacenCtrl.CargaUdtSalida(new Tarima_almacen_carga() { Id = oS.Id_salida_orden_carga, Id_salida = oS.Id }, trans);
+
                 oS.IsActive = true;
 
                 GenericDataAccess.CommitTransaction(trans);

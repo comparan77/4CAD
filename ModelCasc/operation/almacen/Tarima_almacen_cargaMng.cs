@@ -49,8 +49,11 @@ namespace ModelCasc.operation.almacen
             GenericDataAccess.AddInParameter(this.comm, "?P_id_tipo_carga", DbType.Int32, this._oTarima_almacen_carga.Id_tipo_carga);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oTarima_almacen_carga.Id_usuario);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_tarima_almacen_trafico", DbType.Int32, this._oTarima_almacen_carga.Id_tarima_almacen_trafico);
+            if (this._oTarima_almacen_carga.Id_salida == null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oTarima_almacen_carga.Id_salida);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio_orden_carga", DbType.String, this._oTarima_almacen_carga.Folio_orden_carga);
-            GenericDataAccess.AddInParameter(this.comm, "?P_tiene_salida", DbType.Boolean, this._oTarima_almacen_carga.Tiene_salida);
         }
 
         protected void BindByDataRow(DataRow dr, Tarima_almacen_carga o)
@@ -78,13 +81,13 @@ namespace ModelCasc.operation.almacen
                     o.Id_tarima_almacen_trafico = entero;
                     entero = 0;
                 }
-                o.Folio_orden_carga = dr["folio_orden_carga"].ToString();
-                if (dr["tiene_salida"] != DBNull.Value)
+                if (dr["id_salida"] != DBNull.Value)
                 {
-                    bool.TryParse(dr["tiene_salida"].ToString(), out logica);
-                    o.Tiene_salida = logica;
-                    logica = false;
+                    int.TryParse(dr["id_salida"].ToString(), out entero);
+                    o.Id_salida = entero;
+                    entero = 0;
                 }
+                o.Folio_orden_carga = dr["folio_orden_carga"].ToString();
             }
             catch
             {
@@ -329,6 +332,20 @@ namespace ModelCasc.operation.almacen
                     BindByDataRowFormat(dr, o);
                     this._oTarima_almacen_carga.PLstTACRpt.Add(o);
                 }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void udtSalida(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen_carga");
+                addParameters(10);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {

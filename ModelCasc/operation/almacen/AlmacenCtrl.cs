@@ -574,6 +574,20 @@ namespace ModelCasc.operation.almacen
             return o;
         }
 
+        public static void CargaUdtSalida(Tarima_almacen_carga o, IDbTransaction trans)
+        {
+            try
+            {
+                Tarima_almacen_cargaMng oMng = new Tarima_almacen_cargaMng() { O_Tarima_almacen_carga = o };
+                oMng.udtSalida(trans);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+
         #endregion
 
         #region Orden Carga Detail

@@ -32,7 +32,8 @@ namespace AppCasc.operation.almacen
 
 
             List<Salida_transporte_condicion> lstSalTranCond = JsonConvert.DeserializeObject<List<Salida_transporte_condicion>>(hf_condiciones_transporte.Value);
-
+            if (lstSalTranCond.Count != 8)
+                throw new Exception("Es necesario proporcionar TODAS LAS CONDICIONES del transporte.");
             //Se asigna la orden de carga
             oS.Id_salida_orden_carga = Convert.ToInt32(hf_id_orden_carga.Value);
 

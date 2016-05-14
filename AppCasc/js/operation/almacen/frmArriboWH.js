@@ -143,6 +143,9 @@ var MngArriboWH = function () {
             //valida transportes
             verificaTranportes();
 
+            condicionesTransporteSet();
+            validaCondTransporte();
+
             $('.validator').each(function () {
                 if ($(this).css('visibility') == 'visible') {
                     $('html,body').animate({
@@ -154,7 +157,6 @@ var MngArriboWH = function () {
             });
 
             if (IsValid) {
-                condicionesTransporteSet();
                 $(this).hide();
             }
 
@@ -323,6 +325,7 @@ var MngArriboWH = function () {
 
         var bultoFaltante = $('#bto_faltante').html() * 1;
         var bultoSobrante = $('#bto_sobrante').html() * 1;
+
         if (bultoFaltante > 0)
             pza_declarada = pza_declarada - (bultoFaltante * pza_x_bto);
         else
@@ -642,9 +645,11 @@ var MngArriboWH = function () {
         $('#tbody_condiciones').children('tr').each(function () {
             var id = $(this).attr('id').split('_')[1];
             var val = $('input[name="name_' + id + '"]:checked', '#tbody_condiciones').val();
-            val = val == 1 ? true : false;
-            var o = new BeanEntradaTransporteCondicion(id, val);
-            lstCondTran.push(o);
+            if (val != undefined) {
+                val = val == 1 ? true : false;
+                var o = new BeanEntradaTransporteCondicion(id, val);
+                lstCondTran.push(o);
+            }
         });
         $('#ctl00_body_hf_condiciones_transporte').val(JSON.stringify(lstCondTran));
     }
@@ -667,6 +672,11 @@ var MngArriboWH = function () {
         //            return false;
         //        }
         return true;
+    }
+
+    //valida condiciones transporte
+    function validaCondTransporte() {
+        $('#rfv_condiciones_transporte').css('visibility', lstCondTran.length == arrCondTran.length ? 'hidden' : 'visible');
     }
 }
 

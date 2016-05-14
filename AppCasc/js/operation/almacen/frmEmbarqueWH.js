@@ -74,6 +74,11 @@ var MngEmbarqueWH = function () {
         $('#ctl00_body_btnGuardar').button().click(function () {
             var IsValid = true;
 
+            validaOC();
+
+            condicionesTransporteSet();
+            validaCondTransporte();
+
             $('.validator').each(function () {
                 if ($(this).css('visibility') == 'visible') {
                     $('html,body').animate({
@@ -85,15 +90,23 @@ var MngEmbarqueWH = function () {
             });
 
             if (IsValid) {
-                condicionesTransporteSet();
                 $('#ctl00_body_hf_click_save').val('1');
                 $(this).hide();
             }
+
+            return IsValid;
         });
     }
 
-    function fillDataByOC(folio_oc) {
+    function clearOC() {
+
         $('#tbodyRemByOc').html('');
+        $('#ctl00_body_hf_id_orden_carga').val(0);
+    }
+
+    function fillDataByOC(folio_oc) {
+        clearOC();
+
         $.ajax({
             type: 'GET',
             url: "/handlers/Almacen.ashx",
@@ -107,9 +120,17 @@ var MngEmbarqueWH = function () {
                 $('#div_orde_carga, #div_generales').removeClass('ajaxLoading');
             },
             success: function (data) {
-
-                if (typeof (data) != 'string')
-                    fillFormWithOC(data);
+                if (typeof (data) != 'string') {
+                    if (data.Id_salida==null) {
+                        fillFormWithOC(data);
+                    }
+                    else {
+                        $('#div_transporte').removeClass('ajaxLoading');
+                        if (confirm('La orden de carga ya cuenta con una salida, desea imprimirla?')) {
+                            
+                        }
+                    }
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var oErrorMessage = new ErrorMessage();
@@ -288,11 +309,28 @@ var MngEmbarqueWH = function () {
         $('#tbody_condiciones').children('tr').each(function () {
             var id = $(this).attr('id').split('_')[1] * 1;
             var val = $('input[name="name_' + id + '"]:checked', '#tbody_condiciones').val();
-            val = val == 1 ? true : false;
-            var o = new BeanSalidaTransporteCondicion(id, val);
-            lstCondTran.push(o);
+            if (val != undefined) {
+                val = val == 1 ? true : false;
+                var o = new BeanSalidaTransporteCondicion(id, val);
+                lstCondTran.push(o);
+            }
         });
         $('#ctl00_body_hf_condiciones_transporte').val(JSON.stringify(lstCondTran));
+    }
+
+    //validar oc
+    function validaOC() {
+        var idOc = $('#ctl00_body_hf_id_orden_carga').val();
+        if (idOc.length > 0)
+            idOc = idOc * 1;
+        else
+            idOc = 0;
+        $('#spn_rfv_oc').css('visibility', idOc > 0 ? 'hidden' : 'visible');
+    }
+
+    //valida condiciones transporte
+    function validaCondTransporte() {
+        $('#rfv_condiciones_transporte').css('visibility', lstCondTran.length == arrCondTran.length ? 'hidden' : 'visible');
     }
 }
 
