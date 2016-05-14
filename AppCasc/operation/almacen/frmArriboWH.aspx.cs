@@ -209,7 +209,9 @@ namespace AppCasc.operation.almacen
                 o.No_pieza_declarada = numero;
                 numero = 0;
 
-                o.PLstTarAlm = AlmacenCtrl.tarimaAlacenCalcTar(o.PTarAlmEstd.Cajasxtarima, o.PTarAlmEstd.Piezasxcaja, o.No_bulto_recibido, o.No_pieza_declarada, Convert.ToInt32(h_ubica_resto.Value));
+                int piezasDeclaradas = o.No_pieza_declarada - ((o.No_bulto_declarado - o.No_bulto_recibido) * o.PTarAlmEstd.Piezasxcaja);
+
+                o.PLstTarAlm = AlmacenCtrl.tarimaAlacenCalcTar(o.PTarAlmEstd.Cajasxtarima, o.PTarAlmEstd.Piezasxcaja, o.No_bulto_recibido, piezasDeclaradas, Convert.ToInt32(h_ubica_resto.Value));
 
                 o.No_pieza_recibida = o.PLstTarAlm.Sum(p => p.Piezas);
 
