@@ -321,6 +321,13 @@ var MngArriboWH = function () {
         if (pza_x_bto <= 0 || bto_x_tarima <= 0 || btos <= 0 || pza_declarada <= 0)
             return false;
 
+        var bultoFaltante = $('#bto_faltante').html() * 1;
+        var bultoSobrante = $('#bto_sobrante').html() * 1;
+        if (bultoFaltante > 0)
+            pza_declarada = pza_declarada - (bultoFaltante * pza_x_bto);
+        else
+            pza_declarada = pza_declarada + (bultoSobrante * pza_x_bto);
+
         if (pza_declarada > btos * pza_x_bto) {
             alert('La cantidad de piezas (' + pza_declarada + ') no debe exceder el estandar (' + btos * pza_x_bto + ') para las cajas declaradas');
             $('#ctl00_body_txt_no_pieza_declarada').focus();
