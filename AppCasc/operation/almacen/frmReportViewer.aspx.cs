@@ -108,6 +108,22 @@ namespace AppCasc.operation.almacen
                     ControlRptAlmacen.getCarga(path, TemplatePath, ds, oTAC);
                     ShowPdf(path);
                     break;
+                case "salidaAlm":
+                    int idSal = Convert.ToInt32(Request["_key"].ToString());
+                    obj = SalidaCtrl.getAllDataById(idSal);
+                    RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
+                    path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
+
+                    AlmacenCtrl.CargaSetSalida(((Salida)obj));
+
+                    //pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                    if (((Salida)obj).IsActive)
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/salm.rpt");
+                    else
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/salmCan.rpt");
+                    DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj, ds);
+                    ShowPdf(path);
+                    break;
             }
         }
     }

@@ -434,5 +434,26 @@ namespace ModelCasc.operation.almacen
                 throw;
             }
         }
+
+        internal void fillLstEmbarqueSRM()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen");
+                addParameters(15);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lstSRM = new List<SearchResMov>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    SearchResMov o = new SearchResMov();
+                    BindByDataRowSRM(dr, o);
+                    this._lstSRM.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

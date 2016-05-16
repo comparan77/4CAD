@@ -127,7 +127,7 @@ var MngEmbarqueWH = function () {
                     else {
                         $('#div_transporte').removeClass('ajaxLoading');
                         if (confirm('La orden de carga ya cuenta con una salida, desea imprimirla?')) {
-                            
+                            window.open('frmReportViewer.aspx?rpt=salidaAlm&_key=' + data.Id_salida, '_blank', 'toolbar=no');
                         }
                     }
                 }

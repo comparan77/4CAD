@@ -276,7 +276,7 @@ namespace ModelCasc.operation.almacen
             }
         }
 
-        public void fillFormat()
+        internal void fillFormat()
         {
             try
             {
@@ -346,6 +346,27 @@ namespace ModelCasc.operation.almacen
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen_carga");
                 addParameters(10);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillFormatSalida()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Tarima_almacen_carga");
+                addParameters(11);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._oTarima_almacen_carga.PLstTACRpt = new List<Tarima_almacen_carga_format>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Tarima_almacen_carga_format o = new Tarima_almacen_carga_format();
+                    BindByDataRowFormat(dr, o);
+                    this._oTarima_almacen_carga.PLstTACRpt.Add(o);
+                }
             }
             catch
             {

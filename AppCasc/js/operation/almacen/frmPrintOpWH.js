@@ -35,9 +35,10 @@
             success: function (data) {
                 switch (movimiento) {
                     case 'arribo':
-                        fillTbl(data);
+                        fillTbl(data, movimiento);
                         break;
                     case 'embarque':
+                        fillTbl(data, movimiento);
                         break;
                 }
             },
@@ -54,7 +55,7 @@
         $('#tbody_result').html('');
     }
 
-    function fillTbl(data) {
+    function fillTbl(data, movimiento) {
         var tr;
         $.each(data, function (i, obj) {
             tr = '';
@@ -74,7 +75,14 @@
             $(this).click(function () {
                 var id = $(this).attr('id').split('_')[1] * 1;
                 var withDetail = !$(this).parent().prev().children('input').is(':checked');
-                window.open('frmReportViewer.aspx?rpt=entradaAlm&_key=' + id + '&_wdet=' + withDetail, '_blank', 'toolbar=no');
+                switch (movimiento) {
+                    case 'arribo':
+                        window.open('frmReportViewer.aspx?rpt=entradaAlm&_key=' + id + '&_wdet=' + withDetail, '_blank', 'toolbar=no');
+                        break;
+                    case 'embarque':
+                        window.open('frmReportViewer.aspx?rpt=salidaAlm&_key=' + id + '&_wdet=' + withDetail, '_blank', 'toolbar=no');
+                        break;
+                }
             });
         });
     }

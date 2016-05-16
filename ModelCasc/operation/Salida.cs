@@ -94,6 +94,7 @@ namespace ModelCasc.operation
         public int Id_salida_orden_carga { get; set; }
         public List<Tarima_almacen> PLstTarAlm { get; set; }
         public List<Salida_transporte_condicion> PLstSalTransCond { get; set; }
+        public Tarima_almacen_carga PTAlmCarga { get; set; }
         #endregion
 
         #region Constructores

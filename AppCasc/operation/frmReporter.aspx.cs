@@ -115,15 +115,15 @@ namespace AppCasc.operation
                     //    DocEntrada.getEntradaAlm(path, TemplatePath, TemplatePathTarima, (Entrada)obj);
                     //    ShowPdf(path);
                     //    break;
-                    case "salidaAlm":
-                        obj = (Salida)Session["SSalida"];
-                        RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
-                        path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
-                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalidaAlmacen.pdf");
-                        DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj);
-                        ShowPdf(path);
-                        break;
+                    //case "salidaAlm":
+                    //    obj = (Salida)Session["SSalida"];
+                    //    RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
+                    //    path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
+                    //    pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                    //    TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalidaAlmacen.pdf");
+                    //    DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj);
+                    //    ShowPdf(path);
+                    //    break;
                     case "rptAlmRes":
                         int anio = Convert.ToInt32(Request["anio"]);
                         int mes = Convert.ToInt32(Request["mes"]);

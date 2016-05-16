@@ -97,9 +97,20 @@ namespace AppCasc.handlers
             try
             {
                 option = context.Request["opt"].ToString();
+                string folio_cita = context.Request["folio_cita"].ToString();
+                string rr = context.Request["rr"].ToString();
+                string mercancia_codigo = context.Request["mercancia_codigo"].ToString();
+                string folio = context.Request["folio"].ToString();
                 switch (option)
                 {
                     case "getBy":
+                        response = JsonConvert.SerializeObject(AlmacenCtrl.tarimaAlmacenEmbarqueSearchMov(new SearchResMov()
+                        {
+                            Cita = folio_cita,
+                            Folio = folio,
+                            Rr = rr,
+                            Mercancia = mercancia_codigo
+                        }));
                         break;
                     default:
                         break;

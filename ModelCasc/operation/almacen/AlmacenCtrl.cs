@@ -588,6 +588,21 @@ namespace ModelCasc.operation.almacen
             }
         }
 
+        public static void CargaSetSalida(Salida oS)
+        {
+            try
+            {
+                Tarima_almacen_carga oTAC = new Tarima_almacen_carga() { Id_salida = oS.Id };
+                Tarima_almacen_cargaMng oTACMng = new Tarima_almacen_cargaMng() { O_Tarima_almacen_carga = oTAC };
+                oTACMng.fillFormatSalida();
+                oS.PTAlmCarga = oTAC;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Orden Carga Detail
@@ -641,6 +656,34 @@ namespace ModelCasc.operation.almacen
                     GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
+        }
+
+        #endregion
+
+        #region Embarques
+
+        public static List<SearchResMov> tarimaAlmacenEmbarqueSearchMov(SearchResMov o)
+        {
+            List<SearchResMov> lst = new List<SearchResMov>();
+            try
+            {
+                Tarima_almacenMng oMng = new Tarima_almacenMng();
+                Tarima_almacen oTa = new Tarima_almacen()
+                {
+                    Estandar = o.Cita,
+                    Rr = o.Rr,
+                    Mercancia_codigo = o.Mercancia,
+                    Folio = o.Folio
+                };
+                oMng.O_Tarima_almacen = oTa;
+                oMng.fillLstEmbarqueSRM();
+                lst = oMng.LstSRM;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
         }
 
         #endregion

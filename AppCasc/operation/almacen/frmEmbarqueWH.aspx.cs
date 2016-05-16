@@ -14,16 +14,6 @@ namespace AppCasc.operation.almacen
 {
     public partial class frmEmbarqueWH : System.Web.UI.Page
     {
-        private Salida SSalida
-        {
-            set
-            {
-                if (Session["SSalida"] != null)
-                    Session.Remove("SSalida");
-                Session.Add("SSalida", value);
-            }
-        }
-
         private Salida getSalidaFormValues()
         {
             Salida oS = new Salida();
@@ -204,14 +194,9 @@ namespace AppCasc.operation.almacen
 
         private void printSalida(int IdSalida)
         {
-            string path = string.Empty;
-            string pathImg = string.Empty;
-            string virtualPath = string.Empty;
             try
             {
-                SSalida = SalidaCtrl.getAllDataById(IdSalida);
-
-                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=salidaAlm','_blank', 'toolbar=no');</script>");
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReportViewer.aspx?rpt=salidaAlm&_key=" + IdSalida.ToString() + "','_blank', 'toolbar=no');</script>");
             }
             catch (Exception)
             {
