@@ -173,15 +173,15 @@ namespace ModelCasc.report.almacen
                 reporte.SetParameterValue("linea", o.PTarAlmTrafico.PTransporte.Nombre);
                 StringBuilder sbET = new StringBuilder();
                 sbET.Append("Tipo: " + o.PTarAlmTrafico.PTransporteTipo.Nombre);
-                if (string.Compare(o.PTarAlmTrafico.Placa, "N.A.") != 0)
-                    sbET.Append(", Placa: " + o.PTarAlmTrafico.Placa);
-                if (string.Compare(o.PTarAlmTrafico.Caja, "N.A.") != 0)
-                    sbET.Append(", Caja: " + o.PTarAlmTrafico.Caja);
-                if (string.Compare(o.PTarAlmTrafico.Caja1, "N.A.") != 0)
-                    sbET.Append(", Contenedor 1: " + o.PTarAlmTrafico.Caja1);
-                if (string.Compare(o.PTarAlmTrafico.Caja2, "N.A.") != 0)
-                    sbET.Append(", Contenedor 2: " + o.PTarAlmTrafico.Caja2);
-                sbET.AppendLine();
+                //if (string.Compare(o.PTarAlmTrafico.Placa, "N.A.") != 0)
+                //    sbET.Append(", Placa: " + o.PTarAlmTrafico.Placa);
+                //if (string.Compare(o.PTarAlmTrafico.Caja, "N.A.") != 0)
+                //    sbET.Append(", Caja: " + o.PTarAlmTrafico.Caja);
+                //if (string.Compare(o.PTarAlmTrafico.Caja1, "N.A.") != 0)
+                //    sbET.Append(", Contenedor 1: " + o.PTarAlmTrafico.Caja1);
+                //if (string.Compare(o.PTarAlmTrafico.Caja2, "N.A.") != 0)
+                //    sbET.Append(", Contenedor 2: " + o.PTarAlmTrafico.Caja2);
+                //sbET.AppendLine();
                 reporte.SetParameterValue("transporte", sbET.ToString());
 
                 reporte.SetParameterValue("folio_cita", o.PTarAlmTrafico.Folio_cita);
