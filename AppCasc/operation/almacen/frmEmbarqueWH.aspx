@@ -77,8 +77,8 @@
     </div>--%>
     <div>
         <asp:HiddenField runat="server" ID="hf_destino" />
-        <label>Destino:</label>
-        <asp:DropDownList runat="server" ID="ddlDestino"></asp:DropDownList>
+        <%--<label>Destino:</label>
+        <asp:DropDownList runat="server" ID="ddlDestino"></asp:DropDownList>--%>
     </div>
 </div>
 

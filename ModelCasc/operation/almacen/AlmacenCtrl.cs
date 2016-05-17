@@ -603,6 +603,30 @@ namespace ModelCasc.operation.almacen
             }
         }
 
+        public static Salida_destino CargaGetDestino(int idOC)
+        {
+            Salida_destino oSD = new Salida_destino();
+            try
+            {
+                Tarima_almacen_carga oTAC = new Tarima_almacen_carga() { Id = idOC };
+                Tarima_almacen_cargaMng oTACMng = new Tarima_almacen_cargaMng() { O_Tarima_almacen_carga = oTAC };
+                oTACMng.selById();
+
+                Tarima_almacen_trafico oTAT = new Tarima_almacen_trafico() { Id = oTAC.Id_tarima_almacen_trafico };
+                Tarima_almacen_traficoMng oTATMng = new Tarima_almacen_traficoMng() { O_Tarima_almacen_trafico = oTAT };
+                oTATMng.selById();
+
+                oSD.Id = oTAT.Id_salida_destino;
+                Salida_destinoMng oSDMng = new Salida_destinoMng() { O_Salida_destino = oSD };
+                oSDMng.selById();
+            }
+            catch
+            {
+                throw;
+            }
+            return oSD;
+        }
+
         #endregion
 
         #region Orden Carga Detail

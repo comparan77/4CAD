@@ -85,15 +85,6 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.HiddenField hf_destino;
         
         /// <summary>
-        /// ddlDestino control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDestino;
-        
-        /// <summary>
         /// ddlTransporte control.
         /// </summary>
         /// <remarks>

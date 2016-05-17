@@ -182,12 +182,12 @@ namespace AppCasc.operation.almacen
             try
             {
                 Salida oS = getSalidaFormValues();
+                oS.Destino = AlmacenCtrl.CargaGetDestino(Convert.ToInt32(hf_id_orden_carga.Value)).Direccion;
                 SalidaCtrl.SalidaAlmacenAdd(oS);
                 return oS;
             }
-            catch (Exception)
+            catch
             {
-
                 throw;
             }
         }
@@ -209,7 +209,7 @@ namespace AppCasc.operation.almacen
             try
             {
                 txt_fecha.Text = DateTime.Today.ToString("dd MMM yy");
-                ControlsMng.fillSalidaDestino(ddlDestino);
+                //ControlsMng.fillSalidaDestino(ddlDestino);
                 
                 ControlsMng.fillTransporte(ddlTransporte);
                 ControlsMng.fillTipoTransporte(ddlTipo_Transporte, ddlTransporte);
