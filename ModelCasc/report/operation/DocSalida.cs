@@ -476,7 +476,7 @@ namespace ModelCasc.report.operation
                     dr["codigo"] = itemTA.Mercancia_codigo;
                     dr["rr"] = itemTA.Rr;
                     dr["folio_tarima"] = itemTA.Folio;
-                    dr["estandar"] = itemTA.Bultos.ToString() + "*" + itemTA.Piezas.ToString();
+                    dr["estandar"] = itemTA.Estandar;
                     dr["bultos"] = itemTA.Bultos;
                     dr["piezas"] = itemTA.Piezas;
                     ds.Tables["carga"].Rows.Add(dr);
