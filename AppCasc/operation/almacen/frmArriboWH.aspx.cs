@@ -217,6 +217,8 @@ namespace AppCasc.operation.almacen
 
                 o.Hora_descarga = txt_hora_descarga.Text;
 
+                o.No_pallet = o.PLstTarAlm.Count;
+
                 //Vigilante
                 o.Vigilante = txt_vigilante.Text.Trim();
 
