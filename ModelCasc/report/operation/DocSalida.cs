@@ -479,6 +479,7 @@ namespace ModelCasc.report.operation
                     dr["estandar"] = itemTA.Estandar;
                     dr["bultos"] = itemTA.Bultos;
                     dr["piezas"] = itemTA.Piezas;
+                    dr["resto"] = itemTA.Resto;
                     ds.Tables["carga"].Rows.Add(dr);
                 }
                 reporte.SetDataSource(ds.Tables["carga"]);
@@ -498,6 +499,43 @@ namespace ModelCasc.report.operation
         }
 
         #endregion
+
+        public static void getSalidaAlmXls(string FilePath, string rptPath, Salida oS, DataSet ds)
+        {
+            ReportDocument reporte = new ReportDocument();
+            try
+            {
+                CultureInfo ci = new CultureInfo("es-MX");
+                reporte.Load(rptPath.Replace("salm", "sart"));
+
+                foreach (Tarima_almacen itemTA in oS.PLstTarAlm)
+                {
+                    DataRow dr = ds.Tables["carga"].NewRow();
+                    dr["folio_remision"] = itemTA.Mercancia_nombre;
+                    dr["codigo"] = itemTA.Mercancia_codigo;
+                    dr["rr"] = itemTA.Rr;
+                    dr["folio_tarima"] = itemTA.Folio;
+                    dr["estandar"] = itemTA.Estandar;
+                    dr["bultos"] = itemTA.Bultos;
+                    dr["piezas"] = itemTA.Piezas;
+                    dr["resto"] = itemTA.Resto;
+                    ds.Tables["carga"].Rows.Add(dr);
+                }
+                reporte.SetDataSource(ds.Tables["carga"]);
+                reporte.SetParameterValue("folio_salida", oS.Folio);
+
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.Excel, FilePath);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                reporte.Close();
+                reporte.Dispose();
+            }
+        }
     }
 
     class _events : PdfPageEventHelper

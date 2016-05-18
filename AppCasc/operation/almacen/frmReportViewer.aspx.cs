@@ -52,6 +52,18 @@ namespace AppCasc.operation.almacen
             Response.Clear();
         }
 
+        private void ShowXls(string s, string filename)
+        {
+            Response.ClearContent();
+            Response.ClearHeaders();
+
+            Response.AddHeader("content-disposition", "attachment; filename=" + filename);
+            Response.Charset = "";
+            Response.ContentType = "Application/x-msexcel";
+            Response.WriteFile(s);
+            Response.End();
+        }
+
         private void printReport(string rpt)
         {
             string path = string.Empty;
@@ -61,6 +73,9 @@ namespace AppCasc.operation.almacen
             string TemplatePath = string.Empty;
             bool withDet = true;
             object obj;
+
+            int id = 0;
+
             dsReport ds = new dsReport();
             switch (rpt)
             {
@@ -68,9 +83,9 @@ namespace AppCasc.operation.almacen
                     obj = (Entrada)Session["SEntrada"];
                     if (obj == null)
                     {
-                        int idEnt = Convert.ToInt32(Request["_key"].ToString());
+                        id = Convert.ToInt32(Request["_key"].ToString());
                         withDet = Convert.ToBoolean(Request["_wdet"].ToString());
-                        obj = EntradaCtrl.EntradaGetAllDataById(idEnt);
+                        obj = EntradaCtrl.EntradaGetAllDataById(id);
                     }
                     RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/entradasAlm/") + RptFileName;
@@ -91,8 +106,8 @@ namespace AppCasc.operation.almacen
                     ShowPdf(path);
                     break;
                 case "remision":
-                    int idRem = Convert.ToInt32(Request["_key"].ToString());
-                    Tarima_almacen_remision o = AlmacenCtrl.tarimaRemisionGetAllInfoById(idRem);
+                    id = Convert.ToInt32(Request["_key"].ToString());
+                    Tarima_almacen_remision o = AlmacenCtrl.tarimaRemisionGetAllInfoById(id);
                     RptFileName = o.Folio + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/remisionAlm/") + RptFileName;
                     TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/ralm.rpt");
@@ -100,8 +115,8 @@ namespace AppCasc.operation.almacen
                     ShowPdf(path);
                     break;
                 case "carga":
-                    int idOc = Convert.ToInt32(Request["_key"].ToString());
-                    Tarima_almacen_carga oTAC = AlmacenCtrl.CargaRpt(idOc);
+                    id = Convert.ToInt32(Request["_key"].ToString());
+                    Tarima_almacen_carga oTAC = AlmacenCtrl.CargaRpt(id);
                     RptFileName = oTAC.Folio_orden_carga + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/cargaAlm/") + RptFileName;
                     TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/Carga.rpt");
@@ -109,8 +124,8 @@ namespace AppCasc.operation.almacen
                     ShowPdf(path);
                     break;
                 case "salidaAlm":
-                    int idSal = Convert.ToInt32(Request["_key"].ToString());
-                    obj = SalidaCtrl.getAllDataById(idSal);
+                    id = Convert.ToInt32(Request["_key"].ToString());
+                    obj = SalidaCtrl.getAllDataById(id);
                     RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
 
@@ -123,6 +138,22 @@ namespace AppCasc.operation.almacen
                         TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/salmCan.rpt");
                     DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj, ds);
                     ShowPdf(path);
+                    break;
+                case "salidaAlmXls":
+                    id = Convert.ToInt32(Request["_key"].ToString());
+                    obj = SalidaCtrl.getAllDataById(id);
+                    RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".xls";
+                    path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
+
+                    AlmacenCtrl.CargaSetSalida(((Salida)obj));
+
+                    if (((Salida)obj).IsActive)
+                    {
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Almacen/salm.rpt");
+                        DocSalida.getSalidaAlmXls(path, TemplatePath, (Salida)obj, ds);
+                    }
+                    ShowXls(path, RptFileName);
+
                     break;
             }
         }

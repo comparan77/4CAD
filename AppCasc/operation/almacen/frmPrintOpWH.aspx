@@ -39,16 +39,8 @@
     </div>
     <hr style="border-color: transparent;" />
     <table class="grdCascSmall">
-        <thead>
-            <tr>
-                <th>Cita</th>
-                <th>RR</th>
-                <th>Folio</th>
-                <th>Mercanc&iacute;a</th>
-                <th>Nombre</th>
-                <th align="center">S&oacute;lo car&aacute;tula</th>
-                <th align="center">Imprimir</th>
-            </tr>
+        <thead id="thead_result">
+            
         </thead>
         <tbody id="tbody_result">
             

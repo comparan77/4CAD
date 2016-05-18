@@ -55,20 +55,61 @@
         $('#tbody_result').html('');
     }
 
+    function fillTblHeader(movimiento) {
+        $('#thead_result').html('');
+        var tr = '';
+        tr += '<tr>';
+        tr += '<th>Cita</th>';
+        tr += '<th>RR</th>';
+        tr += '<th>Folio</th>';
+        switch (movimiento) {
+            case 'arribo':
+                tr += '<th>Mercanc&iacute;a</th>';
+                tr += '<th>Nombre</th>';
+                break;
+            case 'embarque':
+                tr += '<th colspan="2">xls</th>';
+                break;
+
+        }
+
+        tr += '<th align="center">S&oacute;lo car&aacute;tula</th>';
+        tr += '<th align="center">Imprimir</th>';
+        tr += '</tr>';
+        $('#thead_result').append(tr);
+    }
+
     function fillTbl(data, movimiento) {
         var tr;
+        fillTblHeader(movimiento);
         $.each(data, function (i, obj) {
             tr = '';
             tr += '<tr>';
             tr += '<td>' + obj.Cita + '</td>';
             tr += '<td>' + obj.Rr + '</td>';
             tr += '<td>' + obj.Folio + '</td>';
-            tr += '<td>' + obj.Mercancia + '</td>';
-            tr += '<td>' + obj.Nombre + '</td>';
+            switch (movimiento) {
+                case 'arribo':
+                    tr += '<td>' + obj.Mercancia + '</td>';
+                    tr += '<td>' + obj.Nombre + '</td>';
+                    break;
+                case 'embarque':
+                    tr += '<td colspan="2" align="center"><span class="ui-icon ui-icon-calculator icon-button-action printXls" id="print_' + obj.Id + '"></span></td>';
+                    break;
+                default:
+
+            }
             tr += '<td align="center"><input type="checkbox" /></td>';
-            tr += '<td align="center"><span class="ui-icon ui-icon-print icon-action-button icon-button-action printMov" id="print_' + obj.Id + '"></span></td>';
-            tr += '></tr>';
+            tr += '<td align="center"><span class="ui-icon ui-icon-print icon-button-action printMov" id="print_' + obj.Id + '"></span></td>';
+            tr += '</tr>';
             $('#tbody_result').append(tr);
+        });
+
+        $('.printXls').each(function () {
+            $(this).click(function () {
+                var id = $(this).attr('id').split('_')[1] * 1;
+                window.open('frmReportViewer.aspx?rpt=salidaAlmXls&_key=' + id, '_blank', 'toolbar=no');
+            });
         });
 
         $('.printMov').each(function () {

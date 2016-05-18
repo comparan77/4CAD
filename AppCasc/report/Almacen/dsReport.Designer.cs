@@ -1286,6 +1286,8 @@ namespace AppCasc.report.Almacen {
             
             private global::System.Data.DataColumn columnpiezas;
             
+            private global::System.Data.DataColumn columnresto;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public cargaDataTable() {
@@ -1377,6 +1379,14 @@ namespace AppCasc.report.Almacen {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn restoColumn {
+                get {
+                    return this.columnresto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1412,7 +1422,7 @@ namespace AppCasc.report.Almacen {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public cargaRow AddcargaRow(string folio_remision, string codigo, string rr, string folio_tarima, string estandar, int bultos, int piezas) {
+            public cargaRow AddcargaRow(string folio_remision, string codigo, string rr, string folio_tarima, string estandar, int bultos, int piezas, int resto) {
                 cargaRow rowcargaRow = ((cargaRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         folio_remision,
@@ -1421,7 +1431,8 @@ namespace AppCasc.report.Almacen {
                         folio_tarima,
                         estandar,
                         bultos,
-                        piezas};
+                        piezas,
+                        resto};
                 rowcargaRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcargaRow);
                 return rowcargaRow;
@@ -1451,6 +1462,7 @@ namespace AppCasc.report.Almacen {
                 this.columnestandar = base.Columns["estandar"];
                 this.columnbultos = base.Columns["bultos"];
                 this.columnpiezas = base.Columns["piezas"];
+                this.columnresto = base.Columns["resto"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1470,6 +1482,8 @@ namespace AppCasc.report.Almacen {
                 base.Columns.Add(this.columnbultos);
                 this.columnpiezas = new global::System.Data.DataColumn("piezas", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnpiezas);
+                this.columnresto = new global::System.Data.DataColumn("resto", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnresto);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2395,6 +2409,22 @@ namespace AppCasc.report.Almacen {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int resto {
+                get {
+                    try {
+                        return ((int)(this[this.tablecarga.restoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'resto\' in table \'carga\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecarga.restoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isfolio_remisionNull() {
                 return this.IsNull(this.tablecarga.folio_remisionColumn);
             }
@@ -2475,6 +2505,18 @@ namespace AppCasc.report.Almacen {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetpiezasNull() {
                 this[this.tablecarga.piezasColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsrestoNull() {
+                return this.IsNull(this.tablecarga.restoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetrestoNull() {
+                this[this.tablecarga.restoColumn] = global::System.Convert.DBNull;
             }
         }
         

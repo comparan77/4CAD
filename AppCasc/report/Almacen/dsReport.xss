@@ -9,7 +9,7 @@
     <Shape ID="DesignTable:entrada_transporte_condicion" ZOrder="5" X="36" Y="24" Height="62" Width="238" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="58" />
     <Shape ID="DesignTable:entrada_tarima" ZOrder="4" X="307" Y="23" Height="95" Width="154" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="22" SplitterPosition="91" />
     <Shape ID="DesignTable:remision" ZOrder="3" X="489" Y="28" Height="113" Width="159" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="109" />
-    <Shape ID="DesignTable:carga" ZOrder="2" X="677" Y="32" Height="146" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="142" />
+    <Shape ID="DesignTable:carga" ZOrder="2" X="677" Y="32" Height="163" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="159" />
     <Shape ID="DesignTable:salida" ZOrder="1" X="857" Y="35" Height="147" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="143" />
   </Shapes>
   <Connectors />
