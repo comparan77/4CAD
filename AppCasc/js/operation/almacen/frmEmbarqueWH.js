@@ -121,7 +121,7 @@ var MngEmbarqueWH = function () {
             },
             success: function (data) {
                 if (typeof (data) != 'string') {
-                    if (data.Id_salida==null) {
+                    if (data.Id_salida == null) {
                         fillFormWithOC(data);
                     }
                     else {
@@ -168,8 +168,6 @@ var MngEmbarqueWH = function () {
         $('#ctl00_body_hf_id_entrada').val(data.PLstTACRpt[0].Id_entrada);
         //Destino
         $('#ctl00_body_ddlDestino').val(data.PTarAlmTrafico.PSalidaDestino.Id);
-        //Transporte
-        $('#ctl00_body_ddlTransporte').val(data.PTarAlmTrafico.PTransporte.Id).trigger('change');
 
         $('#ctl00_body_upTipoTransporte').panelReady(function () {
             $('#ctl00_body_ddlTipo_Transporte').val(data.PTarAlmTrafico.PTransporteTipo.Id);
@@ -179,6 +177,8 @@ var MngEmbarqueWH = function () {
             $('#ctl00_body_txt_caja_2').val(data.PTarAlmTrafico.Caja2);
             $('#ctl00_body_txt_operador').val(data.PTarAlmTrafico.Operador);
             $('#div_transporte').removeClass('ajaxLoading');
+            //Transporte
+            $('#ctl00_body_ddlTransporte').val(data.PTarAlmTrafico.PTransporte.Id).trigger('change');
         });
     }
 
