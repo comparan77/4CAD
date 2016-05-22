@@ -67,7 +67,7 @@
     </div>
     <div>
         <asp:HiddenField runat="server" ID="hf_vendor" />
-        <label>Proveedor:</label>
+        <label>Proveedor de la Mercanc&iacute;a:</label>
         <asp:TextBox runat="server" ID="txt_proveedor" CssClass="txtLarge"></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_proveedor" ControlToValidate="txt_proveedor" ErrorMessage="Es necesario proporcionar el proveedor la Mercancía." ></asp:RequiredFieldValidator>
     </div>

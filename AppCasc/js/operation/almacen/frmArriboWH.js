@@ -229,6 +229,10 @@ var MngArriboWH = function () {
                 $('#ctl00_body_txt_proveedor').val(ui.item.label);
                 $('#ctl00_body_hf_vendor').val(ui.item.value);
                 return false;
+            },
+            change: function (event, ui) {
+                $('#ctl00_body_hf_vendor').val('');
+                $('#ctl00_body_txt_proveedor').val('');
             }
         });
     }
