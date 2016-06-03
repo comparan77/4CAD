@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Web.Security;
 using System.Data;
 using Model;
+using ModelCasc.catalog.almacen;
 
 namespace ModelCasc.catalog
 {
@@ -1153,6 +1154,30 @@ namespace ModelCasc.catalog
             }
             return lst;
         }
+
+        #endregion
+
+        #region Tarima Almacen
+
+        #region Tarima almacen proveedor 
+
+        public static List<Tarima_almacen_proveedor> TarimaAlmacenProveedorFill()
+        {
+            List<Tarima_almacen_proveedor> lst = new List<Tarima_almacen_proveedor>();
+            try
+            {
+                Tarima_almacen_proveedorMng oMng = new Tarima_almacen_proveedorMng();
+                oMng.fillLst();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
 
         #endregion
 

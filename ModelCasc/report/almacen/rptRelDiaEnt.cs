@@ -18,5 +18,6 @@ namespace ModelCasc.report.almacen
         public int Piezas_calidad { get; set; }
         public string Tipo_producto { get; set; }
         public string Observaciones { get; set; }
+        public string Proveedor_origen { get; set; }
     }
 }

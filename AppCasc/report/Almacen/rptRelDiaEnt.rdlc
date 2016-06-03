@@ -56,6 +56,10 @@
           <DataField>Observaciones</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Proveedor_origen">
+          <DataField>Proveedor_origen</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>ModelCascreportalmacen</DataSourceName>
@@ -79,7 +83,7 @@
               <Width>1.1405in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.17175in</Width>
+              <Width>1.47383in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.98425in</Width>
@@ -592,21 +596,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Proveedor">
+                    <Textbox Name="Proveedor_origen">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Proveedor.Value</Value>
+                              <Value>=Fields!Proveedor_origen.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Proveedor</rd:DefaultName>
+                      <rd:DefaultName>Proveedor_origen</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -948,7 +952,7 @@
         <Top>2.02883cm</Top>
         <Left>0.81174cm</Left>
         <Height>1.8cm</Height>
-        <Width>56.26017cm</Width>
+        <Width>51.94747cm</Width>
         <Style>
           <Border>
             <Style>None</Style>

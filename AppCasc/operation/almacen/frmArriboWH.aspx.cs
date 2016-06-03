@@ -31,6 +31,8 @@ namespace AppCasc.operation.almacen
                 ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
                 ddlBodega.Items[0].Selected = true;
 
+                ControlsMng.fillTarimaAlmacenProveedor(ddl_proveedor_origen);
+
                 ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedItem.Value));
                 txt_fecha.Text = DateTime.Today.ToString("dd MMMM yy");
 
@@ -203,6 +205,9 @@ namespace AppCasc.operation.almacen
 
                 //Cliente vendor
                 o.PTarAlmEstd.Proveedor = o.Origen;
+
+                //Proveedor de origen
+                o.PTarAlmEstd.Id_tarima_almacen_proveedor = Convert.ToInt32(ddl_proveedor_origen.SelectedValue);
 
                 //Piezas declaradas
                 int.TryParse(txt_no_pieza_declarada.Text, out numero);

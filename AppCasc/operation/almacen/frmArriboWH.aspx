@@ -42,9 +42,13 @@
         <span class="hidden error">Es necesario proporcionar una hora.</span>
     </div>
     <div>
-        <label>C&oacute;digo RR</label>
+        <label>C&oacute;digo RR:</label>
         <asp:TextBox runat="server" ID="txt_rr"></asp:TextBox>
         <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfv_codigo_rr" ControlToValidate="txt_rr" ErrorMessage="Es necesario proporcionar el código RR." ></asp:RequiredFieldValidator>
+    </div>
+    <div>
+        <label>Proveedor de Origen:</label>
+        <asp:DropDownList runat="server" ID="ddl_proveedor_origen"></asp:DropDownList>
     </div>
 </div>
 

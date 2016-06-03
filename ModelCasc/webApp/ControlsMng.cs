@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ModelCasc.catalog;
 using System.Data;
+using ModelCasc.catalog.almacen;
 
 namespace ModelCasc.webApp
 {
@@ -268,6 +269,17 @@ namespace ModelCasc.webApp
                 ListItem li = new ListItem(item.Nombre, item.Id.ToString());
                 li.Attributes.Add("description", item.Descripcion.ToString());
                 ddlNom.Items.Add(li);
+            }
+        }
+
+        public static void fillTarimaAlmacenProveedor(DropDownList ddl)
+        {
+            ddl.Items.Clear();
+            foreach (Tarima_almacen_proveedor item in CatalogCtrl.TarimaAlmacenProveedorFill())
+            {
+                ListItem li = new ListItem(item.Nombre, item.Id.ToString());
+                li.Attributes.Add("description", item.Nombre);
+                ddl.Items.Add(li);
             }
         }
     }

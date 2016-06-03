@@ -88,7 +88,8 @@ namespace ModelCasc.report.almacen
                         Tarima = Convert.ToInt32(dr["tarima"]),
                         Tipo = dr["tipo"].ToString(),
                         Rr = dr["rr"].ToString(),
-                        Ubicacion = dr["ubicacion"].ToString()
+                        Ubicacion = dr["ubicacion"].ToString(),
+                        Proveedor_origen = dr["proveedor_origen"].ToString()
                     };
                     lst.Add(o);
                 }
@@ -135,7 +136,8 @@ namespace ModelCasc.report.almacen
                         Cantidad_tarimas = Convert.ToInt32(dr["cantidad_tarimas"]),
                         Piezas_calidad = Convert.ToInt32(dr["piezas_calidad"]),
                         Tipo_producto = dr["tipo_producto"].ToString(),
-                        Observaciones = dr["observaciones"].ToString()
+                        Observaciones = dr["observaciones"].ToString(),
+                        Proveedor_origen = dr["proveedor_origen"].ToString()
                     };
                     lst.Add(o);
                 }

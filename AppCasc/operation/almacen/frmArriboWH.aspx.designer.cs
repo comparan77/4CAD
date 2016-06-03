@@ -112,6 +112,15 @@ namespace AppCasc.operation.almacen {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_codigo_rr;
         
         /// <summary>
+        /// ddl_proveedor_origen control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_proveedor_origen;
+        
+        /// <summary>
         /// txt_mercancia_codigo control.
         /// </summary>
         /// <remarks>

@@ -231,8 +231,10 @@ var MngArriboWH = function () {
                 return false;
             },
             change: function (event, ui) {
-                $('#ctl00_body_hf_vendor').val('');
-                $('#ctl00_body_txt_proveedor').val('');
+                if (!ui.item) {
+                    $('#ctl00_body_txt_proveedor').val('');
+                    $('#ctl00_body_hf_vendor').val('');
+                }
             }
         });
     }

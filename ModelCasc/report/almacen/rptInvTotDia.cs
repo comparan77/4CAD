@@ -19,5 +19,6 @@ namespace ModelCasc.report.almacen
         public string Tipo { get; set; }
         public string Rr { get; set; }
         public string Ubicacion { get; set; }
+        public string Proveedor_origen { get; set; }
     }
 }
