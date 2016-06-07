@@ -34,7 +34,9 @@ namespace AppCasc.operation.almacen
         {
             try
             {
-                ReportViewer1.Visible = true;
+                ReportViewer ReportViewer1 = new ReportViewer();
+                ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                //ReportViewer1.Visible = true;
                 DateTime fecha = DateTime.Today;
 
                 DateTime periodo_ini = new DateTime();
@@ -65,7 +67,22 @@ namespace AppCasc.operation.almacen
                 ReportViewer1.LocalReport.DataSources.Add(rptSource);
                 ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/Almacen/") + "rpt" + rptSelected + ".rdlc";
 
-                ReportViewer1.LocalReport.Refresh();
+                Warning[] warnings;
+                string[] streamIds;
+                string mimeType = string.Empty;
+                string encoding = string.Empty;
+                string extension = string.Empty;
+                byte[] bytes = ReportViewer1.LocalReport.Render("Excel", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+
+                //ReportViewer1.LocalReport.Refresh();
+
+
+                Response.Buffer = true;
+                Response.Clear();
+                Response.ContentType = mimeType;
+                Response.AddHeader("content-disposition", "attachment; filename=" + ddl_reporte.SelectedValue + ".xls");
+                Response.BinaryWrite(bytes); // create the file
+                Response.Flush(); // send it to the client to download
             }
             catch (Exception e)
             {

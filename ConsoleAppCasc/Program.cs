@@ -15,6 +15,10 @@ namespace ConsoleAppCasc
             {
                 string origen = string.Empty;
                 string destino = string.Empty;
+
+                ////facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\facturaTestCuentaContable.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
+                facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\Facturacion 02-05 Febrero 2016.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
+
                 origen = args[0].ToString();
                 destino = args[1].ToString();
                 LogCtrl.writeLog("origen: " + origen);
@@ -24,7 +28,6 @@ namespace ConsoleAppCasc
                 destino = destino.Replace("/", @"\");
 
                 facturacionCtrl.procesaFacturacion(origen, destino);
-                //facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\conError.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
             }
             catch (Exception e)
             {

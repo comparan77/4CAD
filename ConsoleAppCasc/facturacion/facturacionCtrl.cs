@@ -6,6 +6,8 @@ using Microsoft.Office.Interop.Excel;
 using System.Xml;
 using System.IO;
 using System.Reflection;
+using ModelCasc.operation;
+using ModelCasc.catalog;
 
 namespace ConsoleAppCasc.facturacion
 {
@@ -13,6 +15,7 @@ namespace ConsoleAppCasc.facturacion
     {
         private static int _maxColTransportes;
         private static int _maxColManiobras;
+        private static int _maxColCuentasCont;
         private static List<Transporte> lstTransTarifa;
         private static List<Maniobra> lstManioTarifa;
 
@@ -134,9 +137,20 @@ namespace ConsoleAppCasc.facturacion
         private static void insertaParcialesColumnas(Worksheet sheet)
         {
             int iParciales = 0;
-            int NoCol = 18;
+            int NoCol = 28;
+            int NumParciales = _maxColCuentasCont;
+            //Inserta tantas columnas como cuentas contables correspondientes a las ordenes de compra
+            //Cuentas contables
+            for (iParciales = 0; iParciales < NumParciales; iParciales++)
+            {
+                ((Range)sheet.Cells[1, NoCol]).Insert(XlInsertShiftDirection.xlShiftToRight, XlInsertFormatOrigin.xlFormatFromLeftOrAbove);
+                sheet.Cells[1, NoCol] = "NO. CUENTA CONTABLE";
+            }
+            
+            iParciales = 0;
+            NoCol = 18;
             //inserta tantas columnas como el número maximo de parciales
-            int NumParciales = _maxColTransportes * 2;
+            NumParciales = _maxColTransportes * 2;
             bool esPorcentaje = true;
             int cuenta = 1;
             for (iParciales = 0; iParciales < NumParciales; iParciales++)
@@ -273,12 +287,29 @@ namespace ConsoleAppCasc.facturacion
             #endregion
 
             #region NoCuenta
+            StringBuilder sbOC = new StringBuilder();
+            foreach (Cliente_mercancia_cuenta itemCMC in o.PEntInv.PLstCteMercCta)
+            {
+                sbOC.Append(itemCMC.Orden.Replace(",","/") + "/");
+            }
+            sheet.Cells[fila, NoCol] = sbOC.ToString().Substring(0, sbOC.ToString().Length - 1);
+            
             NoCol++;
+            NoVacios = _maxColCuentasCont - o.PEntInv.PLstCteMercCta.Count;
+            NumParciales = 0;
+            for (; NumParciales < o.PEntInv.PLstCteMercCta.Count; NumParciales++)
+            {
+                Cliente_mercancia_cuenta oCMC = o.PEntInv.PLstCteMercCta[NumParciales];
+                sheet.Cells[fila, NoCol] = oCMC.Cuenta;
+                NoCol++;
+            }
+
+            NoCol+= NoVacios;
             #endregion
 
             #region Sumatoria
-            string formulaSumatoria = "=RC[-2]+RC[-5]+RC[-9]";
-            int sigCol = 12;
+            string formulaSumatoria = "=RC[-" + (2 + _maxColCuentasCont).ToString() + "]+RC[-" + (5 + _maxColCuentasCont).ToString() + "]+RC[-" + (9 + _maxColCuentasCont).ToString() + "]";
+            int sigCol = 12 + _maxColCuentasCont;
             for (int iS = 1; iS <= _maxColManiobras; iS++)
             {
                 formulaSumatoria += "+RC[-" + sigCol.ToString() + "]";
@@ -313,7 +344,11 @@ namespace ConsoleAppCasc.facturacion
             #region Datos Generales
             dato = sheet.get_Range("G12", "G12").Value2;
             if (dato != null)
+            {
                 o.Referencia = dato.ToString();
+                o.PEntInv = EntradaCtrl.InventarioGetCtaContable(o.Referencia);
+                _maxColCuentasCont = o.PEntInv.PLstCteMercCta.Count > _maxColCuentasCont ? o.PEntInv.PLstCteMercCta.Count : _maxColCuentasCont;
+            }
             #endregion
 
             #region Maniobra entrada y salida

@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmRptWH.aspx.cs" Inherits="AppCasc.operation.almacen.frmRptWH" %>
-<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
+<%--<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
      <script src="../../js/moment.min.js" type="text/javascript"></script>
@@ -70,7 +70,7 @@
     
 </div>
 
-<asp:UpdatePanel runat="server" ID="up_rpt" UpdateMode="Conditional">
+<%--<asp:UpdatePanel runat="server" ID="up_rpt" UpdateMode="Conditional">
 <Triggers>
     <asp:AsyncPostBackTrigger ControlID="btnGetRptAsync" EventName="click" />
 </Triggers>
@@ -78,7 +78,7 @@
 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Visible="false" InteractivityPostBackMode="AlwaysAsynchronous">
 </rsweb:ReportViewer>
 </ContentTemplate>
-</asp:UpdatePanel>
+</asp:UpdatePanel>--%>
 
 </div>
 

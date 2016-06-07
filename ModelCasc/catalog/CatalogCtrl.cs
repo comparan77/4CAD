@@ -868,6 +868,26 @@ namespace ModelCasc.catalog
 
         #endregion
 
+        #region Cliente mercancia cuenta
+
+        public List<Cliente_mercancia_cuenta> Cliente_mercancia_cuentaFill()
+        {
+            List<Cliente_mercancia_cuenta> lst = new List<Cliente_mercancia_cuenta>();
+            try
+            {
+                Cliente_mercancia_cuentaMng oMng = new Cliente_mercancia_cuentaMng();
+                oMng.fillLst();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
         #region Tipos de Carga
 
         public static List<Tipo_carga> Tipo_cargafill()

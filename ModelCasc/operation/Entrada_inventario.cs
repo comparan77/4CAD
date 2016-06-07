@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
@@ -90,7 +91,8 @@ namespace ModelCasc.operation
         public string Nom { get; set; }
         public string FolioEntrada { get; set; }
         public string Lote { get; set; }
-        public bool Maquilado { get; set; } 
+        public bool Maquilado { get; set; }
+        public List<Cliente_mercancia_cuenta> PLstCteMercCta { get; set; }
         //public int PzasPorBulto { get; set; }
         #endregion
 

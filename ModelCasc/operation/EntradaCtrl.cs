@@ -1678,6 +1678,23 @@ namespace ModelCasc.operation
             }
         }
 
+        public static Entrada_inventario InventarioGetCtaContable(string referencia)
+        {
+            Entrada_inventario o = new Entrada_inventario() { Referencia = referencia };
+            try
+            {
+                Entrada_inventarioMng oMng = new Entrada_inventarioMng();
+                oMng.O_Entrada_inventario = o;
+                oMng.fillLstCtaContable();
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return o;
+        }
+
         #endregion
 
         #region Entrada Inventario Detalle - Control Piso

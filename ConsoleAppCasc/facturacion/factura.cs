@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModelCasc.operation;
 
 namespace ConsoleAppCasc.facturacion
 {
@@ -21,6 +22,8 @@ namespace ConsoleAppCasc.facturacion
         private List<OtrosServicios> _lstOtrosServicios;
         private Emplayado _PEmplayado;
         private double _total;
+
+        public Entrada_inventario PEntInv { get; set; }
 
         public factura()
         {

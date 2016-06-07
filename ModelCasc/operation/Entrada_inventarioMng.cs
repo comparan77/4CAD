@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Model;
+using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
@@ -589,13 +590,21 @@ namespace ModelCasc.operation
             }
         }
 
-        internal void udtCodigo()
+        internal void fillLstCtaContable()
         {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_inventario");
-                addParameters(13);
-                GenericDataAccess.ExecuteNonQuery(this.comm);
+                addParameters(15);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._oEntrada_inventario.PLstCteMercCta = new List<catalog.Cliente_mercancia_cuenta>();
+                Cliente_mercancia_cuentaMng oCMCMng = new Cliente_mercancia_cuentaMng();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Cliente_mercancia_cuenta o = new Cliente_mercancia_cuenta();
+                    oCMCMng.BindByDataRow(dr, o);
+                    this._oEntrada_inventario.PLstCteMercCta.Add(o);
+                }
             }
             catch
             {
