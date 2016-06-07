@@ -187,7 +187,7 @@ namespace ModelCasc.report.almacen
                 reporte.SetParameterValue("transporte", sbET.ToString());
 
                 reporte.SetParameterValue("folio_cita", o.PTarAlmTrafico.Folio_cita);
-                reporte.SetParameterValue("fecha_cita", o.PTarAlmTrafico.Fecha_solicitud.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("fecha_cita", Convert.ToDateTime(o.PTarAlmTrafico.Fecha_cita).ToString("dd \\de MMM \\de yyyy", ci));
                 reporte.SetParameterValue("cliente", "AVON COSMETICS MANUFACTURING S. DE RL DE C.V.");
                 reporte.SetParameterValue("mercancia_codigo", o.Mercancia_codigo);
                 //reporte.SetParameterValue("proveedor", o.PClienteVendor.Codigo);
