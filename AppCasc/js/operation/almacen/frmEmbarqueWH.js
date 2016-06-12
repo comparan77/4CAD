@@ -49,7 +49,7 @@ var MngEmbarqueWH = function () {
         $.mask.definitions['u'] = "[1-9]";
         var anioAct = new Date();
         var digAnio = anioAct.getFullYear().toString().substr(2, 2);
-        $('#txt_folio_oc').mask('OCA-99999u-' + digAnio);
+        $('#txt_folio_oc').mask('OCA-999999-' + digAnio);
 
         $('#btnBuscaOC').button().click(function () {
             if ($('#txt_folio_oc').val().length == 0) {

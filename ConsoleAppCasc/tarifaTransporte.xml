@@ -12,4 +12,7 @@
    <transporte tipo="Trailer Local">
      <price>2500</price>
    </transporte>
+   <transporte tipo="Flete Transferencia">
+     <price>900</price>
+   </transporte>
  </tarifaTransporte>
