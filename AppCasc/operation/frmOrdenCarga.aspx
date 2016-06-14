@@ -61,7 +61,7 @@
                 <th align="right">Piezas</th>
                 <th align="right">Bultos</th>
                 <th align="center">Pallets</th>
-                <th align="center">Seleccionar <input type="checkbox" id="chk_todo" /></th>
+                <th align="center">Seleccionar <%--<input type="checkbox" id="chk_todo" />--%></th>
             </tr>
         </thead>
         <tbody id="tbody_remisiones">

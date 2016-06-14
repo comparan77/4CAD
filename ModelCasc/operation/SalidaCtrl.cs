@@ -1030,18 +1030,18 @@ namespace ModelCasc.operation
                 oMng.selByIdSalidaTrafico();
                 o.PLstSalRem = oMng.Lst;
 
-                foreach (Salida_remision itemSR in oMng.Lst)
-                {
-                    Salida_remision_detail oSRD = new Salida_remision_detail() { Id_salida_remision = itemSR.Id };
-                    Salida_remision_detailMng oSRDMng = new Salida_remision_detailMng() { O_Salida_remision_detail = oSRD };
-                    oSRDMng.selByIdRemision();
+                //foreach (Salida_remision itemSR in oMng.Lst)
+                //{
+                //    Salida_remision_detail oSRD = new Salida_remision_detail() { Id_salida_remision = itemSR.Id };
+                //    Salida_remision_detailMng oSRDMng = new Salida_remision_detailMng() { O_Salida_remision_detail = oSRD };
+                //    oSRDMng.selByIdRemision();
 
-                    itemSR.LstSRDetail = oSRDMng.Lst;
+                //    itemSR.LstSRDetail = oSRDMng.Lst;
 
-                    //Se obtiene el estandar de bultos por pallet
-                    int numPallet = EntradaCtrl.InventarioGetPalletsByBultos(Convert.ToInt32(itemSR.Id_entrada_inventario), itemSR.LstSRDetail.Sum(p => p.Bulto));
-                    itemSR.Pallet = numPallet;
-                }
+                //    //Se obtiene el estandar de bultos por pallet
+                //    int numPallet = EntradaCtrl.InventarioGetPalletsByBultos(Convert.ToInt32(itemSR.Id_entrada_inventario), itemSR.LstSRDetail.Sum(p => p.Bulto));
+                //    itemSR.Pallet = numPallet;
+                //}
             }
             catch
             {
@@ -1157,10 +1157,9 @@ namespace ModelCasc.operation
                     oMngRem.O_Salida_orden_carga_rem = item;
                     oMngRem.add(trans);
                     id_sal_rem = item.Id_salida_remision;
-                    //Salida_remision oSRem = new Salida_remision() { Id = id_sal_rem };
-                    //Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = oSRem };
-                    //oSRMng.selById(trans);
-                    //EntradaCtrl.EntradaEstatusAdd(Convert.ToInt32(oSRem.Id_entrada_inventario), Globals.EST_ORC_CAPTURADA, o.Id_usuario, null, oSRem.Id, trans);
+                    Salida_remision oSRem = new Salida_remision() { Id = id_sal_rem, No_pallet = item.Pallet };
+                    Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = oSRem };
+                    oSRMng.udt_pallet(trans);
                 }
 
                 id = o.Id;
@@ -1228,12 +1227,23 @@ namespace ModelCasc.operation
             string error = string.Empty;
             try
             {
+                Salida_orden_carga_remMng oSOCRMng = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = id_salida_orden_carga } };
+                oSOCRMng.selByIdSalOrdCarga(false);
+
                 trans = GenericDataAccess.BeginTransaction();
 
                 Salida_orden_carga o = new Salida_orden_carga() { Id = id_salida_orden_carga };
                 Salida_orden_cargaMng oSOCMng = new Salida_orden_cargaMng();
                 oSOCMng.O_Salida_orden_carga = o;
                 oSOCMng.selById(trans);
+
+                //Establece en 0 los pallet en todas las remisiones
+                foreach (Salida_orden_carga_rem itemSOCR in oSOCRMng.Lst)
+                {
+                    Salida_remision oSRem = new Salida_remision() { Id = itemSOCR.Id_salida_remision, No_pallet = 0 };
+                    Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = oSRem };
+                    oSRMng.udt_pallet(trans);
+                }
 
                 error = "La orden de carga no puede eliminarse ya que esta cuenta con una salida.";
                 Salida_orden_cargaMng oMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = new Salida_orden_carga() { Id = id_salida_orden_carga } };

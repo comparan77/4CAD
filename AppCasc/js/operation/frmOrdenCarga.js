@@ -189,7 +189,7 @@ var MngOrdenCarga = function () {
             //            }
             //            else
             //                tr += '<td id="txt_pallet_' + obj.Id + '" align="center">' + obj.Pallet + '</td>';
-            tr += '<td id="td_pallet_' + obj.Id + '" align="center">' + obj.Pallet + '</td>';
+            tr += '<td id="td_pallet_' + obj.Id + '" align="center"><input type="text" class="txtNumber" id="txt_no_pallet_' + obj.Id + '" value="' + obj.No_pallet + '"/></td>';
             tr += '<td align="center"><input type="checkbox" readonly="readonly" class="chk_verificar_remisiones" id="chk_' + obj.Id + '" /></td>';
             tr += '</tr>';
             $('#tbody_remisiones').append(tr);
@@ -223,7 +223,7 @@ var MngOrdenCarga = function () {
             if ($(this).is(':checked')) {
                 pieza += $('#td_pieza_' + $(this).attr('id').split('_')[1]).html() * 1;
                 bulto += $('#td_bulto_' + $(this).attr('id').split('_')[1]).html() * 1;
-                pallet += $('#td_pallet_' + $(this).attr('id').split('_')[1]).html() * 1;
+                pallet += $('#txt_no_pallet_' + $(this).attr('id').split('_')[1]).val() * 1;
                 var rem = new beanSalidaOrdenCargaRem($(this).attr('id').split('_')[1] * 1, pallet);
                 lstRem.push(rem);
             }

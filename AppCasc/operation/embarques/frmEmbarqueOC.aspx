@@ -127,16 +127,17 @@
             </div>
         </ItemTemplate>
         </asp:TemplateField>
+        <asp:BoundField HeaderStyle-HorizontalAlign="Center" HeaderText="Pallets" ItemStyle-HorizontalAlign="Center" DataField="PSalRem.PalletTotal" DataFormatString="{0:N0}" />
         <asp:BoundField HeaderStyle-HorizontalAlign="Center" HeaderText="Bultos" ItemStyle-HorizontalAlign="Center" DataField="PSalRem.BultoTotal" DataFormatString="{0:N0}" />
         <asp:BoundField HeaderStyle-HorizontalAlign="Center" HeaderText="Piezas" ItemStyle-HorizontalAlign="Center" DataField="PSalRem.PiezaTotal" DataFormatString="{0:N0}" />
-
-        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Pallets">
+        
+        <%--<asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Pallets">
         <ItemTemplate>
             <asp:TextBox runat="server" ID="txt_no_pallet" CssClass="txtNumber"></asp:TextBox>
             <br />
             <span class="validator" style="visibility: hidden; color: Red;">Es necesario capturar una cantidad</span>
         </ItemTemplate>
-        </asp:TemplateField>
+        </asp:TemplateField>--%>
 
         <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" HeaderText="Mercancía">
         <ItemTemplate>

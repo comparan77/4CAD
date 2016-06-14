@@ -65,6 +65,12 @@ namespace ModelCasc.operation
                     o.PSalRem.PiezaTotalInv = entero;
                     entero = 0;
                 }
+                if (dr["palletS"] != DBNull.Value)
+                {
+                    int.TryParse(dr["palletS"].ToString(), out entero);
+                    o.PSalRem.PalletTotal = entero;
+                    entero = 0;
+                }
                 if (dr["bultoS"] != DBNull.Value)
                 {
                     int.TryParse(dr["bultoS"].ToString(), out entero);

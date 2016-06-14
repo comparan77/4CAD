@@ -113,20 +113,22 @@ namespace AppCasc.operation.embarques
                     o.Referencia = row.Cells[0].Text;
                     HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
                     o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
+                    if (o.PLstSalDoc == null)
+                        o.PLstSalDoc = new List<Salida_documento>();
 
                     //Numero de pallet
-                    TextBox txt_no_pallet = row.FindControl("txt_no_pallet") as TextBox;
-                    int.TryParse(CommonFunctions.NumbersOnly(txt_no_pallet.Text), out numero);
+                    //TextBox txt_no_pallet = row.FindControl("txt_no_pallet") as TextBox;
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[2].Text), out numero);
                     o.No_pallet = numero;
                     numero = 0;
 
                     //Numero de bulto
-                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[2].Text), out numero);
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[3].Text), out numero);
                     o.No_bulto = numero;
                     numero = 0;
 
                     //Numero de pieza
-                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[3].Text), out numero);
+                    int.TryParse(CommonFunctions.NumbersOnly(row.Cells[4].Text), out numero);
                     o.No_pieza = numero;
                     numero = 0;
 

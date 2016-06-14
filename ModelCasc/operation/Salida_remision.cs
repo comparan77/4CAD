@@ -26,6 +26,7 @@ namespace ModelCasc.operation
         protected string _dano_especifico;
         protected int _id_estatus;
         protected bool _es_devolucion;
+        protected int _no_pallet;
         #endregion
 
         #region Propiedades
@@ -46,6 +47,7 @@ namespace ModelCasc.operation
         public string Dano_especifico { get { return _dano_especifico; } set { _dano_especifico = value; } }
         public int Id_estatus { get { return _id_estatus; } set { _id_estatus = value; } }
         public bool Es_devolucion { get { return _es_devolucion; } set { _es_devolucion = value; } }
+        public int No_pallet { get { return _no_pallet; } set { _no_pallet = value; } }
 
         public List<Salida_remision_detail> LstSRDetail { get; set; }
         public string Mercancia { get; set; }
@@ -56,9 +58,9 @@ namespace ModelCasc.operation
         public string Elaboro { get; set; }
         public int PiezaTotal { get; set; }
         public int BultoTotal { get; set; }
+        public int PalletTotal { get; set; }
         public int PiezaTotalInv { get; set; }
         public int BultoTotalInv { get; set; }
-        public int Pallet { get; set; }
         public int CantParciales { get; set; }
         public bool TieneOrdenCarga { get; set; }
         /// <summary>
@@ -82,6 +84,7 @@ namespace ModelCasc.operation
             this._codigo = String.Empty;
             this._orden = String.Empty;
             this._fecha_remision = default(DateTime);
+            this._no_pallet = 0;
             this._etiqueta_rr = null;
             this._fecha_recibido = null;
             this._dano_especifico = null;

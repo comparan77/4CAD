@@ -43,6 +43,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_codigo", DbType.String, this._oSalida_remision.Codigo);
             GenericDataAccess.AddInParameter(this.comm, "?P_orden", DbType.String, this._oSalida_remision.Orden);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_remision", DbType.DateTime, this._oSalida_remision.Fecha_remision);
+            GenericDataAccess.AddInParameter(this.comm, "?P_no_pallet", DbType.Int32, this._oSalida_remision.No_pallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_etiqueta_rr", DbType.String, this._oSalida_remision.Etiqueta_rr);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_recibido", DbType.DateTime, this._oSalida_remision.Fecha_recibido);
             GenericDataAccess.AddInParameter(this.comm, "?P_dano_especifico", DbType.String, this._oSalida_remision.Dano_especifico);
@@ -102,6 +103,14 @@ namespace ModelCasc.operation
                     o.Fecha_remision = fecha;
                     fecha = default(DateTime);
                 }
+
+                if (dr["no_pallet"] != DBNull.Value)
+                {
+                    int.TryParse(dr["no_pallet"].ToString(), out entero);
+                    o.No_pallet = entero;
+                    entero = 0;
+                }
+
                 o.Etiqueta_rr = dr["etiqueta_rr"].ToString();
                 if (dr["fecha_recibido"] != DBNull.Value)
                 {
@@ -480,6 +489,13 @@ namespace ModelCasc.operation
                         entero = 0;
                     }
 
+                    if (dr["no_pallet"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["no_pallet"].ToString(), out entero);
+                        o.No_pallet = entero;
+                        entero = 0;
+                    }
+
                     this._lst.Add(o);
                 }
             }
@@ -541,6 +557,20 @@ namespace ModelCasc.operation
                 throw;
             }
             return id_bodega_ubicacion;
+        }
+
+        internal void udt_pallet(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_remision");
+                addParameters(13);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
