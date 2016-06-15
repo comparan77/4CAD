@@ -58,10 +58,10 @@
       <siteMapNode url="~/operation/almacen/frmRptWH.aspx" title="Reportes"  description="Reportes" />
       <siteMapNode url="~/operation/almacen/frmPrintOpWH.aspx" title="Rel. Movimientos"  description="Reimpresión de Movimientos." />
     </siteMapNode>
-    <siteMapNode roles="Super, Administracion" title="Facturacion">
+    <siteMapNode roles="Super, Contabilidad" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />
     </siteMapNode>
-    <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super" title="Logística">
+    <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super, EjecutivoAux" title="Logística">
       <siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
       <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
       <siteMapNode url="~/operation/frmMaquila.aspx" title="Maquila"  description="Maquila" />
@@ -71,7 +71,7 @@
       <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
       <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración"  description="Administración" />
     </siteMapNode>
-    <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super" title="Reportes" >
+    <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super, Reportes, EjecutivoAux" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
       <siteMapNode url="~/report/frmReportViewer.aspx" title="Reportes Operativos"  description="Reportes Operativos" />
       <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />
