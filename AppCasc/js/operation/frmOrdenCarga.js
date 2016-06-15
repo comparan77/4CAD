@@ -224,7 +224,7 @@ var MngOrdenCarga = function () {
                 pieza += $('#td_pieza_' + $(this).attr('id').split('_')[1]).html() * 1;
                 bulto += $('#td_bulto_' + $(this).attr('id').split('_')[1]).html() * 1;
                 pallet += $('#txt_no_pallet_' + $(this).attr('id').split('_')[1]).val() * 1;
-                var rem = new beanSalidaOrdenCargaRem($(this).attr('id').split('_')[1] * 1, pallet);
+                var rem = new beanSalidaOrdenCargaRem($(this).attr('id').split('_')[1] * 1, $('#txt_no_pallet_' + $(this).attr('id').split('_')[1]).val() * 1);
                 lstRem.push(rem);
             }
         });
