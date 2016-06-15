@@ -1077,12 +1077,14 @@ namespace ModelCasc.catalog
             {
                 trans = GenericDataAccess.BeginTransaction();
                 UsuarioMng oUMng = new UsuarioMng();
+                oU.Id_bodega = oU.PLstUsuarioBodega.First().Id_bodega;
                 oUMng.O_Usuario = oU;
                 oUMng.add(trans);
 
                 Usuario_bodegaMng OUBMng = new Usuario_bodegaMng();
                 foreach (Usuario_bodega itemUB in oU.PLstUsuarioBodega)
                 {
+                    itemUB.Id_usuario = oU.Id;
                     OUBMng = new Usuario_bodegaMng() { O_Usuario_bodega = new Usuario_bodega() { Id_usuario = itemUB.Id_usuario, Id_bodega = itemUB.Id_bodega } };
                     OUBMng.add(trans);
                 }
