@@ -386,49 +386,79 @@ namespace ConsoleAppCasc.facturacion
             fila = 30;
             fila = getFila(fila, "B", "TRANSPORTES", sheet);
             dato = sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2;
-            bool esTransporte = !dato.ToString().StartsWith("Maniobra");
-            while (esTransporte)
+            string tipo = string.Empty;
+            //Los transportes y maniobras se van a diferenciar por la columna que le antecede T transprote, M maniobra
+            object cantidad;
+            while (dato != null)
             {
-                dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
-                if (dato != null)
+                tipo = sheet.get_Range("A" + fila.ToString(), "A" + fila.ToString()).Value2;
+                cantidad = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
+                switch (tipo)
                 {
-                    Transporte t = new Transporte(
+                    case "T":
+                        Transporte t = new Transporte(
                         Convert.ToDouble(sheet.get_Range("F" + fila.ToString(), "F" + fila.ToString()).Value2),
-                        Convert.ToInt32(dato),
-                        getTarifaTransporte(sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2.ToString())
-                        );
-                    o.LstTransporte.Add(t);
+                        Convert.ToInt32(cantidad),
+                        Convert.ToDouble(sheet.get_Range("D" + fila.ToString(), "D" + fila.ToString()).Value2.ToString()));
+                        o.LstTransporte.Add(t);
+                        break;
+                    case "M":
+                        Maniobra m = new Maniobra(
+                        Convert.ToDouble(sheet.get_Range("F" + fila.ToString(), "F" + fila.ToString()).Value2),
+                        Convert.ToInt32(cantidad),
+                        Convert.ToDouble(sheet.get_Range("D" + fila.ToString(), "D" + fila.ToString()).Value2.ToString()));
+                        o.LstManiobra.Add(m);
+                        break;
+                    default:
+                        break;
                 }
-
                 fila++;
                 dato = sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2;
-                esTransporte = !dato.ToString().StartsWith("Maniobra");
             }
+
+            //bool esTransporte = !dato.ToString().StartsWith("Maniobra");
+            //while (esTransporte)
+            //{
+            //    dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
+            //    if (dato != null)
+            //    {
+            //        Transporte t = new Transporte(
+            //            Convert.ToDouble(sheet.get_Range("F" + fila.ToString(), "F" + fila.ToString()).Value2),
+            //            Convert.ToInt32(dato),
+            //            getTarifaTransporte(sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2.ToString())
+            //            );
+            //        o.LstTransporte.Add(t);
+            //    }
+
+            //    fila++;
+            //    dato = sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2;
+            //    esTransporte = !dato.ToString().StartsWith("Maniobra");
+            //}
             _maxColTransportes = o.LstTransporte.Count > _maxColTransportes ? o.LstTransporte.Count : _maxColTransportes;
             #endregion
 
             #region Maniobras
-            bool esManiobra = dato.ToString().StartsWith("Maniobra");
-            while (esManiobra)
-            {
-                dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
-                if (dato != null)
-                {
-                    Maniobra m = new Maniobra(
-                    Convert.ToDouble(sheet.get_Range("F" + fila.ToString(), "F" + fila.ToString()).Value2),
-                        Convert.ToInt32(dato),
-                        getTarifaManiobra(sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2.ToString())
-                    );
-                    o.LstManiobra.Add(m);
-                }
+            //bool esManiobra = dato.ToString().StartsWith("Maniobra");
+            //while (esManiobra)
+            //{
+            //    dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
+            //    if (dato != null)
+            //    {
+            //        Maniobra m = new Maniobra(
+            //        Convert.ToDouble(sheet.get_Range("F" + fila.ToString(), "F" + fila.ToString()).Value2),
+            //            Convert.ToInt32(dato),
+            //            getTarifaManiobra(sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2.ToString())
+            //        );
+            //        o.LstManiobra.Add(m);
+            //    }
 
-                fila++;
-                dato = sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2;
-                if (dato != null)
-                    esManiobra = dato.ToString().StartsWith("Maniobra");
-                else
-                    esManiobra = false;
-            }
+            //    fila++;
+            //    dato = sheet.get_Range("B" + fila.ToString(), "B" + fila.ToString()).Value2;
+            //    if (dato != null)
+            //        esManiobra = dato.ToString().StartsWith("Maniobra");
+            //    else
+            //        esManiobra = false;
+            //}
             _maxColManiobras = o.LstManiobra.Count > _maxColManiobras ? o.LstManiobra.Count : _maxColManiobras;
 
             #endregion

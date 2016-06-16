@@ -16,18 +16,18 @@ namespace ConsoleAppCasc
                 string origen = string.Empty;
                 string destino = string.Empty;
 
-                ////facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\facturaTestCuentaContable.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
-                facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\Facturación 30-03 de Junio.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
+                //facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\facturaTestCuentaContable.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
+                //facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\Facturación 30-03 de Junio.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
 
-                //origen = args[0].ToString();
-                //destino = args[1].ToString();
-                //LogCtrl.writeLog("origen: " + origen);
-                //LogCtrl.writeLog("destino: " + destino);
+                origen = args[0].ToString();
+                destino = args[1].ToString();
+                LogCtrl.writeLog("origen: " + origen);
+                LogCtrl.writeLog("destino: " + destino);
 
-                //origen = origen.Replace("/", @"\");
-                //destino = destino.Replace("/", @"\");
+                origen = origen.Replace("/", @"\");
+                destino = destino.Replace("/", @"\");
 
-                //facturacionCtrl.procesaFacturacion(origen, destino);
+                facturacionCtrl.procesaFacturacion(origen, destino);
             }
             catch (Exception e)
             {
