@@ -102,7 +102,9 @@ namespace ConsoleAppCasc.facturacion
                     lst.Add(procesaHoja(xlWorkSheet));
                     xlWorkSheet = null;
                 }
-                catch { }
+                catch (Exception e) {
+                    LogCtrl.writeLog(e.Message);
+                }
             }
 
             oEI.closeBook(xlWorkBook);
