@@ -792,17 +792,17 @@ var MngInventario = function () {
         var difPiezas = piezasCalculadas - piezasrecibidas;
         $(txt_piezasfaltantes).val(0);
         $(txt_piezassobrantes).val(0);
-        if (difPiezas > 0)
-            $(txt_piezasfaltantes).val(difPiezas);
         if (difPiezas < 0)
+            $(txt_piezasfaltantes).val(Math.abs(difPiezas));
+        if (difPiezas > 0)
             $(txt_piezassobrantes).val(Math.abs(difPiezas));
 
         var difBultos = bultos - bultosrecibidos;
         $(txt_bultosfaltantes).val(0);
         $(txt_bultossobrantes).val(0);
-        if (difBultos > 0)
-            $(txt_bultosfaltantes).val(difBultos);
         if (difBultos < 0)
+            $(txt_bultosfaltantes).val(Math.abs(difBultos));
+        if (difBultos > 0)
             $(txt_bultossobrantes).val(Math.abs(difBultos));
 
         calculateCantidadesLote();

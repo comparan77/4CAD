@@ -361,7 +361,7 @@
     </div>
 
     <div style="padding: 20px 0 20px 20px; width: 300px;">
-    <h6 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Desglose de Lotes<span id="spn_desglose_lotes" class="ui-icon ui-icon-arrowthick-1-s floatRight icon-button-action"></span></h6>
+    <h6 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Desglose de Lotes Recibidos<span id="spn_desglose_lotes" class="ui-icon ui-icon-arrowthick-1-s floatRight icon-button-action"></span></h6>
         <table class="tblItems hidden" id="tblDetailLotes">
             <thead>
                 <tr>
@@ -395,7 +395,7 @@
     </div>
 
     <div style="padding: 0 20px 20px 20px; width: 300px;">
-    <h6 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Desglose de Nota de Remis&oacute;n</h6>
+    <h6 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Desglose de Mercanc&iacute;a Recibida</h6>
         <table class="tblItems" id="tblDetailBultos">
             <thead>
                 <tr>
@@ -434,12 +434,12 @@
     </div>
 
     <div>
-        <label for="piezasrecibidas">Piezas Totales (Remisi&oacute;n):</label>
+        <label for="piezasrecibidas">Piezas Totales Declaradas:</label>
         <input type="text" id="piezasrecibidas" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_piezasrecibidas" ControlToValidate="piezasrecibidas" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>
     <div>
-        <label for="bultosrecibidos">Bultos Totales (Remisi&oacute;n):</label>
+        <label for="bultosrecibidos">Bultos Totales Declaradas:</label>
         <input type="text" id="bultosrecibidos" runat="server" />
         <asp:RequiredFieldValidator runat="server" ID="rfv_bultosrecibidos" ControlToValidate="bultosrecibidos" ErrorMessage="Es necesario proporcionar un valor"></asp:RequiredFieldValidator>
     </div>
