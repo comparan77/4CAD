@@ -20,6 +20,9 @@ namespace ConsoleAppCasc
 
                 origen = args[0].ToString();
                 destino = args[1].ToString();
+
+                LogCtrl.writeLog("--------------------------------------------------------------");
+                LogCtrl.writeLog("Inicia programa:" + DateTime.Now);
                 LogCtrl.writeLog("origen: " + origen);
                 LogCtrl.writeLog("destino: " + destino);
 

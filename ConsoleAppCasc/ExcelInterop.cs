@@ -59,7 +59,7 @@ namespace ConsoleAppCasc
             {
                 
                 object misValue = System.Reflection.Missing.Value;
-
+                LogCtrl.writeLog(path);   
                 xlApp = new Application();
                 xlWorkBook = xlApp.Workbooks.Open(path, 0, readOnly, 5, "", "", true, XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
             }

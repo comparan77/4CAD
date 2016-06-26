@@ -92,7 +92,9 @@ namespace ConsoleAppCasc.facturacion
 
             lstTransTarifa = readTransporteTarifa();
             lstManioTarifa = readManiobraTarifa();
+            LogCtrl.writeLog("Termina lectura de tarifas...");
             xlWorkBook = oEI.openBook(pathFacturas);
+            LogCtrl.writeLog("Comienza lectura de facturas...");
             List<factura> lst = new List<factura>();
             for (int i = 1; i <= xlWorkBook.Worksheets.Count; i++)
             {
