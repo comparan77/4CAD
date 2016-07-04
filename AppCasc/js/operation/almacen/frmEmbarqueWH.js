@@ -169,16 +169,23 @@ var MngEmbarqueWH = function () {
         //Destino
         $('#ctl00_body_ddlDestino').val(data.PTarAlmTrafico.PSalidaDestino.Id);
 
+        //        $('#ctl00_body_upTipoTransporte').panelReady(function () {
+        $('#ctl00_body_ddlTipo_Transporte').val(data.PTarAlmTrafico.PTransporteTipo.Id);
+
+        $('#ctl00_body_txt_placa').val(data.PTarAlmTrafico.Placa);
+        $('#ctl00_body_txt_caja').val(data.PTarAlmTrafico.Caja);
+        $('#ctl00_body_txt_caja_1').val(data.PTarAlmTrafico.Caja1);
+        $('#ctl00_body_txt_caja_2').val(data.PTarAlmTrafico.Caja2);
+        $('#ctl00_body_txt_operador').val(data.PTarAlmTrafico.Operador);
+        $('#div_transporte').removeClass('ajaxLoading');
+        //Transporte
+        $('#ctl00_body_ddlTransporte').val(data.PTarAlmTrafico.PTransporte.Id).trigger('change').change(function () {
+            $('#div_transporte').addClass('ajaxLoading');
+        });
+        //        });
+
         $('#ctl00_body_upTipoTransporte').panelReady(function () {
-            $('#ctl00_body_ddlTipo_Transporte').val(data.PTarAlmTrafico.PTransporteTipo.Id);
-            $('#ctl00_body_txt_placa').val(data.PTarAlmTrafico.Placa);
-            $('#ctl00_body_txt_caja').val(data.PTarAlmTrafico.Caja);
-            $('#ctl00_body_txt_caja_1').val(data.PTarAlmTrafico.Caja1);
-            $('#ctl00_body_txt_caja_2').val(data.PTarAlmTrafico.Caja2);
-            $('#ctl00_body_txt_operador').val(data.PTarAlmTrafico.Operador);
             $('#div_transporte').removeClass('ajaxLoading');
-            //Transporte
-            $('#ctl00_body_ddlTransporte').val(data.PTarAlmTrafico.PTransporte.Id).trigger('change');
         });
     }
 
