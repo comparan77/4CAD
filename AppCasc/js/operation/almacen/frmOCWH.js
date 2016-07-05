@@ -147,8 +147,10 @@ var MngOCWH = function () {
             if (motivo.length < 5) {
                 alert('El motivo es muy corto, proporcione un motivo descriptivo');
             }
-            else
-                dltOrdenCarga($('#h_orden_carga').val(), motivo, calEvent);
+            else {
+                alert('En construcción...');
+                //dltOrdenCarga($('#h_orden_carga').val(), motivo, calEvent);
+            }
         });
 
         $('#hf_id_salida_trafico').val(data.Id);
