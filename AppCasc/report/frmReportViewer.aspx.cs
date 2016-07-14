@@ -25,14 +25,55 @@ namespace AppCasc.report
             }
         }
 
+        private void showExcel(ReportDataSource rptSource)
+        {
+            ReportViewer rvExcel = new ReportViewer();
+            rvExcel.ProcessingMode = ProcessingMode.Local;
+
+            rvExcel.Reset();
+
+            string rptSelected = ddl_reporte.SelectedValue;
+
+            rvExcel.LocalReport.DataSources.Add(rptSource);
+            rvExcel.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
+
+            Warning[] warnings;
+            string[] streamIds;
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string extension = string.Empty;
+            byte[] bytes = rvExcel.LocalReport.Render("Excel", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+
+            Response.Buffer = true;
+            Response.Clear();
+            Response.ContentType = mimeType;
+            Response.AddHeader("content-disposition", "attachment; filename=" + ddl_reporte.SelectedValue + ".xls");
+            Response.BinaryWrite(bytes); // create the file
+            Response.Flush(); // send it to the client to download
+        }
+
+        private void showPreview(ReportDataSource rptSource)
+        {
+            ReportViewer1.Visible = true;
+            ReportViewer1.Reset();
+
+            string rptSelected = ddl_reporte.SelectedValue;
+
+            ReportViewer1.LocalReport.DataSources.Add(rptSource);
+            ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
+
+            ReportViewer1.LocalReport.Refresh();
+        }
+
+
         protected void clickGetRpt(object sender, EventArgs args)
         {
             try
             {
-                //ReportViewer1.Visible = true;
+                //ReportViewer ReportViewer1 = new ReportViewer();
+                //ReportViewer1.ProcessingMode = ProcessingMode.Local;
 
-                ReportViewer ReportViewer1 = new ReportViewer();
-                ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                ReportViewer1.Visible = false;
 
                 DateTime fecha = DateTime.Today;
 
@@ -44,9 +85,7 @@ namespace AppCasc.report
                 DateTime.TryParse(txt_fecha_fin.Text, out fecha);
                 periodo_fin = fecha;
 
-                ReportViewer1.Reset();
-
-
+                //ReportViewer1.Reset();
 
                 string rptSelected = ddl_reporte.SelectedValue;
                 ReportDataSource rptSource = null;
@@ -54,46 +93,52 @@ namespace AppCasc.report
                 {
                     case "Fondeo":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.FondeoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        showExcel(rptSource);
                         break;
                     case "Maquila":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.MaquilaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        showExcel(rptSource);
                         break;
                     case "Piso":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        showExcel(rptSource);
                         break;
                     case "Trafico":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.CitasGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddlDestino.SelectedItem.Value), Convert.ToInt32(ddlEstatus.SelectedValue)));
+                        showPreview(rptSource);
                         break;
                     case "Remision":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.RemisionGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        showExcel(rptSource);
                         break;
                     case "Inventario":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.InventarioGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        showExcel(rptSource);
                         break;
                     default:
                         break;
                 }
 
-                ReportViewer1.LocalReport.DataSources.Add(rptSource);
-                ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
+                //ReportViewer1.LocalReport.DataSources.Add(rptSource);
+                //ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
 
-                //ReportViewer1.LocalReport.Refresh();
+                ////ReportViewer1.LocalReport.Refresh();
 
-                Warning[] warnings;
-                string[] streamIds;
-                string mimeType = string.Empty;
-                string encoding = string.Empty;
-                string extension = string.Empty;
-                byte[] bytes = ReportViewer1.LocalReport.Render("Excel", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Warning[] warnings;
+                //string[] streamIds;
+                //string mimeType = string.Empty;
+                //string encoding = string.Empty;
+                //string extension = string.Empty;
+                //byte[] bytes = ReportViewer1.LocalReport.Render("Excel", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
 
-                //ReportViewer1.LocalReport.Refresh();
+                ////ReportViewer1.LocalReport.Refresh();
 
-                Response.Buffer = true;
-                Response.Clear();
-                Response.ContentType = mimeType;
-                Response.AddHeader("content-disposition", "attachment; filename=" + ddl_reporte.SelectedValue + ".xls");
-                Response.BinaryWrite(bytes); // create the file
-                Response.Flush(); // send it to the client to download
+                //Response.Buffer = true;
+                //Response.Clear();
+                //Response.ContentType = mimeType;
+                //Response.AddHeader("content-disposition", "attachment; filename=" + ddl_reporte.SelectedValue + ".xls");
+                //Response.BinaryWrite(bytes); // create the file
+                //Response.Flush(); // send it to the client to download
             }
             catch (Exception e)
             {

@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmReportViewer.aspx.cs" Inherits="AppCasc.report.frmReportViewer" %>
-<%--<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>--%>
+<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="../js/moment.min.js" type="text/javascript"></script>
     <script src="../js/report/frmReportViewer.js?v1.1.150619_1446" type="text/javascript"></script>
@@ -44,13 +44,14 @@
         </asp:DropDownList>
     </div>
     <div>
-        <asp:Button runat="server" ID="btnGetRpt" OnClick="clickGetRpt" Text="Obtener Reporte" />
+        <asp:Button runat="server" ID="btnGetRpt" OnClick="clickGetRpt" Text="Mostrar Reporte" />
+        <asp:Button runat="server" ID="btnGetRptXls" OnClick="clickGetRpt" Text="Obtener Reporte Xls" />
     </div>
 </div>
 
 </div>
 
-<%--<asp:UpdatePanel runat="server" ID="up_rpt" UpdateMode="Conditional">
+<asp:UpdatePanel runat="server" ID="up_rpt" UpdateMode="Conditional">
 <Triggers>
     <asp:AsyncPostBackTrigger ControlID="btnGetRpt" EventName="click" />
 </Triggers>
@@ -58,6 +59,6 @@
 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Visible="false" InteractivityPostBackMode="AlwaysAsynchronous">
 </rsweb:ReportViewer>
 </ContentTemplate>
-</asp:UpdatePanel>--%>
+</asp:UpdatePanel>
 
 </asp:Content>
