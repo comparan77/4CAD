@@ -19,7 +19,7 @@ namespace ModelCasc.report.operation
 {
     public class DocEntrada
     {
-        private static void addBarCodes(PdfStamper stamper, Tarima_almacen tarAlm1, Tarima_almacen tarAlm2)
+        private static void addBarCodes(PdfStamper stamper, Tarima_almacen tarAlm1, Tarima_almacen tarAlm2, Tarima_almacen tarAlm3, Tarima_almacen tarAlm4)
         {
             PdfContentByte contentByte;
             try
@@ -27,7 +27,7 @@ namespace ModelCasc.report.operation
                 contentByte = stamper.GetOverContent(1);
                 int CTE_HEIGHT_CONST = 430;
                 int CTE_X_POS_INI = 30;
-                int CTE_Y_SPACE = -350;
+                int CTE_Y_SPACE = -375;
 
                 Image image = Image.GetInstance(BarCode.EncodeBytes(tarAlm1.Folio, false, 300, 50));
                 image.SetAbsolutePosition(CTE_X_POS_INI, CTE_HEIGHT_CONST);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
@@ -39,6 +39,24 @@ namespace ModelCasc.report.operation
                 {
                     image = Image.GetInstance(BarCode.EncodeBytes(tarAlm2.Folio, false, 300, 50));
                     image.SetAbsolutePosition(CTE_X_POS_INI + 280, CTE_HEIGHT_CONST);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
+                    //image.ScaleToFit(200, 25);
+                    contentByte.AddImage(image);
+                }
+
+                if (tarAlm3.Folio.Length > 0)
+                {
+
+                    image = Image.GetInstance(BarCode.EncodeBytes(tarAlm3.Folio, false, 300, 50));
+                    image.SetAbsolutePosition(CTE_X_POS_INI, CTE_HEIGHT_CONST + CTE_Y_SPACE);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
+                    //image.ScaleToFit(200, 25);
+                    contentByte.AddImage(image);
+                }
+
+                if (tarAlm4.Folio.Length > 0)
+                {
+
+                    image = Image.GetInstance(BarCode.EncodeBytes(tarAlm4.Folio, false, 300, 50));
+                    image.SetAbsolutePosition(CTE_X_POS_INI + 280, CTE_HEIGHT_CONST + CTE_Y_SPACE);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
                     //image.ScaleToFit(200, 25);
                     contentByte.AddImage(image);
                 }
@@ -533,7 +551,7 @@ namespace ModelCasc.report.operation
                     //if (!oE.IsActive)
                     //    fields.SetField("cancelado_2", "CANCELADO");
                 }
-                addBarCodes(stamper, tarAlm1, tarAlm2);
+                addBarCodes(stamper, tarAlm1, tarAlm2, tarAlm3, tarAlm4);
 
                 stamper.FormFlattening = true;
             }
