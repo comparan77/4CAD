@@ -25,8 +25,8 @@ namespace ModelCasc.report.operation
             try
             {
                 contentByte = stamper.GetOverContent(1);
-                int CTE_HEIGHT_CONST = 400;
-                int CTE_X_POS_INI = 165;
+                int CTE_HEIGHT_CONST = 430;
+                int CTE_X_POS_INI = 30;
                 int CTE_Y_SPACE = -350;
 
                 Image image = Image.GetInstance(BarCode.EncodeBytes(tarAlm1.Folio, false, 300, 50));
@@ -38,7 +38,7 @@ namespace ModelCasc.report.operation
                 if (tarAlm2.Folio.Length > 0)
                 {
                     image = Image.GetInstance(BarCode.EncodeBytes(tarAlm2.Folio, false, 300, 50));
-                    image.SetAbsolutePosition(CTE_X_POS_INI, CTE_HEIGHT_CONST + CTE_Y_SPACE);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
+                    image.SetAbsolutePosition(CTE_X_POS_INI + 280, CTE_HEIGHT_CONST);// set the position in the document where you want the watermark to appear (0,0 = bottom left corner of the page)
                     //image.ScaleToFit(200, 25);
                     contentByte.AddImage(image);
                 }
@@ -198,20 +198,36 @@ namespace ModelCasc.report.operation
 
                 if (withDetail)
                 {
-                    Tarima_almacen oTA1 = null;
-                    Tarima_almacen oTA2 = null;
+                    
 
-                    for (int indTar = 1; indTar <= oE.PLstTarAlm.Count; indTar += 2)
+                    int maxTar = oE.PLstTarAlm.Count;
+
+                    for (int indTar = 1; indTar <= maxTar; indTar += 4)
                     {
-                        oTA1 = oE.PLstTarAlm[indTar - 1];
+                        //oTA1 = oE.PLstTarAlm[indTar - 1];
 
-                        if (indTar < oE.PLstTarAlm.Count)
+                        //if (indTar < oE.PLstTarAlm.Count)
+                        //    oTA2 = oE.PLstTarAlm[indTar];
+                        //else
+                        //    oTA2 = new Tarima_almacen();
+
+                        Tarima_almacen oTA1 = new Tarima_almacen();
+                        Tarima_almacen oTA2 = new Tarima_almacen();
+                        Tarima_almacen oTA3 = new Tarima_almacen();
+                        Tarima_almacen oTA4 = new Tarima_almacen();
+
+                        oTA1 = oE.PLstTarAlm[indTar - 1];
+                        if (indTar < maxTar)
                             oTA2 = oE.PLstTarAlm[indTar];
-                        else
-                            oTA2 = new Tarima_almacen();
+                        if (indTar + 1 < maxTar)
+                            oTA3 = oE.PLstTarAlm[indTar + 1];
+                        if (indTar + 2 < maxTar)
+                            oTA4 = oE.PLstTarAlm[indTar + 2];
+
                         fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                        fillEntradaAlmTar(fileName, TemplatePathPallet, oTA1, oTA2, oE);
+                        fillEntradaAlmTar(fileName, TemplatePathPallet, oTA1, oTA2, oTA3, oTA4, oE);
                         files.Add(fileName);
+
                     }
                 }
 
@@ -453,7 +469,7 @@ namespace ModelCasc.report.operation
             }
         }
 
-        private static void fillEntradaAlmTar(string FilePath, string TemplatePath, Tarima_almacen tarAlm1, Tarima_almacen tarAlm2, Entrada oE)
+        private static void fillEntradaAlmTar(string FilePath, string TemplatePath, Tarima_almacen tarAlm1, Tarima_almacen tarAlm2, Tarima_almacen tarAlm3, Tarima_almacen tarAlm4, Entrada oE)
         {
             PdfReader reader = null;
             PdfStamper stamper = null;
@@ -472,9 +488,9 @@ namespace ModelCasc.report.operation
                 fields.SetField("resto_1", tarAlm1.Resto.ToString() + " Pz");
                 fields.SetField("estandar_1", tarAlm1.Estandar);
                 fields.SetField("rr_1", tarAlm1.Rr);
-                fields.SetField("fecha_1", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
-                if(!oE.IsActive)
-                    fields.SetField("cancelado_1", "CANCELADO");
+                fields.SetField("fecha_1", oE.Fecha.ToString("dd-MM-yyyy", ci));
+                //if(!oE.IsActive)
+                //    fields.SetField("cancelado_1", "CANCELADO");
                 if (tarAlm2.Folio.Length > 0)
                 {
                     fields.SetField("pallet_2", tarAlm2.Folio);
@@ -484,11 +500,39 @@ namespace ModelCasc.report.operation
                     fields.SetField("resto_2", tarAlm2.Resto.ToString() + " Pz");
                     fields.SetField("estandar_2", tarAlm2.Estandar);
                     fields.SetField("rr_2", tarAlm2.Rr);
-                    fields.SetField("fecha_2", oE.Fecha.ToString("dd \\de MMMM \\de yyyy", ci));
-                    if (!oE.IsActive)
-                        fields.SetField("cancelado_2", "CANCELADO");
+                    fields.SetField("fecha_2", oE.Fecha.ToString("dd-MM-yyyy", ci));
+                    //if (!oE.IsActive)
+                    //    fields.SetField("cancelado_2", "CANCELADO");
                 }
 
+                if (tarAlm3.Folio.Length > 0)
+                {
+                    fields.SetField("pallet_3", tarAlm3.Folio);
+                    fields.SetField("codigo_3", tarAlm3.Mercancia_codigo);
+                    fields.SetField("descripcion_3", tarAlm3.Mercancia_nombre);
+                    fields.SetField("bto_3", tarAlm3.Bultos.ToString());
+                    fields.SetField("resto_3", tarAlm3.Resto.ToString() + " Pz");
+                    fields.SetField("estandar_3", tarAlm3.Estandar);
+                    fields.SetField("rr_3", tarAlm3.Rr);
+                    fields.SetField("fecha_3", oE.Fecha.ToString("dd-MM-yyyy", ci));
+                    //if (!oE.IsActive)
+                    //    fields.SetField("cancelado_2", "CANCELADO");
+                }
+
+
+                if (tarAlm4.Folio.Length > 0)
+                {
+                    fields.SetField("pallet_4", tarAlm4.Folio);
+                    fields.SetField("codigo_4", tarAlm4.Mercancia_codigo);
+                    fields.SetField("descripcion_4", tarAlm4.Mercancia_nombre);
+                    fields.SetField("bto_4", tarAlm4.Bultos.ToString());
+                    fields.SetField("resto_4", tarAlm4.Resto.ToString() + " Pz");
+                    fields.SetField("estandar_4", tarAlm4.Estandar);
+                    fields.SetField("rr_4", tarAlm4.Rr);
+                    fields.SetField("fecha_4", oE.Fecha.ToString("dd-MM-yyyy", ci));
+                    //if (!oE.IsActive)
+                    //    fields.SetField("cancelado_2", "CANCELADO");
+                }
                 addBarCodes(stamper, tarAlm1, tarAlm2);
 
                 stamper.FormFlattening = true;
