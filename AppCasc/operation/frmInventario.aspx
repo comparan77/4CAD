@@ -300,7 +300,7 @@
 </div>
 </asp:Panel>
 
-<h3 id="div-data-stock" style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Contorl de Piso</h3>
+<h3 id="div-data-stock" style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Control de Piso</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection hidden">
 
 <div id="div-codigos" style="width: 350px;">
