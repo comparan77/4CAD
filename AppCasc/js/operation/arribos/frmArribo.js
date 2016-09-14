@@ -248,7 +248,8 @@ var MngArribo = function () {
         jsonCliente = $.parseJSON(jsonCliente);
 
         $(jsonCliente).each(function (i, obj) {
-            $('#ctl00_body_ddlCliente').append('<option documento="' + obj.Documento + '" fondeo="' + obj.EsFondeo + '" mask="' + obj.Mascara + '" value="' + obj.Id + '">' + obj.Nombre + '</option>');
+            var id_cliente = $('#ctl00_body_hf_id_cliente').val();
+            $('#ctl00_body_ddlCliente').append('<option ' + (id_cliente == obj.Id ? ' selected ' : '') + ' documento="' + obj.Documento + '" fondeo="' + obj.EsFondeo + '" mask="' + obj.Mascara + '" value="' + obj.Id + '">' + obj.Nombre + '</option>');
         });
     }
 

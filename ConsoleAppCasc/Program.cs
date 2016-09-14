@@ -16,10 +16,10 @@ namespace ConsoleAppCasc
                 string origen = string.Empty;
                 string destino = string.Empty;
 
-                //facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\Facturacion 13-17 Junio 16.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
+                facturacionCtrl.procesaFacturacion(@"Z:\CaSC\2016\facturacionAvon\05-09Septiembre16.xlsx", @"Z:\CaSC\2016\facturacionAvon\borra.xlsx");
 
-                origen = args[0].ToString();
-                destino = args[1].ToString();
+                //origen = args[0].ToString();
+                //destino = args[1].ToString();
 
                 LogCtrl.writeLog("--------------------------------------------------------------");
                 LogCtrl.writeLog("Inicia programa:" + DateTime.Now);

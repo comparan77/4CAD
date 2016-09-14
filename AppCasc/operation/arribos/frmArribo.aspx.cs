@@ -82,10 +82,14 @@ namespace AppCasc.operation.arribos
                     fillData();
                     hf_CompPendiente.Value = "0";
                     hf_id_cliente.Value = oE.Id_cliente.ToString();
-                    //ddlCliente.SelectedValue = 
                     
                     txt_fecha.Text = oE.Fecha.ToString("dd MMMM yy");
                     txt_hora_llegada.Text = oE.Hora;
+
+                    //Para multibodega
+                    ddlBodega.SelectedValue = oE.Id_bodega.ToString();
+                    ControlsMng.fillCortinaByBodega(ddlCortina, oE.Id_bodega);
+
                     ddlCortina.SelectedValue = oE.Id_cortina.ToString();
                     txt_doc_req.Text = referencia;
                     List<Entrada_fondeo> lstEntFo = EntradaCtrl.FondeoGetByReferencia(referencia);
@@ -484,7 +488,7 @@ namespace AppCasc.operation.arribos
             }
 
             ControlsMng.setEnabledControls(false, new WebControl[] {
-                //ddlCliente,
+                ddlBodega,
                 txt_doc_req,
                 ddlCortina,
                 txt_fecha,
