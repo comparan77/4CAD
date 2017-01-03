@@ -489,15 +489,21 @@ namespace ConsoleAppCasc.facturacion
             }
             #endregion
 
-            #region Emplayado
+            #region Tarimas y Emplayado
             fila = getFila(fila, "B", "OTROS", sheet);
+            dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
+            if (dato != null)
+            {
+                o.PTarima.Cantidad = Convert.ToInt32(dato);
+                o.PTarima.Valor = Convert.ToDouble(sheet.get_Range("D" + fila.ToString(), "D" + fila.ToString()).Value2);
+            }
+            fila++;
             dato = sheet.get_Range("E" + fila.ToString(), "E" + fila.ToString()).Value2;
             if (dato != null)
             {
                 o.PEmplayado.Cantidad = Convert.ToInt32(dato);
                 o.PEmplayado.Valor = Convert.ToDouble(sheet.get_Range("D" + fila.ToString(), "D" + fila.ToString()).Value2);
             }
-
             #endregion
 
             #region #region Otros (Parte 2)
