@@ -16,14 +16,14 @@ namespace AppCasc.report.Formatos {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class entradaDocs : ReportClass {
+    public class entsaldoc : ReportClass {
         
-        public entradaDocs() {
+        public entsaldoc() {
         }
         
         public override string ResourceName {
             get {
-                return "entradaDocs.rpt";
+                return "entsaldoc.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace AppCasc.report.Formatos {
         
         public override string FullResourceName {
             get {
-                return "AppCasc.report.Formatos.entradaDocs.rpt";
+                return "AppCasc.report.Formatos.entsaldoc.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace AppCasc.report.Formatos {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedentradaDocs : Component, ICachedReport {
+    public class Cachedentsaldoc : Component, ICachedReport {
         
-        public CachedentradaDocs() {
+        public Cachedentsaldoc() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace AppCasc.report.Formatos {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            entradaDocs rpt = new entradaDocs();
+            entsaldoc rpt = new entsaldoc();
             rpt.Site = this.Site;
             return rpt;
         }
