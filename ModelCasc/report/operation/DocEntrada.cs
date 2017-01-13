@@ -181,7 +181,7 @@ namespace ModelCasc.report.operation
 
                 reporte.SetParameterValue("horaDescarga", oE.Hora_descarga.ToString());
                 reporte.SetParameterValue("tipoDescarga", oE.PTipoCarga.Nombre);
-                reporte.SetParameterValue("observaciones", oE.Observaciones);
+                reporte.SetParameterValue("observaciones", "Se recibe unidad y/o contenedor sin daños o menoscabos. " + oE.Observaciones);
 
                 #endregion
 
