@@ -68,8 +68,8 @@ namespace AppCasc.operation
                         switch (((Entrada)obj).Id_cliente)
                         {
                             case 1:
-                                 TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/entrada.rpt");
-                                 DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/entrada.rpt");
+                                DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
                                 break;
                             default:
                                 pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
@@ -94,9 +94,21 @@ namespace AppCasc.operation
                         obj = (Salida)Session["SSalida"];
                         RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/salidas/") + RptFileName;
-                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
-                        DocSalida.getSalida(path, TemplatePath, (Salida)obj);
+
+                        switch (((Salida)obj).Id_cliente)
+                        {
+                            case 1:
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
+                                DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds);
+                                break;
+                            default:
+                                pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
+                                DocSalida.getSalida(path, TemplatePath, (Salida)obj);
+                                break;
+                        }
+
+
                         ShowPdf(path);
                         break;
                     case "remision":
