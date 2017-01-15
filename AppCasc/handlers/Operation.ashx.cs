@@ -170,6 +170,9 @@ namespace AppCasc.handlers
                     case "tarimaAlm":
                         response = tarimaAlmacen(context);
                         break;
+                    case "transCond":
+                        response = transporteCondicion(context);
+                        break;
                     default:
                         break;
                 }
@@ -279,6 +282,26 @@ namespace AppCasc.handlers
                     key = context.Request["key"].ToString();
                     response = JsonConvert.SerializeObject(AlmacenCtrl.tarimaAlmacenGetByRR(key));
                     ///response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetByFolio(folioOC));
+                    break;
+            }
+            return response;
+        }
+
+        private string transporteCondicion(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string key = string.Empty;
+            switch (option)
+            {
+                case "condCli":
+                    int id_cliente;
+                    bool es_entrada;
+                    bool es_salida;
+                    int.TryParse(context.Request["id_cliente"].ToString(), out id_cliente);
+                    bool.TryParse(context.Request["es_entrada"].ToString(), out es_entrada);
+                    bool.TryParse(context.Request["es_salida"].ToString(), out es_salida);
+                    response = JsonConvert.SerializeObject(TransporteCtrl.TransCondCliFill(id_cliente, es_entrada, es_salida));
                     break;
             }
             return response;

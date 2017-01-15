@@ -173,6 +173,7 @@
 </Triggers>
 <ContentTemplate>
 
+<div id="datosTransporte" title="Datos del Trasnporte">
 <div>
     <label>Linea:</label>
     <asp:DropDownList runat="server" ID="ddl_linea"></asp:DropDownList>
@@ -222,9 +223,28 @@
     <asp:TextBox runat="server" ID="txt_operador"></asp:TextBox>
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvOperador" ControlToValidate="txt_operador" ErrorMessage="Es necesario capturar el operador de la custodia"></asp:RequiredFieldValidator>
 </div>
+</div>
 
 </ContentTemplate>
 </asp:UpdatePanel>
+
+<div title="Auditor&iacute;a Unidades" style="margin-top: 10px">
+
+    <div>
+    <asp:HiddenField runat="server" ID="hf_condiciones_transporte" />
+    <span style="color: Red; visibility: hidden;" class="validator" id="rfv_condiciones_transporte">Es necesario proporcionar TODAS LAS CONDICIONES del transporte.</span>
+        <table>
+            <tbody id="tbody_condiciones">
+                <tr>
+                    <th>Licencia de Conductor Vigente</th>
+                    <th><input type="checkbox" /></th>
+                    <th><input type="checkbox" /></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
 
 </div>
 </div>

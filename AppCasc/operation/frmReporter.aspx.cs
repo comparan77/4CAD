@@ -136,7 +136,7 @@ namespace AppCasc.operation
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
                         pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
                         TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
-                        DocSalida.getSalidaOC(path, TemplatePath, (Salida_orden_carga)obj);
+                        DocSalida.getSalida(path, TemplatePath, (Salida)obj);
                         ShowPdf(path);
                         break;
                     case "rptAlmRes":

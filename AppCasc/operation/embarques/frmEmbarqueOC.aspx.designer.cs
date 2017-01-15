@@ -391,6 +391,15 @@ namespace AppCasc.operation.embarques {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvOperador;
         
         /// <summary>
+        /// hf_condiciones_transporte control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_condiciones_transporte;
+        
+        /// <summary>
         /// txt_hora_carga control.
         /// </summary>
         /// <remarks>
