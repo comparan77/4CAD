@@ -134,9 +134,8 @@ namespace AppCasc.operation
                         obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(((Usuario)Session["userCasc"]).Id_print), false);
                         RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
-                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
-                        DocSalida.getSalida(path, TemplatePath, (Salida)obj);
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
+                        DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds);
                         ShowPdf(path);
                         break;
                     case "rptAlmRes":

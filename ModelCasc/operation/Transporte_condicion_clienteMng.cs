@@ -200,5 +200,21 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        internal int GetNumCond()
+        {
+            int num;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Transporte_condicion_cliente");
+                addParameters(6);
+                num = Convert.ToInt32(GenericDataAccess.ExecuteScalar(this.comm));
+            }
+            catch
+            {
+                throw;
+            }
+            return num;
+        }
     }
 }

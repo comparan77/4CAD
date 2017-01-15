@@ -37,8 +37,8 @@ var MngEmbarqueOC = function () {
 
             validaReferencias();
 
-            //condicionesTransporteSet();
-            //validaCondTransporte();
+            condicionesTransporteSet();
+            validaCondTransporte();
 
             $('.validator').each(function () {
                 if ($(this).css('visibility') == 'visible') {
@@ -105,9 +105,9 @@ var MngEmbarqueOC = function () {
             var txt_pallet = $(this).children('td:nth-child(5)').children('input');
             var txt_mercancia = $(this).children('td:nth-child(6)').children('textarea');
 
-            $(txt_pallet).next().next().css('visibility', 'hidden');
-            if (txt_pallet.val().length == 0)
-                $(txt_pallet).next().next().css('visibility', 'visible');
+            //            $(txt_pallet).next().next().css('visibility', 'hidden');
+            //            if (txt_pallet.val().length == 0)
+            //                $(txt_pallet).next().next().css('visibility', 'visible');
 
             $(txt_mercancia).next().next().css('visibility', 'hidden');
             if (txt_mercancia.val().length == 0)
@@ -246,7 +246,7 @@ var MngEmbarqueOC = function () {
         for (var itemCT in arrCondTran) {
             if (categoria != arrCondTran[itemCT].PTransCondCat.Nombre) {
                 categoria = arrCondTran[itemCT].PTransCondCat.Nombre;
-                tr = '<tr><td style="font-weight: bold;">'
+                tr = '<tr class="header_cat_cond"><td style="font-weight: bold;">'
                     + categoria
                     + '</td><td style="font-weight: bold;">Sí</td><td style="font-weight: bold;">No</td></tr>';
                 $('#tbody_condiciones').append(tr);
@@ -256,9 +256,9 @@ var MngEmbarqueOC = function () {
             td += arrCondTran[itemCT].Nombre;
             td += '</td>';
             tr += td;
-            td = '<td><input name="name_' + ind + '" type="radio" value="1" /></td>';
+            td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" value="1" /></td>';
             tr += td;
-            td = '<td><input name="name_' + ind + '" type="radio" value="0" /></td>';
+            td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" value="0" /></td>';
             tr += td;
             $('#tbody_condiciones').append(tr);
             ind++;
@@ -292,12 +292,30 @@ var MngEmbarqueOC = function () {
         });
     }
 
+    //Condiciones del transporte
+    function condicionesTransporteSet() {
+        lstCondTran = [];
+        $('#tbody_condiciones').children('tr').each(function () {
+            if (!$(this).hasClass('header_cat_cond')) {
+                var id = $(this).attr('id').split('_')[1] * 1;
+                var val = $('input[name="name_' + id + '"]:checked', '#tbody_condiciones').val();
+                
+                if (val != undefined) {
+                    val = val == 1 ? true : false;
+                    var o = new BeanSalidaTransporteCondicion(id, val);
+                    lstCondTran.push(o);
+                }
+            }
+        });
+        $('#ctl00_body_hf_condiciones_transporte').val(JSON.stringify(lstCondTran));
+    }
+
     //valida condiciones transporte
     function validaCondTransporte() {
         $('#rfv_condiciones_transporte').css('visibility', lstCondTran.length == arrCondTran.length ? 'hidden' : 'visible');
     }
 
-    
+
 }
 
 var master = new webApp.Master;

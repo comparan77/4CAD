@@ -555,6 +555,15 @@ namespace ModelCasc.operation
                     Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id, Referencia = oS.Referencia, Pallet = oS.No_pallet } };
                     oSOCR.setSalida(trans);
 
+                    //Condiciones del transporte
+                    Salida_transporte_condicionMng oSTCMng = new Salida_transporte_condicionMng();
+                    foreach (Salida_transporte_condicion itemSTC in oS.PLstSalTransCond)
+                    {
+                        itemSTC.Id_salida = oS.Id;
+                        oSTCMng.O_Salida_transporte_condicion = itemSTC;
+                        oSTCMng.add(trans);
+                    }
+
                     oS.IsActive = true;
                 } 
 

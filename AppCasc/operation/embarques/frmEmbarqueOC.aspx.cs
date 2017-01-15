@@ -110,6 +110,7 @@ namespace AppCasc.operation.embarques
                 {
                     Salida o = new Salida();
                     o = (Salida) oS.Clone();
+                    o.PLstSalTransCond = oS.PLstSalTransCond;
                     o.Referencia = row.Cells[0].Text;
                     HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
                     o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
@@ -332,6 +333,18 @@ namespace AppCasc.operation.embarques
             Salida oS = new Salida();
             int numero;
 
+            //Cliente
+            int.TryParse(ddlCliente.SelectedValue, out numero);
+            oS.Id_cliente = numero;
+            numero = 0;
+
+            List<Salida_transporte_condicion> lstSalTranCond = JsonConvert.DeserializeObject<List<Salida_transporte_condicion>>(hf_condiciones_transporte.Value);
+            numero = TransporteCtrl.TransCondCliGetNumCond(oS.Id_cliente, false, true);
+            if (lstSalTranCond.Count != numero)
+                throw new Exception("Es necesario proporcionar TODAS LAS CONDICIONES del transporte.");
+
+            oS.PLstSalTransCond = lstSalTranCond;
+
             //Usuario
             oS.PUsuario = ((MstCasc)this.Master).getUsrLoged();
 
@@ -349,11 +362,6 @@ namespace AppCasc.operation.embarques
             //Cortina
             int.TryParse(ddlCortina.SelectedValue, out numero);
             oS.Id_cortina = numero;
-            numero = 0;
-
-            //Cliente
-            int.TryParse(ddlCliente.SelectedValue, out numero);
-            oS.Id_cliente = numero;
             numero = 0;
 
             //Destino
