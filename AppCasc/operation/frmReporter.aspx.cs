@@ -53,6 +53,7 @@ namespace AppCasc.operation
             string rpt = string.Empty;
             string RptFileName = string.Empty;
             string TemplatePath = string.Empty;
+            string TemplatePathCond = string.Empty;
             object obj;
             dsFormatos ds = new dsFormatos();
             try
@@ -135,7 +136,8 @@ namespace AppCasc.operation
                         RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
                         TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
-                        DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds);
+                        TemplatePathCond = HttpContext.Current.Server.MapPath("~/report/Formatos/auduniemb.rpt");
+                        DocSalida.getSalidaOC(path, new string[] { TemplatePath, TemplatePathCond }, (Salida_orden_carga)obj, ds);
                         ShowPdf(path);
                         break;
                     case "rptAlmRes":

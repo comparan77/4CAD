@@ -171,6 +171,7 @@ namespace ModelCasc.operation
                     Salida_transporte_condicion o = new Salida_transporte_condicion();
                     BindByDataRow(dr, o);
                     o.Condicion = dr["condicion"].ToString();
+                    o.Categoria = dr["categoria"].ToString();
                     this._lst.Add(o);
                 }
             }

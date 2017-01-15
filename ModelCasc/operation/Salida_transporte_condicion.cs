@@ -20,6 +20,7 @@ namespace ModelCasc.operation
         public int Id_transporte_condicion { get { return _id_transporte_condicion; } set { _id_transporte_condicion = value; } }
         public bool Si_no { get { return _si_no; } set { _si_no = value; } }
         public string Condicion { get; set; }
+        public string Categoria { get; set; }
         #endregion
 
         #region Constructores
