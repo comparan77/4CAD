@@ -706,22 +706,31 @@ namespace AppCasc.operation.arribos {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvHoraDescarga;
         
         /// <summary>
-        /// txt_vigilante control.
+        /// upVigilante control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_vigilante;
+        protected global::System.Web.UI.UpdatePanel upVigilante;
         
         /// <summary>
-        /// rfvVigilante control.
+        /// ddlVigilante control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvVigilante;
+        protected global::System.Web.UI.WebControls.DropDownList ddlVigilante;
+        
+        /// <summary>
+        /// RequiredFieldValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
         /// txt_observaciones control.

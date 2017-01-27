@@ -11,7 +11,7 @@ var BeanSalidaDocumento = function (id_documento, referencia) {
 
 var BeanSalidaTransporteCondicion = function (id_transporte_condicion, si_no) {
     this.Id = 0;
-    this.Id_salida = 0;
+    this.Id_salida_orden_carga = 0;
     this.Id_transporte_condicion = id_transporte_condicion;
     this.Si_no = si_no;
 }

@@ -325,8 +325,8 @@
 <div>
     <label>Vigilante:</label>
     <%--<asp:DropDownList runat="server" ID="ddlVigilante"></asp:DropDownList>--%>
-    <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante"></asp:TextBox>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="txt_vigilante" ErrorMessage="Es necesario proporcionar vigilante" ></asp:RequiredFieldValidator>
+    <asp:DropDownList runat="server" ID="ddlVigilante" ToolTip="Nombre del vigilante en turno que supervisa la descarga"></asp:DropDownList>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="ddlVigilante" InitialValue="" ErrorMessage="Es necesario seleccionar un vigilante"></asp:RequiredFieldValidator>
 </div>
 <div>
     <label>Observaciones:</label>

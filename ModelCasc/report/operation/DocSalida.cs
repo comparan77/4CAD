@@ -16,7 +16,7 @@ namespace ModelCasc.report.operation
 {
     public class DocSalida
     {
-        public static void getSalidaTransporteCondicion(string path, string rptPath, Salida oS, DataSet ds)
+        public static void getSalidaOCTransCondicion(string path, string rptPath, Salida_orden_carga oSOC, Salida oS, DataSet ds)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace ModelCasc.report.operation
                 ReportDocument reporte = new ReportDocument();
                 reporte.Load(rptPath);
 
-                foreach (Salida_transporte_condicion oSTC in oS.PLstSalTransCond)
+                foreach (Salida_orden_carga_tc oSTC in oSOC.PLstSalOCTransCond)
                 {
                     DataRow dr = ds.Tables["auduniemb"].NewRow();
                     dr["categoria"] = oSTC.Categoria;
@@ -42,6 +42,7 @@ namespace ModelCasc.report.operation
                 #region Datos de la entrada
                 reporte.SetParameterValue("cliente", oS.PCliente.Razon);
                 reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("folio_oc", oSOC.Folio_orden_carga);
                 #endregion
 
                 #region Documentos Salida
@@ -91,7 +92,7 @@ namespace ModelCasc.report.operation
                 }
 
                 reporte.SetParameterValue("placas", sbET.ToString());
-
+                reporte.SetParameterValue("comentario", oSOC.Observaciones_tranpsorte.Length == 0 ? "--- Sin comentarios ---" : oSOC.Observaciones_tranpsorte);
                 #endregion
 
                 #region Firmas
@@ -219,7 +220,7 @@ namespace ModelCasc.report.operation
 
                 //reporte.SetParameterValue("horaDescarga", oS.Hora_descarga.ToString());
                 //reporte.SetParameterValue("tipoDescarga", oS.PTipoCarga.Nombre);
-                reporte.SetParameterValue("observaciones", oS.Observaciones);
+                reporte.SetParameterValue("observaciones", oS.Observaciones.Length == 0 ? "--- Sin observaciones ---" : oS.Observaciones);
 
                 #endregion
 
@@ -372,7 +373,7 @@ namespace ModelCasc.report.operation
                     }
                 }
                 fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                getSalidaTransporteCondicion(fileName, TemplatePath[1], oS, ds);
+                getSalidaOCTransCondicion(fileName, TemplatePath[1], o, oS, ds);
                 files.Add(fileName);
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);

@@ -14,6 +14,16 @@ namespace AppCasc.operation.embarques
 {
     public partial class frmEmbarqueOC : System.Web.UI.Page
     {
+        private Salida_orden_carga SSalidaOC
+        {
+            set
+            {
+                if (Session["SSalida_ord_carga"] != null)
+                    Session.Remove("SSalida_ord_carga");
+                Session.Add("SSalida_ord_carga", value);
+            }
+        }
+
         private void loadFirstTime()
         {
             try
@@ -23,6 +33,12 @@ namespace AppCasc.operation.embarques
                 {
                     int.TryParse(Request.QueryString["_kp"].ToString(), out Id_salida_orden_carga);
                     printSalida(Id_salida_orden_carga);
+                }
+
+                if (Request.QueryString["_octc"] != null)
+                {
+                    int.TryParse(Request.QueryString["_octc"].ToString(), out Id_salida_orden_carga);
+                    printTransCond(Id_salida_orden_carga);
                 }
 
                 ControlsMng.fillBodega(ddlBodega);
@@ -45,6 +61,7 @@ namespace AppCasc.operation.embarques
                 ControlsMng.fillTransporte(ddl_linea);
                 ControlsMng.fillTipoTransporte(ddl_tipo);
                 ControlsMng.fillCustodia(ddlCustodia);
+                ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
 
                 int IdCliente = 0;
                 int.TryParse(ddlCliente.SelectedValue, out IdCliente);
@@ -100,18 +117,33 @@ namespace AppCasc.operation.embarques
         {
             try
             {
+                int numero;
                 Salida_orden_carga oSOC = new Salida_orden_carga();
                 oSOC.Id = Convert.ToInt32(hf_id_salida_orden_carga.Value);
                 List<Salida> lstSalidas = new List<Salida>();
+
+                int.TryParse(ddlCliente.SelectedValue, out numero);
+
+                List<Salida_orden_carga_tc> lstSalTranCond = JsonConvert.DeserializeObject<List<Salida_orden_carga_tc>>(hf_condiciones_transporte.Value);
+                numero = TransporteCtrl.TransCondCliGetNumCond(numero, false, true);
+                if (lstSalTranCond.Count != numero)
+                    throw new Exception("Es necesario proporcionar TODAS LAS CONDICIONES del transporte.");
+
+                oSOC.PLstSalOCTransCond = lstSalTranCond;
+                oSOC.Observaciones_tranpsorte = txt_comentarios.Text.Trim();
+
                 Salida oS = getFormValues();
                 List<Salida_compartida> lstSalComp = new List<Salida_compartida>();
-                int numero;
-                foreach (GridViewRow row in grd_rem.Rows)
+                bool cumpleCondTran = lstSalTranCond.Count(p => p.Si_no == false) == 0;
+
+                numero = 0;
+                for (int iRow = 0; iRow < grd_rem.Rows.Count; iRow++)
                 {
+                    GridViewRow row = grd_rem.Rows[iRow];
                     Salida o = new Salida();
                     o = (Salida) oS.Clone();
-                    o.PLstSalTransCond = oS.PLstSalTransCond;
                     o.Referencia = row.Cells[0].Text;
+                    o.PLstSalTransCond = new List<Salida_transporte_condicion>();
                     HiddenField hfJsonDoc = row.FindControl("hf_JsonDocumentos") as HiddenField;
                     o.PLstSalDoc = JsonConvert.DeserializeObject<List<Salida_documento>>(hfJsonDoc.Value);
                     if (o.PLstSalDoc == null)
@@ -182,7 +214,23 @@ namespace AppCasc.operation.embarques
                     }
 
                 oSOC.LstSalida = lstSalidas;
-                SalidaCtrl.salidaAddFromLst(oSOC);
+                if (cumpleCondTran)
+                {
+                    SalidaCtrl.salidaAddFromLst(oSOC);
+                    Response.Redirect("frmEmbarqueOC.aspx?_kp=" + hf_id_salida_orden_carga.Value);
+                }
+                else
+                {
+                    Salida oSTmp = oSOC.LstSalida.First();
+                    oSTmp.PCliente = CatalogCtrl.Cliente_GetById(oSTmp.Id_cliente);
+                    if (oSTmp.PLstSalComp == null)
+                        oSTmp.PLstSalComp = new List<Salida_compartida>();
+
+                    oSTmp.PTransporteTipo = CatalogCtrl.Transporte_tipo_getyById(oSTmp.Id_transporte_tipo);
+
+                    SSalidaOC = oSOC;
+                    Response.Redirect("frmEmbarqueOC.aspx?_octc=" + hf_id_salida_orden_carga.Value);
+                }
             }
             catch
             {
@@ -199,6 +247,19 @@ namespace AppCasc.operation.embarques
             try
             {
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=ordCargaSal','_blank', 'toolbar=no');</script>");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void printTransCond(int Id_orden_carga)
+        {
+            try
+            {
+                ((MstCasc)this.Master).getUsrLoged().Id_print = Id_orden_carga.ToString();
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('../frmReporter.aspx?rpt=ordCargaSalTra','_blank', 'toolbar=no');</script>");
             }
             catch
             {
@@ -245,6 +306,7 @@ namespace AppCasc.operation.embarques
         {
             #region Bodega Ubicacion
             ddlBodega.SelectedValue = oSOC.Id_bodega_ubicacion.ToString();
+            ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedValue));
             #endregion
 
             #region Cita
@@ -273,6 +335,10 @@ namespace AppCasc.operation.embarques
             txt_caja_2.Text = oSOC.PSalidaTrafico.Caja2;
             txt_operador.Text = oSOC.PSalidaTrafico.Operador;
             validarTipoTransporte(Convert.ToInt32(oSOC.PSalidaTrafico.Id_transporte_tipo_cita));
+            #endregion
+
+            #region Vigilancia
+            ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
             #endregion
         }
 
@@ -320,7 +386,6 @@ namespace AppCasc.operation.embarques
             try
             {
                 saveSalida();
-                Response.Redirect("frmEmbarqueOC.aspx?_kp=" + hf_id_salida_orden_carga.Value);
             }
             catch (Exception e)
             {
@@ -337,13 +402,6 @@ namespace AppCasc.operation.embarques
             int.TryParse(ddlCliente.SelectedValue, out numero);
             oS.Id_cliente = numero;
             numero = 0;
-
-            List<Salida_transporte_condicion> lstSalTranCond = JsonConvert.DeserializeObject<List<Salida_transporte_condicion>>(hf_condiciones_transporte.Value);
-            numero = TransporteCtrl.TransCondCliGetNumCond(oS.Id_cliente, false, true);
-            if (lstSalTranCond.Count != numero)
-                throw new Exception("Es necesario proporcionar TODAS LAS CONDICIONES del transporte.");
-
-            oS.PLstSalTransCond = lstSalTranCond;
 
             //Usuario
             oS.PUsuario = ((MstCasc)this.Master).getUsrLoged();
@@ -407,7 +465,7 @@ namespace AppCasc.operation.embarques
             oS.Hora_carga = txt_hora_carga.Text;
 
             //Vigilante
-            oS.Vigilante = txt_vigilante.Text.Trim();
+            oS.Vigilante = ddlVigilante.SelectedItem.Text;
 
             //Orden de carga
             oS.Id_salida_orden_carga = Convert.ToInt32(hf_id_salida_orden_carga.Value);

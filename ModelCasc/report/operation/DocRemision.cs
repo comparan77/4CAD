@@ -120,7 +120,7 @@ namespace ModelCasc.report.operation
                 string fullPedimento = EntradaCtrl.PedimentoGetFullNumber(oSR.Referencia);
                 oSR.Referencia = fullPedimento;
                 fields.SetField("referencia", fullPedimento);
-                Cliente oC = CatalogCtrl.ClienteGetByIdEntrada(oSR.Id_entrada);
+                Cliente oC = CatalogCtrl.Cliente_GetByIdEntrada(oSR.Id_entrada);
                 fields.SetField("cliente", oC.Razon.ToUpper());
 
                 //fields.SetField("cliente"

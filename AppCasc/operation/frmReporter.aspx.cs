@@ -149,6 +149,20 @@ namespace AppCasc.operation
                         DocAlmacenResumen.getAlmResumen(path, TemplatePath, anio, mes);
                         ShowPdf(path);
                         break;
+                    case "ordCargaSalTra":
+                        obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(((Usuario)Session["userCasc"]).Id_print), false);
+                        ((Salida_orden_carga)obj).LstSalida = ((Salida_orden_carga)Session["SSalida_ord_carga"]).LstSalida;
+                        foreach (Salida_orden_carga_tc itemTC in ((Salida_orden_carga)obj).PLstSalOCTransCond)
+                        {
+                            itemTC.Si_no = ((Salida_orden_carga)Session["SSalida_ord_carga"]).PLstSalOCTransCond.Find(p => p.Id_transporte_condicion == itemTC.Id_transporte_condicion).Si_no;
+                        }
+                        RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
+                        TemplatePathCond = HttpContext.Current.Server.MapPath("~/report/Formatos/auduniemb.rpt");
+                        DocSalida.getSalidaOCTransCondicion(path, TemplatePathCond, (Salida_orden_carga)obj, ((Salida_orden_carga)obj).LstSalida.First(), ds);
+                        Session.Remove("SSalida_ord_carga");
+                        ShowPdf(path);
+                        break;
                     default:
                         break;
                 }

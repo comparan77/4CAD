@@ -282,5 +282,15 @@ namespace ModelCasc.webApp
                 ddl.Items.Add(li);
             }
         }
+        
+        public static void fillVigilanciaByBodega(DropDownList ddlVigilante, int id_bodega)
+        {
+            VigilanteMng oMng = new VigilanteMng() { O_Vigilante = new Vigilante() { Id_bodega = id_bodega } };
+            oMng.fillLstByBodega();
+            ddlVigilante.DataSource = oMng.Lst;
+            ddlVigilante.DataTextField = "nombre";
+            ddlVigilante.DataValueField = "id";
+            ddlVigilante.DataBind();
+        }
     }
 }

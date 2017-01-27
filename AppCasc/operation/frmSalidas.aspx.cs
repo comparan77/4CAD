@@ -372,7 +372,7 @@ namespace AppCasc.operation
                 oS.Es_unica = false;
             }
 
-            oS.Vigilante = txt_vigilante.Text.Trim();
+            oS.Vigilante = ddlVigilante.SelectedItem.Text.Trim();
         }
 
         private Salida addSalidaValuesCompartida()
@@ -599,7 +599,7 @@ namespace AppCasc.operation
             }
 
             //Vigilante
-            oS.Vigilante = txt_vigilante.Text.Trim();
+            oS.Vigilante = ddlVigilante.SelectedItem.Text.Trim();
 
             //Bodega
             Bodega oB = new Bodega();
@@ -729,7 +729,7 @@ namespace AppCasc.operation
 
                     ddlCustodia.SelectedValue = oS.Id_custodia.ToString();
                     txt_operador.Text = oS.Operador;
-                    txt_vigilante.Text = oS.Vigilante;
+                    ddlVigilante.Items.FindByText(oS.Vigilante).Selected = true;
 
                     if (!oS.Es_unica)
                     {
@@ -856,6 +856,7 @@ namespace AppCasc.operation
                 //fillVigilanteByBodega(Convert.ToInt32(ddlBodega.SelectedValue));
                 //fillCliente();
                 ControlsMng.fillCustodia(ddlCustodia);
+                ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
             }
             catch (Exception e)
             {
