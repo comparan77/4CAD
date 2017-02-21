@@ -354,6 +354,12 @@ namespace ModelCasc.operation
                         this._oEntrada_parcial.No_pieza_recibidas = entero;
                         entero = 0;
                     }
+                    if (dr["bulto_recibido"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["bulto_recibido"].ToString(), out entero);
+                        this._oEntrada_parcial.No_bulto_recibido = entero;
+                        entero = 0;
+                    }
                 }
             }
             catch

@@ -312,7 +312,7 @@ namespace AppCasc.report.Formatos {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class entsaldocDataTable : global::System.Data.TypedTableBase<entsaldocRow> {
+        public partial class entsaldocDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
             
             private global::System.Data.DataColumn columndocumento;
             
@@ -412,6 +412,12 @@ namespace AppCasc.report.Formatos {
                 rowentsaldocRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowentsaldocRow);
                 return rowentsaldocRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public virtual global::System.Collections.IEnumerator GetEnumerator() {
+                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -573,7 +579,7 @@ namespace AppCasc.report.Formatos {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class auduniembDataTable : global::System.Data.TypedTableBase<auduniembRow> {
+        public partial class auduniembDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
             
             private global::System.Data.DataColumn columncategoria;
             
@@ -695,6 +701,12 @@ namespace AppCasc.report.Formatos {
                 rowauduniembRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowauduniembRow);
                 return rowauduniembRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public virtual global::System.Collections.IEnumerator GetEnumerator() {
+                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -298,7 +298,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_carta_porte {
+        public CrystalDecisions.Shared.IParameterField Parameter_custodia {
             get {
                 return this.DataDefinition.ParameterFields[26];
             }
@@ -306,7 +306,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_custodia {
+        public CrystalDecisions.Shared.IParameterField Parameter_observaciones {
             get {
                 return this.DataDefinition.ParameterFields[27];
             }
@@ -314,7 +314,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_observaciones {
+        public CrystalDecisions.Shared.IParameterField Parameter_tipoDescarga {
             get {
                 return this.DataDefinition.ParameterFields[28];
             }
@@ -322,7 +322,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_tipoDescarga {
+        public CrystalDecisions.Shared.IParameterField Parameter_horaDescarga {
             get {
                 return this.DataDefinition.ParameterFields[29];
             }
@@ -330,7 +330,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_horaDescarga {
+        public CrystalDecisions.Shared.IParameterField Parameter_usuario {
             get {
                 return this.DataDefinition.ParameterFields[30];
             }
@@ -338,7 +338,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_usuario {
+        public CrystalDecisions.Shared.IParameterField Parameter_vigilante {
             get {
                 return this.DataDefinition.ParameterFields[31];
             }
@@ -346,7 +346,7 @@ namespace AppCasc.report.Formatos {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_vigilante {
+        public CrystalDecisions.Shared.IParameterField Parameter_no_entrada {
             get {
                 return this.DataDefinition.ParameterFields[32];
             }

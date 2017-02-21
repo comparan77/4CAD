@@ -256,7 +256,7 @@ var MngEmbarqueOC = function () {
             td += arrCondTran[itemCT].Nombre;
             td += '</td>';
             tr += td;
-            td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" value="1" /></td>';
+            td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" checked="checked" value="1" /></td>';
             tr += td;
             td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" value="0" /></td>';
             tr += td;

@@ -785,7 +785,7 @@ namespace ModelCasc.operation
 
         #region Parciales
 
-        public static Entrada_parcial ParcialGetByReferencia(string referencia, bool EvenLast = false)
+        public static Entrada_parcial ParcialGetByReferencia(string referencia, bool EvenLast = false, int id_entrada = 0)
         {
             Entrada_parcial o = new Entrada_parcial();
             try
@@ -793,6 +793,8 @@ namespace ModelCasc.operation
                 Entrada_parcialMng oEPMng = new Entrada_parcialMng();
                 Entrada_parcial oEP = new Entrada_parcial();
                 oEP.Referencia = referencia;
+                if (id_entrada > 0)
+                    oEP.Id_entrada = id_entrada;
                 oEPMng.O_Entrada_parcial = oEP;
                 oEPMng.getByReferencia(EvenLast);
                 o = oEP;

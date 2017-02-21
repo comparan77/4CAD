@@ -71,6 +71,8 @@ namespace ModelCasc.report.operation
         {
             try
             {
+                int bultoRecibido = 0;
+
                 CultureInfo ci = new CultureInfo("es-MX");
                 ReportDocument reporte = new ReportDocument();
                 reporte.Load(rptPath);
@@ -88,7 +90,7 @@ namespace ModelCasc.report.operation
                 reporte.SetParameterValue("bodega", oE.PBodega.Nombre);
                 reporte.SetParameterValue("cortina", oE.PCortina.Nombre);
                 reporte.SetParameterValue("cliente", oE.PCliente.Razon);
-                reporte.SetParameterValue("folio", oE.Folio);
+                reporte.SetParameterValue("folio", oE.Folio + oE.Folio_indice);
                 reporte.SetParameterValue("fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
                 reporte.SetParameterValue("hora", oE.Hora.ToString());
                 reporte.SetParameterValue("origen", oE.Origen);
@@ -104,22 +106,39 @@ namespace ModelCasc.report.operation
 
                 reporte.SetParameterValue("cajaxrecibir", 0);
                 reporte.SetParameterValue("piezaxrecibir", 0);
+
+                bultoRecibido = oE.No_bulto_recibido;
+
                 if(oE.PEntPar !=null)
                     if (oE.PEntPar.No_entrada > 0)
                     {
                         reporte.SetParameterValue("tipoEntrada", "Parcial");
+                        reporte.SetParameterValue("no_entrada", "No: " + oE.PEntPar.No_entrada.ToString() + (oE.PEntPar.Es_ultima ? " - Última" : string.Empty));
                         reporte.SetParameterValue("cajaxrecibir", Convert.ToString(oE.No_bulto_declarado - oE.No_bulto_recibido));
-                        Entrada_parcial oEP = EntradaCtrl.ParcialGetByReferencia(oE.Referencia, true);
+                        Entrada_parcial oEP = EntradaCtrl.ParcialGetByReferencia(oE.Referencia, true, oE.Id);
                         int piezasPorRecibir = oE.No_pieza_declarada - oEP.No_pieza_recibidas;
                         reporte.SetParameterValue("piezaxrecibir", piezasPorRecibir.ToString());
+                        bultoRecibido = oEP.No_bulto_recibido;
                     }
-                int diferenciaBulto = oE.No_bulto_declarado - oE.No_bulto_recibido;
+                int diferenciaBulto = oE.No_bulto_declarado - bultoRecibido;
                 reporte.SetParameterValue("caja_sobrante", "0");
                 reporte.SetParameterValue("caja_faltante", "0");
                 if (diferenciaBulto > 0)
                     reporte.SetParameterValue("caja_faltante", diferenciaBulto.ToString());
                 if (diferenciaBulto < 0)
                     reporte.SetParameterValue("caja_sobrante", Math.Abs(diferenciaBulto).ToString());
+
+                if (oE.PEntPar != null)
+                    if (!oE.PEntPar.Es_ultima)
+                    {
+                        reporte.SetParameterValue("caja_faltante", 0);
+                    }
+                    else
+                    {
+                        reporte.SetParameterValue("cajaxrecibir", 0);
+                        reporte.SetParameterValue("piezaxrecibir", 0);
+                    }
+
                 reporte.SetParameterValue("cajadanada", oE.No_bulto_danado.ToString());
                 reporte.SetParameterValue("cajaabierta", oE.No_bulto_abierto.ToString());
                 reporte.SetParameterValue("pieza_declarada", oE.No_pieza_declarada.ToString());

@@ -254,7 +254,7 @@
     </div>
     
     <div>
-        <label>Comentarios:</label>
+        <label>Comentarios de la Unidad:</label>
         <asp:TextBox runat="server" ID="txt_comentarios" CssClass="txtLarge"></asp:TextBox>
     </div>
 </div>
