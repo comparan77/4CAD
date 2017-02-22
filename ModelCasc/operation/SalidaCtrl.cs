@@ -555,13 +555,26 @@ namespace ModelCasc.operation
                     Salida_orden_carga_remMng oSOCR = new Salida_orden_carga_remMng() { O_Salida_orden_carga_rem = new Salida_orden_carga_rem() { Id_salida_orden_carga = oS.Id_salida_orden_carga, Id_salida = oS.Id, Referencia = oS.Referencia, Pallet = oS.No_pallet } };
                     oSOCR.setSalida(trans);
 
+                    //Condiciones del transporte
+                    Salida_transporte_condicionMng oSTCMng = new Salida_transporte_condicionMng();
+                    foreach (Salida_transporte_condicion itemSTC in oS.PLstSalTransCond)
+                    {
+                        itemSTC.Id_salida = oS.Id;
+                        oSTCMng.O_Salida_transporte_condicion = itemSTC;
+                        oSTCMng.add(trans);
+                    }
+
                     oS.IsActive = true;
-                } 
+                }
+
+                //Condiciones del transporte
+                Salida_orden_cargaAddTransCond(oSOC, trans);
 
                 //Establece en true el parametro tiene_salida de la orden de carga
                 Salida_orden_cargaMng oSOCMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = oSOC };
                 oSOC.Tiene_salida = true;
                 oSOCMng.udtTieneSalida(trans);
+
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch
@@ -1194,6 +1207,13 @@ namespace ModelCasc.operation
                 oRMng.selByIdSalOrdCarga(agrupado);
                 o.LstRem = oRMng.Lst;
 
+                Salida_orden_carga_tc oSTC = new Salida_orden_carga_tc();
+                Salida_orden_carga_tcMng oSTCMng = new Salida_orden_carga_tcMng();
+                oSTC.Id_salida_orden_carga = o.Id;
+                oSTCMng.O_Salida_orden_carga_tc = oSTC;
+                oSTCMng.selByIdSalidaOC();
+                o.PLstSalOCTransCond = oSTCMng.Lst;
+
                 //Solución temporal a la ubicacion de la mercancia
                 Salida_remisionMng oSRMng = new Salida_remisionMng() { O_Salida_remision = new Salida_remision() { Id = o.LstRem.First().Id_salida_remision } };
                 o.Id_bodega_ubicacion = oSRMng.selUbicacionBodega();
@@ -1263,6 +1283,26 @@ namespace ModelCasc.operation
                 if (error.Length == 0)
                     throw;
                 else throw new Exception(error);
+            }
+        }
+
+        private static void Salida_orden_cargaAddTransCond(Salida_orden_carga oSOC, IDbTransaction trans = null)
+        {
+            try
+            {
+                Salida_orden_carga_tcMng oSOCTCMng = new Salida_orden_carga_tcMng() { O_Salida_orden_carga_tc = new Salida_orden_carga_tc() { Id_salida_orden_carga = oSOC.Id } };
+                oSOCTCMng.dltByIdOC(trans);
+                foreach (Salida_orden_carga_tc itemSOCTC in oSOC.PLstSalOCTransCond)
+                {
+                    itemSOCTC.Id_salida_orden_carga = oSOC.Id;
+                    oSOCTCMng.O_Salida_orden_carga_tc = itemSOCTC;
+                    oSOCTCMng.add(trans);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

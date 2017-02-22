@@ -37,6 +37,10 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_trafico", DbType.Int32, this._oSalida_orden_carga.Id_salida_trafico);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio_orden_carga", DbType.String, this._oSalida_orden_carga.Folio_orden_carga);
             GenericDataAccess.AddInParameter(this.comm, "?P_tiene_salida", DbType.Boolean, this._oSalida_orden_carga.Tiene_salida);
+            if (this._oSalida_orden_carga.Observaciones_tranpsorte.Length == 0)
+                GenericDataAccess.AddInParameter(this.comm, "?P_observaciones_tranpsorte", DbType.String, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_observaciones_tranpsorte", DbType.String, this._oSalida_orden_carga.Observaciones_tranpsorte);
         }
 
         protected void BindByDataRow(DataRow dr, Salida_orden_carga o)
@@ -71,6 +75,7 @@ namespace ModelCasc.operation
                     o.Tiene_salida = logica;
                     logica = false;
                 }
+                o.Observaciones_tranpsorte = dr["observaciones_tranpsorte"].ToString();
             }
             catch
             {
@@ -248,7 +253,7 @@ namespace ModelCasc.operation
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga");
                 addParameters(6);
-                GenericDataAccess.ExecuteNonQuery(this.comm);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {

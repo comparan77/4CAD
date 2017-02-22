@@ -15,6 +15,7 @@ using ModelCasc.report.operation;
 using ModelCasc.catalog;
 using ModelCasc;
 using ModelCasc.report.almacen;
+using AppCasc.report.Formatos;
 
 namespace AppCasc.operation
 {
@@ -52,7 +53,9 @@ namespace AppCasc.operation
             string rpt = string.Empty;
             string RptFileName = string.Empty;
             string TemplatePath = string.Empty;
+            string TemplatePathCond = string.Empty;
             object obj;
+            dsFormatos ds = new dsFormatos();
             try
             {
                 rpt = Request["rpt"].ToString();
@@ -62,19 +65,51 @@ namespace AppCasc.operation
                         obj = (Entrada)Session["SEntrada"];
                         RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/entradas/") + RptFileName;
-                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateEntrada.pdf");
-                        DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj);
-                        ShowPdf(path);
+
+                        switch (((Entrada)obj).Id_cliente)
+                        {
+                            case 1:
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/entrada.rpt");
+                                DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
+                                break;
+                            default:
+                                pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateEntrada.pdf");
+                                DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj);
+                                break;
+                        }
+
+                        //obj = (Entrada)Session["SEntrada"];
+                        //RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
+                        //path = HttpContext.Current.Server.MapPath("~/rpt/entradas/") + RptFileName;
+                        //pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                        //TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateEntrada.pdf");
+                        //DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj);
+                        //ShowPdf(path);
                         //HTMLToPdf(getHtmlPdf(((Entrada)obj)), path);
+
+                        ShowPdf(path);
+
                         break;
                     case "salida":
                         obj = (Salida)Session["SSalida"];
                         RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/salidas/") + RptFileName;
-                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
-                        DocSalida.getSalida(path, TemplatePath, (Salida)obj);
+
+                        switch (((Salida)obj).Id_cliente)
+                        {
+                            case 1:
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
+                                DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds);
+                                break;
+                            default:
+                                pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
+                                TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
+                                DocSalida.getSalida(path, TemplatePath, (Salida)obj);
+                                break;
+                        }
+
+
                         ShowPdf(path);
                         break;
                     case "remision":
@@ -100,30 +135,11 @@ namespace AppCasc.operation
                         obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(((Usuario)Session["userCasc"]).Id_print), false);
                         RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
-                        pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalida.pdf");
-                        DocSalida.getSalidaOC(path, TemplatePath, (Salida_orden_carga)obj);
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
+                        TemplatePathCond = HttpContext.Current.Server.MapPath("~/report/Formatos/auduniemb.rpt");
+                        DocSalida.getSalidaOC(path, new string[] { TemplatePath, TemplatePathCond }, (Salida_orden_carga)obj, ds);
                         ShowPdf(path);
                         break;
-                    //case "entradaAlm":
-                    //    obj = (Entrada)Session["SEntrada"];
-                    //    RptFileName = ((Entrada)obj).Folio + ((Entrada)obj).Folio_indice + ".pdf";
-                    //    path = HttpContext.Current.Server.MapPath("~/rpt/entradasAlm/") + RptFileName;
-                    //    pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                    //    TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateEntradaAlmacen.pdf");
-                    //    string TemplatePathTarima = HttpContext.Current.Server.MapPath("~/rpt/TemplatePallet.pdf");
-                    //    DocEntrada.getEntradaAlm(path, TemplatePath, TemplatePathTarima, (Entrada)obj);
-                    //    ShowPdf(path);
-                    //    break;
-                    //case "salidaAlm":
-                    //    obj = (Salida)Session["SSalida"];
-                    //    RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
-                    //    path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
-                    //    pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
-                    //    TemplatePath = HttpContext.Current.Server.MapPath("~/rpt/TemplateSalidaAlmacen.pdf");
-                    //    DocSalida.getSalidaAlm(path, TemplatePath, (Salida)obj);
-                    //    ShowPdf(path);
-                    //    break;
                     case "rptAlmRes":
                         int anio = Convert.ToInt32(Request["anio"]);
                         int mes = Convert.ToInt32(Request["mes"]);
@@ -133,12 +149,26 @@ namespace AppCasc.operation
                         DocAlmacenResumen.getAlmResumen(path, TemplatePath, anio, mes);
                         ShowPdf(path);
                         break;
+                    case "ordCargaSalTra":
+                        obj = SalidaCtrl.OrdenCargaGetById(Convert.ToInt32(((Usuario)Session["userCasc"]).Id_print), false);
+                        ((Salida_orden_carga)obj).LstSalida = ((Salida_orden_carga)Session["SSalida_ord_carga"]).LstSalida;
+                        foreach (Salida_orden_carga_tc itemTC in ((Salida_orden_carga)obj).PLstSalOCTransCond)
+                        {
+                            itemTC.Si_no = ((Salida_orden_carga)Session["SSalida_ord_carga"]).PLstSalOCTransCond.Find(p => p.Id_transporte_condicion == itemTC.Id_transporte_condicion).Si_no;
+                        }
+                        RptFileName = ((Salida_orden_carga)obj).Folio_orden_carga + "_S.pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/ordencarga/") + RptFileName;
+                        TemplatePathCond = HttpContext.Current.Server.MapPath("~/report/Formatos/auduniemb.rpt");
+                        DocSalida.getSalidaOCTransCondicion(path, TemplatePathCond, (Salida_orden_carga)obj, ((Salida_orden_carga)obj).LstSalida.First(), ds);
+                        Session.Remove("SSalida_ord_carga");
+                        ShowPdf(path);
+                        break;
                     default:
                         break;
                 }
-                
+
             }
-            catch 
+            catch
             {
                 throw;
             }

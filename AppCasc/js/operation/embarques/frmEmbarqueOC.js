@@ -1,10 +1,19 @@
 ﻿var lstDoc = [];
+var lstCondTran = [];
+var arrCondTran = [];
 
 var BeanSalidaDocumento = function (id_documento, referencia) {
     this.Id = 0;
     this.Id_salida = 0;
     this.Id_documento = id_documento;
     this.Referencia = referencia;
+}
+
+var BeanSalidaTransporteCondicion = function (id_transporte_condicion, si_no) {
+    this.Id = 0;
+    this.Id_salida_orden_carga = 0;
+    this.Id_transporte_condicion = id_transporte_condicion;
+    this.Si_no = si_no;
 }
 
 var MngEmbarqueOC = function () {
@@ -27,6 +36,9 @@ var MngEmbarqueOC = function () {
             var IsValid = true;
 
             validaReferencias();
+
+            condicionesTransporteSet();
+            validaCondTransporte();
 
             $('.validator').each(function () {
                 if ($(this).css('visibility') == 'visible') {
@@ -84,6 +96,8 @@ var MngEmbarqueOC = function () {
                 });
             });
         });
+
+        loadTransporteCondicion(1, false, true);
     }
 
     function validaReferencias() {
@@ -91,9 +105,9 @@ var MngEmbarqueOC = function () {
             var txt_pallet = $(this).children('td:nth-child(5)').children('input');
             var txt_mercancia = $(this).children('td:nth-child(6)').children('textarea');
 
-            $(txt_pallet).next().next().css('visibility', 'hidden');
-            if (txt_pallet.val().length == 0)
-                $(txt_pallet).next().next().css('visibility', 'visible');
+            //            $(txt_pallet).next().next().css('visibility', 'hidden');
+            //            if (txt_pallet.val().length == 0)
+            //                $(txt_pallet).next().next().css('visibility', 'visible');
 
             $(txt_mercancia).next().next().css('visibility', 'hidden');
             if (txt_mercancia.val().length == 0)
@@ -222,6 +236,86 @@ var MngEmbarqueOC = function () {
             }
         });
     }
+
+    function fillCondicionesTransporte() {
+        $('#tbody_condiciones').html('');
+        var tr;
+        var td;
+        var ind = 1;
+        var categoria = "";
+        for (var itemCT in arrCondTran) {
+            if (categoria != arrCondTran[itemCT].PTransCondCat.Nombre) {
+                categoria = arrCondTran[itemCT].PTransCondCat.Nombre;
+                tr = '<tr class="header_cat_cond"><td style="font-weight: bold;">'
+                    + categoria
+                    + '</td><td style="font-weight: bold;">Sí</td><td style="font-weight: bold;">No</td></tr>';
+                $('#tbody_condiciones').append(tr);
+            }
+            tr = '<tr id="condTr_' + arrCondTran[itemCT].Id + '">';
+            td = '<td>';
+            td += arrCondTran[itemCT].Nombre;
+            td += '</td>';
+            tr += td;
+            td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" checked="checked" value="1" /></td>';
+            tr += td;
+            td = '<td><input name="name_' + arrCondTran[itemCT].Id + '" type="radio" value="0" /></td>';
+            tr += td;
+            $('#tbody_condiciones').append(tr);
+            ind++;
+        }
+    }
+
+    function loadTransporteCondicion(id_cliente, es_entrada, es_salida) {
+        $.ajax({
+            type: 'GET',
+            url: "/handlers/Operation.ashx?op=transCond&opt=condCli",
+            //dataType: "jsonp",
+            data: {
+                id_cliente: id_cliente,
+                es_entrada: es_entrada,
+                es_salida: es_salida
+            },
+            complete: function () {
+                //$('#up_cantidades').removeClass('ajaxLoading');
+            },
+            success: function (data) {
+                $.each(data.PLstTransporte_condicion, function (i, o) {
+                    arrCondTran.push(o);
+                });
+                fillCondicionesTransporte();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
+    //Condiciones del transporte
+    function condicionesTransporteSet() {
+        lstCondTran = [];
+        $('#tbody_condiciones').children('tr').each(function () {
+            if (!$(this).hasClass('header_cat_cond')) {
+                var id = $(this).attr('id').split('_')[1] * 1;
+                var val = $('input[name="name_' + id + '"]:checked', '#tbody_condiciones').val();
+                
+                if (val != undefined) {
+                    val = val == 1 ? true : false;
+                    var o = new BeanSalidaTransporteCondicion(id, val);
+                    lstCondTran.push(o);
+                }
+            }
+        });
+        $('#ctl00_body_hf_condiciones_transporte').val(JSON.stringify(lstCondTran));
+    }
+
+    //valida condiciones transporte
+    function validaCondTransporte() {
+        $('#rfv_condiciones_transporte').css('visibility', lstCondTran.length == arrCondTran.length ? 'hidden' : 'visible');
+    }
+
+
 }
 
 var master = new webApp.Master;

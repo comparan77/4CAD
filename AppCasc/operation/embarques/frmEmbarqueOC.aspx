@@ -35,11 +35,20 @@
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvHora_salida" ControlToValidate="txt_hora_salida" ErrorMessage="Es necesario proporcionar una hora" ></asp:RequiredFieldValidator>
     <span class="hidden error">Es necesario proporcionar una hora</span>
 </div>
-<div>
-    <label>Cortina:</label>
-    <asp:DropDownList runat="server" ID="ddlCortina"></asp:DropDownList>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvCortina" ControlToValidate="ddlCortina" InitialValue="" ErrorMessage="Es necesario seleccionar una cortina"></asp:RequiredFieldValidator>
-</div>
+
+    
+    <asp:UpdatePanel runat="server" ID="up_cortina" UpdateMode="Conditional">
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="rep_resultados" EventName="ItemCommand" />
+    </Triggers>
+    <ContentTemplate>
+        <label>Cortina:</label>
+        <asp:DropDownList runat="server" ID="ddlCortina"></asp:DropDownList>
+        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvCortina" ControlToValidate="ddlCortina" InitialValue="" ErrorMessage="Es necesario seleccionar una cortina"></asp:RequiredFieldValidator>
+    </ContentTemplate>
+    </asp:UpdatePanel>
+    
+
 <div>
     <label>Cliente:</label>
     <asp:DropDownList runat="server" ID="ddlCliente" OnSelectedIndexChanged="ddlCliente_changed" AutoPostBack="true"></asp:DropDownList>
@@ -173,6 +182,7 @@
 </Triggers>
 <ContentTemplate>
 
+<div id="datosTransporte" title="Datos del Trasnporte">
 <div>
     <label>Linea:</label>
     <asp:DropDownList runat="server" ID="ddl_linea"></asp:DropDownList>
@@ -222,9 +232,32 @@
     <asp:TextBox runat="server" ID="txt_operador"></asp:TextBox>
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvOperador" ControlToValidate="txt_operador" ErrorMessage="Es necesario capturar el operador de la custodia"></asp:RequiredFieldValidator>
 </div>
+</div>
 
 </ContentTemplate>
 </asp:UpdatePanel>
+
+<div title="Auditor&iacute;a Unidades" style="margin-top: 10px">
+
+    <div>
+    <asp:HiddenField runat="server" ID="hf_condiciones_transporte" />
+    <span style="color: Red; visibility: hidden;" class="validator" id="rfv_condiciones_transporte">Es necesario proporcionar TODAS LAS CONDICIONES del transporte.</span>
+        <table>
+            <tbody id="tbody_condiciones">
+                <tr>
+                    <th>Licencia de Conductor Vigente</th>
+                    <th><input type="checkbox" /></th>
+                    <th><input type="checkbox" /></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div>
+        <label>Comentarios de la Unidad:</label>
+        <asp:TextBox runat="server" ID="txt_comentarios" CssClass="txtLarge"></asp:TextBox>
+    </div>
+</div>
 
 </div>
 </div>
@@ -239,12 +272,17 @@
     <asp:RequiredFieldValidator runat="server" ID="rfv_hora_carga" ControlToValidate="txt_hora_carga" ErrorMessage="Es necesario proporcionar una hora" ></asp:RequiredFieldValidator>
     <span class="hidden error">Es necesario proporcionar una hora</span>
 </div>
-<div>
-    <label>Vigilante:</label>
-    <%--<asp:DropDownList runat="server" ID="ddlVigilante"></asp:DropDownList>--%>
-    <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante"></asp:TextBox>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="txt_vigilante" ErrorMessage="Es necesario proporcionar vigilante" ></asp:RequiredFieldValidator>
-</div>
+    
+    <asp:UpdatePanel runat="server" ID="udtVigilante" UpdateMode="Conditional">
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="rep_resultados" EventName="ItemCommand" />
+        </Triggers>
+        <ContentTemplate>
+        <label>Vigilante:</label>
+            <asp:DropDownList runat="server" ID="ddlVigilante" ToolTip="Nombre del vigilante en turno que supervisa la carga"></asp:DropDownList>
+            <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="ddlVigilante" InitialValue="" ErrorMessage="Es necesario seleccionar un vigilante"></asp:RequiredFieldValidator>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
 </div>
 </div>

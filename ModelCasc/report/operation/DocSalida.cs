@@ -16,6 +16,231 @@ namespace ModelCasc.report.operation
 {
     public class DocSalida
     {
+        public static void getSalidaOCTransCondicion(string path, string rptPath, Salida_orden_carga oSOC, Salida oS, DataSet ds)
+        {
+            try
+            {
+                CultureInfo ci = new CultureInfo("es-MX");
+                ReportDocument reporte = new ReportDocument();
+                reporte.Load(rptPath);
+
+                foreach (Salida_orden_carga_tc oSTC in oSOC.PLstSalOCTransCond)
+                {
+                    DataRow dr = ds.Tables["auduniemb"].NewRow();
+                    dr["categoria"] = oSTC.Categoria;
+                    dr["condicion"] = oSTC.Condicion;
+                    dr["si"] = string.Empty;
+                    dr["no"] = string.Empty;
+                    if(oSTC.Si_no)
+                        dr["si"] = "X";
+                    else
+                        dr["no"] = "X";
+                    ds.Tables["auduniemb"].Rows.Add(dr);
+                }
+                reporte.SetDataSource(ds.Tables["auduniemb"]);
+
+                #region Datos de la entrada
+                reporte.SetParameterValue("cliente", oS.PCliente.Razon);
+                reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("folio_oc", oSOC.Folio_orden_carga);
+                #endregion
+
+                #region Documentos Salida
+                StringBuilder sbCompartida = new StringBuilder();
+                int saltoCompartida = 1;
+                foreach (Salida_compartida oSC in oS.PLstSalComp)
+                {
+                    if (string.Compare(oS.Referencia, oSC.Referencia) != 0)
+                    {
+                        sbCompartida.Append(oSC.Referencia);
+                        if (saltoCompartida % 2 == 0)
+                        {
+                            sbCompartida.AppendLine();
+                            saltoCompartida = 0;
+                        }
+                        else
+                            sbCompartida.Append(", ");
+                        saltoCompartida++;
+                    }
+                }
+
+                if (sbCompartida.Length == 0)
+                    reporte.SetParameterValue("referencia", oS.Referencia);
+                else
+                    reporte.SetParameterValue("referencia", oS.Referencia + ", " + sbCompartida.ToString().Substring(0, sbCompartida.ToString().Length - 2));
+
+                #endregion
+
+                #region Datos del Transporte
+
+                reporte.SetParameterValue("tipo_vehiculo", oS.PTransporteTipo.Nombre); 
+                StringBuilder sbET = new StringBuilder();
+
+                string strPlaca = string.Empty;
+                if (string.Compare(oS.Placa, "N.A.") != 0)
+                {
+                    strPlaca = "Placa: " + oS.Placa;
+                    if (string.Compare(oS.Caja, "N.A.") != 0)
+                        strPlaca += ", Caja: " + oS.Caja;
+                    if (string.Compare(oS.Caja1, "N.A.") != 0)
+                    {
+                        strPlaca += ", Cont. 1: " + oS.Caja1;
+                        if (string.Compare(oS.Caja2, "N.A.") != 0)
+                            strPlaca += ", Cont. 2: " + oS.Caja2;
+                    }
+                    sbET.Append(" " + strPlaca);
+                }
+
+                reporte.SetParameterValue("placas", sbET.ToString());
+                reporte.SetParameterValue("comentario", oSOC.Observaciones_tranpsorte.Length == 0 ? "--- Sin comentarios ---" : oSOC.Observaciones_tranpsorte);
+                #endregion
+
+                #region Firmas
+
+                reporte.SetParameterValue("operador", oS.Operador);
+                //reporte.SetParameterValue("usuario", oS.PUsuario.Nombre);
+                reporte.SetParameterValue("vigilante", oS.Vigilante);
+
+                #endregion
+
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        public static void getSalida(string path, string rptPath, Salida oS, DataSet ds)
+        {
+            try
+            {
+                CultureInfo ci = new CultureInfo("es-MX");
+                ReportDocument reporte = new ReportDocument();
+                reporte.Load(rptPath);
+
+                foreach (Salida_documento oSD in oS.PLstSalDoc)
+                {
+                    DataRow dr = ds.Tables["entsaldoc"].NewRow();
+                    dr["documento"] = oSD.PDocumento.Nombre;
+                    dr["referencia"] = oSD.Referencia;
+                    ds.Tables["entsaldoc"].Rows.Add(dr);
+                }
+                reporte.Subreports[0].SetDataSource(ds.Tables["entsaldoc"]);
+                #region Datos de la entrada
+                reporte.SetParameterValue("direccion_bodega", oS.PBodega.Direccion);
+                reporte.SetParameterValue("bodega", oS.PBodega.Nombre);
+                reporte.SetParameterValue("cortina", oS.PCortina.Nombre);
+                reporte.SetParameterValue("cliente", oS.PCliente.Razon);
+                reporte.SetParameterValue("folio", oS.Folio);
+                reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("hora", oS.Hora_salida.ToString());
+                reporte.SetParameterValue("destino", oS.Destino);
+                //reporte.SetParameterValue("tipoEntrada", "Entrada Única");
+                #endregion
+
+                #region Datos de la mercancia
+                reporte.SetParameterValue("documento", oS.Referencia);
+                reporte.SetParameterValue("mercancia", oS.Mercancia);
+                reporte.SetParameterValue("pallet", oS.No_pallet.ToString());
+                reporte.SetParameterValue("bulto", oS.No_bulto.ToString());
+                reporte.SetParameterValue("pieza", oS.No_pieza.ToString());
+
+                reporte.SetParameterValue("unica", "---");
+                reporte.SetParameterValue("parcial", "---");
+                reporte.SetParameterValue("no_parcial", "---");
+                reporte.SetParameterValue("es_ultima", "---");
+                string NoSalida = string.Empty;
+                if (oS.PSalPar != null && oS.PSalPar.Id > 0)
+                {
+                    reporte.SetParameterValue("parcial", "X");
+                    reporte.SetParameterValue("no_parcial", oS.PSalPar.No_salida.ToString());
+                    if (oS.PSalPar.Es_ultima)
+                        reporte.SetParameterValue("es_ultima", "X");
+                }
+                else
+                    reporte.SetParameterValue("unica", "X");
+                #endregion
+
+                #region Documentos Salida
+                StringBuilder sbCompartida = new StringBuilder();
+                int saltoCompartida = 1;
+                foreach (Salida_compartida oSC in oS.PLstSalComp)
+                {
+                    if (string.Compare(oS.Referencia, oSC.Referencia) != 0)
+                    {
+                        sbCompartida.Append(oSC.Referencia);
+                        if (saltoCompartida % 2 == 0)
+                        {
+                            sbCompartida.AppendLine();
+                            saltoCompartida = 0;
+                        }
+                        else
+                            sbCompartida.Append(", ");
+                        saltoCompartida++;
+                    }
+                }
+                
+                if (sbCompartida.Length == 0)
+                    reporte.SetParameterValue("compartidas", "NO COMPARTIDA");
+                else
+                    reporte.SetParameterValue("compartidas", sbCompartida.ToString().Substring(0, sbCompartida.ToString().Length - 2));
+
+                #endregion
+
+                #region Datos del Transporte
+
+                StringBuilder sbET = new StringBuilder();
+
+                sbET.Append(oS.PTransporte.Nombre + ", Tipo: " + oS.PTransporteTipo.Nombre);
+
+                string strPlaca = string.Empty;
+                if (string.Compare(oS.Placa, "N.A.") != 0)
+                {
+                    strPlaca = "Placa: " + oS.Placa;
+                    if (string.Compare(oS.Caja, "N.A.") != 0)
+                        strPlaca += ", Caja: " + oS.Caja;
+                    if (string.Compare(oS.Caja1, "N.A.") != 0)
+                    {
+                        strPlaca += ", Cont. 1: " + oS.Caja1;
+                        if (string.Compare(oS.Caja2, "N.A.") != 0)
+                            strPlaca += ", Cont. 2: " + oS.Caja2;
+                    }
+                    sbET.Append(" " + strPlaca);
+                }
+
+                reporte.SetParameterValue("transporte", sbET.ToString());
+                reporte.SetParameterValue("sello", oS.Sello);
+                reporte.SetParameterValue("custodia", oS.PCustodia.Nombre);
+
+                #endregion
+
+                #region Otros Datos
+
+                //reporte.SetParameterValue("horaDescarga", oS.Hora_descarga.ToString());
+                //reporte.SetParameterValue("tipoDescarga", oS.PTipoCarga.Nombre);
+                reporte.SetParameterValue("observaciones", oS.Observaciones.Length == 0 ? "--- Sin observaciones ---" : oS.Observaciones);
+
+                #endregion
+
+                #region Firmas
+
+                reporte.SetParameterValue("operador", oS.Operador);
+                reporte.SetParameterValue("usuario", oS.PUsuario.Nombre);
+                reporte.SetParameterValue("vigilante", oS.Vigilante);
+
+                #endregion
+
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
         public static void getSalida(string FilePath, string TemplatePath, Salida oS)
         {
             try
@@ -128,22 +353,28 @@ namespace ModelCasc.report.operation
             }
         }
 
-        public static void getSalidaOC(string FilePath, string TemplatePath, Salida_orden_carga o)
+        public static void getSalidaOC(string FilePath, string[] TemplatePath, Salida_orden_carga o, DataSet ds)
         {
             try
             {
                 List<string> files = new List<string>();
                 int idSalida = 0;
+                string fileName = string.Empty;
+                Salida oS = new Salida();
                 foreach(Salida_orden_carga_rem item in o.LstRem)
                 {
                     if (idSalida != item.Id_salida)
                     {
                         idSalida = Convert.ToInt32(item.Id_salida);
-                        string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                        getSalida(fileName, TemplatePath, SalidaCtrl.getAllDataById(idSalida));
+                        fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                        oS = SalidaCtrl.getAllDataById(idSalida);
+                        getSalida(fileName, TemplatePath[0], oS, ds);
                         files.Add(fileName);
                     }
                 }
+                fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                getSalidaOCTransCondicion(fileName, TemplatePath[1], o, oS, ds);
+                files.Add(fileName);
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);
             }
@@ -536,6 +767,7 @@ namespace ModelCasc.report.operation
                 reporte.Dispose();
             }
         }
+
     }
 
     class _events : PdfPageEventHelper

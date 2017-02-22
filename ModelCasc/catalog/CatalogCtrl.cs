@@ -377,7 +377,7 @@ namespace ModelCasc.catalog
 
         #region Cliente
 
-        public static List<Cliente> ClienteGetAll()
+        public static List<Cliente> Cliente_GetAll()
         {
             List<Cliente> lst = new List<Cliente>();
             try
@@ -394,7 +394,7 @@ namespace ModelCasc.catalog
             return lst;
         }
 
-        public static Cliente ClienteGetByIdEntrada(int idEntrada)
+        public static Cliente Cliente_GetByIdEntrada(int idEntrada)
         {
             Cliente oC = new Cliente();
             try
@@ -413,6 +413,24 @@ namespace ModelCasc.catalog
 
                 throw;
             }
+            return oC;
+        }
+
+        public static Cliente Cliente_GetById(int id)
+        {
+            Cliente oC = new Cliente();
+            ClienteMng oCMng = new ClienteMng();
+            oC.Id = id;
+            oCMng.O_Cliente = oC;
+            try
+            {
+                oCMng.selById();
+            }
+            catch
+            {
+                throw;
+            }
+
             return oC;
         }
 
@@ -1175,6 +1193,25 @@ namespace ModelCasc.catalog
                 throw;
             }
             return lst;
+        }
+
+        public static Transporte_tipo Transporte_tipo_getyById(int id)
+        {
+            Transporte_tipoMng oTTMng = new Transporte_tipoMng();
+            Transporte_tipo oTT = new Transporte_tipo();
+            oTT.Id = id;
+            oTTMng.O_Transporte_tipo = oTT;
+            
+            try
+            {
+                oTTMng.selById();
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return oTT;
         }
 
         #endregion

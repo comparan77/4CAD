@@ -21,6 +21,7 @@ namespace ConsoleAppCasc.facturacion
         private List<Maniobra> _lstManiobra;
         private List<OtrosServicios> _lstOtrosServicios;
         private Emplayado _PEmplayado;
+        private Tarima _PTarima;
         private double _total;
 
         public Entrada_inventario PEntInv { get; set; }
@@ -36,6 +37,7 @@ namespace ConsoleAppCasc.facturacion
             this._lstManiobra = new List<Maniobra>();
             this._lstOtrosServicios = new List<OtrosServicios>();
             this._PEmplayado = new Emplayado();
+            this._PTarima = new Tarima();
             this._total = 0;
         }
 
@@ -52,6 +54,7 @@ namespace ConsoleAppCasc.facturacion
         public List<Maniobra> LstManiobra { get { return _lstManiobra; } set { _lstManiobra = value; } }
         public List<OtrosServicios> LstOtros { get { return _lstOtrosServicios; } set { _lstOtrosServicios = value; } }
         public Emplayado PEmplayado { get { return _PEmplayado; } set { _PEmplayado = value; } }
+        public Tarima PTarima { get { return _PTarima; } set { _PTarima = value; } }
         public double Total { get { return _total; } set { _total = value; } }
     }
 }

@@ -114,7 +114,7 @@ namespace AppCasc.operation.arribos
                     txt_talon.Text = oE.Talon;
                     ddlCustodia.SelectedValue = oE.Id_custodia.ToString();
                     txt_operador.Text = oE.Operador;
-                    txt_vigilante.Text = oE.Vigilante;
+                    ddlVigilante.SelectedItem.Text = oE.Vigilante;
 
                     fillEntradaDocumento(lstEntFo);
 
@@ -281,7 +281,7 @@ namespace AppCasc.operation.arribos
                 o.PLstEntComp = lstEntComp;
                 
                 //Vigilante
-                o.Vigilante = txt_vigilante.Text.Trim();
+                o.Vigilante = ddlVigilante.SelectedItem.Text.Trim();
 
                 //Observaciones
                 o.Observaciones = txt_observaciones.Text.Trim();
@@ -386,7 +386,7 @@ namespace AppCasc.operation.arribos
         {
             try
             {
-                hf_clientes.Value = JsonConvert.SerializeObject(CatalogCtrl.ClienteGetAll(), Formatting.Indented);
+                hf_clientes.Value = JsonConvert.SerializeObject(CatalogCtrl.Cliente_GetAll(), Formatting.Indented);
                 
                 //int idBodega = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
                 ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
@@ -402,6 +402,7 @@ namespace AppCasc.operation.arribos
                 //ddlDocumento.Items.Remove(ddlDocumento.Items.FindByValue("1"));
                 hf_id_usuario.Value = ((MstCasc)this.Master).getUsrLoged().Id.ToString();
                 ControlsMng.fillCustodia(ddlCustodia);
+                ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
             }
             catch
             {
@@ -506,6 +507,8 @@ namespace AppCasc.operation.arribos
             try
             {
                 ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedItem.Value));
+                ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
+
             }
             catch (Exception e)
             {

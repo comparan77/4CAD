@@ -354,11 +354,17 @@
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvHoraDescarga" ControlToValidate="txt_hora_descarga" ErrorMessage="Es necesario proporcionar una hora" ></asp:RequiredFieldValidator>
     <span class="hidden error">Es necesario proporcionar una hora</span>
 </div>
-<div>
+    
+    <asp:UpdatePanel runat="server" ID="upVigilante" UpdateMode="Conditional">
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="ddlBodega" EventName="SelectedIndexChanged" />
+    </Triggers>
+    <ContentTemplate>
     <label>Vigilante:</label>
-    <asp:TextBox CssClass="txtMedium" runat="server" ID="txt_vigilante" ToolTip="Nombre del vigilante en turno que supervisa la descarga"></asp:TextBox>
-    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvVigilante" ControlToValidate="txt_vigilante" ErrorMessage="Es necesario proporcionar vigilante" ></asp:RequiredFieldValidator>
-</div>
+    <asp:DropDownList runat="server" ID="ddlVigilante" ToolTip="Nombre del vigilante en turno que supervisa la descarga"></asp:DropDownList>
+    <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="RequiredFieldValidator2" ControlToValidate="ddlVigilante" InitialValue="" ErrorMessage="Es necesario seleccionar un vigilante"></asp:RequiredFieldValidator>
+    </ContentTemplate>
+    </asp:UpdatePanel>
 <div>
     <label>Observaciones:</label>
     <asp:TextBox runat="server" TextMode="MultiLine" Rows="4" Columns="1" ID="txt_observaciones" ToolTip="Anotaciones de lo observado en la mercancía y que pudiera ser relevante."></asp:TextBox>

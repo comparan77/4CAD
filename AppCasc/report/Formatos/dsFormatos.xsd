@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsFormatos" targetNamespace="http://tempuri.org/dsFormatos.xsd" xmlns:mstns="http://tempuri.org/dsFormatos.xsd" xmlns="http://tempuri.org/dsFormatos.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsFormatos" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsFormatos" msprop:Generator_UserDSName="dsFormatos">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="entsaldoc" msprop:Generator_TableClassName="entsaldocDataTable" msprop:Generator_TableVarName="tableentsaldoc" msprop:Generator_RowChangedName="entsaldocRowChanged" msprop:Generator_TablePropName="entsaldoc" msprop:Generator_RowDeletingName="entsaldocRowDeleting" msprop:Generator_RowChangingName="entsaldocRowChanging" msprop:Generator_RowEvHandlerName="entsaldocRowChangeEventHandler" msprop:Generator_RowDeletedName="entsaldocRowDeleted" msprop:Generator_RowClassName="entsaldocRow" msprop:Generator_UserTableName="entsaldoc" msprop:Generator_RowEvArgName="entsaldocRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="documento" msprop:Generator_ColumnVarNameInTable="columndocumento" msprop:Generator_ColumnPropNameInRow="documento" msprop:Generator_ColumnPropNameInTable="documentoColumn" msprop:Generator_UserColumnName="documento" type="xs:string" minOccurs="0" />
+              <xs:element name="referencia" msprop:Generator_ColumnVarNameInTable="columnreferencia" msprop:Generator_ColumnPropNameInRow="referencia" msprop:Generator_ColumnPropNameInTable="referenciaColumn" msprop:Generator_UserColumnName="referencia" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="auduniemb" msprop:Generator_TableClassName="auduniembDataTable" msprop:Generator_TableVarName="tableauduniemb" msprop:Generator_TablePropName="auduniemb" msprop:Generator_RowDeletingName="auduniembRowDeleting" msprop:Generator_RowChangingName="auduniembRowChanging" msprop:Generator_RowEvHandlerName="auduniembRowChangeEventHandler" msprop:Generator_RowDeletedName="auduniembRowDeleted" msprop:Generator_UserTableName="auduniemb" msprop:Generator_RowChangedName="auduniembRowChanged" msprop:Generator_RowEvArgName="auduniembRowChangeEvent" msprop:Generator_RowClassName="auduniembRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="categoria" msprop:Generator_ColumnVarNameInTable="columncategoria" msprop:Generator_ColumnPropNameInRow="categoria" msprop:Generator_ColumnPropNameInTable="categoriaColumn" msprop:Generator_UserColumnName="categoria" type="xs:string" minOccurs="0" />
+              <xs:element name="condicion" msprop:Generator_ColumnVarNameInTable="columncondicion" msprop:Generator_ColumnPropNameInRow="condicion" msprop:Generator_ColumnPropNameInTable="condicionColumn" msprop:Generator_UserColumnName="condicion" type="xs:string" minOccurs="0" />
+              <xs:element name="si" msprop:Generator_ColumnVarNameInTable="columnsi" msprop:Generator_ColumnPropNameInRow="si" msprop:Generator_ColumnPropNameInTable="siColumn" msprop:Generator_UserColumnName="si" type="xs:string" minOccurs="0" />
+              <xs:element name="no" msprop:Generator_ColumnVarNameInTable="columnno" msprop:Generator_ColumnPropNameInRow="no" msprop:Generator_ColumnPropNameInTable="noColumn" msprop:Generator_UserColumnName="no" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

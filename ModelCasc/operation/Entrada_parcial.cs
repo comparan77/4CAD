@@ -24,6 +24,7 @@ namespace ModelCasc.operation
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public bool Es_ultima { get { return _es_ultima; } set { _es_ultima = value; } }
         public int No_pieza_recibidas { get; set; }
+        public int No_bulto_recibido { get; set; }
         #endregion
 
         #region Constructores
