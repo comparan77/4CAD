@@ -1265,6 +1265,9 @@ namespace ModelCasc.operation
                     oSRMng.udt_pallet(trans);
                 }
 
+                Salida_orden_carga_tcMng oSOCTCMng = new Salida_orden_carga_tcMng() { O_Salida_orden_carga_tc = new Salida_orden_carga_tc() { Id_salida_orden_carga = id_salida_orden_carga } };
+                oSOCTCMng.dltByIdOC(trans);
+
                 error = "La orden de carga no puede eliminarse ya que esta cuenta con una salida.";
                 Salida_orden_cargaMng oMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = new Salida_orden_carga() { Id = id_salida_orden_carga } };
                 oMng.dlt(trans);
