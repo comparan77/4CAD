@@ -109,6 +109,9 @@ namespace ModelCasc.report.operation
 
                 bultoRecibido = oE.No_bulto_recibido;
 
+                reporte.SetParameterValue("tipoEntrada", "Única");
+                reporte.SetParameterValue("no_entrada", string.Empty);
+
                 if(oE.PEntPar !=null)
                     if (oE.PEntPar.No_entrada > 0)
                     {
