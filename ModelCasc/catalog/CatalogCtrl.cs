@@ -1147,6 +1147,23 @@ namespace ModelCasc.catalog
             }
         }
 
+        public static bool UsuarioCredencialesValidas(string email, string password)
+        {
+            bool Valida = false;
+            try
+            {
+                Usuario o = new Usuario() { Email = email };
+                UsuarioMng oMng = new UsuarioMng() { O_Usuario = o };
+                oMng.selByEmail();
+                Valida = string.Compare(password, o.Contrasenia) == 0;
+            }
+            catch
+            {
+
+            }
+            return Valida;
+        }
+
         #endregion
 
         #region Usuario bodega
