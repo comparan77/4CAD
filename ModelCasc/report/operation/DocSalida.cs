@@ -133,7 +133,7 @@ namespace ModelCasc.report.operation
                 reporte.SetParameterValue("bodega", oS.PBodega.Nombre);
                 reporte.SetParameterValue("cortina", oS.PCortina.Nombre);
                 reporte.SetParameterValue("cliente", oS.PCliente.Razon);
-                reporte.SetParameterValue("folio", oS.Folio);
+                reporte.SetParameterValue("folio", oS.Folio + oS.Folio_indice);
                 reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
                 reporte.SetParameterValue("hora", oS.Hora_salida.ToString());
                 reporte.SetParameterValue("destino", oS.Destino);
