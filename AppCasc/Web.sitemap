@@ -63,6 +63,7 @@
     </siteMapNode>
     <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super, EjecutivoAux" title="Logística">
       <siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
+      <siteMapNode url="~/operation/frmPreArribo.aspx" title="Pre-Carga"  description="Precarga de información" />
       <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
       <siteMapNode url="~/operation/frmMaquila.aspx" title="Maquila"  description="Maquila" />
       <siteMapNode url="~/operation/frmTrafico.aspx" title="Tráfico"  description="Control del Tráfico" />

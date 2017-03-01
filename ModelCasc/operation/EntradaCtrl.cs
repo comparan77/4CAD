@@ -917,6 +917,24 @@ namespace ModelCasc.operation
 
         #endregion
 
+        #region Entrada - Pre Carga
+        public static void EntradaPreCargaAdd(Entrada_pre_carga o)
+        {
+            try
+            {
+                Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng()
+                {
+                    O_Entrada_pre_carga = o
+                };
+                oMng.add();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        #endregion
+
         #region Entrada Fondeo - Control piso
 
         private static string validaDato(object dato, string tipo, bool IsRequired)
