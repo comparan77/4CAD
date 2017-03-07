@@ -5,6 +5,8 @@ using System.Web;
 using System.Text;
 using Newtonsoft.Json;
 using ModelCasc.catalog;
+using ModelCasc.operation;
+using System.IO;
 
 namespace AppCasc.handlers
 {
@@ -28,8 +30,11 @@ namespace AppCasc.handlers
             {
                 switch (operation)
                 {
-                    case "security":
+                    case "usuario":
                         response = security(context);
+                        break;
+                    case "entrada":
+                        response = entrada(context);
                         break;
                     default:
                         break;
@@ -46,12 +51,38 @@ namespace AppCasc.handlers
         {
             string response = string.Empty;
             string option = context.Request["opt"].ToString();
-            string email = context.Request["email"].ToString();
-            string pass = context.Request["pass"].ToString();
+            //string email = context.Request["email"].ToString();
+            //string pass = context.Request["pass"].ToString();
             switch (option)
             {
-                case "login":
-                    response = JsonConvert.SerializeObject(CatalogCtrl.UsuarioCredencialesValidas(email, pass));
+                case "CredencialesValidas":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Usuario o = JsonConvert.DeserializeObject<Usuario>(jsonData);
+                    response = JsonConvert.SerializeObject(CatalogCtrl.UsuarioCredencialesValidas(o.Email, o.Contrasenia));
+                    break;
+            }
+
+            return response;
+        }
+
+        private string entrada(HttpContext context)
+        {
+            string response = string.Empty;
+            string referencia = string.Empty;
+            string option = context.Request["opt"].ToString();
+            //string referencia = context.Request["referencia"].ToString();
+            switch (option)
+            {
+                case "precargaGetByRef":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    referencia = jsonData.ToString();
+                    response = JsonConvert.SerializeObject(EntradaCtrl.EntradaPreCargaGetByRef(referencia));
+                    break;
+                case "AudUniAdd":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Entrada_aud_uni o = JsonConvert.DeserializeObject<Entrada_aud_uni>(jsonData);
+                    EntradaCtrl.EntradaAudUniAdd(o);
+                    response = JsonConvert.SerializeObject("Se guardo el registro correctamente");
                     break;
             }
 

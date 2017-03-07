@@ -933,6 +933,70 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        public static Entrada_pre_carga EntradaPreCargaGetByRef(string referencia)
+        {
+            Entrada_pre_carga o = new Entrada_pre_carga() { Referencia = referencia };
+            try
+            {
+                Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng() { O_Entrada_pre_carga = o };
+                oMng.selByRef();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return o;
+        }
+
+        #endregion
+
+        #region Entrada - Auditoria - Unidades
+
+        public static void EntradaAudUniAdd(Entrada_aud_uni o)
+        {
+            IDbTransaction trans = null;
+            string filePath = string.Empty;
+            string fileName = string.Empty;
+            try
+            {
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+
+                Entrada_aud_uniMng oMng = new Entrada_aud_uniMng() { O_Entrada_aud_uni = o };
+                oMng.add(trans);
+
+                Entrada_aud_uni_filesMng oMngFiles = new Entrada_aud_uni_filesMng();
+                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "/rpt/entradas_aud/" + o.Referencia + "/");
+                for(int indEAUF = 0; indEAUF < o.PLstEntAudUniFiles.Count ; indEAUF ++)
+                {
+                    Entrada_aud_uni_files itemFile = o.PLstEntAudUniFiles[indEAUF];
+                    itemFile.Id_entrada_aud_uni = o.Id;
+
+                    var bytes = Convert.FromBase64String(itemFile.Path);
+                    fileName = indEAUF + ".JPEG";
+                    filePath = Path.Combine(filePath, fileName);
+                    using (var imageFile = new FileStream(filePath, FileMode.Create))
+                    {
+                        imageFile.Write(bytes, 0, bytes.Length);
+                        imageFile.Flush();
+                    }
+                    itemFile.Path = filePath;
+                    oMngFiles.O_Entrada_aud_uni_files = itemFile;
+                    oMngFiles.add(trans);
+                }
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
         #endregion
 
         #region Entrada Fondeo - Control piso

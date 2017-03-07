@@ -4,7 +4,57 @@
 
     <script src="js/jquery.updatepanel.js" type="text/javascript"></script>
     <script type="text/javascript">
+
+        function Common() { }
+
+        Common.fetchJSONFile = function (path, callback, type, jsonData) {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open(type, path, true);
+            httpRequest.setRequestHeader("Content-type", "application/json");
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {
+                        var data = JSON.parse(httpRequest.responseText);
+                        if (callback) callback(data);
+                    }
+                }
+            };
+            httpRequest.send(jsonData);
+        }
+
+        Common.UsuarioCredencialesValidas = function (obj, callback) {
+            var url = 'http://localhost:52289/handlers/CAEApp.ashx?op=usuario&opt=CredencialesValidas';
+            try {
+                var opts = '';
+                Common.fetchJSONFile(
+            url,
+            function (data) {
+                callback(data);
+            },
+            'POST',
+            JSON.stringify(obj)
+        );
+            } catch (error) {
+                alert(error);
+            }
+        }
+
+        var BeanUsuario = function(email, contrasenia) {
+            this.Id = 0;
+            this.Nombre = '';
+            this.Clave = '';
+            this.Email = email;
+            this.Contrasenia = contrasenia;
+            this.Id_bodega = 0;
+            this.Id_rol = 0;
+            this.IsActive = 0;
+        }
+
         $(document).ready(function () {
+            var oUsuario = new BeanUsuario('', '');
+            Common.UsuarioCredencialesValidas(oUsuario, function (data) {
+                alert(data.Id);
+            });
 
             $('#ctl00_body_up_Calendar').panelReady(function () {
                 $('.arrowSelWeek').each(function () {

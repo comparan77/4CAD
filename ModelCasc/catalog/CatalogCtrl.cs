@@ -1147,21 +1147,22 @@ namespace ModelCasc.catalog
             }
         }
 
-        public static bool UsuarioCredencialesValidas(string email, string password)
+        public static Usuario UsuarioCredencialesValidas(string email, string password)
         {
-            bool Valida = false;
+            Usuario o = new Usuario() { Email = email };
             try
             {
-                Usuario o = new Usuario() { Email = email };
+                
                 UsuarioMng oMng = new UsuarioMng() { O_Usuario = o };
                 oMng.selByEmail();
-                Valida = string.Compare(password, o.Contrasenia) == 0;
+                if (string.Compare(password, o.Contrasenia) != 0)
+                    o = new Usuario();
             }
             catch
             {
 
             }
-            return Valida;
+            return o;
         }
 
         #endregion
@@ -1230,6 +1231,23 @@ namespace ModelCasc.catalog
             }
             return oTT;
         }
+
+        public static List<Transporte_tipo> TransporteTipoGet()
+        {
+            List<Transporte_tipo> lst = new List<Transporte_tipo>();
+            try
+            {
+                Transporte_tipoMng oMng = new Transporte_tipoMng();
+                oMng.fillLst();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+    
 
         #endregion
 
