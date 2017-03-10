@@ -918,6 +918,25 @@ namespace ModelCasc.operation
         #endregion
 
         #region Entrada - Pre Carga
+
+        public static Entrada_pre_carga EntradaPreCargaGetAllById(int id)
+        {
+            Entrada_pre_carga o = new Entrada_pre_carga() { Id = id };
+            try
+            {
+                Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng()
+                {
+                    O_Entrada_pre_carga = o
+                };
+                oMng.GetAllById();
+            }
+            catch 
+            {
+                throw;
+            }
+            return o;
+        }
+
         public static void EntradaPreCargaAdd(Entrada_pre_carga o)
         {
             try
@@ -954,7 +973,7 @@ namespace ModelCasc.operation
 
         #region Entrada - Auditoria - Unidades
 
-        public static void EntradaAudUniAdd(Entrada_aud_uni o)
+        public static void EntradaAudUniAdd(Entrada_aud_uni o, string path)
         {
             IDbTransaction trans = null;
             string filePath = string.Empty;
@@ -968,15 +987,15 @@ namespace ModelCasc.operation
                 oMng.add(trans);
 
                 Entrada_aud_uni_filesMng oMngFiles = new Entrada_aud_uni_filesMng();
-                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "/rpt/entradas_aud/" + o.Referencia + "/");
-                for(int indEAUF = 0; indEAUF < o.PLstEntAudUniFiles.Count ; indEAUF ++)
+                System.IO.Directory.CreateDirectory(path);
+                for (int indEAUF = 0; indEAUF < o.PLstEntAudUniFiles.Count; indEAUF++)
                 {
                     Entrada_aud_uni_files itemFile = o.PLstEntAudUniFiles[indEAUF];
                     itemFile.Id_entrada_aud_uni = o.Id;
 
                     var bytes = Convert.FromBase64String(itemFile.Path);
                     fileName = indEAUF + ".JPEG";
-                    filePath = Path.Combine(filePath, fileName);
+                    filePath = Path.Combine(path, fileName);
                     using (var imageFile = new FileStream(filePath, FileMode.Create))
                     {
                         imageFile.Write(bytes, 0, bytes.Length);
@@ -986,6 +1005,8 @@ namespace ModelCasc.operation
                     oMngFiles.O_Entrada_aud_uni_files = itemFile;
                     oMngFiles.add(trans);
                 }
+
+                ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "activity_log", Tabla_pk = o.Id, Actividad = "Captura de Auditoria de Unidades" }, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
@@ -2136,5 +2157,23 @@ namespace ModelCasc.operation
             
             return fullPedimento;
         }
+
+        #region Activity log
+
+        internal static void ActivityLogAdd(Activity_log o, IDbTransaction trans)
+        {
+            try
+            {
+                Activity_logMng oMng = new Activity_logMng() { O_Activity_log = o };
+                oMng.add(trans);
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
+        #endregion
     }
 }

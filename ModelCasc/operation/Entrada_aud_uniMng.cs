@@ -34,6 +34,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oEntrada_aud_uni.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_entrada_pre_carga", DbType.Int32, this._oEntrada_aud_uni.Id_entrada_pre_carga);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo", DbType.Int32, this._oEntrada_aud_uni.Id_transporte_tipo);
+            GenericDataAccess.AddInParameter(this.comm, "?P_informa", DbType.String, this._oEntrada_aud_uni.Informa);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oEntrada_aud_uni.Referencia);
             GenericDataAccess.AddInParameter(this.comm, "?P_operador", DbType.String, this._oEntrada_aud_uni.Operador);
             GenericDataAccess.AddInParameter(this.comm, "?P_placa", DbType.String, this._oEntrada_aud_uni.Placa);
@@ -43,9 +44,10 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_sello", DbType.String, this._oEntrada_aud_uni.Sello);
             GenericDataAccess.AddInParameter(this.comm, "?P_sello_roto", DbType.Boolean, this._oEntrada_aud_uni.Sello_roto);
             GenericDataAccess.AddInParameter(this.comm, "?P_acta_informativa", DbType.String, this._oEntrada_aud_uni.Acta_informativa);
+            GenericDataAccess.AddInParameter(this.comm, "?P_vigilante", DbType.String, this._oEntrada_aud_uni.Vigilante);
         }
 
-        protected void BindByDataRow(DataRow dr, Entrada_aud_uni o)
+        public void BindByDataRow(DataRow dr, Entrada_aud_uni o)
         {
             try
             {
@@ -64,6 +66,7 @@ namespace ModelCasc.operation
                     o.Id_transporte_tipo = entero;
                     entero = 0;
                 }
+                o.Informa = dr["informa"].ToString();
                 o.Referencia = dr["referencia"].ToString();
                 o.Operador = dr["operador"].ToString();
                 o.Placa = dr["placa"].ToString();
@@ -78,6 +81,13 @@ namespace ModelCasc.operation
                     logica = false;
                 }
                 o.Acta_informativa = dr["acta_informativa"].ToString();
+                if (dr["Fecha"] != DBNull.Value)
+                {
+                    DateTime.TryParse(dr["Fecha"].ToString(), out fecha);
+                    o.Fecha = fecha;
+                    fecha = default(DateTime);
+                }
+                o.Vigilante = dr["vigilante"].ToString();
             }
             catch
             {

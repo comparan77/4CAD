@@ -32,6 +32,30 @@
 
 </div>
 
+<h3 id="H2" style="margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Datos Generales</h3>
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+
+<div>
+    <label>Bodega:</label>
+    <asp:DropDownList runat="server" ID="ddlBodega"></asp:DropDownList>
+</div>
+
+<div>
+    <label>Cliente:</label>
+    <asp:DropDownList runat="server" ID="ddlCliente" AutoPostBack="true" OnSelectedIndexChanged="change_cliente"></asp:DropDownList>
+</div>
+
+<asp:UpdatePanel runat="server" ID="upEjecutivo" UpdateMode="Conditional">
+<Triggers>
+    <asp:AsyncPostBackTrigger ControlID="ddlCliente" EventName="SelectedIndexChanged" />
+</Triggers>
+    <ContentTemplate>
+        <label>Ejecutivo:</label>
+        <asp:DropDownList runat="server" ID="ddlEjecutivo"></asp:DropDownList>
+        <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvEjecutivo" ControlToValidate="ddlEjecutivo" InitialValue="" ErrorMessage="Es necesario seleccionar un ejecutivo"></asp:RequiredFieldValidator>
+    </ContentTemplate>
+</asp:UpdatePanel>
+</div>
 
 <h3 id="H1" style="margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Datos de la Unidad</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">

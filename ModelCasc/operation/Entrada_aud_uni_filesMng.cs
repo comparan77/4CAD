@@ -32,19 +32,19 @@ namespace ModelCasc.operation
 		{
 			GenericDataAccess.AddInParameter(this.comm,"?P_opcion", DbType.Int32, opcion);
 			GenericDataAccess.AddInOutParameter(this.comm,"?P_id", DbType.Int32, this._oEntrada_aud_uni_files.Id);
-			GenericDataAccess.AddInParameter(this.comm,"?P_id_entrada_aud_uni", DbType.Int32, this._oEntrada_aud_uni_files.Id_entrada_aud_uni);
+			GenericDataAccess.AddInParameter(this.comm,"?P_id_entrada_aud_uni", DbType.Int32, this._oEntrada_aud_uni_files.Id_entrada_aud_uni);
 			GenericDataAccess.AddInParameter(this.comm,"?P_path", DbType.String, this._oEntrada_aud_uni_files.Path);
 		}
 
-		protected void BindByDataRow(DataRow dr, Entrada_aud_uni_files o)
+		public void BindByDataRow(DataRow dr, Entrada_aud_uni_files o)
 		{
 			try {
 				int.TryParse(dr["id"].ToString(), out entero);
 				o.Id = entero;
 				entero = 0;
-				if (dr["id_entrada_aud_uni"] != DBNull.Value)
+				if (dr["id_entrada_aud_uni"] != DBNull.Value)
 				{
-					int.TryParse(dr["id_entrada_aud_uni"].ToString(), out entero);
+					int.TryParse(dr["id_entrada_aud_uni"].ToString(), out entero);
 					o.Id_entrada_aud_uni = entero;
 					entero = 0;
 				}

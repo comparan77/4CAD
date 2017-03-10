@@ -164,6 +164,7 @@ namespace ModelCasc.catalog
                     Cliente_ejecutivo o = new Cliente_ejecutivo();
                     BindByDataRow(dr, o);
                     o.Email = dr["email"].ToString();
+                    o.Nombre = dr["nombre"].ToString();
                     this._lst.Add(o);
                 }
             }

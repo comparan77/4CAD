@@ -49,6 +49,9 @@ namespace AppCasc.handlers
                     case "transporte_tipo":
                         response = JsonConvert.SerializeObject(CatalogCtrl.TransporteTipoGet());
                         break;
+                    case "vigilante":
+                        response = JsonConvert.SerializeObject(CatalogCtrl.vigilanteGetByBodega(Convert.ToInt32(context.Request["key"])));
+                        break;
                     default:
                         break;
                 }

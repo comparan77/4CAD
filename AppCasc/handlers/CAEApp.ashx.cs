@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using ModelCasc.catalog;
 using ModelCasc.operation;
 using System.IO;
+using ModelCasc.report.operation;
 
 namespace AppCasc.handlers
 {
@@ -71,20 +72,33 @@ namespace AppCasc.handlers
             string referencia = string.Empty;
             string option = context.Request["opt"].ToString();
             //string referencia = context.Request["referencia"].ToString();
-            switch (option)
+            try
             {
-                case "precargaGetByRef":
-                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    referencia = jsonData.ToString();
-                    response = JsonConvert.SerializeObject(EntradaCtrl.EntradaPreCargaGetByRef(referencia));
-                    break;
-                case "AudUniAdd":
-                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    Entrada_aud_uni o = JsonConvert.DeserializeObject<Entrada_aud_uni>(jsonData);
-                    EntradaCtrl.EntradaAudUniAdd(o);
-                    response = JsonConvert.SerializeObject("Se guardo el registro correctamente");
-                    break;
+                switch (option)
+                {
+                    case "precargaGetByRef":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        referencia = jsonData.ToString();
+                        response = JsonConvert.SerializeObject(EntradaCtrl.EntradaPreCargaGetByRef(referencia));
+                        break;
+                    case "AudUniAdd":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        Entrada_aud_uni o = JsonConvert.DeserializeObject<Entrada_aud_uni>(jsonData);
+                        if (o.PLstEntAudUniFiles == null)
+                            o.PLstEntAudUniFiles = new List<Entrada_aud_uni_files>();
+                        string path = Path.Combine(HttpContext.Current.Server.MapPath("~/rpt/entradas_aud/"), o.Referencia + @"\");
+                        string TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/casc028.rpt");
+                        EntradaCtrl.EntradaAudUniAdd(o, path);
+                        DocFormatos.getCasc028(Path.Combine(path, "casc028.pdf"), TemplatePath, EntradaCtrl.EntradaPreCargaGetAllById(o.Id_entrada_pre_carga)); 
+                        response = JsonConvert.SerializeObject("Se guardo el registro correctamente");
+                        break;
+                }
             }
+            catch
+            {
+                throw;
+            }
+            
 
             return response;
         }

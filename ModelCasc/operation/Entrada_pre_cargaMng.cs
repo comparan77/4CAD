@@ -33,6 +33,9 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oEntrada_pre_carga.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_tipo", DbType.Int32, this._oEntrada_pre_carga.Id_transporte_tipo);
+            GenericDataAccess.AddInParameter(this.comm, "?P_bodega", DbType.String, this._oEntrada_pre_carga.Bodega);
+            GenericDataAccess.AddInParameter(this.comm, "?P_cliente", DbType.String, this._oEntrada_pre_carga.Cliente);
+            GenericDataAccess.AddInParameter(this.comm, "?P_ejecutivo", DbType.String, this._oEntrada_pre_carga.Ejecutivo);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oEntrada_pre_carga.Referencia);
             GenericDataAccess.AddInParameter(this.comm, "?P_operador", DbType.String, this._oEntrada_pre_carga.Operador);
             GenericDataAccess.AddInParameter(this.comm, "?P_placa", DbType.String, this._oEntrada_pre_carga.Placa);
@@ -56,6 +59,9 @@ namespace ModelCasc.operation
                     o.Id_transporte_tipo = entero;
                     entero = 0;
                 }
+                o.Bodega = dr["bodega"].ToString();
+                o.Cliente = dr["cliente"].ToString();
+                o.Ejecutivo = dr["ejecutivo"].ToString();
                 o.Referencia = dr["referencia"].ToString();
                 o.Operador = dr["operador"].ToString();
                 o.Placa = dr["placa"].ToString();
@@ -181,8 +187,43 @@ namespace ModelCasc.operation
             }
         }
 
-        #endregion
+        internal void GetAllById()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_pre_carga");
+                addParameters(6);
+                DataSet ds = GenericDataAccess.ExecuteMultSelectCommand(comm);
+                this.dt = ds.Tables[0];
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oEntrada_pre_carga);
 
-        
+                    DataRow drAudUni = ds.Tables[1].Rows[0];
+                    Entrada_aud_uni oEAU = new Entrada_aud_uni();
+                    new Entrada_aud_uniMng().BindByDataRow(drAudUni, oEAU);
+                    this.O_Entrada_pre_carga.PEntAudUni = oEAU;
+
+                    this.O_Entrada_pre_carga.PEntAudUni.PLstEntAudUniFiles = new List<Entrada_aud_uni_files>();
+                    foreach (DataRow drEAUF in ds.Tables[2].Rows)
+                    {
+                        Entrada_aud_uni_files oEAUF = new Entrada_aud_uni_files();
+                        new Entrada_aud_uni_filesMng().BindByDataRow(drEAUF, oEAUF);
+                        this.O_Entrada_pre_carga.PEntAudUni.PLstEntAudUniFiles.Add(oEAUF);
+                    }
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
     }
 }

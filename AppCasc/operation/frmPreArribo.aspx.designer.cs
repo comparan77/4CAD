@@ -76,6 +76,51 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.Panel pnl_right_data;
         
         /// <summary>
+        /// ddlBodega control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlBodega;
+        
+        /// <summary>
+        /// ddlCliente control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCliente;
+        
+        /// <summary>
+        /// upEjecutivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upEjecutivo;
+        
+        /// <summary>
+        /// ddlEjecutivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEjecutivo;
+        
+        /// <summary>
+        /// rfvEjecutivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEjecutivo;
+        
+        /// <summary>
         /// txt_operador control.
         /// </summary>
         /// <remarks>

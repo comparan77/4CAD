@@ -5,12 +5,13 @@ using System.Text;
 
 namespace ModelCasc.operation
 {
-    public class Entrada_aud_uni
+    public class Entrada_aud_uni :UsrActivity
     {
         #region Campos
         protected int _id;
         protected int _id_entrada_pre_carga;
         protected int _id_transporte_tipo;
+        protected string _informa;
         protected string _referencia;
         protected string _operador;
         protected string _placa;
@@ -20,12 +21,15 @@ namespace ModelCasc.operation
         protected string _sello;
         protected bool _sello_roto;
         protected string _acta_informativa;
+        protected DateTime _fecha;
+        protected string _vigilante;
         #endregion
 
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
         public int Id_entrada_pre_carga { get { return _id_entrada_pre_carga; } set { _id_entrada_pre_carga = value; } }
         public int Id_transporte_tipo { get { return _id_transporte_tipo; } set { _id_transporte_tipo = value; } }
+        public string Informa { get { return _informa; } set { _informa = value; } }
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public string Operador { get { return _operador; } set { _operador = value; } }
         public string Placa { get { return _placa; } set { _placa = value; } }
@@ -35,6 +39,8 @@ namespace ModelCasc.operation
         public string Sello { get { return _sello; } set { _sello = value; } }
         public bool Sello_roto { get { return _sello_roto; } set { _sello_roto = value; } }
         public string Acta_informativa { get { return _acta_informativa; } set { _acta_informativa = value; } }
+        public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
+        public string Vigilante { get { return _vigilante; } set { _vigilante = value; } }
         public List<Entrada_aud_uni_files> PLstEntAudUniFiles { get; set; }
         #endregion
 
@@ -43,6 +49,7 @@ namespace ModelCasc.operation
         {
             this._id_entrada_pre_carga = 0;
             this._id_transporte_tipo = 0;
+            this._informa = String.Empty;
             this._referencia = String.Empty;
             this._operador = String.Empty;
             this._placa = String.Empty;
@@ -52,7 +59,9 @@ namespace ModelCasc.operation
             this._sello = String.Empty;
             this._sello_roto = false;
             this._acta_informativa = String.Empty;
+            this._vigilante = String.Empty;
         }
         #endregion
+
     }
 }

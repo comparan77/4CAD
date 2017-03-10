@@ -1292,5 +1292,24 @@ namespace ModelCasc.catalog
 
             return Csv + "]";
         }
+
+        #region Vigilancia
+        public static List<Vigilante> vigilanteGetByBodega(int id_bodega)
+        {
+            List<Vigilante> lst = new List<Vigilante>();
+            try
+            {
+                VigilanteMng oMng = new VigilanteMng() { O_Vigilante = new Vigilante() { Id_bodega = id_bodega } };
+                oMng.fillLstByBodega();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
     }
 }

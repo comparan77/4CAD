@@ -6,15 +6,32 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ModelCasc.operation;
 using ModelCasc.webApp;
+using ModelCasc.catalog;
 
 namespace AppCasc.operation
 {
     public partial class frmPreArribo : System.Web.UI.Page
     {
+        private void fillEjecutivoByIdCliente(int id_cliente)
+        {
+            try
+            {
+                ControlsMng.fillEjecutivoByClienteGpo(ddlEjecutivo, id_cliente);
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
         private void fillControls()
         {
             try
             {
+                ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
+                ControlsMng.fillCliente(ddlCliente);
+                fillEjecutivoByIdCliente(Convert.ToInt32(ddlCliente.SelectedValue));
                 ControlsMng.fillTipoTransporte(ddlTipo_Transporte);
             }
             catch
@@ -55,6 +72,20 @@ namespace AppCasc.operation
             o.Sello = txt_sello.Text.Trim().ToUpper();
             o.Observaciones = txt_observaciones.Text.Trim().ToUpper();
 
+            o.Bodega = ddlBodega.SelectedItem.Text;
+            o.Ejecutivo = ddlEjecutivo.SelectedItem.Text;
+            try
+            {
+                int.TryParse(ddlCliente.SelectedValue, out numero);
+                o.Cliente = CatalogCtrl.Cliente_GetById(numero).Razon;
+                numero = 0;
+            }
+            catch
+            {
+                throw;
+            }
+           
+
             return o;
         }
 
@@ -69,6 +100,18 @@ namespace AppCasc.operation
                 {
                     ((MstCasc)this.Master).setError = e.Message;
                 }
+        }
+
+        protected void change_cliente(object sender, EventArgs args)
+        {
+            try
+            {
+                fillEjecutivoByIdCliente(Convert.ToInt32(ddlCliente.SelectedValue));
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
         }
 
         protected void validar_referencia(object sender, EventArgs args)

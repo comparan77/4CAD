@@ -10,6 +10,9 @@ namespace ModelCasc.operation
         #region Campos
         protected int _id;
         protected int _id_transporte_tipo;
+        protected string _bodega;
+        protected string _cliente;
+        protected string _ejecutivo;
         protected string _referencia;
         protected string _operador;
         protected string _placa;
@@ -23,6 +26,9 @@ namespace ModelCasc.operation
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
         public int Id_transporte_tipo { get { return _id_transporte_tipo; } set { _id_transporte_tipo = value; } }
+        public string Bodega { get { return _bodega; } set { _bodega = value; } }
+        public string Cliente { get { return _cliente; } set { _cliente = value; } }
+        public string Ejecutivo { get { return _ejecutivo; } set { _ejecutivo = value; } }
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public string Operador { get { return _operador; } set { _operador = value; } }
         public string Placa { get { return _placa; } set { _placa = value; } }
@@ -31,12 +37,16 @@ namespace ModelCasc.operation
         public string Caja2 { get { return _caja2; } set { _caja2 = value; } }
         public string Sello { get { return _sello; } set { _sello = value; } }
         public string Observaciones { get { return _observaciones; } set { _observaciones = value; } }
+        public Entrada_aud_uni PEntAudUni { get; set; }
         #endregion
 
         #region Constructores
         public Entrada_pre_carga()
         {
             this._id_transporte_tipo = 0;
+            this._bodega = String.Empty;
+            this._cliente = String.Empty;
+            this._ejecutivo = String.Empty;
             this._referencia = String.Empty;
             this._operador = String.Empty;
             this._placa = String.Empty;
