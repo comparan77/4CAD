@@ -356,9 +356,17 @@ namespace ModelCasc.operation
         /// </summary>
         public void PartialCancel()
         {
-            this.comm = GenericDataAccess.CreateCommandSP("sp_Salida");
-            addParameters(4);
-            GenericDataAccess.ExecuteNonQuery(this.comm);
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida");
+                addParameters(4);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+            
         }
 
         /// <summary>

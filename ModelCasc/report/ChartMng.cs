@@ -96,6 +96,10 @@ namespace ModelCasc.report
             FileStream fs = null;
             try
             {
+                if ((File.Exists(path)))
+                {
+                    File.Delete(path);
+                }
                 fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
                 StreamWriter sw = new StreamWriter(fs);
 
