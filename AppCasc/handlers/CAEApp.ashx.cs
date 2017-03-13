@@ -8,6 +8,7 @@ using ModelCasc.catalog;
 using ModelCasc.operation;
 using System.IO;
 using ModelCasc.report.operation;
+using AppCasc.report.Formatos;
 
 namespace AppCasc.handlers
 {
@@ -20,6 +21,7 @@ namespace AppCasc.handlers
         string referencia = string.Empty;
         string jsonData = string.Empty;
         int id = 0;
+        dsFormatos dsForm;
 
         public void ProcessRequest(HttpContext context)
         {
@@ -89,7 +91,8 @@ namespace AppCasc.handlers
                         string path = Path.Combine(HttpContext.Current.Server.MapPath("~/rpt/entradas_aud/"), o.Referencia + @"\");
                         string TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/casc028.rpt");
                         EntradaCtrl.EntradaAudUniAdd(o, path);
-                        DocFormatos.getCasc028(Path.Combine(path, "casc028.pdf"), TemplatePath, EntradaCtrl.EntradaPreCargaGetAllById(o.Id_entrada_pre_carga)); 
+                        dsForm = new dsFormatos();
+                        DocFormatos.getCasc028(Path.Combine(path, "casc028.pdf"), TemplatePath, EntradaCtrl.EntradaPreCargaGetAllById(o.Id_entrada_pre_carga), dsForm); 
                         response = JsonConvert.SerializeObject("Se guardo el registro correctamente");
                         break;
                 }
