@@ -899,9 +899,11 @@ namespace AppCasc.report.Formatos {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class casc028DataTable : global::System.Data.TypedTableBase<casc028Row> {
             
-            private global::System.Data.DataColumn columnid;
+            private global::System.Data.DataColumn columnimgLeft;
             
-            private global::System.Data.DataColumn columnimg;
+            private global::System.Data.DataColumn columnimgCenter;
+            
+            private global::System.Data.DataColumn columnimgRight;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -938,17 +940,25 @@ namespace AppCasc.report.Formatos {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn idColumn {
+            public global::System.Data.DataColumn imgLeftColumn {
                 get {
-                    return this.columnid;
+                    return this.columnimgLeft;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn imgColumn {
+            public global::System.Data.DataColumn imgCenterColumn {
                 get {
-                    return this.columnimg;
+                    return this.columnimgCenter;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn imgRightColumn {
+                get {
+                    return this.columnimgRight;
                 }
             }
             
@@ -989,11 +999,12 @@ namespace AppCasc.report.Formatos {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public casc028Row Addcasc028Row(int id, byte[] img) {
+            public casc028Row Addcasc028Row(byte[] imgLeft, byte[] imgCenter, byte[] imgRight) {
                 casc028Row rowcasc028Row = ((casc028Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        id,
-                        img};
+                        imgLeft,
+                        imgCenter,
+                        imgRight};
                 rowcasc028Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcasc028Row);
                 return rowcasc028Row;
@@ -1016,17 +1027,20 @@ namespace AppCasc.report.Formatos {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnid = base.Columns["id"];
-                this.columnimg = base.Columns["img"];
+                this.columnimgLeft = base.Columns["imgLeft"];
+                this.columnimgCenter = base.Columns["imgCenter"];
+                this.columnimgRight = base.Columns["imgRight"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnid = new global::System.Data.DataColumn("id", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnid);
-                this.columnimg = new global::System.Data.DataColumn("img", typeof(byte[]), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnimg);
+                this.columnimgLeft = new global::System.Data.DataColumn("imgLeft", typeof(byte[]), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnimgLeft);
+                this.columnimgCenter = new global::System.Data.DataColumn("imgCenter", typeof(byte[]), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnimgCenter);
+                this.columnimgRight = new global::System.Data.DataColumn("imgRight", typeof(byte[]), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnimgRight);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1367,58 +1381,86 @@ namespace AppCasc.report.Formatos {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int id {
+            public byte[] imgLeft {
                 get {
                     try {
-                        return ((int)(this[this.tablecasc028.idColumn]));
+                        return ((byte[])(this[this.tablecasc028.imgLeftColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'id\' in table \'casc028\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'imgLeft\' in table \'casc028\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecasc028.idColumn] = value;
+                    this[this.tablecasc028.imgLeftColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public byte[] img {
+            public byte[] imgCenter {
                 get {
                     try {
-                        return ((byte[])(this[this.tablecasc028.imgColumn]));
+                        return ((byte[])(this[this.tablecasc028.imgCenterColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'img\' in table \'casc028\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'imgCenter\' in table \'casc028\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecasc028.imgColumn] = value;
+                    this[this.tablecasc028.imgCenterColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsidNull() {
-                return this.IsNull(this.tablecasc028.idColumn);
+            public byte[] imgRight {
+                get {
+                    try {
+                        return ((byte[])(this[this.tablecasc028.imgRightColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'imgRight\' in table \'casc028\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecasc028.imgRightColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetidNull() {
-                this[this.tablecasc028.idColumn] = global::System.Convert.DBNull;
+            public bool IsimgLeftNull() {
+                return this.IsNull(this.tablecasc028.imgLeftColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsimgNull() {
-                return this.IsNull(this.tablecasc028.imgColumn);
+            public void SetimgLeftNull() {
+                this[this.tablecasc028.imgLeftColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetimgNull() {
-                this[this.tablecasc028.imgColumn] = global::System.Convert.DBNull;
+            public bool IsimgCenterNull() {
+                return this.IsNull(this.tablecasc028.imgCenterColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetimgCenterNull() {
+                this[this.tablecasc028.imgCenterColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsimgRightNull() {
+                return this.IsNull(this.tablecasc028.imgRightColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetimgRightNull() {
+                this[this.tablecasc028.imgRightColumn] = global::System.Convert.DBNull;
             }
         }
         
