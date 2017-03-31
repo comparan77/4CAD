@@ -917,6 +917,127 @@ namespace ModelCasc.operation
 
         #endregion
 
+        #region Entrada - Pre Carga
+
+        public static Entrada_pre_carga EntradaPreCargaGetAllById(IAuditoriaCAEApp IAud)
+        {
+            Entrada_pre_carga o = new Entrada_pre_carga() { Id = IAud.Id_fk};
+            try
+            {
+                Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng()
+                {
+                    O_Entrada_pre_carga = o
+                };
+                oMng.selById();
+                IAuditoriaCAECppMng oMngAud = IAud.Mng;
+                oMngAud.O_aud = IAud;
+                oMngAud.selByIdWithImg();
+                o.PAudOperation = IAud;
+            }
+            catch 
+            {
+                throw;
+            }
+            return o;
+        }
+
+        public static void EntradaPreCargaAdd(Entrada_pre_carga o)
+        {
+            try
+            {
+                Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng()
+                {
+                    O_Entrada_pre_carga = o
+                };
+                oMng.add();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static Entrada_pre_carga EntradaPreCargaGetByRef(string referencia)
+        {
+            Entrada_pre_carga o = new Entrada_pre_carga() { Referencia = referencia };
+            try
+            {
+                Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng() { O_Entrada_pre_carga = o };
+                oMng.selByRef();
+
+                Entrada_parcial oEP = EntradaCtrl.ParcialGetByReferencia(referencia);
+                o.PEntParcial = oEP;
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return o;
+        }
+
+        #endregion
+
+        #region Entrada - Auditoria - Unidades
+
+        
+
+        public static void EntradaAudUniAdd(Entrada_aud_uni o, string path)
+        {
+            IDbTransaction trans = null;
+            
+            try
+            {
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+
+                Entrada_aud_uniMng oMng = new Entrada_aud_uniMng() { O_Entrada_aud_uni = o };
+                oMng.add(trans);
+
+                Entrada_aud_uni_filesMng oMngFiles = new Entrada_aud_uni_filesMng();
+                CommonCtrl.AuditoriaAddImg(oMngFiles, o, trans, path);
+
+                CommonCtrl.ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "entrada_aud_uni", Tabla_pk = o.Id, Actividad = "Captura de Auditoria en entrada de Unidades" }, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void EntradaAudMerAdd(Entrada_aud_mer o, string path)
+        {
+            IDbTransaction trans = null;
+
+            try
+            {
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+
+                Entrada_aud_merMng oMng = new Entrada_aud_merMng() { O_Entrada_aud_mer = o };
+                oMng.add(trans);
+
+                Entrada_aud_mer_filesMng oMngFiles = new Entrada_aud_mer_filesMng();
+                CommonCtrl.AuditoriaAddImg(oMngFiles, o, trans, path);
+
+                CommonCtrl.ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "entrada_aud_mer", Tabla_pk = o.Id, Actividad = "Captura de Auditoria en entrada de mercancia" }, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        #endregion
+
         #region Entrada Fondeo - Control piso
 
         private static string validaDato(object dato, string tipo, bool IsRequired)

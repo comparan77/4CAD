@@ -292,5 +292,20 @@ namespace ModelCasc.webApp
             ddlVigilante.DataValueField = "id";
             ddlVigilante.DataBind();
         }
+        public static void fillEjecutivoByClienteGpo(DropDownList ddlEjecutivo, int id_cliente)
+        {
+            Cliente_ejecutivoMng oMng = new Cliente_ejecutivoMng()
+            {
+                O_Cliente_ejecutivo = new Cliente_ejecutivo()
+                {
+                    Id = id_cliente
+                }
+            };
+            oMng.fillByCliente();
+            ddlEjecutivo.DataSource = oMng.Lst;
+            ddlEjecutivo.DataTextField = "nombre";
+            ddlEjecutivo.DataValueField = "id";
+            ddlEjecutivo.DataBind();
+        }
     }
 }

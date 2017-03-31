@@ -290,5 +290,46 @@ namespace ModelCasc.catalog
         }
 
         #endregion
+
+        internal void selByEmail()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Usuario");
+                addParameters(6);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    int.TryParse(dr["id"].ToString(), out entero);
+                    this._oUsuario.Id = entero;
+                    entero = 0;
+                    this._oUsuario.Nombre = dr["nombre"].ToString();
+                    this._oUsuario.Clave = dr["clave"].ToString();
+                    this._oUsuario.Email = dr["email"].ToString();
+                    this._oUsuario.Contrasenia = dr["contrasenia"].ToString();
+                    if (dr["id_bodega"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_bodega"].ToString(), out entero);
+                        this._oUsuario.Id_bodega = entero;
+                        entero = 0;
+                    }
+                    if (dr["id_rol"] != DBNull.Value)
+                    {
+                        int.TryParse(dr["id_rol"].ToString(), out entero);
+                        this._oUsuario.Id_rol = entero;
+                        entero = 0;
+                    }
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

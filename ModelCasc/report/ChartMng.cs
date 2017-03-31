@@ -150,5 +150,33 @@ namespace ModelCasc.report
                     fs.Close();
             }
         }
+
+        public static ChartJs getUnidades(int opcion, int anio, int mes, int id_cliente, int id_bodega)
+        {
+            ChartJs o = new ChartJs();
+            DataTable dt = new DataTable();
+            o.Title = "Unidades";
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZUnidades");
+                GenericDataAccess.AddInParameter(comm, "?P_opcion", DbType.Int32, opcion);
+                GenericDataAccess.AddInParameter(comm, "?P_anio", DbType.Int32, anio);
+                GenericDataAccess.AddInParameter(comm, "?P_mes", DbType.Int32, mes);
+                GenericDataAccess.AddInParameter(comm, "?P_id_cliente", DbType.Int32, id_cliente);
+                GenericDataAccess.AddInParameter(comm, "?P_id_bodega", DbType.Int32, id_bodega);
+                dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                ChartJsData oData = new ChartJsData();
+                oData.labelX = new List<string>();
+                oData.dataX = new List<double>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    oData.labelX.Add(dr["grupo"].ToString());
+                    oData.dataX.Add(Convert.ToDouble(dr["cantidad"]));
+                }
+                o.Data = oData;
+            }
+            catch { throw; }
+            return o;
+        }
     }
 }

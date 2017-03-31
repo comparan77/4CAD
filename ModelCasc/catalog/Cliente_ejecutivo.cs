@@ -18,6 +18,7 @@ namespace ModelCasc.catalog
         public int Id_cliente_grupo { get { return _id_cliente_grupo; } set { _id_cliente_grupo = value; } }
         public int Id_usuario { get { return _id_usuario; } set { _id_usuario = value; } }
         public string Email { get; set; }
+        public string Nombre { get; set; }
         #endregion
 
         #region Constructores

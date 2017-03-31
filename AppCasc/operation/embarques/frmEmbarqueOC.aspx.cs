@@ -362,7 +362,7 @@ namespace AppCasc.operation.embarques
         {
             try
             {
-                List<Salida_orden_carga> lst = SalidaCtrl.OrdenCargaGetByFolio(txt_dato.Text.Replace(" ", "").Trim());
+                List<Salida_orden_carga> lst = SalidaCtrl.OrdenCargaGetLstByFolio(txt_dato.Text.Replace(" ", "").Trim());
                 rep_resultados.DataSource = lst;
                 rep_resultados.DataBind();
             }

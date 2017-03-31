@@ -1147,6 +1147,24 @@ namespace ModelCasc.catalog
             }
         }
 
+        public static Usuario UsuarioCredencialesValidas(string email, string password)
+        {
+            Usuario o = new Usuario() { Email = email };
+            try
+            {
+                
+                UsuarioMng oMng = new UsuarioMng() { O_Usuario = o };
+                oMng.selByEmail();
+                if (string.Compare(password, o.Contrasenia) != 0)
+                    o = new Usuario();
+            }
+            catch
+            {
+
+            }
+            return o;
+        }
+
         #endregion
 
         #region Usuario bodega
@@ -1214,6 +1232,23 @@ namespace ModelCasc.catalog
             return oTT;
         }
 
+        public static List<Transporte_tipo> TransporteTipoGet()
+        {
+            List<Transporte_tipo> lst = new List<Transporte_tipo>();
+            try
+            {
+                Transporte_tipoMng oMng = new Transporte_tipoMng();
+                oMng.fillLst();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+    
+
         #endregion
 
         #region Tarima Almacen
@@ -1257,5 +1292,24 @@ namespace ModelCasc.catalog
 
             return Csv + "]";
         }
+
+        #region Vigilancia
+        public static List<Vigilante> vigilanteGetByBodega(int id_bodega)
+        {
+            List<Vigilante> lst = new List<Vigilante>();
+            try
+            {
+                VigilanteMng oMng = new VigilanteMng() { O_Vigilante = new Vigilante() { Id_bodega = id_bodega } };
+                oMng.fillLstByBodega();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
     }
 }
