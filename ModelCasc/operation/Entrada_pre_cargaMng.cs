@@ -186,43 +186,43 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+        
+        //internal void GetAllById()
+        //{
+        //    try
+        //    {
+        //        this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_pre_carga");
+        //        addParameters(6);
+        //        DataSet ds = GenericDataAccess.ExecuteMultSelectCommand(comm);
+        //        this.dt = ds.Tables[0];
+        //        if (dt.Rows.Count == 1)
+        //        {
+        //            DataRow dr = dt.Rows[0];
+        //            BindByDataRow(dr, this._oEntrada_pre_carga);
 
-        internal void GetAllById()
-        {
-            try
-            {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_pre_carga");
-                addParameters(6);
-                DataSet ds = GenericDataAccess.ExecuteMultSelectCommand(comm);
-                this.dt = ds.Tables[0];
-                if (dt.Rows.Count == 1)
-                {
-                    DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oEntrada_pre_carga);
+        //            DataRow drAudUni = ds.Tables[1].Rows[0];
+        //            Entrada_aud_uni oEAU = new Entrada_aud_uni();
+        //            new Entrada_aud_uniMng().BindByDataRow(drAudUni, oEAU);
+        //            this.O_Entrada_pre_carga.PEntAud = oEAU;
 
-                    DataRow drAudUni = ds.Tables[1].Rows[0];
-                    Entrada_aud_uni oEAU = new Entrada_aud_uni();
-                    new Entrada_aud_uniMng().BindByDataRow(drAudUni, oEAU);
-                    this.O_Entrada_pre_carga.PEntAudUni = oEAU;
-
-                    this.O_Entrada_pre_carga.PEntAudUni.PLstEntAudUniFiles = new List<Entrada_aud_uni_files>();
-                    foreach (DataRow drEAUF in ds.Tables[2].Rows)
-                    {
-                        Entrada_aud_uni_files oEAUF = new Entrada_aud_uni_files();
-                        new Entrada_aud_uni_filesMng().BindByDataRow(drEAUF, oEAUF);
-                        this.O_Entrada_pre_carga.PEntAudUni.PLstEntAudUniFiles.Add(oEAUF);
-                    }
-                }
-                else if (dt.Rows.Count > 1)
-                    throw new Exception("Error de integridad");
-                else
-                    throw new Exception("No existe información para el registro solicitado");
-            }
-            catch
-            {
-                throw;
-            }
-        }
+        //            this.O_Entrada_pre_carga.PEntAud.PLstEntAudUniFiles = new List<Entrada_aud_uni_files>();
+        //            foreach (DataRow drEAUF in ds.Tables[2].Rows)
+        //            {
+        //                Entrada_aud_uni_files oEAUF = new Entrada_aud_uni_files();
+        //                new Entrada_aud_uni_filesMng().BindByDataRow(drEAUF, oEAUF);
+        //                this.O_Entrada_pre_carga.PEntAud.PLstEntAudUniFiles.Add(oEAUF);
+        //            }
+        //        }
+        //        else if (dt.Rows.Count > 1)
+        //            throw new Exception("Error de integridad");
+        //        else
+        //            throw new Exception("No existe información para el registro solicitado");
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //}
 
         #endregion
     }

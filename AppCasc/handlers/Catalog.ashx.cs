@@ -34,6 +34,9 @@ namespace AppCasc.handlers
             {
                 switch (catalogo)
                 {
+                    case "cliente":
+                        response = cliente(context);
+                        break;
                     case "cliente_mercancia":
                         response = clienteMercancia(context);
                         break;
@@ -61,6 +64,22 @@ namespace AppCasc.handlers
             {
                 context.Response.Write(e.Message);
             }
+        }
+
+        private string cliente(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string key = string.Empty;
+            switch (option)
+            {
+                case "getAll":
+                    response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_GetAll());
+                    break;
+                default:
+                    throw new Exception("La opción " + option + " no existe");
+            }
+            return response;
         }
 
         private string clienteVendor(HttpContext context)

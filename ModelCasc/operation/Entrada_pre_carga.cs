@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModelCasc.report.operation;
+using Newtonsoft.Json;
 
 namespace ModelCasc.operation
 {
-    public class Entrada_pre_carga
+    public class Entrada_pre_carga : ICasc028
     {
         #region Campos
         protected int _id;
@@ -37,7 +39,10 @@ namespace ModelCasc.operation
         public string Caja2 { get { return _caja2; } set { _caja2 = value; } }
         public string Sello { get { return _sello; } set { _sello = value; } }
         public string Observaciones { get { return _observaciones; } set { _observaciones = value; } }
-        public Entrada_aud_uni PEntAudUni { get; set; }
+        public IAuditoriaCAEApp PAudOperation { get; set; }
+        public Entrada_parcial PEntParcial { get; set; }
+        public int Num_entrada { get; set; }
+        public int Piezas_declaradas { get; set; }
         #endregion
 
         #region Constructores
@@ -57,5 +62,46 @@ namespace ModelCasc.operation
             this._observaciones = String.Empty;
         }
         #endregion
+
+        [JsonIgnore()]
+        public string Informa
+        {
+            get { return this.PAudOperation.Informa; }
+        }
+        [JsonIgnore()]
+        public string Lugar
+        {
+            get { return this.Bodega; }
+        }
+        [JsonIgnore()]
+        public DateTime Fecha
+        {
+            get { return this.PAudOperation.Fecha; }
+        }
+        [JsonIgnore()]
+        public string Informado
+        {
+            get { return this.Ejecutivo; }
+        }
+        [JsonIgnore()]
+        public string Relato
+        {
+            get { return this.PAudOperation.Relato; }
+        }
+        [JsonIgnore()]
+        public string Vigilancia
+        {
+            get { return this.PAudOperation.Vigilancia; }
+        }
+        [JsonIgnore()]
+        public string Testigo
+        {
+            get { return string.Empty; }
+        }
+        [JsonIgnore()]
+        public string Notificado
+        {
+            get { return this.PAudOperation.Notificado; }
+        }
     }
 }

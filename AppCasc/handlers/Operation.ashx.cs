@@ -261,7 +261,7 @@ namespace AppCasc.handlers
             {
                 case "getByFolio": //Valida referencia
                     folioOC = context.Request["folio"].ToString();
-                    response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetByFolio(folioOC));
+                    response = JsonConvert.SerializeObject(SalidaCtrl.OrdenCargaGetLstByFolio(folioOC));
                     break;
                 case "getById":
                     int.TryParse(context.Request["id_orden_carga"].ToString(), out idOc);

@@ -7,7 +7,7 @@ using Model;
 
 namespace ModelCasc.operation
 {
-    internal class Entrada_aud_uniMng: dbTable
+    internal class Entrada_aud_uniMng : dbTable, IAuditoriaCAECppMng
     {
         #region Campos
         protected Entrada_aud_uni _oEntrada_aud_uni;
@@ -17,6 +17,7 @@ namespace ModelCasc.operation
         #region Propiedades
         public Entrada_aud_uni O_Entrada_aud_uni { get { return _oEntrada_aud_uni; } set { _oEntrada_aud_uni = value; } }
         public List<Entrada_aud_uni> Lst { get { return _lst; } set { _lst = value; } }
+        public IAuditoriaCAEApp O_aud { get { return this._oEntrada_aud_uni; } set { this._oEntrada_aud_uni = (Entrada_aud_uni)value; } }
         #endregion
 
         #region Constructores
@@ -190,6 +191,39 @@ namespace ModelCasc.operation
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
                 this._oEntrada_aud_uni.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void selByIdWithImg()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_aud_uni");
+                addParameters(5);
+                DataSet ds = GenericDataAccess.ExecuteMultSelectCommand(comm);
+                this.dt = ds.Tables[0];
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oEntrada_aud_uni);
+
+                    Entrada_aud_uni_filesMng oMngFiles = new Entrada_aud_uni_filesMng();
+                    this._oEntrada_aud_uni.PLstEntAudUniFiles = new List<Entrada_aud_uni_files>();
+                    foreach(DataRow drFile in ds.Tables[1].Rows)
+                    {
+                        Entrada_aud_uni_files oFile = new Entrada_aud_uni_files();
+                        oMngFiles.BindByDataRow(drFile, oFile);
+                        this._oEntrada_aud_uni.PLstEntAudUniFiles.Add(oFile);
+                    }
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
             }
             catch
             {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace ModelCasc.operation
 {
-    public class Entrada_aud_uni :UsrActivity
+    public class Entrada_aud_uni : UsrActivity, IAuditoriaCAEApp
     {
         #region Campos
         protected int _id;
@@ -42,6 +43,33 @@ namespace ModelCasc.operation
         public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
         public string Vigilante { get { return _vigilante; } set { _vigilante = value; } }
         public List<Entrada_aud_uni_files> PLstEntAudUniFiles { get; set; }
+
+        [JsonIgnore()]
+        public int Id_fk { get { return this._id_entrada_pre_carga; } set { this._id_entrada_pre_carga = value; } }
+        [JsonIgnore()]
+        public List<IAudImage> PLstAudImg
+        {
+            get
+            {
+                return PLstEntAudUniFiles.Cast<IAudImage>().ToList();
+            }
+            set
+            {
+                PLstEntAudUniFiles = value.Cast<Entrada_aud_uni_files>().ToList();
+            }
+        }
+        [JsonIgnore()]
+        public string Relato { get { return this.Acta_informativa; } set { this.Acta_informativa = value; } }
+        [JsonIgnore()]
+        public string Vigilancia { get { return this.Vigilante; } set { this.Vigilante = value; } }
+        [JsonIgnore()]
+        public string Notificado { get { return this.Operador; } set { this.Operador = value; } }
+        public string prefixImg
+        {
+            get { return "ent_aud_uni_"; }
+        }
+        [JsonIgnore()]
+        public IAuditoriaCAECppMng Mng { get { return new Entrada_aud_uniMng(); } }
         #endregion
 
         #region Constructores
@@ -63,5 +91,11 @@ namespace ModelCasc.operation
         }
         #endregion
 
+
+
+
+
+
+        
     }
 }

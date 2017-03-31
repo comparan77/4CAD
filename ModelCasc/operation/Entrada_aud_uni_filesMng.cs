@@ -7,7 +7,7 @@ using Model;
 
 namespace ModelCasc.operation
 {
-    internal class Entrada_aud_uni_filesMng: dbTable
+    internal class Entrada_aud_uni_filesMng : dbTable, IAudImageMng
     {
         #region Campos
 		protected Entrada_aud_uni_files _oEntrada_aud_uni_files;
@@ -17,6 +17,28 @@ namespace ModelCasc.operation
 		#region Propiedades
 		public Entrada_aud_uni_files O_Entrada_aud_uni_files { get { return _oEntrada_aud_uni_files; } set { _oEntrada_aud_uni_files = value; } }
 		public List<Entrada_aud_uni_files> Lst { get { return _lst; } set { _lst = value; } }
+        IAudImage IAudImageMng.O_Aud_Img
+        {
+            get
+            {
+                return this.O_Entrada_aud_uni_files;
+            }
+            set
+            {
+                this.O_Entrada_aud_uni_files = (Entrada_aud_uni_files)value;
+            }
+        }
+        List<IAudImage> IAudImageMng.Lst
+        {
+            get
+            {
+                return this.Lst.Cast<IAudImage>().ToList();
+            }
+            set
+            {
+                this.Lst = value.Cast<Entrada_aud_uni_files>().ToList();
+            }
+        }
 		#endregion
 
 		#region Constructores
@@ -32,7 +54,7 @@ namespace ModelCasc.operation
 		{
 			GenericDataAccess.AddInParameter(this.comm,"?P_opcion", DbType.Int32, opcion);
 			GenericDataAccess.AddInOutParameter(this.comm,"?P_id", DbType.Int32, this._oEntrada_aud_uni_files.Id);
-			GenericDataAccess.AddInParameter(this.comm,"?P_id_entrada_aud_uni", DbType.Int32, this._oEntrada_aud_uni_files.Id_entrada_aud_uni);
+			GenericDataAccess.AddInParameter(this.comm,"?P_id_entrada_aud_uni", DbType.Int32, this._oEntrada_aud_uni_files.Id_operation_aud);
 			GenericDataAccess.AddInParameter(this.comm,"?P_path", DbType.String, this._oEntrada_aud_uni_files.Path);
 		}
 
@@ -45,7 +67,7 @@ namespace ModelCasc.operation
 				if (dr["id_entrada_aud_uni"] != DBNull.Value)
 				{
 					int.TryParse(dr["id_entrada_aud_uni"].ToString(), out entero);
-					o.Id_entrada_aud_uni = entero;
+					o.Id_operation_aud = entero;
 					entero = 0;
 				}
 				o.Path = dr["path"].ToString();

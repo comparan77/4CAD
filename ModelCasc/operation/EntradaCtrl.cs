@@ -919,16 +919,20 @@ namespace ModelCasc.operation
 
         #region Entrada - Pre Carga
 
-        public static Entrada_pre_carga EntradaPreCargaGetAllById(int id)
+        public static Entrada_pre_carga EntradaPreCargaGetAllById(IAuditoriaCAEApp IAud)
         {
-            Entrada_pre_carga o = new Entrada_pre_carga() { Id = id };
+            Entrada_pre_carga o = new Entrada_pre_carga() { Id = IAud.Id_fk};
             try
             {
                 Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng()
                 {
                     O_Entrada_pre_carga = o
                 };
-                oMng.GetAllById();
+                oMng.selById();
+                IAuditoriaCAECppMng oMngAud = IAud.Mng;
+                oMngAud.O_aud = IAud;
+                oMngAud.selByIdWithImg();
+                o.PAudOperation = IAud;
             }
             catch 
             {
@@ -960,6 +964,9 @@ namespace ModelCasc.operation
             {
                 Entrada_pre_cargaMng oMng = new Entrada_pre_cargaMng() { O_Entrada_pre_carga = o };
                 oMng.selByRef();
+
+                Entrada_parcial oEP = EntradaCtrl.ParcialGetByReferencia(referencia);
+                o.PEntParcial = oEP;
             }
             catch (Exception)
             {
@@ -973,11 +980,12 @@ namespace ModelCasc.operation
 
         #region Entrada - Auditoria - Unidades
 
+        
+
         public static void EntradaAudUniAdd(Entrada_aud_uni o, string path)
         {
             IDbTransaction trans = null;
-            string filePath = string.Empty;
-            string fileName = string.Empty;
+            
             try
             {
                 //Comienza la transanccion
@@ -987,26 +995,36 @@ namespace ModelCasc.operation
                 oMng.add(trans);
 
                 Entrada_aud_uni_filesMng oMngFiles = new Entrada_aud_uni_filesMng();
-                System.IO.Directory.CreateDirectory(path);
-                for (int indEAUF = 0; indEAUF < o.PLstEntAudUniFiles.Count; indEAUF++)
-                {
-                    Entrada_aud_uni_files itemFile = o.PLstEntAudUniFiles[indEAUF];
-                    itemFile.Id_entrada_aud_uni = o.Id;
+                CommonCtrl.AuditoriaAddImg(oMngFiles, o, trans, path);
 
-                    var bytes = Convert.FromBase64String(itemFile.Path);
-                    fileName = indEAUF + ".JPEG";
-                    filePath = Path.Combine(path, fileName);
-                    using (var imageFile = new FileStream(filePath, FileMode.Create))
-                    {
-                        imageFile.Write(bytes, 0, bytes.Length);
-                        imageFile.Flush();
-                    }
-                    itemFile.Path = filePath;
-                    oMngFiles.O_Entrada_aud_uni_files = itemFile;
-                    oMngFiles.add(trans);
-                }
+                CommonCtrl.ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "entrada_aud_uni", Tabla_pk = o.Id, Actividad = "Captura de Auditoria en entrada de Unidades" }, trans);
 
-                ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "activity_log", Tabla_pk = o.Id, Actividad = "Captura de Auditoria de Unidades" }, trans);
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void EntradaAudMerAdd(Entrada_aud_mer o, string path)
+        {
+            IDbTransaction trans = null;
+
+            try
+            {
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+
+                Entrada_aud_merMng oMng = new Entrada_aud_merMng() { O_Entrada_aud_mer = o };
+                oMng.add(trans);
+
+                Entrada_aud_mer_filesMng oMngFiles = new Entrada_aud_mer_filesMng();
+                CommonCtrl.AuditoriaAddImg(oMngFiles, o, trans, path);
+
+                CommonCtrl.ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "entrada_aud_mer", Tabla_pk = o.Id, Actividad = "Captura de Auditoria en entrada de mercancia" }, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
@@ -2157,23 +2175,5 @@ namespace ModelCasc.operation
             
             return fullPedimento;
         }
-
-        #region Activity log
-
-        internal static void ActivityLogAdd(Activity_log o, IDbTransaction trans)
-        {
-            try
-            {
-                Activity_logMng oMng = new Activity_logMng() { O_Activity_log = o };
-                oMng.add(trans);
-            }
-            catch
-            {
-                
-                throw;
-            }
-        }
-
-        #endregion
     }
 }

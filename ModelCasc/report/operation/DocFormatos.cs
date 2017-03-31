@@ -42,7 +42,7 @@ namespace ModelCasc.report.operation
             return imgbyte;
         }
 
-        public static void getCasc028(string FilePath, string rptPath, Entrada_pre_carga o, DataSet ds)
+        public static void getCasc028(string FilePath, string rptPath, ICasc028 o, DataSet ds)
         {
             try
             {
@@ -55,9 +55,9 @@ namespace ModelCasc.report.operation
                 string fileImagePath = string.Empty;
                 int imgSide = 1;
                 DataRow dr = null;
-                for (int indFile = 0; indFile < o.PEntAudUni.PLstEntAudUniFiles.Count; indFile++)
+                for (int indFile = 0; indFile < o.PAudOperation.PLstAudImg.Count; indFile++)
                 {
-                    Entrada_aud_uni_files itemFile = o.PEntAudUni.PLstEntAudUniFiles[indFile];
+                    IAudImage itemFile = o.PAudOperation.PLstAudImg[indFile];
                     switch (imgSide)
                     {
                         case 1:
@@ -78,18 +78,19 @@ namespace ModelCasc.report.operation
                 }
                 reporte.SetDataSource(ds.Tables["casc028"]);
                 #endregion
-
                 #region Encabezado 2
                 reporte.SetParameterValue("cliente", o.Cliente);
                 reporte.SetParameterValue("referencia", o.Referencia);
-                reporte.SetParameterValue("informa", o.PEntAudUni.Informa);
-                reporte.SetParameterValue("lugar", o.Bodega);
-                reporte.SetParameterValue("fecha", o.PEntAudUni.Fecha);
-                reporte.SetParameterValue("informado", o.Ejecutivo);
-                reporte.SetParameterValue("relato", o.PEntAudUni.Acta_informativa);
-                reporte.SetParameterValue("vigilancia", o.PEntAudUni.Vigilante);
-                reporte.SetParameterValue("testigo", string.Empty);
-                reporte.SetParameterValue("notificado", o.PEntAudUni.Operador);
+                reporte.SetParameterValue("informa", o.Informa);
+                reporte.SetParameterValue("lugar", o.Lugar);
+                reporte.SetParameterValue("fecha", o.Fecha);
+                reporte.SetParameterValue("informado", o.Informado);
+                reporte.SetParameterValue("relato", o.Relato);
+                reporte.SetParameterValue("vigilancia", o.Vigilancia);
+                reporte.SetParameterValue("testigo", o.Testigo);
+                reporte.SetParameterValue("notificado", o.Notificado);
+                
+
                 #endregion
                 reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, FilePath);
             }

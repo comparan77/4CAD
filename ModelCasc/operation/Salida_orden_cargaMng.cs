@@ -260,5 +260,28 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void GetByFolio()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_orden_carga");
+                addParameters(7);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oSalida_orden_carga);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

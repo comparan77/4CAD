@@ -1225,7 +1225,7 @@ namespace ModelCasc.operation
             return o;
         }
 
-        public static List<Salida_orden_carga> OrdenCargaGetByFolio(string folioOC)
+        public static List<Salida_orden_carga> OrdenCargaGetLstByFolio(string folioOC)
         {
             List<Salida_orden_carga> lst = new List<Salida_orden_carga>();
             try
@@ -1307,6 +1307,24 @@ namespace ModelCasc.operation
 
                 throw;
             }
+        }
+
+        public static Salida_orden_carga OrdenCargaGetByFolio(string folioOC)
+        {
+            Salida_orden_carga o = new Salida_orden_carga() { Folio_orden_carga = folioOC };
+            Salida_orden_cargaMng oMng = new Salida_orden_cargaMng() { O_Salida_orden_carga = o };
+            try
+            {
+                oMng.GetByFolio();
+                o.PSalidaTrafico = new Salida_trafico() { Id = o.Id_salida_trafico };
+                Salida_traficoMng oSTMng = new Salida_traficoMng() { O_Salida_trafico = o.PSalidaTrafico };
+                oSTMng.selById();
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
         }
 
         #endregion
@@ -1461,6 +1479,49 @@ namespace ModelCasc.operation
             }
         }
 
-       
+        #region Salida Auditoria Unidades
+
+        public static void SalidaAudUniAdd(Salida_aud_uni o, string path)
+        {
+            IDbTransaction trans = null;
+
+            try
+            {
+                //Comienza la transanccion
+                trans = GenericDataAccess.BeginTransaction();
+
+                Salida_aud_uniMng oMng = new Salida_aud_uniMng() { O_Salida_aud_uni = o };
+                oMng.add(trans);
+                
+                Salida_aud_uni_filesMng oMngFiles = new Salida_aud_uni_filesMng();
+                CommonCtrl.AuditoriaAddImg(oMngFiles, o, trans, path);
+                CommonCtrl.ActivityLogAdd(new Activity_log() { Usuario_id = o.PUsuario.Id, Tabla = "salida_aud_uni", Tabla_pk = o.Id, Actividad = "Captura de Auditoria en salida de Unidades" }, trans);
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static Salida_aud_uni SalidaAudUniGetAll(Salida_aud_uni oSalAudUni)
+        {
+            try
+            {
+                Salida_aud_uniMng oMgn = new Salida_aud_uniMng() { O_Salida_aud_uni = oSalAudUni };
+                oMgn.selByOrdenCarga();
+            }
+            catch 
+            {
+                
+                throw;
+            }
+            return oSalAudUni;
+        }
+
+        #endregion
     }
 }
