@@ -379,11 +379,15 @@ var MngArribo = function () {
             var pnlInfoArribo = $('#ctl00_body_pnl_infoArribo');
             var div_doc_requerido = $('#div_doc_requerido');
 
+            var referenciaAux = div_doc_requerido.children('input').val();
+
             pnlBusqueda.hide();
             pnlInfoArribo.hide();
             div_doc_requerido.children('label').html('');
             div_doc_requerido.children('input').unmask();
             div_doc_requerido.children('span').html('Es requerido');
+
+
 
             $('#txt_documento').val('');
 
@@ -424,7 +428,6 @@ var MngArribo = function () {
                 }
             }
             else {
-
                 $('#ctl00_body_txt_no_pieza_declarada').removeAttr('disabled');
 
                 if ($('#ctl00_body_hf_click_Compartida').val() == '1') {
@@ -435,7 +438,7 @@ var MngArribo = function () {
                 div_doc_requerido.show();
                 if (DocumentoReq.length > 0) {
                     div_doc_requerido.children('label').html(DocumentoReq);
-                    div_doc_requerido.children('input').val('');
+                    //div_doc_requerido.children('input').val('');
                     if (Mascara.length > 0)
                         div_doc_requerido.children('input').mask(Mascara);
                     div_doc_requerido.children('span').html('Es necesario proporcionar ' + DocumentoReq);
