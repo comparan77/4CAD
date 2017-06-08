@@ -7,23 +7,23 @@ using Model;
 
 namespace ModelCasc.catalog.personal
 {
-    internal class PersonalMng: dbTable
+    internal class Personal_registroMng: dbTable
     {
         #region Campos
-        protected Personal _oPersonal;
-        protected List<Personal> _lst;
+        protected Personal_registro _oPersonal_registro;
+        protected List<Personal_registro> _lst;
         #endregion
 
         #region Propiedades
-        public Personal O_Personal { get { return _oPersonal; } set { _oPersonal = value; } }
-        public List<Personal> Lst { get { return _lst; } set { _lst = value; } }
+        public Personal_registro O_Personal_registro { get { return _oPersonal_registro; } set { _oPersonal_registro = value; } }
+        public List<Personal_registro> Lst { get { return _lst; } set { _lst = value; } }
         #endregion
 
         #region Constructores
-        public PersonalMng()
+        public Personal_registroMng()
         {
-            this._oPersonal = new Personal();
-            this._lst = new List<Personal>();
+            this._oPersonal_registro = new Personal_registro();
+            this._lst = new List<Personal_registro>();
         }
         #endregion
 
@@ -31,48 +31,35 @@ namespace ModelCasc.catalog.personal
         protected override void addParameters(int opcion)
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
-            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oPersonal.Id);
-            GenericDataAccess.AddInParameter(this.comm, "?P_idf", DbType.String, this._oPersonal.Idf);
-            GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oPersonal.Nombre);
-            GenericDataAccess.AddInParameter(this.comm, "?P_paterno", DbType.String, this._oPersonal.Paterno);
-            GenericDataAccess.AddInParameter(this.comm, "?P_materno", DbType.String, this._oPersonal.Materno);
-            GenericDataAccess.AddInParameter(this.comm, "?P_rfc", DbType.String, this._oPersonal.Rfc);
-            GenericDataAccess.AddInParameter(this.comm, "?P_nss", DbType.String, this._oPersonal.Nss);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_tipo_personal", DbType.Int32, this._oPersonal.Id_tipo_personal);
-            GenericDataAccess.AddInParameter(this.comm, "?P_activo", DbType.Boolean, this._oPersonal.Activo);
-            GenericDataAccess.AddInParameter(this.comm, "?P_boletinado", DbType.Boolean, this._oPersonal.Boletinado);
+            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oPersonal_registro.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_personal", DbType.Int32, this._oPersonal_registro.Id_personal);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oPersonal_registro.Id_bodega);
         }
 
-        protected void BindByDataRow(DataRow dr, Personal o)
+        protected void BindByDataRow(DataRow dr, Personal_registro o)
         {
             try
             {
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
-                o.Idf = dr["idf"].ToString();
-                o.Nombre = dr["nombre"].ToString();
-                o.Paterno = dr["paterno"].ToString();
-                o.Materno = dr["materno"].ToString();
-                o.Rfc = dr["rfc"].ToString();
-                o.Nss = dr["nss"].ToString();
-                if (dr["id_tipo_personal"] != DBNull.Value)
+                if (dr["id_personal"] != DBNull.Value)
                 {
-                    int.TryParse(dr["id_tipo_personal"].ToString(), out entero);
-                    o.Id_tipo_personal = entero;
+                    int.TryParse(dr["id_personal"].ToString(), out entero);
+                    o.Id_personal = entero;
                     entero = 0;
                 }
-                if (dr["activo"] != DBNull.Value)
+                if (dr["id_bodega"] != DBNull.Value)
                 {
-                    bool.TryParse(dr["activo"].ToString(), out logica);
-                    o.Activo = logica;
-                    logica = false;
+                    int.TryParse(dr["id_bodega"].ToString(), out entero);
+                    o.Id_bodega = entero;
+                    entero = 0;
                 }
-                if (dr["boletinado"] != DBNull.Value)
+                if (dr["fecha_hora"] != DBNull.Value)
                 {
-                    bool.TryParse(dr["boletinado"].ToString(), out logica);
-                    o.Boletinado = logica;
-                    logica = false;
+                    DateTime.TryParse(dr["fecha_hora"].ToString(), out fecha);
+                    o.Fecha_hora = fecha;
+                    fecha = new DateTime(1, 1, 1);
                 }
             }
             catch
@@ -85,13 +72,13 @@ namespace ModelCasc.catalog.personal
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
                 addParameters(0);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
-                this._lst = new List<Personal>();
+                this._lst = new List<Personal_registro>();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Personal o = new Personal();
+                    Personal_registro o = new Personal_registro();
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
@@ -106,13 +93,13 @@ namespace ModelCasc.catalog.personal
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
                 addParameters(1);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oPersonal);
+                    BindByDataRow(dr, this._oPersonal_registro);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -129,10 +116,10 @@ namespace ModelCasc.catalog.personal
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
-                this._oPersonal.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+                this._oPersonal_registro.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
             {
@@ -144,7 +131,7 @@ namespace ModelCasc.catalog.personal
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
                 addParameters(3);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
             }
@@ -158,7 +145,7 @@ namespace ModelCasc.catalog.personal
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
                 addParameters(4);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
             }
@@ -170,17 +157,18 @@ namespace ModelCasc.catalog.personal
 
         #endregion
 
-        internal void selByFolio()
+        internal void selUltPorBodega()
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
                 addParameters(5);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oPersonal);
+                    BindByDataRow(dr, this._oPersonal_registro);
+                    this._oPersonal_registro.Movimiento = dr["movimiento"].ToString();
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");

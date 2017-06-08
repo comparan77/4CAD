@@ -31,6 +31,9 @@ namespace ModelCasc.catalog.personal
         public int Id_tipo_personal { get { return _id_tipo_personal; } set { _id_tipo_personal = value; } }
         public bool Activo { get { return _activo; } set { _activo = value; } }
         public bool Boletinado { get { return _boletinado; } set { _boletinado = value; } }
+
+        public int Id_bodega { get; set; }
+        public Personal_registro PerReg { get; set; }
         #endregion
 
         #region Constructores

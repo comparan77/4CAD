@@ -10,7 +10,6 @@
     <form id="form1" runat="server">
     <div>
         <asp:Image runat="server" ID="imgPersonal" />
-    </div>
     </form>
 </body>
 </html>
