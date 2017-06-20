@@ -13,15 +13,13 @@ namespace ModelCasc.catalog.personal
             {
                 PersonalMng oPMng = new PersonalMng() { O_Personal = o };
                 oPMng.selByFolio();
+                Personal_registro oPr = new Personal_registro() { Id_personal = o.Id, Id_bodega = o.Id_bodega };
                 Personal_registroMng oMng = new Personal_registroMng()
                 {
-                    O_Personal_registro = new Personal_registro()
-                    {
-                        Id_personal = o.Id,
-                        Id_bodega = o.Id_bodega
-                    }
+                    O_Personal_registro = oPr
                 };
                 oMng.add();
+                o.PerReg = oPr;
             }
             catch
             {
