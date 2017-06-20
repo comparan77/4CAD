@@ -30,6 +30,12 @@ namespace AppCasc.handlers
                     case "personal":
                         response = personal(context);
                         break;
+                    case "qrpivote":
+                        response = qrpivote(context);
+                        break;
+                    case "perfoto":
+                        response = perfoto(context);
+                        break;
                     default:
                         throw new Exception("La opción " + operation + " no existe");
                 }
@@ -40,6 +46,48 @@ namespace AppCasc.handlers
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
             }
 
+        }
+
+        private string perfoto(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string path = string.Empty;
+            //string email = context.Request["email"].ToString();
+            //string pass = context.Request["pass"].ToString();
+            switch (option)
+            {
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Personal_foto o = JsonConvert.DeserializeObject<Personal_foto>(jsonData);
+                    path = HttpContext.Current.Server.MapPath("~/rpt/personal/PERFOTO");
+                    response = JsonConvert.SerializeObject(PersonalCtrl.PersonalFotoAdd(o, path));
+                    break;
+                default:
+                    break;
+            }
+
+            return response;
+        }
+
+        private string qrpivote(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            //string email = context.Request["email"].ToString();
+            //string pass = context.Request["pass"].ToString();
+            switch (option)
+            {
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    Personal_qr_pivote o = JsonConvert.DeserializeObject<Personal_qr_pivote>(jsonData);
+                    response = JsonConvert.SerializeObject(PersonalCtrl.PersonalQrPivoteAdd(o));
+                    break;
+                default:
+                    break;
+            }
+
+            return response;
         }
 
         private string personal(HttpContext context)
@@ -53,8 +101,8 @@ namespace AppCasc.handlers
             {
                 case "Registro":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    Personal o = JsonConvert.DeserializeObject<Personal>(jsonData);
-                    PersonalCtrl.PersonalRegistro(o);
+                    Personal_qr o = JsonConvert.DeserializeObject<Personal_qr>(jsonData);
+                    o = PersonalCtrl.PersonalRegistro(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "UltimoRegistroPorBodega":

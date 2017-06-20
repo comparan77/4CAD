@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using ModelCasc.catalog;
 using System.Data;
 using ModelCasc.catalog.almacen;
+using ModelCasc.catalog.personal;
 
 namespace ModelCasc.webApp
 {
@@ -306,6 +307,22 @@ namespace ModelCasc.webApp
             ddlEjecutivo.DataTextField = "nombre";
             ddlEjecutivo.DataValueField = "id";
             ddlEjecutivo.DataBind();
+        }
+
+        public static void fillPersonalEmpresa(DropDownList ddl)
+        {
+            ddl.DataSource = PersonalCtrl.PersonalEmpresaFill();
+            ddl.DataTextField = "nombre";
+            ddl.DataValueField = "id";
+            ddl.DataBind();
+        }
+
+        public static void fillPersonalRol(DropDownList ddl)
+        {
+            ddl.DataSource = PersonalCtrl.PersonalRolFill();
+            ddl.DataTextField = "nombre";
+            ddl.DataValueField = "id";
+            ddl.DataBind();
         }
     }
 }
