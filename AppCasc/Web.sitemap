@@ -24,6 +24,7 @@
       <siteMapNode url="~/catalog/frmClienteCodigo.aspx" title="Código por cliente"  description="Código por cliente" />
       <siteMapNode url="~/operation/frmCancelDoc.aspx" title="Cancelar Movimientos"  description="Cancelar Movimientos" />
       <siteMapNode url="~/operation/embarques/frmEmbarqueOC.aspx" title="Embarques"  description="Embarques" />
+      <siteMapNode url="~/personal/frmPersonal.aspx" title="Admon. del Personal"  description="Administración del personal" />
     </siteMapNode>
     <siteMapNode roles="Mantenimiento, Super" title="Catálogos">
       <siteMapNode url="~/catalog/frmAduanaLst.aspx" title="Aduanas"  description="Aduanas" />
@@ -41,6 +42,9 @@
       <siteMapNode url="~/catalog/frmUsuarioLst.aspx" title="Usuarios"  description="Usuarios" />
       <siteMapNode url="~/catalog/frmUbicacionLst.aspx" title="Ubicaciones"  description="Ubicaciones" />
       <siteMapNode url="~/catalog/frmNomLst.aspx" title="NOM"  description="NOM" />
+    </siteMapNode>
+    <siteMapNode roles="Super, GteRecHum" title="Personal">
+      <siteMapNode url="~/personal/frmPersonalLst.aspx" title="Padrón"  description="Padrón" />
     </siteMapNode>
     <siteMapNode roles="Mantenimiento, Operacion, GteAlmacen, Super" title="Operación">
       <siteMapNode url="~/operation/arribos/frmArribo.aspx" title="Arribos"  description="Arribos" />

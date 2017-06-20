@@ -9,6 +9,28 @@ namespace ModelCasc.operation
 {
     internal class CommonCtrl
     {
+        public static void AddImgToDirectory(string path, string fileName, string img)
+        {
+            try
+            {
+                System.IO.Directory.CreateDirectory(path);
+                string filePath = string.Empty;
+
+                var bytes = Convert.FromBase64String(img);
+                fileName = fileName + ".jpg";
+                filePath = Path.Combine(path, fileName);
+                using (var imageFile = new FileStream(filePath, FileMode.Create))
+                {
+                    imageFile.Write(bytes, 0, bytes.Length);
+                    imageFile.Flush();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public static void AuditoriaAddImg(IAudImageMng oMng, IAuditoriaCAEApp o, IDbTransaction trans, string path)
         {
             try
