@@ -22,6 +22,9 @@ namespace ModelCasc.catalog.personal
         [JsonIgnore()]
         public DateTime Fecha_alta { get { return _fecha_alta; } set { _fecha_alta = value; } }
         public int Id_bodega { get; set; }
+        public string Mensaje { get; set; }
+        public Personal PPersonal { get; set; }
+        public Personal_registro PPerReg { get; set; }
         #endregion
 
         #region Constructores
@@ -29,6 +32,7 @@ namespace ModelCasc.catalog.personal
 		{
 			this._idf = String.Empty;
 			this._id_personal = 0;
+            this.Mensaje = "Registro exitoso";
 		}
         #endregion
     }

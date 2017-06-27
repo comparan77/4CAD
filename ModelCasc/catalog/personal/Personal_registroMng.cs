@@ -180,5 +180,45 @@ namespace ModelCasc.catalog.personal
                 throw;
             }
         }
+
+        public void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oPersonal_registro.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+        internal void selByIdPersona(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
+                addParameters(6);
+                if (trans != null)
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                else
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oPersonal_registro);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

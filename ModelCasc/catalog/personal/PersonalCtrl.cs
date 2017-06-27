@@ -286,6 +286,15 @@ namespace ModelCasc.catalog.personal
                 PersonalMng oMng = new PersonalMng();
                 oMng.fillEvenInactive();
                 lst = oMng.Lst;
+
+                Personal_empresaMng oPEmpMng = new Personal_empresaMng();
+                foreach (Personal itemP in lst)
+                {
+                    Personal_empresa oPE = new Personal_empresa() { Id = itemP.Id_personal_empresa };
+                    oPEmpMng.O_Personal_empresa = oPE;
+                    oPEmpMng.selById();
+                    itemP.PerEmp = oPE;
+                }
             }
             catch
             {
@@ -437,19 +446,53 @@ namespace ModelCasc.catalog.personal
 
         public static Personal_qr PersonalRegistro(Personal_qr o)
         {
+            bool cumpleReglas = false;
             try
             {
                 Personal_qrMng oPQrMng = new Personal_qrMng() { O_Personal_qr = o };
                 oPQrMng.selByIdf();
-                Personal_registroMng oMng = new Personal_registroMng()
+
+                Personal_registro oPreg = new Personal_registro() { Id_personal = o.Id_personal, Id_bodega = o.Id_bodega };
+                Personal_registroMng oMng = new Personal_registroMng() { O_Personal_registro = oPreg };
+                oMng.selByIdPersona();
+
+                Personal oPer = new Personal() { Id = o.Id_personal };
+                PersonalMng oPerMng = new PersonalMng() { O_Personal = oPer };
+                oPerMng.selById();
+                o.PPersonal = oPer;
+
+                Personal_regla_rol oPerRegRol = new Personal_regla_rol() { Id_personal_rol = oPer.Id_personal_rol };
+                Personal_regla_rolMng oPerRegRolMng = new Personal_regla_rolMng() { O_Personal_regla_rol = oPerRegRol };
+                oPerRegRolMng.selByIdPersonalRol();
+
+                foreach (Personal_regla_rol itemPRR in oPerRegRolMng.Lst)
                 {
-                    O_Personal_registro = new Personal_registro()
-                    {
-                        Id_personal = o.Id_personal,
-                        Id_bodega = o.Id_bodega
-                    }
-                };
-                oMng.add();
+                    Personal_regla oPRegla = new Personal_regla() { Id = itemPRR.Id_personal_regla };
+                    Personal_reglaMng oPregMng = new Personal_reglaMng() { O_Personal_regla = oPRegla };
+                    oPregMng.selById();
+
+                    TimeSpan ts = DateTime.Now - oPreg.Fecha_hora;
+                    int valor = Convert.ToInt32(oPRegla.Valor);
+                    if (ts.TotalMinutes > valor)
+                        cumpleReglas = true;
+                    else
+                        o.Mensaje = oPRegla.Mensaje.Replace("{{valor}}", Math.Round(Math.Abs(ts.TotalMinutes - valor), 0).ToString());
+                }
+
+                if (!oPer.IsActive)
+                {
+                    o.Mensaje = "El personal está dado de baja y no puede acceder a la sede, favor de verificar con el área de Recursos Humanos";
+                }
+                else if (oPer.Boletinado)
+                {
+                    o.Mensaje = "El personal está boletinado y no puede acceder a ninguna sede, favor de verificar con el área de Recursos Humanos";
+                }
+                else if (cumpleReglas)
+                {
+                    o.Mensaje = "Registro Exitoso";
+                    oMng.add();
+                    o.PPerReg = oPreg;
+                }
             }
             catch
             {

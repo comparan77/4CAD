@@ -18,6 +18,7 @@
         <tr>
             <th>R.F.C.</th>
             <th>Nombre completo</th>
+            <th>Empresa</th>
             <th align="center" class="columnAction">Editar</th>
             <th align="center" class="columnAction">Estado</th>
         </tr>
@@ -28,6 +29,7 @@
                 <tr id='<%# "row_" + Eval("id") %>'>
                     <td id="rfc"><%# Eval("rfc") %></td>
                     <td id="nombre"><%# Eval("nombre") + " " + Eval("paterno") + " " + Eval("materno")%></td>
+                    <td><%# Eval("PerEmp.nombre") %></td>
                     <td align="center"><a href='<%# "frmPersonal.aspx?Key=" + Eval("id") + "&Action=Udt" %>'><span class="ui-icon ui-icon-pencil spnIcon"></span></a></td>
                     <td align="center"><asp:LinkButton runat="server" CommandArgument='<%# Eval("IsActive") %>' CommandName='<%# Eval("id") %>' ID="lnk_change_status" CssClass='<%# "ui-icon ui-icon-circle-" + (Convert.ToBoolean(Eval("IsActive")) ? "check" : "close") + " spnIcon" %>' OnCommand="lnk_change_status_click"></asp:LinkButton> </td>
                 </tr>
