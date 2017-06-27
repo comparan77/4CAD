@@ -125,12 +125,17 @@ namespace AppCasc.personal
                 string imgFotoUrl = img_photo.ImageUrl;
                 if (img_photo.ImageUrl.IndexOf("?") > 0)
                     imgFotoUrl = imgFotoUrl.Split('?')[0];
-                FileStream fs = File.OpenRead(HttpContext.Current.Server.MapPath(imgFotoUrl));
-                fs.Position = 0;
-                oPA.stream = new MemoryStream();
-                fs.CopyTo(oPA.stream);
-                oPA.Ruta = HttpContext.Current.Server.MapPath("~/rpt/personal/");
-                o.lstArchivos.Add(oPA);
+                if (File.Exists(HttpContext.Current.Server.MapPath(imgFotoUrl)))
+                {
+                    FileStream fs = File.OpenRead(HttpContext.Current.Server.MapPath(imgFotoUrl));
+                    fs.Position = 0;
+                    oPA.stream = new MemoryStream();
+                    fs.CopyTo(oPA.stream);
+                    fs.Close();
+                    fs.Dispose();
+                    oPA.Ruta = HttpContext.Current.Server.MapPath("~/rpt/personal/");
+                    o.lstArchivos.Add(oPA);
+                }
             }
 
             o.PQr = new Personal_qr() { Idf = lbl_qr.Text };

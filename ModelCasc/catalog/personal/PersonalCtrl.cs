@@ -361,7 +361,6 @@ namespace ModelCasc.catalog.personal
 
                     if (File.Exists(o.Ruta))
                     {
-                        
                         File.Delete(o.Ruta);
                     }
 
