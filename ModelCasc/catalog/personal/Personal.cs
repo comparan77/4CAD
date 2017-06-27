@@ -38,6 +38,7 @@ namespace ModelCasc.catalog.personal
         public List<Personal_archivos> lstArchivos { get; set; }
         public Personal_qr PQr { get; set; }
         public Personal_registro PerReg { get; set; }
+        public Personal_empresa PerEmp { get; set; }
         public string RutaFiles { get; set; }
         #endregion
 

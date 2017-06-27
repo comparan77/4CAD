@@ -27,6 +27,7 @@ namespace ModelCasc.catalog.personal
 		{
 			this._id_personal = 0;
 			this._id_bodega = 0;
+            this._fecha_hora = default(DateTime);
 		}
 		#endregion
     }
