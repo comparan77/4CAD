@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Model;
+using ModelCasc.report.personal;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace ModelCasc.report.operation
 {
@@ -328,5 +330,68 @@ namespace ModelCasc.report.operation
             }
             return lst;
         }
+
+        #region Personal
+
+        public static ReportDocument PersonalEmpresaRpt(DataSet ds, string rptPath)
+        {
+            ReportDocument rpt = new ReportDocument();
+            try
+            {
+                rpt.Load(rptPath);
+                List<rptPersonal_empresa> lst = PersonalEmpresaGet();
+                foreach (rptPersonal_empresa item in lst)
+                {
+                    DataRow dr = ds.Tables["personal_empresa_vw"].NewRow();
+                    dr["id_empresa"] = item.Id_empresa;
+                    dr["empresa"] = item.Empresa;
+                    dr["nombre"] = item.Nombre;
+                    dr["rfc"] = item.Rfc;
+                    dr["curp"] = item.Curp;
+                    dr["nss"] = item.Nss;
+                    dr["genero"] = item.Genero;
+                    dr["fecha_nacimiento"] = item.Fecha_nacimiento;
+                    dr["edad"] = item.Edad;
+                    ds.Tables["personal_empresa_vw"].Rows.Add(dr);
+                }
+                rpt.SetDataSource(ds);
+            }
+            catch
+            {
+                throw;
+            }
+            return rpt;
+        }
+
+        private static List<rptPersonal_empresa> PersonalEmpresaGet()
+        {
+            List<rptPersonal_empresa> lst = new List<rptPersonal_empresa>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZPersonal_empresa");
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptPersonal_empresa o = new rptPersonal_empresa();
+                    o.Id_empresa = Convert.ToInt32(dr["id_empresa"]);
+                    o.Empresa = dr["empresa"].ToString();
+                    o.Nombre = dr["nombre"].ToString();
+                    o.Rfc = dr["rfc"].ToString();
+                    o.Curp = dr["curp"].ToString();
+                    o.Nss = dr["nss"].ToString();
+                    o.Genero = Convert.ToBoolean(dr["genero"]);
+                    o.Fecha_nacimiento = Convert.ToDateTime(dr["fecha_nacimiento"]);
+                    o.Edad = Convert.ToInt32(dr["edad"]);
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
     }
 }

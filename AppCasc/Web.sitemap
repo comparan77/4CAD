@@ -83,6 +83,7 @@
       <siteMapNode url="~/report/frmTransporteChart.aspx" title="Gráfica Movimientos"  description="Gráfica Movimientos" />
       <!--<siteMapNode url="~/report/frmMaquila.aspx" title="Maquila"  description="Maquila" />-->
       <siteMapNode url="~/report/frmCancelMov.aspx" title="Cancelaciones"  description="Cancelaciones" />
+      <siteMapNode url="~/report/frmCrystalRpt.aspx" title="Recursos Humanos"  description="Reporte para recursos humanos" />
     </siteMapNode>
   </siteMapNode>
 </siteMap>
