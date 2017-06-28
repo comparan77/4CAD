@@ -9,6 +9,6 @@
 
 
     <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" 
-        AutoDataBind="true" />
+        AutoDataBind="true" ToolPanelView="None" />
 
 </asp:Content>

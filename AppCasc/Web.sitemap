@@ -76,7 +76,7 @@
       <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
       <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración"  description="Administración" />
     </siteMapNode>
-    <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super, Reportes, EjecutivoAux" title="Reportes" >
+    <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super, Reportes, EjecutivoAux, GteRecHum" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />
       <siteMapNode url="~/report/frmReportViewer.aspx" title="Reportes Operativos"  description="Reportes Operativos" />
       <siteMapNode url="~/report/frmGeneralChart.aspx" title="Gráfica General"  description="Gráfica General" />
