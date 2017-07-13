@@ -392,6 +392,76 @@ namespace ModelCasc.report.operation
             return lst;
         }
 
+        public static ReportDocument PersonalEmpresa119(DataSet ds, string rptPath, int anio_ini, int dia_ini, int anio_fin, int dia_fin, int id_bodega, string sede)
+        {
+            ReportDocument rpt = new ReportDocument();
+            try
+            {
+                rpt.Load(rptPath);
+                List<rptPersonal_empresa> lst = get119(anio_ini, dia_ini, anio_fin, dia_fin, id_bodega);
+                foreach (rptPersonal_empresa item in lst)
+                {
+                    DataRow dr = ds.Tables["personal_asistencia"].NewRow();
+                    dr["fecha"] = item.Fecha;
+                    dr["nombre"] = item.Nombre;
+                    dr["proveedor"] = item.Empresa;
+                    dr["nss"] = item.Nss;
+                    dr["entrada"] = item.entrada;
+                    dr["salida_comida"] = item.salida_comida;
+                    dr["entrada_comida"] = item.entrada_comida;
+                    dr["salida"] = item.salida;
+                    dr["entrada_extra"] = item.entrada_extra;
+                    dr["salida_extra"] = item.salida_extra;
+                    ds.Tables["personal_asistencia"].Rows.Add(dr);
+                }
+                rpt.SetDataSource(ds);
+                rpt.SetParameterValue("sede", sede.ToUpper());
+
+            }
+            catch
+            {
+                throw;
+            }
+            return rpt;
+        }
+
+        private static List<rptPersonal_empresa> get119(int anio_ini, int dia_ini, int anio_fin, int dia_fin, int id_bodega)
+        {
+            List<rptPersonal_empresa> lst = new List<rptPersonal_empresa>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_Z119");
+                GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                GenericDataAccess.AddInParameter(comm, "?P_id_bodega", DbType.Int32, id_bodega);
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptPersonal_empresa o = new rptPersonal_empresa();
+                    o.Fecha = Convert.ToDateTime(dr["fecha"]);
+                    o.Empresa = dr["empresa"].ToString();
+                    o.Nombre = dr["nombre"].ToString();
+                    o.Nss = dr["nss"].ToString();
+                    o.entrada = dr["entrada"].ToString();
+                    o.salida_comida = dr["salida_comida"].ToString();
+                    o.entrada_comida = dr["entrada_comida"].ToString();
+                    o.salida = dr["salida"].ToString();
+                    o.entrada_extra = dr["entrada_extra"].ToString();
+                    o.salida_extra = dr["salida_extra"].ToString();
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         #endregion
+
+        
     }
 }

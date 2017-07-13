@@ -16,5 +16,13 @@ namespace ModelCasc.report.personal
         public bool Genero { get; set; }
         public DateTime Fecha_nacimiento { get; set; }
         public int Edad { get; set; }
+
+        public DateTime Fecha { get; set; }
+        public string entrada { get; set; }
+        public string salida_comida { get; set; }
+        public string entrada_comida { get; set; }
+        public string salida { get; set; }
+        public string entrada_extra { get; set; }
+        public string salida_extra { get; set; }
     }
 }
