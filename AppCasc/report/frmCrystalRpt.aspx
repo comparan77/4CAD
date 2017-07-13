@@ -41,5 +41,5 @@
 
 
     <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" 
-        AutoDataBind="true" ToolPanelView="None" HasDrilldownTabs="False" HasToggleGroupTreeButton="false" />
+        AutoDataBind="true" ToolPanelView="None" HasDrilldownTabs="False" HasToggleGroupTreeButton="false" HasToggleParameterPanelButton="false" />
 </asp:Content>
