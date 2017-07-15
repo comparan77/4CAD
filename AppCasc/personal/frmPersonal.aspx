@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmPersonal.aspx.cs" Inherits="AppCasc.personal.frmPersonal" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script src="../js/catalog/frm.js" type="text/javascript"></script>
+    <script src="../js/catalog/frm.js?v1.1.150619_1446" type="text/javascript"></script>
     <link href="../../css/frmOperation.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">

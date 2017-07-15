@@ -164,26 +164,7 @@ function validarCURP(source, arguments) {
 }
 
 function validarRFC(source, arguments) {
-//    var rfc         = source.value.trim().toUpperCase(),
-//        //resultado   = document.getElementById(validator),
-//        valido;
-//for(var propertyName in arguments) {
-//   // propertyName is what you want
-//   // you can get the value like this: myObject[propertyName]
-//   alert(propertyName);
-//}
-var rfc = arguments.Value;
-//        
+    var rfc = arguments.Value;
     var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
-  arguments.IsValid = rfcCorrecto;
-//    if (rfcCorrecto) {
-//    	valido = "Válido";
-//      resultado.style.visibility = 'hidden';
-//    } else {
-//    	valido = "No válido"
-//    	resultado.style.visibility = 'visible';
-//    }
-        
-//    resultado.innerText = "Formato: " + valido;
-
+    arguments.IsValid = rfcCorrecto;
 }
