@@ -29,17 +29,18 @@
     <div>
         <label>R.F.C.:</label>
         <asp:TextBox runat="server" MaxLength="13" ID="txt_rfc"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" ID="rfv_rfc" ControlToValidate="txt_rfc" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
+        <asp:CustomValidator ID="cvrfc" ControlToValidate="txt_rfc" ErrorMessage="RFC no Válido" ClientValidationFunction="validarRFC" ValidateEmptyText="true" runat="server"></asp:CustomValidator>
+        
     </div>
     <div>
         <label>C.U.R.P.:</label>
         <asp:TextBox runat="server" MaxLength="18" ID="txt_curp"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" ID="rfv_curp" ControlToValidate="txt_curp" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
+        <asp:CustomValidator ID="cvcurp" ControlToValidate="txt_curp" ErrorMessage="CURP no Válido" ClientValidationFunction="validarCURP" ValidateEmptyText="true" runat="server"></asp:CustomValidator>
     </div>
     <div>
         <label>NSS:</label>
         <asp:TextBox runat="server" MaxLength="11" ID="txt_nss"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" ID="rfv_nss" ControlToValidate="txt_nss" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
+        <asp:CustomValidator ID="cvnss" ControlToValidate="txt_nss" ErrorMessage="NSS no Válido" ClientValidationFunction="validarNSS" ValidateEmptyText="true" runat="server"></asp:CustomValidator>
     </div>
     <div>
         <label>Género:</label>

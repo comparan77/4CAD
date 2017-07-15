@@ -94,13 +94,13 @@ namespace AppCasc.personal {
         protected global::System.Web.UI.WebControls.TextBox txt_rfc;
         
         /// <summary>
-        /// rfv_rfc control.
+        /// cvrfc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_rfc;
+        protected global::System.Web.UI.WebControls.CustomValidator cvrfc;
         
         /// <summary>
         /// txt_curp control.
@@ -112,13 +112,13 @@ namespace AppCasc.personal {
         protected global::System.Web.UI.WebControls.TextBox txt_curp;
         
         /// <summary>
-        /// rfv_curp control.
+        /// cvcurp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_curp;
+        protected global::System.Web.UI.WebControls.CustomValidator cvcurp;
         
         /// <summary>
         /// txt_nss control.
@@ -130,13 +130,13 @@ namespace AppCasc.personal {
         protected global::System.Web.UI.WebControls.TextBox txt_nss;
         
         /// <summary>
-        /// rfv_nss control.
+        /// cvnss control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_nss;
+        protected global::System.Web.UI.WebControls.CustomValidator cvnss;
         
         /// <summary>
         /// ddl_genero control.
