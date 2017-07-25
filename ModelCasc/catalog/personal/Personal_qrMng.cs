@@ -219,7 +219,7 @@ namespace ModelCasc.catalog.personal
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
                 else
-                    throw new Exception("No existe información para el registro solicitado");
+                    throw new Exception("El personal no cuenta con QR válido y NO PUEDE ACCEDER a la sede, favor de reportar INMEDIATAMENTE");
             }
             catch
             {
