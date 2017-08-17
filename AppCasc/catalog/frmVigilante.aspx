@@ -1,11 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmVigilante.aspx.cs" Inherits="AppCasc.catalog.frmVigilante" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<link href="../css/common.css" rel="stylesheet" type="text/css" />
-    <link href="../css/redmond/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />
-    <link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />
-
-    <script src="../js/jquery.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
     <script src="../js/catalog/frm.js" type="text/javascript"></script>
 </asp:Content>
 
@@ -14,7 +8,9 @@
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
 
-<div id="frmCatalog">
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Guardia</h3>
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+<div id="frmCatalog" class="divForm">
     <div>
         <label>Bodega:</label>
         <asp:DropDownList runat="server" ID="ddlBodega"></asp:DropDownList>
@@ -32,5 +28,5 @@
         <asp:Button runat="server" ID="btnCancel" Text="Cancelar" OnClick="btnCancel_click" CausesValidation="false" />
     </div>
 </div>
-
+</div>
 </asp:Content>

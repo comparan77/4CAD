@@ -11,6 +11,7 @@ namespace ModelCasc.catalog.personal
 		protected int _id;
 		protected int _id_personal;
 		protected int _id_bodega;
+        protected int _id_registro_tipo;
 		protected DateTime _fecha_hora;
 		#endregion
 
@@ -19,6 +20,7 @@ namespace ModelCasc.catalog.personal
 		public int Id_personal { get { return _id_personal; } set { _id_personal = value; } } 
 		public int Id_bodega { get { return _id_bodega; } set { _id_bodega = value; } } 
 		public DateTime Fecha_hora { get { return _fecha_hora; } set { _fecha_hora = value; } }
+        public int Id_registro_tipo { get { return _id_registro_tipo; } set { _id_registro_tipo = value; } }
         public string Movimiento { get; set; }
 		#endregion
 
@@ -27,6 +29,7 @@ namespace ModelCasc.catalog.personal
 		{
 			this._id_personal = 0;
 			this._id_bodega = 0;
+            this._id_registro_tipo = 0;
             this._fecha_hora = default(DateTime);
 		}
 		#endregion

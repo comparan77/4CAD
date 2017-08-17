@@ -446,6 +446,7 @@ namespace ModelCasc.catalog.personal
         public static Personal_qr PersonalRegistro(Personal_qr o)
         {
             bool cumpleReglas = false;
+            IDbTransaction trans = null;
             try
             {
                 Personal_qrMng oPQrMng = new Personal_qrMng() { O_Personal_qr = o };
@@ -488,13 +489,46 @@ namespace ModelCasc.catalog.personal
                 }
                 else if (cumpleReglas)
                 {
-                    o.Mensaje = "Registro Exitoso";
-                    oMng.add();
-                    o.PPerReg = oPreg;
+
+                    switch (o.Id_registro_tipo)
+                    {
+                        case 1: //Registro de eventos ordinarios
+                            oMng.add();
+                            o.PPerReg = oPreg;
+                            o.Mensaje = "Registro Exitoso";
+                            break;
+                        case 2: //Registro Extraordinario con motivo
+                            trans = GenericDataAccess.BeginTransaction();
+                            oMng.add(trans);
+                            Personal_registro_extMng oExtMng = new Personal_registro_extMng();
+                            Personal_registro_ext oExt = new Personal_registro_ext() { Id_personal_registro = oPreg.Id, Motivo = o.Motivo };
+                            oExtMng.O_Personal_registro_ext = oExt;
+                            oExtMng.add(trans);
+                            GenericDataAccess.CommitTransaction(trans);
+                            o.PPerReg = oPreg;
+                            o.Mensaje = "Registro Exitoso";
+                            break;
+                        case 3: //Registro de horas extras, validar que tenga sus cuatro registros ordinarios previos
+                            if (oMng.getRecordsByIdPersona() < 4)
+                            {
+                                o.Mensaje = "El personal no puede cubrir un horario extra por que no cuenta con sus 4 registros";
+                            }
+                            else
+                            {
+                                oMng.add();
+                                o.PPerReg = oPreg;
+                                o.Mensaje = "Registro Exitoso";
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             catch
             {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
             return o;

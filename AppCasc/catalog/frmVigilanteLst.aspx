@@ -1,11 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmVigilanteLst.aspx.cs" Inherits="AppCasc.catalog.frmVigilanteLst" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<link href="../css/common.css" rel="stylesheet" type="text/css" />
-    <link href="../css/redmond/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/common.css" rel="stylesheet" type="text/css" />
     <link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />
-
-    <script src="../js/jquery.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
     <script src="../js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="../js/catalog/frmLst.js" type="text/javascript"></script>
     <script src="../js/catalog/frmLstVigilante.js" type="text/javascript"></script>
@@ -15,6 +11,8 @@
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
 
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Listado de Guardias</h3>
+<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
 <div id="div_catalog">
 
 <div>
@@ -36,12 +34,12 @@
                 <tr id='<%# "row_" + Eval("id") %>'>
                 <td id="nombre"><%# Eval("nombre") %></td>
                 <td align="center"><a href='<%# "frmVigilante.aspx?Key=" + Eval("id") + "&Action=Udt" %>'><span class="ui-icon ui-icon-pencil spnIcon"></span></a></td>
-                <td align="center"><asp:LinkButton runat="server" CommandArgument='<%# Eval("id") %>' ID="lnk_delete" CssClass="ui-icon ui-icon-trash spnIcon" OnCommand="lnk_delete_click"></asp:LinkButton> </td>
+                <td align="center"><asp:LinkButton runat="server" CommandArgument='<%# Eval("IsActive") %>' CommandName='<%# Eval("id") %>' ID="lnk_change_status" CssClass='<%# "ui-icon ui-icon-circle-" + (Convert.ToBoolean(Eval("IsActive")) ? "check" : "close") + " spnIcon" %>' OnCommand="lnk_change_status_click"></asp:LinkButton> </td>
             </tr>
         </ItemTemplate>
     </asp:Repeater>
 </tbody>
 </table>  
 </div>
-
+</div>
 </asp:Content>

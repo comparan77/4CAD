@@ -1,11 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmCortina.aspx.cs" Inherits="AppCasc.catalog.frmCortina" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%--<link href="../css/common.css" rel="stylesheet" type="text/css" />--%>
-    <%--<link href="../css/redmond/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />
-    <link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />
-
-    <script src="../js/jquery.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>--%>
     <script src="../js/catalog/frm.js" type="text/javascript"></script>
 </asp:Content>
 

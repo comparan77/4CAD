@@ -23,6 +23,7 @@ namespace ModelCasc.catalog
         public VigilanteMng()
         {
             this._oVigilante = new Vigilante();
+            this._lst = new List<Vigilante>();
         }
         #endregion
 
@@ -33,6 +34,33 @@ namespace ModelCasc.catalog
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oVigilante.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oVigilante.Id_bodega);
             GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oVigilante.Nombre);
+        }
+
+        protected void BindByDataRow(DataRow dr, Vigilante o)
+        {
+            try
+            {
+                int.TryParse(dr["id"].ToString(), out entero);
+                o.Id = entero;
+                entero = 0;
+                if (dr["id_bodega"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_bodega"].ToString(), out entero);
+                    o.Id_bodega = entero;
+                    entero = 0;
+                }
+                o.Nombre = dr["nombre"].ToString();
+                if (dr["IsActive"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["IsActive"].ToString(), out logica);
+                    o.IsActive = logica;
+                    logica = false;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public override void fillLst()
@@ -46,16 +74,7 @@ namespace ModelCasc.catalog
                 foreach (DataRow dr in dt.Rows)
                 {
                     Vigilante o = new Vigilante();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_bodega"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_bodega"].ToString(), out entero);
-                        o.Id_bodega = entero;
-                        entero = 0;
-                    }
-                    o.Nombre = dr["nombre"].ToString();
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
@@ -75,13 +94,7 @@ namespace ModelCasc.catalog
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    if (dr["id_bodega"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_bodega"].ToString(), out entero);
-                        this._oVigilante.Id_bodega = entero;
-                        entero = 0;
-                    }
-                    this._oVigilante.Nombre = dr["nombre"].ToString();
+                    BindByDataRow(dr, this._oVigilante);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -137,27 +150,18 @@ namespace ModelCasc.catalog
             }
         }
 
-        public void fillLstByBodega()
+        public void fillLstByBodega(bool evenInactive=false)
         {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Vigilante");
-                addParameters(5);
+                addParameters(evenInactive ? 6 : 5);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 this._lst = new List<Vigilante>();
                 foreach (DataRow dr in dt.Rows)
                 {
                     Vigilante o = new Vigilante();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_bodega"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_bodega"].ToString(), out entero);
-                        o.Id_bodega = entero;
-                        entero = 0;
-                    }
-                    o.Nombre = dr["nombre"].ToString();
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
@@ -168,5 +172,19 @@ namespace ModelCasc.catalog
         }
 
         #endregion
+
+        public void reactive()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cortina");
+                addParameters(-2);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

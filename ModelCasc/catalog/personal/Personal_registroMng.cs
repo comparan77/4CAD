@@ -33,6 +33,7 @@ namespace ModelCasc.catalog.personal
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oPersonal_registro.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_personal", DbType.Int32, this._oPersonal_registro.Id_personal);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_registro_tipo", DbType.Int32, this._oPersonal_registro.Id_registro_tipo);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oPersonal_registro.Id_bodega);
         }
 
@@ -53,6 +54,12 @@ namespace ModelCasc.catalog.personal
                 {
                     int.TryParse(dr["id_bodega"].ToString(), out entero);
                     o.Id_bodega = entero;
+                    entero = 0;
+                }
+                if (dr["id_registro_tipo"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_registro_tipo"].ToString(), out entero);
+                    o.Id_registro_tipo = entero;
                     entero = 0;
                 }
                 if (dr["fecha_hora"] != DBNull.Value)
@@ -219,6 +226,23 @@ namespace ModelCasc.catalog.personal
             {
                 throw;
             }
+        }
+
+        internal int getRecordsByIdPersona()
+        {
+            int records = 0;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Personal_registro");
+                addParameters(7);
+                if (!int.TryParse(GenericDataAccess.ExecuteScalar(this.comm).ToString(), out records))
+                    records = 0;
+            }
+            catch
+            {
+                throw;
+            }
+            return records;
         }
     }
 }

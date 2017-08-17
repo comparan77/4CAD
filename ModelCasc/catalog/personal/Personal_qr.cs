@@ -23,6 +23,9 @@ namespace ModelCasc.catalog.personal
         public DateTime Fecha_alta { get { return _fecha_alta; } set { _fecha_alta = value; } }
         public int Id_bodega { get; set; }
         public string Mensaje { get; set; }
+        public int Id_registro_tipo { get; set; }
+        public string Motivo { get; set; }
+
         public Personal PPersonal { get; set; }
         public Personal_registro PPerReg { get; set; }
         #endregion

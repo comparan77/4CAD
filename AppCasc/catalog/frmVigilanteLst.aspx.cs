@@ -58,7 +58,7 @@ namespace AppCasc.catalog
                 Vigilante oV = new Vigilante();
                 oV.Id_bodega = IdBodega;
                 oVMng.O_Vigilante = oV;
-                oVMng.fillLstByBodega();
+                oVMng.fillLstByBodega(true);
                 fillCatalog(oVMng.Lst);
             }
             catch (Exception e)
@@ -73,17 +73,24 @@ namespace AppCasc.catalog
             repRows.DataBind();
         }
 
-        protected void lnk_delete_click(object sender, CommandEventArgs args)
+        protected void lnk_change_status_click(object sender, CommandEventArgs args)
         {
             try
             {
                 int Id = 0;
-                int.TryParse(args.CommandArgument.ToString(), out Id);
+                int.TryParse(args.CommandName, out Id);
+                bool status = false;
+                bool.TryParse(args.CommandArgument.ToString(), out status);
+
                 Vigilante oV = new Vigilante();
                 oV.Id = Id;
                 VigilanteMng oVMng = new VigilanteMng();
                 oVMng.O_Vigilante = oV;
-                oVMng.dlt();
+
+                if (status)
+                    oVMng.dlt();
+                else
+                    oVMng.reactive();
 
                 ddlBodega_Changed(null, null);
             }
