@@ -102,6 +102,8 @@ namespace ModelCasc.operation
         public bool ConFondeo { get; set; }
         public List<Tarima_almacen> PLstTarAlm { get; set; }
         public Tarima_almacen_estandar PTarAlmEstd { get; set; }
+
+        public int[] copias { get; set; }
         #endregion
 
         #region Constructores
@@ -135,6 +137,7 @@ namespace ModelCasc.operation
             this._codigo = string.Empty;
             this._id_tipo_carga = 0;
             this._isActive = false;
+            this.copias = new int[] { 1, 2, 3 };
         }
         #endregion
     }

@@ -95,6 +95,8 @@ namespace ModelCasc.operation
         public List<Tarima_almacen> PLstTarAlm { get; set; }
         public List<Salida_transporte_condicion> PLstSalTransCond { get; set; }
         public Tarima_almacen_carga PTAlmCarga { get; set; }
+
+        public int[] copias { get; set; }
         #endregion
 
         #region Constructores
@@ -124,6 +126,7 @@ namespace ModelCasc.operation
             this._observaciones = string.Empty;
             this._motivo_cancelacion = string.Empty;
             this._isActive = false;
+            this.copias = new int[] { 1, 2, 3 };
         }
         #endregion
 

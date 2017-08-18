@@ -103,12 +103,12 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfMotivo;
         
         /// <summary>
-        /// txt_motivo control.
+        /// hf_copies control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_motivo;
+        protected global::System.Web.UI.WebControls.HiddenField hf_copies;
     }
 }

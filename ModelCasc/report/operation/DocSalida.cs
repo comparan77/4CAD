@@ -112,7 +112,7 @@ namespace ModelCasc.report.operation
             }
         }
 
-        public static void getSalida(string path, string rptPath, Salida oS, DataSet ds)
+        public static void getSalida(string path, string rptPath, Salida oS, DataSet ds, params int[] copias)
         {
             try
             {
@@ -232,7 +232,20 @@ namespace ModelCasc.report.operation
 
                 #endregion
 
-                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
+                List<string> files = new List<string>();
+                string fileName = string.Empty;
+
+                foreach (int copy in copias)
+                {
+                    fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                    reporte.SetParameterValue("copiaPara", copy);
+                    reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, fileName);
+                    files.Add(fileName);
+                }
+
+                DocConcat.ConcatPdfFiles(files.ToArray(), path);
+
+                // reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
             }
             catch
             {

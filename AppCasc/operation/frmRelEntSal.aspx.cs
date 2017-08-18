@@ -12,6 +12,18 @@ namespace AppCasc.operation
 {
     public partial class frmRelEntSal : System.Web.UI.Page
     {
+        private int[] getNumCopies()
+        {
+            int[] copies = new int[] { };
+
+            if (hf_copies.Value.Length > 0)
+            {
+                copies = hf_copies.Value.Split(',').Select(p => int.Parse(p)).ToArray();
+            }
+            hf_copies.Value = string.Empty;
+            return copies;
+        }
+
         private Entrada SEntrada
         {
             set
@@ -116,6 +128,7 @@ namespace AppCasc.operation
             try
             {
                 oE = EntradaCtrl.EntradaGetAllDataById(IdEntrada);
+                oE.copias = getNumCopies();
                 SEntrada = oE;
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=entrada','_blank', 'toolbar=no');</script>");
             }
@@ -128,7 +141,6 @@ namespace AppCasc.operation
         private void printSalida(int IdSalida)
         {
             Salida oS = new Salida();
-            
 
             string path = string.Empty;
             string pathImg = string.Empty;
@@ -136,6 +148,7 @@ namespace AppCasc.operation
             try
             {
                 oS = SalidaCtrl.getAllDataById(IdSalida);
+                oS.copias = getNumCopies();
                 SSalida = oS;
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=salida','_blank', 'toolbar=no');</script>");
             }

@@ -69,8 +69,13 @@ namespace AppCasc.operation
                         switch (((Entrada)obj).Id_cliente)
                         {
                             case 1:
+                            case 11:
+                            case 12:
+                            case 13:
+                            case 14:
+                            case 15:
                                 TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/entrada.rpt");
-                                DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
+                                DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds, ((Entrada)obj).copias);
                                 break;
                             default:
                                 pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");
@@ -99,8 +104,13 @@ namespace AppCasc.operation
                         switch (((Salida)obj).Id_cliente)
                         {
                             case 1:
+                            case 11:
+                            case 12:
+                            case 13:
+                            case 14:
+                            case 15:
                                 TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
-                                DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds);
+                                DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds, ((Salida)obj).copias);
                                 break;
                             default:
                                 pathImg = HttpContext.Current.Server.MapPath("~/images/logo.jpg");

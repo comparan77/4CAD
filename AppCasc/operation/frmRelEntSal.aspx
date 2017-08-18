@@ -78,17 +78,29 @@
     </tbody>
 </table>
 <asp:HiddenField runat="server" ID="hfMotivo" />
+<asp:HiddenField runat="server" ID="hf_copies" />
 </div>
 </div>
 </div>
 
 </div>
 
-<div id="msgConfirmCancel" title="¿Desea eliminar esta operación?" style="display: none;" >
-    <div>
-        <label>Motivo:</label>
-        <asp:TextBox TextMode="MultiLine" Columns="1" Rows="3" runat="server" ID="txt_motivo" ></asp:TextBox>
-        <input type="hidden" id="hfId" />
-    </div>    
+<div id="msgNumCopies" title="Selección de copias" style="display: none;" >
+    <table class="grdCasc">
+    <tbody>
+        <tr>
+            <td><input type="checkbox" name="chkcopie" id="chk_almacen" value="1" /></td>
+            <td><span>Almacén</span></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="chkcopie" id="chk_transporte" value="2" /></td>
+            <td><span>Transporte</span></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="chkcopie" id="chk_vigilancia" value="3" /></td>
+            <td><span>Vigilancia</span></td>
+        </tr>
+    </tbody>
+    </table>
 </div>
 </asp:Content>

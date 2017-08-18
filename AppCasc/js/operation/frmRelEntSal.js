@@ -1,4 +1,5 @@
-﻿var RelEntSal = function () {
+﻿var objLnkPrint;
+var RelEntSal = function () {
 
     this.Init = function () {
 
@@ -21,21 +22,49 @@
         var oCatalog = new Catalog();
         oCatalog.CreateGrid($('#grdCatalog'), '');
 
-        $('#msgConfirmCancel').dialog({
+        $('#msgNumCopies').dialog({
             autoOpen: false,
             resizable: false,
-            height: 240,
-            width: 400,
+            height: 200,
+            width: 300,
             modal: true,
             buttons: {
-                'Guardar': function () {
-                    var id = $('#hfId').val();
-                    $('#del_' + id).hide();
-                    $('#del_' + id).next().show();
-                    $('#ctl00_body_hfMotivo').val($('#ctl00_body_txt_motivo').val());
+                'Imprimir': function () {
+                    var copiesSelected = '';
+                    if ($('#chk_almacen').is(':checked')) {
+                        copiesSelected += $('#chk_almacen').val() + ',';
+                    }
+                    if ($('#chk_transporte').is(':checked')) {
+                        copiesSelected += $('#chk_transporte').val() + ',';
+                    }
+                    if ($('#chk_vigilancia').is(':checked')) {
+                        copiesSelected += $('#chk_vigilancia').val() + ',';
+                    }
+
+                    if (copiesSelected.length > 0) {
+                        $('#ctl00_body_hf_copies').val(copiesSelected.substr(0, copiesSelected.length - 1));
+                        var idParent = $('#' + objLnkPrint).children('td:nth-child(7)').children('a').attr('id').split('_')[0];
+                        var idChildren = $('#' + objLnkPrint).children('td:nth-child(7)').children('a').attr('id').split('_')[3];
+                        __doPostBack(idParent + '$body$repRows$' + idChildren + '$lnk_change_status', '');
+                    }
+                    else
+                        alert('Es necesario seleccionar por lo menos una casilla');
+
                     $(this).dialog("close");
+
                 }
             }
+        });
+
+        $('.ui-icon-print').each(function () {
+            $(this).click(function () {
+                objLnkPrint = $(this).parent().parent().attr('id');
+                var copies = $('#ctl00_body_hf_copies').val();
+                if (copies.length == 0) {
+                    $('#msgNumCopies').dialog('open');
+                    return false;
+                }
+            });
         });
 
         $('.lnkCancel').click(function () {
@@ -44,7 +73,6 @@
             $('.lnkCancel').show();
             var id = $(this).attr('id').replace('del_', '');
             $('#hfId').val(id * 1);
-            $('#msgConfirmCancel').dialog('open');
 
             return false;
         });
