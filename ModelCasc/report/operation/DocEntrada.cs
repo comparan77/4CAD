@@ -111,7 +111,7 @@ namespace ModelCasc.report.operation
                 reporte.SetParameterValue("tipoEntrada", "Única");
                 reporte.SetParameterValue("no_entrada", string.Empty);
 
-                if(oE.PEntPar !=null)
+                if (oE.PEntPar != null)
                     if (oE.PEntPar.No_entrada > 0)
                     {
                         reporte.SetParameterValue("tipoEntrada", "Parcial");
@@ -130,7 +130,7 @@ namespace ModelCasc.report.operation
                 if (diferenciaBulto < 0)
                     reporte.SetParameterValue("caja_sobrante", Math.Abs(diferenciaBulto).ToString());
 
-                if (oE.PEntPar != null)
+                if (oE.PEntPar != null && oE.PEntPar.Id > 0)
                     if (!oE.PEntPar.Es_ultima)
                     {
                         reporte.SetParameterValue("caja_faltante", 0);
@@ -215,14 +215,14 @@ namespace ModelCasc.report.operation
                 #endregion
 
                 List<string> files = new List<string>();
-                string fileName = string.Empty; 
+                string fileName = string.Empty;
 
                 foreach (int copy in copias)
                 {
                     fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
                     reporte.SetParameterValue("copiaPara", copy);
                     reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, fileName);
-                    files.Add(fileName);    
+                    files.Add(fileName);
                 }
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);
