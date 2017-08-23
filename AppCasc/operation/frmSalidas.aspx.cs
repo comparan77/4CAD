@@ -237,7 +237,7 @@ namespace AppCasc.operation
                 lblUsrName.Text = ((MstCasc)this.Master).getUsrLoged().Nombre;
                 ddlBodega.SelectedValue = ((MstCasc)this.Master).getUsrLoged().Id_bodega.ToString();
                 fillRepSalCompartidas(((MstCasc)this.Master).getUsrLoged().Id);
-                fillSalParcial(((MstCasc)this.Master).getUsrLoged().Id);
+                //fillSalParcial(((MstCasc)this.Master).getUsrLoged().Id);
                 fillRepSalHoy(((MstCasc)this.Master).getUsrLoged().Id);
             }
             catch (Exception)
@@ -861,6 +861,8 @@ namespace AppCasc.operation
                 //fillCliente();
                 ControlsMng.fillCustodia(ddlCustodia);
                 ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
+                fillSalParcial(Convert.ToInt32(ddlBodega.SelectedValue));
+
             }
             catch (Exception e)
             {
