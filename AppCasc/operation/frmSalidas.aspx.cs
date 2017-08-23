@@ -146,7 +146,9 @@ namespace AppCasc.operation
                     int.TryParse(Request.QueryString["_kp"].ToString(), out IdSalidaPrint);
                     printSalida(IdSalidaPrint);
                 }
-                ControlsMng.fillBodega(ddlBodega);
+                //ControlsMng.fillBodega(ddlBodega);
+                ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
+                ddlBodega.Items[0].Selected = true;
                 fillUser();
                 ddlBodega_changed(null, null);
             }
@@ -781,6 +783,8 @@ namespace AppCasc.operation
                 NumSalida++;
 
                 lbl_no_salida.Text = "Salida Número: " + NumSalida.ToString();
+                ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
+
             }
         }
 

@@ -30,7 +30,7 @@
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
 <div>
     <label>Bodega:</label>
-    <asp:DropDownList runat="server" ID="ddlBodega" AutoPostBack="true" Enabled="false" OnSelectedIndexChanged="ddlBodega_changed"></asp:DropDownList>
+    <asp:DropDownList runat="server" ID="ddlBodega" AutoPostBack="true" OnSelectedIndexChanged="ddlBodega_changed"></asp:DropDownList>
     <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfvBodega" ControlToValidate="ddlBodega" InitialValue="" ErrorMessage="Es necesario seleccionar una bodega"></asp:RequiredFieldValidator>
 </div>
 <div>
