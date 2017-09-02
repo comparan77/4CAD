@@ -12,7 +12,7 @@ namespace AppCasc.operation
 {
     public partial class frmRelEntSal : System.Web.UI.Page
     {
-        private int[] getNumCopies()
+        private List<Cliente_copia> getNumCopies(List<Cliente_copia> lst)
         {
             int[] copies = new int[] { };
 
@@ -21,7 +21,11 @@ namespace AppCasc.operation
                 copies = hf_copies.Value.Split(',').Select(p => int.Parse(p)).ToArray();
             }
             hf_copies.Value = string.Empty;
-            return copies;
+
+            return (from item1 in lst
+                             join item2 in copies.ToList()
+                             on item1.Id equals item2
+                             select item1).ToList<Cliente_copia>();
         }
 
         private Entrada SEntrada
@@ -128,7 +132,7 @@ namespace AppCasc.operation
             try
             {
                 oE = EntradaCtrl.EntradaGetAllDataById(IdEntrada);
-                oE.copias = getNumCopies();
+                oE.PLstCCopia = getNumCopies(oE.PLstCCopia);
                 SEntrada = oE;
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=entrada','_blank', 'toolbar=no');</script>");
             }
@@ -147,8 +151,8 @@ namespace AppCasc.operation
             string virtualPath = string.Empty;
             try
             {
-                oS = SalidaCtrl.getAllDataById(IdSalida);
-                oS.copias = getNumCopies();
+                oS = SalidaCtrl.SalidaGetAllDataById(IdSalida);
+                oS.PLstCCopia = getNumCopies(oS.PLstCCopia);
                 SSalida = oS;
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=salida','_blank', 'toolbar=no');</script>");
             }
@@ -211,6 +215,7 @@ namespace AppCasc.operation
             try
             {
                 fillRep(fillData().getDataEntrada());
+                hfOperation.Value = "1";
             }
             catch (Exception e)
             {
@@ -223,6 +228,7 @@ namespace AppCasc.operation
             try
             {
                 fillRep(fillData().getDataSalida());
+                hfOperation.Value = "2";
             }
             catch (Exception e)
             {

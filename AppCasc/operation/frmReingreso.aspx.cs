@@ -1205,7 +1205,7 @@ namespace AppCasc.operation
         {
             try
             {
-                Salida o = SalidaCtrl.getAllDataById(idSalida);
+                Salida o = SalidaCtrl.SalidaGetAllDataById(idSalida);
                 o.Folio = o.Folio + o.Folio_indice;
 
                 #region ubicacion y cliente

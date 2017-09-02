@@ -564,6 +564,8 @@ namespace ModelCasc.operation
                 }
 
                 oE.PUsuario = oU;
+
+                oE.PLstCCopia = CatalogCtrl.ClienteCopiaLst(1, oE.Id_cliente);
             }
             catch
             {

@@ -125,7 +125,7 @@ namespace AppCasc.operation.almacen
                     break;
                 case "salidaAlm":
                     id = Convert.ToInt32(Request["_key"].ToString());
-                    obj = SalidaCtrl.getAllDataById(id);
+                    obj = SalidaCtrl.SalidaGetAllDataById(id);
                     RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".pdf";
                     path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
 
@@ -141,7 +141,7 @@ namespace AppCasc.operation.almacen
                     break;
                 case "salidaAlmXls":
                     id = Convert.ToInt32(Request["_key"].ToString());
-                    obj = SalidaCtrl.getAllDataById(id);
+                    obj = SalidaCtrl.SalidaGetAllDataById(id);
                     RptFileName = ((Salida)obj).Folio + ((Salida)obj).Folio_indice + ".xls";
                     path = HttpContext.Current.Server.MapPath("~/rpt/salidasAlm/") + RptFileName;
 

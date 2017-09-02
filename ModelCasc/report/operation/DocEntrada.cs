@@ -67,7 +67,7 @@ namespace ModelCasc.report.operation
             }
         }
 
-        public static void getEntrada(string FilePath, string rptPath, Entrada oE, DataSet ds, params int[] copias)
+        public static void getEntrada(string FilePath, string rptPath, Entrada oE, DataSet ds)
         {
             try
             {
@@ -217,10 +217,10 @@ namespace ModelCasc.report.operation
                 List<string> files = new List<string>();
                 string fileName = string.Empty;
 
-                foreach (int copy in copias)
+                foreach (Cliente_copia itemCC in oE.PLstCCopia)
                 {
                     fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                    reporte.SetParameterValue("copiaPara", copy);
+                    reporte.SetParameterValue("copiaPara", itemCC.Nombre);
                     reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, fileName);
                     files.Add(fileName);
                 }

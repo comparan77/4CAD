@@ -669,7 +669,7 @@ namespace AppCasc.operation
             string virtualPath = string.Empty;
             try
             {
-                SSalida = SalidaCtrl.getAllDataById(IdSalida);
+                SSalida = SalidaCtrl.SalidaGetAllDataById(IdSalida);
 
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=salida','_blank', 'toolbar=no');</script>");
             }

@@ -145,7 +145,7 @@ namespace ModelCasc.operation
             }
         }
 
-        public static Salida getAllDataById(int IdSalida)
+        public static Salida SalidaGetAllDataById(int IdSalida)
         {
             Salida oS = new Salida();
             try
@@ -263,6 +263,8 @@ namespace ModelCasc.operation
                 oS.PLstTarAlm = oTAMng.Lst;
 
                 oS.PUsuario = oU;
+
+                oS.PLstCCopia = CatalogCtrl.ClienteCopiaLst(2, oS.Id_cliente);
             }
             catch (Exception)
             {

@@ -906,6 +906,37 @@ namespace ModelCasc.catalog
 
         #endregion
 
+        #region Cliente Copias Operaciones
+
+        public static List<Cliente_copia> ClienteCopiaLst(int id_operacion, int id_cliente)
+        {
+            List<Cliente_copia> lst = new List<Cliente_copia>();
+            try
+            {
+                Cliente_copia_operacionMng oCCOMng = new Cliente_copia_operacionMng();
+                Cliente_copia_operacion oCCO = new Cliente_copia_operacion() { Id_operacion = id_operacion, Id_cliente = id_cliente };
+                oCCOMng.O_Cliente_copia_operacion = oCCO;
+                oCCOMng.fillLstByCliente_operacion();
+                List<Cliente_copia_operacion> lstCCO = oCCOMng.Lst;
+
+                Cliente_copiaMng oCCMng = new Cliente_copiaMng();
+                foreach (Cliente_copia_operacion itemCCO in lstCCO)
+                {
+                    Cliente_copia oCC = new Cliente_copia() { Id = itemCCO.Id_cliente_copia };
+                    oCCMng.O_Cliente_copia = oCC;
+                    oCCMng.selById();
+                    lst.Add(oCC);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
         #region Tipos de Carga
 
         public static List<Tipo_carga> Tipo_cargafill()

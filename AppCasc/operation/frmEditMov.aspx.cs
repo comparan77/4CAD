@@ -236,7 +236,7 @@ namespace AppCasc.operation
             {
                 pnlSalida.Visible = true;
 
-                Salida oS = SalidaCtrl.getAllDataById(Convert.ToInt32(hfId.Value));
+                Salida oS = SalidaCtrl.SalidaGetAllDataById(Convert.ToInt32(hfId.Value));
                 txtFolio.Text = oS.Folio + oS.Folio_indice;
                 txtReferencia.Text = oS.Referencia;
                 txtUsuario.Text = oS.PUsuario.Nombre;

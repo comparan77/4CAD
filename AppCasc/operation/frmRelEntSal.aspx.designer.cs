@@ -31,6 +31,15 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
+        /// hfOperation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfOperation;
+        
+        /// <summary>
         /// ddlBodega control.
         /// </summary>
         /// <remarks>

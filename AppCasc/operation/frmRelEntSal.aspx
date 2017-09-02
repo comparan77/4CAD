@@ -10,6 +10,7 @@
 
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
+<asp:HiddenField runat="server" ID="hfOperation" />
 
 <div id="div_panel">
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Entradas y Salidas Generadas</h3>
@@ -62,7 +63,7 @@
                     <td class="fecha"><%# Eval("FECHA DE OPERACION", "{0:dd/MM/yyyy}")%></td>
                     <td class="folio"><%# Eval("FOLIO E/S")%></td>
                     <td class="referencia"><%# Eval("REFERENCIA")%></td>
-                    <td class="cliente"><%# Eval("CUENTA") %></td>
+                    <td id='<%# Eval("id_cliente") %>' class="cliente"><%# Eval("CUENTA") %></td>
                     <td class="mercancia"><%# Eval("MERCANCIA") %></td>
                     <td align="center"><asp:LinkButton runat="server" CommandArgument='<%# Eval("MOVIMIENTO") %>' CommandName='<%# Eval("id") %>' ID="lnk_change_status" CssClass="ui-icon ui-icon-print spnIcon" OnCommand="lnk_print_click"></asp:LinkButton> </td>
                     <td align="center" title='<%# Eval("motivo_cancelacion") %>'>
@@ -87,19 +88,8 @@
 
 <div id="msgNumCopies" title="Selección de copias" style="display: none;" >
     <table class="grdCasc">
-    <tbody>
-        <tr>
-            <td><input type="checkbox" name="chkcopie" id="chk_almacen" value="1" /></td>
-            <td><span>Almacén</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="chkcopie" id="chk_transporte" value="2" /></td>
-            <td><span>Transporte</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="chkcopie" id="chk_vigilancia" value="3" /></td>
-            <td><span>Vigilancia</span></td>
-        </tr>
+    <tbody id="tbodyCopies">
+        
     </tbody>
     </table>
 </div>

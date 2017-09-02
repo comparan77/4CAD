@@ -31,15 +31,14 @@ var RelEntSal = function () {
             buttons: {
                 'Imprimir': function () {
                     var copiesSelected = '';
-                    if ($('#chk_almacen').is(':checked')) {
-                        copiesSelected += $('#chk_almacen').val() + ',';
-                    }
-                    if ($('#chk_transporte').is(':checked')) {
-                        copiesSelected += $('#chk_transporte').val() + ',';
-                    }
-                    if ($('#chk_vigilancia').is(':checked')) {
-                        copiesSelected += $('#chk_vigilancia').val() + ',';
-                    }
+
+                    $('.copieOp').each(function () {
+
+                        if ($(this).is(':checked')) {
+                            copiesSelected += $(this).val() + ',';
+                        }
+
+                    });
 
                     if (copiesSelected.length > 0) {
                         $('#ctl00_body_hf_copies').val(copiesSelected.substr(0, copiesSelected.length - 1));
@@ -59,9 +58,11 @@ var RelEntSal = function () {
         $('.ui-icon-print').each(function () {
             $(this).click(function () {
                 objLnkPrint = $(this).parent().parent().attr('id');
+                id_cliente = $(this).parent().parent().children('td:nth-child(5)').attr('id');
+                id_operation = $('#ctl00_body_hfOperation').val();
                 var copies = $('#ctl00_body_hf_copies').val();
                 if (copies.length == 0) {
-                    $('#msgNumCopies').dialog('open');
+                    fillCopyOperationByCliente(id_cliente, 1);
                     return false;
                 }
             });
@@ -79,6 +80,44 @@ var RelEntSal = function () {
 
         loadError();
     }
+
+    function fillCopyOperationByCliente(id_cliente, id_operation) {
+        $.ajax({
+            type: 'GET',
+            url: "/handlers/Catalog.ashx?catalogo=cliente&opt=getCopyByOperation",
+            //dataType: "jsonp",
+            data: {
+                id_cliente: id_cliente,
+                id_operation: id_operation
+            },
+            complete: function () {
+                //$('#up_cantidades').removeClass('ajaxLoading');
+            },
+            success: function (data) {
+
+                var tr = '';
+                var td = '';
+                var tbodyCopies = $('#tbodyCopies');
+                tbodyCopies.html('');
+                $.each(data, function (i, obj) {
+                    tr = '<tr>';
+                    td = '<td><input type="checkbox" class="copieOp" name="chkcopie" id="chk_' + obj.Id + '" value="' + obj.Id + '" /></td>';
+                    td += '<td><span>' + obj.Nombre + '</span></td>';
+                    tr += td;
+                    tr += '</tr>';
+                    tbodyCopies.append(tr);
+                });
+
+                $('#msgNumCopies').dialog('open');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
 }
 
 function confirmDelete() {

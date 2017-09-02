@@ -76,6 +76,15 @@ namespace AppCasc.handlers
                 case "getAll":
                     response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_GetAll());
                     break;
+                case "getCopyByOperation":
+                    int id_cliente = 0;
+                    int id_operation = 0;
+                    int.TryParse(context.Request["id_cliente"], out id_cliente);
+                    int.TryParse(context.Request["id_operation"], out id_operation);
+
+                    response = JsonConvert.SerializeObject(CatalogCtrl.ClienteCopiaLst(id_operation, id_cliente));
+
+                    break;
                 default:
                     throw new Exception("La opción " + option + " no existe");
             }
