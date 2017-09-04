@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmCliente.aspx.cs" Inherits="AppCasc.catalog.frmCliente" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/catalog/frm.js" type="text/javascript"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -12,7 +14,7 @@
 <div id="frmCatalog" class="divForm">
     <div>
         <label>Nombre:</label>
-        <asp:TextBox runat="server" ID="txt_nombre"></asp:TextBox>
+        <asp:TextBox runat="server" CssClass="txtLarge" ID="txt_nombre"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" ID="rfvNombre" ControlToValidate="txt_nombre" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
     </div>
     <div>
@@ -22,7 +24,7 @@
     </div>
     <div>
         <label>Raz&oacute;n:</label>
-        <asp:TextBox runat="server" ID="txt_razon"></asp:TextBox>
+        <asp:TextBox runat="server" CssClass="txtLarge" ID="txt_razon"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" ID="rfvRazon" ControlToValidate="txt_razon" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
     </div>
     <div>
@@ -36,6 +38,22 @@
     <div>
         <label>Grupo:</label>
         <asp:DropDownList runat="server" ID="ddlGrupo"></asp:DropDownList>
+    </div>
+    <hr />
+    <div>
+        <label>Impresiones por Operaci&oacute;n</label>
+        <asp:DropDownList runat="server" ID="ddlOperacion" AutoPostBack="true" OnSelectedIndexChanged="changeOperacion">
+            <asp:ListItem Value="1" Text="Arribo"></asp:ListItem>
+            <asp:ListItem Value="2" Text="Embarque"></asp:ListItem>
+        </asp:DropDownList>
+        <asp:UpdatePanel runat="server" ID="upCopias" UpdateMode="Conditional">
+        <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="ddlOperacion" EventName="SelectedIndexChanged" />
+        </Triggers>
+        <ContentTemplate>
+            <asp:CheckBoxList runat="server" ID="lstCopias" OnSelectedIndexChanged="selectCopie" AutoPostBack="true"></asp:CheckBoxList>
+        </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
     <hr />
     <div id="divActions">   

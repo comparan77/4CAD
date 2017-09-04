@@ -32,6 +32,7 @@ namespace ModelCasc.catalog
         public string Documento { get; set; }
         public bool EsFondeo { get; set; }
         public Cliente_mercancia PClienteMercancia { get; set; }
+        public List<Cliente_copia_operacion> PLstCopiaOp { get; set; }
         #endregion
 
         #region Constructores

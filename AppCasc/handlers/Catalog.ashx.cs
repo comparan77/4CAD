@@ -82,7 +82,7 @@ namespace AppCasc.handlers
                     int.TryParse(context.Request["id_cliente"], out id_cliente);
                     int.TryParse(context.Request["id_operation"], out id_operation);
 
-                    response = JsonConvert.SerializeObject(CatalogCtrl.ClienteCopiaLst(id_operation, id_cliente));
+                    response = JsonConvert.SerializeObject(CatalogCtrl.ClienteCopiaOperacionLst(id_operation, id_cliente));
 
                     break;
                 default:

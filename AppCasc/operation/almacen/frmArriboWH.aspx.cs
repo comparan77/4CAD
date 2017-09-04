@@ -248,12 +248,7 @@ namespace AppCasc.operation.almacen
                 o.PCortina = oCor;
 
                 //Cliente
-                Cliente oC = new Cliente();
-                ClienteMng oCMng = new ClienteMng();
-                oC.Id = o.Id_cliente;
-                oCMng.O_Cliente = oC;
-                oCMng.selById();
-                o.PCliente = oC;
+                o.PCliente = CatalogCtrl.Cliente_GetById(o.Id_cliente);
 
                 //
                 Cliente_mercancia oCM = new Cliente_mercancia() { Codigo = o.Mercancia };

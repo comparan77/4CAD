@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ModelCasc.catalog;
 using ModelCasc.report;
+using ModelCasc.webApp;
 
 namespace AppCasc.report
 {
@@ -105,13 +106,8 @@ namespace AppCasc.report
         {
             try
             {
-                ClienteMng oMng = new ClienteMng();
-                oMng.fillLst();
-                ddlCliente.Items.Clear();
-                ddlCliente.DataSource = oMng.Lst;
-                ddlCliente.DataTextField = "nombre";
-                ddlCliente.DataValueField = "id";
-                ddlCliente.DataBind();
+                ControlsMng.fillCliente(ddlCliente);
+                
             }
             catch
             {

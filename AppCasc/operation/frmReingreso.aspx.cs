@@ -343,12 +343,7 @@ namespace AppCasc.operation
             o.PCortina = oCor;
 
             //Cliente
-            Cliente oC = new Cliente();
-            ClienteMng oCMng = new ClienteMng();
-            oC.Id = o.Id_cliente;
-            oCMng.O_Cliente = oC;
-            oCMng.selById();
-            o.PCliente = oC;
+            o.PCliente = CatalogCtrl.Cliente_GetById(o.Id_cliente);
 
             //Custodia
             Custodia oCdia = new Custodia();
@@ -489,16 +484,11 @@ namespace AppCasc.operation
                 oCor.Id_bodega = oE.Id_bodega;
                 oE.PCortina = oCor;
 
-                Cliente oC = new Cliente();
-                ClienteMng oCMng = new ClienteMng();
-                oC.Id = oE.Id_cliente;
-                oCMng.O_Cliente = oC;
-                oCMng.selById();
-                oE.PCliente = oC;
+                oE.PCliente = CatalogCtrl.Cliente_GetById(oE.Id_cliente);
 
                 Cuenta_tipoMng oCTMng = new Cuenta_tipoMng();
                 Cuenta_tipo oCT = new Cuenta_tipo();
-                oCT.Id = oC.Id_cuenta_tipo;
+                oCT.Id = oE.PCliente.Id_cuenta_tipo;
                 oCTMng.O_Cuenta_tipo = oCT;
                 oCTMng.selById();
                 oE.PCliente.cuenta_tipo = oCT.Nombre;
@@ -1165,12 +1155,7 @@ namespace AppCasc.operation
         {
             try
             {
-                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-                Cliente_documento oCD = new Cliente_documento();
-                oCD.Id_cliente = IdCliente;
-                oCDMng.O_Cliente_documento = oCD;
-                oCDMng.fillLstByCliente();
-                VSLstCDE = oCDMng.Lst;
+                VSLstCDE = CatalogCtrl.Cliente_DocumentoFillLstByCliente(IdCliente);
 
                 hfReferencia.Value = string.Empty;
                 hfIdDocReq.Value = "0";
@@ -1180,11 +1165,11 @@ namespace AppCasc.operation
 
                 ControlsMng.fillDocumento(ddlDocumento);
 
-                if (oCDMng.Lst.Count > 0)
+                if (VSLstCDE.Count > 0)
                 {
                     Documento oD = new Documento();
                     DocumentoMng oDMng = new DocumentoMng();
-                    oD.Id = oCDMng.Lst.First().Id_documento;
+                    oD.Id = VSLstCDE.First().Id_documento;
                     oDMng.O_Documento = oD;
                     oDMng.selById();
                     hfIdDocReq.Value = oD.Id.ToString();
@@ -1224,12 +1209,8 @@ namespace AppCasc.operation
                 pnl_documentos.Visible = true;
                 clienteRequiereDocumentos(o.Id_cliente);
                 
-                Cliente_documento oCD = new Cliente_documento();
-                oCD.Id_cliente = o.Id_cliente;
-                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-                oCDMng.O_Cliente_documento = oCD;
-                oCDMng.fillLstByCliente();
-                ddlDocumento.SelectedValue = oCDMng.Lst.First().Id_documento.ToString();
+                List<Cliente_documento> lstCteDoc = CatalogCtrl.Cliente_DocumentoFillLstByCliente(o.Id_cliente);
+                ddlDocumento.SelectedValue = lstCteDoc.First().Id_documento.ToString();
                 txt_referencia.Text = o.Referencia;
                 VSLstSD = new List<Salida_documento>();
                 lst_documento_recibido.Items.Clear();

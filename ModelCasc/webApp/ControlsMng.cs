@@ -324,5 +324,14 @@ namespace ModelCasc.webApp
             ddl.DataValueField = "id";
             ddl.DataBind();
         }
+
+        public static void fillClienteCopias(CheckBoxList lbox)
+        {
+            lbox.DataSource = CatalogCtrl.ClienteCopiaLst();
+            lbox.DataTextField = "nombre";
+            lbox.DataValueField = "id";
+            lbox.DataBind();
+        }
+            
     }
 }

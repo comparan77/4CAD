@@ -112,6 +112,33 @@ namespace AppCasc.catalog {
         protected global::System.Web.UI.WebControls.DropDownList ddlGrupo;
         
         /// <summary>
+        /// ddlOperacion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlOperacion;
+        
+        /// <summary>
+        /// upCopias control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upCopias;
+        
+        /// <summary>
+        /// lstCopias control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList lstCopias;
+        
+        /// <summary>
         /// hfAction control.
         /// </summary>
         /// <remarks>

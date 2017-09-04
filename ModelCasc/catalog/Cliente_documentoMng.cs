@@ -7,7 +7,7 @@ using System.Data;
 
 namespace ModelCasc.catalog
 {
-    public class Cliente_documentoMng : dbTable
+    internal class Cliente_documentoMng : dbTable
     {
         #region Campos
         protected Cliente_documento _oCliente_documento;
@@ -147,13 +147,16 @@ namespace ModelCasc.catalog
             }
         }
 
-        public void dltByCliente()
+        public void dltByCliente(IDbTransaction trans = null)
         {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_documento");
                 addParameters(5);
-                GenericDataAccess.ExecuteNonQuery(this.comm);
+                if(trans == null)
+                    GenericDataAccess.ExecuteNonQuery(this.comm);
+                else
+                    GenericDataAccess.ExecuteNonQuery(this.comm, trans);
             }
             catch
             {
@@ -189,6 +192,21 @@ namespace ModelCasc.catalog
                     }
                     this._lst.Add(o);
                 }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_documento");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oCliente_documento.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
             {

@@ -433,6 +433,119 @@ namespace ModelCasc.catalog
 
             return oC;
         }
+        
+        public static void Cliente_changeStatus(Cliente oC, bool status)
+        {
+            try
+            {
+                ClienteMng oCMng = new ClienteMng();
+
+                oCMng.O_Cliente = oC;
+                if (status)
+                    oCMng.dlt();
+                else
+                    oCMng.reactive();
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
+        public static List<Cliente> Cliente_FillAllLst()
+        {
+            List<Cliente> lst = new List<Cliente>();
+            try
+            {
+                ClienteMng oCMng = new ClienteMng();
+                oCMng.fillAllLst();
+                lst = oCMng.Lst;
+            }
+            catch 
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        public static void Cliente_udt(Cliente oC)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                ClienteMng oCMng = new ClienteMng();
+                oCMng.O_Cliente = oC;
+                oCMng.udt(trans);
+
+                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
+                Cliente_documento oCDDlt = new Cliente_documento();
+                oCDDlt.Id_cliente = oC.Id;
+                oCDMng.O_Cliente_documento = oCDDlt;
+                oCDMng.dltByCliente(trans);
+
+                foreach (Cliente_documento oCD in oC.PLstDocReq)
+                {
+                    oCD.Id_cliente = oC.Id;
+                    oCDMng.O_Cliente_documento = oCD;
+                    oCDMng.add(trans);
+                }
+
+                Cliente_copia_operacionMng oCCOpMng = new Cliente_copia_operacionMng();
+                oCCOpMng.dltByCliente(oC.Id, trans);
+                foreach (Cliente_copia_operacion oCCOp in oC.PLstCopiaOp)
+                {
+                    oCCOp.Id_cliente = oC.Id;
+                    oCCOpMng.O_Cliente_copia_operacion = oCCOp;
+                    oCCOpMng.add(trans);
+                }
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void Cliente_add(Cliente oC)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                ClienteMng oCMng = new ClienteMng();
+                oCMng.O_Cliente = oC;
+                oCMng.add(trans);
+
+                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
+                foreach (Cliente_documento oCD in oC.PLstDocReq)
+                {
+                    oCD.Id_cliente = oC.Id;
+                    oCDMng.O_Cliente_documento = oCD;
+                    oCDMng.add(trans);
+                }
+
+                Cliente_copia_operacionMng oCCOpMng = new Cliente_copia_operacionMng();
+                foreach (Cliente_copia_operacion oCCOp in oC.PLstCopiaOp)
+                {
+                    oCCOp.Id_cliente = oC.Id;
+                    oCCOpMng.O_Cliente_copia_operacion = oCCOp;
+                    oCCOpMng.add(trans);
+                }
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
 
         #endregion
 
@@ -443,6 +556,26 @@ namespace ModelCasc.catalog
             Cliente_documentoMng oMng = new Cliente_documentoMng();
             oMng.fillLst();
             return JsonConvert.SerializeObject(oMng.Lst, Formatting.Indented);
+        }
+
+        public static List<Cliente_documento> Cliente_DocumentoFillLstByCliente(int id_cliente)
+        {
+            List<Cliente_documento> lst = new List<Cliente_documento>();
+            try
+            {
+                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
+                Cliente_documento oCD = new Cliente_documento();
+                oCD.Id_cliente = id_cliente;
+                oCDMng.O_Cliente_documento = oCD;
+                oCDMng.fillLstByCliente();
+                lst = oCDMng.Lst;
+            }
+            catch 
+            {
+                
+                throw;
+            }
+            return lst;
         }
 
         #endregion
@@ -908,7 +1041,23 @@ namespace ModelCasc.catalog
 
         #region Cliente Copias Operaciones
 
-        public static List<Cliente_copia> ClienteCopiaLst(int id_operacion, int id_cliente)
+        public static List<Cliente_copia> ClienteCopiaLst()
+        {
+            List<Cliente_copia> lst = new List<Cliente_copia>();
+            try
+            {
+                Cliente_copiaMng oMng = new Cliente_copiaMng();
+                oMng.fillLst();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<Cliente_copia> ClienteCopiaOperacionLst(int id_operacion, int id_cliente)
         {
             List<Cliente_copia> lst = new List<Cliente_copia>();
             try

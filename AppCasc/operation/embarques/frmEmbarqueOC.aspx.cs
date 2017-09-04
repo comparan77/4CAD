@@ -316,12 +316,8 @@ namespace AppCasc.operation.embarques
             #endregion
 
             #region Documentos
-            Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-            Cliente_documento oCD = new Cliente_documento();
-            oCD.Id_cliente = Convert.ToInt32(ddlCliente.SelectedValue);
-            oCDMng.O_Cliente_documento = oCD;
-            oCDMng.fillLstByCliente();
-            hf_id_doc_req_by_cliente.Value = oCDMng.Lst.First().Id_documento.ToString();
+            List<Cliente_documento> lstCteDoc = CatalogCtrl.Cliente_DocumentoFillLstByCliente(Convert.ToInt32(ddlCliente.SelectedValue));
+            hf_id_doc_req_by_cliente.Value = lstCteDoc.First().Id_documento.ToString();
             grd_rem.DataSource = oSOC.LstRem;
             grd_rem.DataBind();
             #endregion

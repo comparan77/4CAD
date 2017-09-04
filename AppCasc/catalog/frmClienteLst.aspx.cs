@@ -16,9 +16,7 @@ namespace AppCasc.catalog
             {
                 try
                 {
-                    ClienteMng oCMng = new ClienteMng();
-                    oCMng.fillAllLst();
-                    fillCatalog(oCMng.Lst);
+                    fillCatalog(CatalogCtrl.Cliente_FillAllLst());
                 }
                 catch (Exception e)
                 {
@@ -44,17 +42,9 @@ namespace AppCasc.catalog
 
                 Cliente oC = new Cliente();
                 oC.Id = Id;
-                ClienteMng oCMng = new ClienteMng();
+                CatalogCtrl.Cliente_changeStatus(oC, status);
 
-                oCMng.O_Cliente = oC;
-                if (status)
-                    oCMng.dlt();
-                else
-                    oCMng.reactive();
-
-                oCMng = new ClienteMng();
-                oCMng.fillAllLst();
-                fillCatalog(oCMng.Lst);
+                fillCatalog(CatalogCtrl.Cliente_FillAllLst());
             }
             catch (Exception e)
             {

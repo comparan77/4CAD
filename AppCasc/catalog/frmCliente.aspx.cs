@@ -11,6 +11,24 @@ namespace AppCasc.catalog
 {
     public partial class frmCliente : System.Web.UI.Page
     {
+
+        private int id_operacion = 0;
+        private int id_cliente = 0;
+        private int id_cliente_copia = 0;
+
+        private List<Cliente_copia_operacion> lstCCOp
+        {
+            get
+            {
+                object o = ViewState["lstCCOp"];
+                return o == null ? null : (List<Cliente_copia_operacion>)o;
+            }
+            set
+            {
+                ViewState["lstCCOp"] = value;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs args)
         {
             try
@@ -20,9 +38,11 @@ namespace AppCasc.catalog
                     hfAction.Value = Request["Action"];
                     ControlsMng.fillDocumento(ddlDocumento);
                     ControlsMng.fillClienteGrupo(ddlGrupo);
+                    ControlsMng.fillClienteCopias(lstCopias);
                     ddlDocumento.Items.Add(new ListItem("Sin Documentos", "0"));
                     ddlGrupo.Items.Add(new ListItem("Sin Grupo", "0"));
                     ControlsMng.fillCuentaTipo(ddlCuentaTipo);
+                    lstCCOp = new List<Cliente_copia_operacion>();
                     switch (hfAction.Value)
                     {
                         case "Udt":
@@ -40,7 +60,28 @@ namespace AppCasc.catalog
             {
                 ((MstCasc)this.Master).setError = e.Message;
             }
-        }     
+        }
+                
+        private void fillCopies()
+        {
+            try
+            {
+                int.TryParse(hfId.Value, out id_cliente);
+                int.TryParse(ddlOperacion.SelectedValue, out id_operacion);
+
+                lstCopias.ClearSelection();
+                                
+                foreach (ListItem item in lstCopias.Items)
+                {
+                    int.TryParse(item.Value, out id_cliente_copia);
+                    item.Selected = lstCCOp.Exists(p => p.Id_cliente_copia == id_cliente_copia && p.Id_operacion == id_operacion);
+                }
+            }
+            catch 
+            {
+                throw;
+            }
+        }
 
         private void fillForm()
         {
@@ -49,31 +90,35 @@ namespace AppCasc.catalog
 
             try
             {
-                ClienteMng oCMng = new ClienteMng();
-                Cliente oC = new Cliente();
-                oC.Id = Id;
-                oCMng.O_Cliente = oC;
-                oCMng.selById();
+                Cliente oC = CatalogCtrl.Cliente_GetById(Id);
 
                 txt_nombre.Text = oC.Nombre;
                 txt_rfc.Text = oC.Rfc;
                 txt_razon.Text = oC.Razon;
                 ddlCuentaTipo.SelectedValue = oC.Id_cuenta_tipo.ToString();
 
-                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-                Cliente_documento oCD = new Cliente_documento();
-                oCD.Id_cliente = oC.Id;
-                oCDMng.O_Cliente_documento = oCD;
-                oCDMng.fillLstByCliente();
-
                 ddlDocumento.SelectedValue = "0";
-
-                if (oCDMng.Lst.Count > 0)
+                List<Cliente_documento> lstCDoc = CatalogCtrl.Cliente_DocumentoFillLstByCliente(oC.Id);
+                if (lstCDoc.Count > 0)
                 {
-                    ddlDocumento.SelectedValue = oCDMng.Lst.First().Id_documento.ToString();
+                    ddlDocumento.SelectedValue = lstCDoc.First().Id_documento.ToString();
                 }
 
                 ddlGrupo.SelectedValue = oC.Id_cliente_grupo.ToString();
+
+                List<Cliente_copia> lst =  CatalogCtrl.ClienteCopiaOperacionLst(1, Id);
+                foreach (Cliente_copia itemCC in lst)
+                {
+                    lstCCOp.Add(new Cliente_copia_operacion() { Id_cliente = Id, Id_operacion = 1, Id_cliente_copia = itemCC.Id });
+                }
+
+                lst = CatalogCtrl.ClienteCopiaOperacionLst(2, Id);
+                foreach (Cliente_copia itemCC in lst)
+                {
+                    lstCCOp.Add(new Cliente_copia_operacion() { Id_cliente = Id, Id_operacion = 2, Id_cliente_copia = itemCC.Id });
+                }
+
+                fillCopies();
             }
             catch
             {
@@ -114,6 +159,8 @@ namespace AppCasc.catalog
             oC.Id_cliente_grupo = entero;
             entero = 0;
 
+            oC.PLstCopiaOp = lstCCOp;
+
             return oC;
         }
 
@@ -121,20 +168,7 @@ namespace AppCasc.catalog
         {
             try
             {
-                ClienteMng oCMng = new ClienteMng();
-                oCMng.O_Cliente = oC;
-                oCMng.add();
-
-                if(oC.Id < 1)
-                    throw new Exception("Problema en base de datos");
-    
-                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-                foreach (Cliente_documento oCD in oC.PLstDocReq)
-                {
-                    oCD.Id_cliente = oC.Id;
-                    oCDMng.O_Cliente_documento = oCD;
-                    oCDMng.add();
-                }
+                CatalogCtrl.Cliente_add(oC);
             }
             catch
             {
@@ -146,22 +180,7 @@ namespace AppCasc.catalog
         {
             try
             {
-                ClienteMng oCMng = new ClienteMng();
-                oCMng.O_Cliente = oC;
-                oCMng.udt();
-
-                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-                Cliente_documento oCDDlt = new Cliente_documento();
-                oCDDlt.Id_cliente = oC.Id;
-                oCDMng.O_Cliente_documento = oCDDlt;
-                oCDMng.dltByCliente();
-                                
-                foreach (Cliente_documento oCD in oC.PLstDocReq)
-                {
-                    oCD.Id_cliente = oC.Id;
-                    oCDMng.O_Cliente_documento = oCD;
-                    oCDMng.add();
-                }
+                CatalogCtrl.Cliente_udt(oC);
             }
             catch
             {
@@ -183,7 +202,7 @@ namespace AppCasc.catalog
                         istCliente(getFormValues());
                         break;
                 }
-                Response.Redirect("frmClienteLst.aspx");
+                ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('Se guardo correctamente el registro');window.location.href='frmClienteLst.aspx'</script>");
             }
             catch (Exception e)
             {
@@ -195,6 +214,44 @@ namespace AppCasc.catalog
         protected void btnCancel_click(object sender, EventArgs args)
         {
             Response.Redirect("frmClienteLst.aspx");
+        }
+
+        protected void changeOperacion(object sender, EventArgs args)
+        {
+            try
+            {
+                fillCopies();
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void selectCopie(object sender, EventArgs args)
+        {
+            try
+            {
+                int.TryParse(ddlOperacion.SelectedValue, out id_operacion);
+
+                foreach (ListItem itemCC in lstCopias.Items)
+                {
+                    int.TryParse(itemCC.Value, out id_cliente_copia);
+                    Cliente_copia_operacion oCCOp = new Cliente_copia_operacion() { Id_cliente_copia = id_cliente_copia, Id_operacion = id_operacion };
+                    if (itemCC.Selected)
+                    {
+                        if (!lstCCOp.Exists(p => p.Id_operacion == id_operacion && p.Id_cliente_copia == id_cliente_copia))
+                            lstCCOp.Add(oCCOp);
+                    }
+                    else
+                        if (lstCCOp.Exists(p => p.Id_operacion == id_operacion && p.Id_cliente_copia == id_cliente_copia))
+                            lstCCOp.Remove(lstCCOp.Find(p => p.Id_operacion == id_operacion && p.Id_cliente_copia == id_cliente_copia));
+                }
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
         }
     }
 }

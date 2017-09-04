@@ -250,12 +250,7 @@ namespace AppCasc.operation
         {
             try
             {
-                Cliente_documentoMng oCDMng = new Cliente_documentoMng();
-                Cliente_documento oCD = new Cliente_documento();
-                oCD.Id_cliente = IdCliente;
-                oCDMng.O_Cliente_documento = oCD;
-                oCDMng.fillLstByCliente();
-                VSLstCDS = oCDMng.Lst;
+                VSLstCDS = CatalogCtrl.Cliente_DocumentoFillLstByCliente(IdCliente);
 
                 hfReferencia.Value = "Folio:";
                 hfIdDocReq.Value = "0";
@@ -265,11 +260,11 @@ namespace AppCasc.operation
 
                 ControlsMng.fillDocumento(ddlDocumento);
 
-                if (oCDMng.Lst.Count > 0)
+                if (VSLstCDS.Count > 0)
                 {
                     Documento oD = new Documento();
                     DocumentoMng oDMng = new DocumentoMng();
-                    oD.Id = oCDMng.Lst.First().Id_documento;
+                    oD.Id = VSLstCDS.First().Id_documento;
                     oDMng.O_Documento = oD;
                     oDMng.selById();
                     hfIdDocReq.Value = oD.Id.ToString();
@@ -416,11 +411,7 @@ namespace AppCasc.operation
                 oCor.Id_bodega = oS.Id_bodega;
                 oS.PCortina = oCor;
 
-                Cliente oC = new Cliente();
-                ClienteMng oCMng = new ClienteMng();
-                oC.Id = oS.Id_cliente;
-                oCMng.O_Cliente = oC;
-                oCMng.selById();
+                Cliente oC = CatalogCtrl.Cliente_GetById(oS.Id_cliente);
                 oS.PCliente = oC;
 
                 Cuenta_tipoMng oCTMng = new Cuenta_tipoMng();
@@ -619,12 +610,7 @@ namespace AppCasc.operation
             oS.PCortina = oCor;
 
             //Cliente
-            Cliente oC = new Cliente();
-            ClienteMng oCMng = new ClienteMng();
-            oC.Id = oS.Id_cliente;
-            oCMng.O_Cliente = oC;
-            oCMng.selById();
-            oS.PCliente = oC;
+            oS.PCliente = CatalogCtrl.Cliente_GetById(oS.Id_cliente);
 
             //Transporte
             Transporte oT = new Transporte();

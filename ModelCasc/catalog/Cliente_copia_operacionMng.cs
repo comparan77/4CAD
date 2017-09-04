@@ -178,5 +178,35 @@ namespace ModelCasc.catalog
                 throw;
             }
         }
+
+        public void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_copia_operacion");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oCliente_copia_operacion.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void dltByCliente(int id_cliente, IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_copia_operacion");
+                this.O_Cliente_copia_operacion.Id_cliente = id_cliente;
+                addParameters(6);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
