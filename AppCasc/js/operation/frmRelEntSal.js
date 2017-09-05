@@ -25,7 +25,7 @@ var RelEntSal = function () {
         $('#msgNumCopies').dialog({
             autoOpen: false,
             resizable: false,
-            height: 200,
+            height: 210,
             width: 300,
             modal: true,
             buttons: {
