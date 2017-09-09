@@ -717,6 +717,7 @@ namespace AppCasc.operation
 
                     ddlCustodia.SelectedValue = oS.Id_custodia.ToString();
                     txt_operador.Text = oS.Operador;
+                    ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
                     ddlVigilante.Items.FindByText(oS.Vigilante).Selected = true;
 
                     if (!oS.Es_unica)
