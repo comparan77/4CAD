@@ -350,6 +350,7 @@ namespace ModelCasc.operation
         /// Cancelacion parcial
         /// Solo se cancela el folio al que se hace referencia.
         /// </summary>
+        [System.Obsolete("Se realiza la cancelacion por codigo c#")]
         public void PartialCancel()
         {
             try
@@ -615,5 +616,19 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        internal void Cancel(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada");
+                addParameters(10);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }            
+        }
     }
 }

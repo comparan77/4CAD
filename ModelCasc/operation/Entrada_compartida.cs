@@ -31,6 +31,7 @@ namespace ModelCasc.operation
         #region Constructores
         public Entrada_compartida()
         {
+            this._id = 0;
             this._id_usuario = 0;
             this._folio = String.Empty;
             this._referencia = String.Empty;

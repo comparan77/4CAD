@@ -23,6 +23,7 @@ namespace ModelCasc.operation
         public Entrada_compartidaMng()
         {
             this._oEntrada_compartida = new Entrada_compartida();
+            this._lst = new List<Entrada_compartida>();
         }
         #endregion
 
@@ -38,6 +39,50 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_capturada", DbType.Boolean, this._oEntrada_compartida.Capturada);
         }
 
+        protected void BindByDataRow(DataRow dr, Entrada_compartida o)
+        {
+            try
+            {
+                int.TryParse(dr["id"].ToString(), out entero);
+                o.Id = entero;
+                entero = 0;
+                if (dr["id_entrada"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_entrada"].ToString(), out entero);
+                    o.Id_entrada = entero;
+                    entero = 0;
+                }
+                else
+                {
+                    o.Id_entrada = null;
+                }
+                if (dr["id_usuario"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_usuario"].ToString(), out entero);
+                    o.Id_usuario = entero;
+                    entero = 0;
+                }
+                o.Folio = dr["folio"].ToString();
+                o.Referencia = dr["referencia"].ToString();
+                if (dr["capturada"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["capturada"].ToString(), out logica);
+                    o.Capturada = logica;
+                    logica = false;
+                }
+                if (dr["IsActive"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["IsActive"].ToString(), out logica);
+                    o.IsActive = logica;
+                    logica = false;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public override void fillLst()
         {
             try
@@ -49,33 +94,7 @@ namespace ModelCasc.operation
                 foreach (DataRow dr in dt.Rows)
                 {
                     Entrada_compartida o = new Entrada_compartida();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_entrada"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_entrada"].ToString(), out entero);
-                        o.Id_entrada = entero;
-                        entero = 0;
-                    }
-                    else
-                    {
-                        o.Id_entrada = null;
-                    }
-                    if (dr["id_usuario"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_usuario"].ToString(), out entero);
-                        o.Id_usuario = entero;
-                        entero = 0;
-                    }
-                    o.Folio = dr["folio"].ToString();
-                    o.Referencia = dr["referencia"].ToString();
-                    if (dr["capturada"] != DBNull.Value)
-                    {
-                        bool.TryParse(dr["capturada"].ToString(), out logica);
-                        o.Capturada = logica;
-                        logica = false;
-                    }
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
@@ -95,30 +114,7 @@ namespace ModelCasc.operation
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    if (dr["id_entrada"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_entrada"].ToString(), out entero);
-                        this._oEntrada_compartida.Id_entrada = entero;
-                        entero = 0;
-                    }
-                    else
-                    {
-                        this._oEntrada_compartida.Id_entrada = null;
-                    }
-                    if (dr["id_usuario"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_usuario"].ToString(), out entero);
-                        this._oEntrada_compartida.Id_usuario = entero;
-                        entero = 0;
-                    }
-                    this._oEntrada_compartida.Folio = dr["folio"].ToString();
-                    this._oEntrada_compartida.Referencia = dr["referencia"].ToString();
-                    if (dr["capturada"] != DBNull.Value)
-                    {
-                        bool.TryParse(dr["capturada"].ToString(), out logica);
-                        this._oEntrada_compartida.Capturada = logica;
-                        logica = false;
-                    }
+                    BindByDataRow(dr, this._oEntrada_compartida);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -133,16 +129,11 @@ namespace ModelCasc.operation
 
         public override void add()
         {
-            throw new NotImplementedException();
-        }
-
-        public void add(IDbTransaction trans)
-        {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
                 addParameters(2);
-                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
                 this._oEntrada_compartida.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
@@ -179,6 +170,21 @@ namespace ModelCasc.operation
             }
         }
 
+        public void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oEntrada_compartida.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public void SelByFolio()
         {
             try
@@ -190,34 +196,7 @@ namespace ModelCasc.operation
                 foreach (DataRow dr in dt.Rows)
                 {
                     Entrada_compartida o = new Entrada_compartida();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_entrada"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_entrada"].ToString(), out entero);
-                        o.Id_entrada = entero;
-                        entero = 0;
-                    }
-                    else
-                    {
-                        o.Id_entrada = null;
-                    }
-                    if (dr["id_usuario"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_usuario"].ToString(), out entero);
-                        o.Id_usuario = entero;
-                        entero = 0;
-                    }
-                    o.Folio = dr["folio"].ToString();
-                    o.Referencia = dr["referencia"].ToString();
-                    if (dr["capturada"] != DBNull.Value)
-                    {
-                        bool.TryParse(dr["capturada"].ToString(), out logica);
-                        o.Capturada = logica;
-                        logica = false;
-                    }
-                    o.IsActive = Convert.ToBoolean(dr["isactive"].ToString());
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
@@ -271,33 +250,7 @@ namespace ModelCasc.operation
                 foreach (DataRow dr in dt.Rows)
                 {
                     Entrada_compartida o = new Entrada_compartida();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_entrada"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_entrada"].ToString(), out entero);
-                        o.Id_entrada = entero;
-                        entero = 0;
-                    }
-                    else
-                    {
-                        o.Id_entrada = null;
-                    }
-                    if (dr["id_usuario"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_usuario"].ToString(), out entero);
-                        o.Id_usuario = entero;
-                        entero = 0;
-                    }
-                    o.Folio = dr["folio"].ToString();
-                    o.Referencia = dr["referencia"].ToString();
-                    if (dr["capturada"] != DBNull.Value)
-                    {
-                        bool.TryParse(dr["capturada"].ToString(), out logica);
-                        o.Capturada = logica;
-                        logica = false;
-                    }
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
@@ -319,30 +272,7 @@ namespace ModelCasc.operation
                 {
                     Exist = true;
                     DataRow dr = dt.Rows[0];
-                    if (dr["id_entrada"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_entrada"].ToString(), out entero);
-                        this._oEntrada_compartida.Id_entrada = entero;
-                        entero = 0;
-                    }
-                    else
-                    {
-                        this._oEntrada_compartida.Id_entrada = null;
-                    }
-                    if (dr["id_usuario"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_usuario"].ToString(), out entero);
-                        this._oEntrada_compartida.Id_usuario = entero;
-                        entero = 0;
-                    }
-                    this._oEntrada_compartida.Folio = dr["folio"].ToString();
-                    this._oEntrada_compartida.Referencia = dr["referencia"].ToString();
-                    if (dr["capturada"] != DBNull.Value)
-                    {
-                        bool.TryParse(dr["capturada"].ToString(), out logica);
-                        this._oEntrada_compartida.Capturada = logica;
-                        logica = false;
-                    }
+                    BindByDataRow(dr, this._oEntrada_compartida);
                     this._oEntrada_compartida.NombreUsuario = dr["nombre"].ToString();
                 }
             }
@@ -353,49 +283,85 @@ namespace ModelCasc.operation
             return Exist;
         }
 
+        internal void selByIdEntrada(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
+                addParameters(11);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oEntrada_compartida);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
-        //public void fillLstByreferencia()
-        //{
-        //    try
-        //    {
-        //        this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
-        //        addParameters(7);
-        //        this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
-        //        this._lst = new List<Entrada_compartida>();
-        //        foreach (DataRow dr in dt.Rows)
-        //        {
-        //            Entrada_compartida o = new Entrada_compartida();
-        //            int.TryParse(dr["id"].ToString(), out entero);
-        //            o.Id = entero;
-        //            entero = 0;
-        //            if (dr["id_entrada"] != DBNull.Value)
-        //            {
-        //                int.TryParse(dr["id_entrada"].ToString(), out entero);
-        //                o.Id_entrada = entero;
-        //                entero = 0;
-        //            }
-        //            else
-        //            {
-        //                o.Id_entrada = null;
-        //            }
-        //            o.Folio = dr["folio"].ToString();
-        //            o.referencia = dr["referencia"].ToString();
-        //            if (dr["capturada"] != DBNull.Value)
-        //            {
-        //                bool.TryParse(dr["capturada"].ToString(), out logica);
-        //                o.Capturada = logica;
-        //                logica = false;
-        //            }
-        //            this._lst.Add(o);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
+        internal void addPendienteEntrada(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
+                addParameters(12);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-        //#endregion
+        internal void deactive(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
+                addParameters(13);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal int countByFolio(IDbTransaction trans)
+        {
+            int cantidad = -1;
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
+                addParameters(14);
+                cantidad = Convert.ToInt32(GenericDataAccess.ExecuteScalar(this.comm, trans));
+            }
+            catch
+            {
+                throw;
+            }
+            return cantidad;
+        }
+
+        internal void dltByFolio(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_compartida");
+                addParameters(15);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

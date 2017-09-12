@@ -580,14 +580,53 @@ namespace ModelCasc.operation
         /// <param name="oE"></param>
         public static void PartialCancel(Entrada oE)
         {
+            IDbTransaction trans = null;
             try
             {
+                string motivoCancelacion = oE.Motivo_cancelacion;
+                oE = EntradaCtrl.EntradaGetAllDataById(oE.Id);
+                oE.Motivo_cancelacion = motivoCancelacion;
+                
+                
+                trans = GenericDataAccess.BeginTransaction();
+
+                // Eliminar entrada de forma logica
                 EntradaMng oEMng = new EntradaMng();
                 oEMng.O_Entrada = oE;
-                oEMng.PartialCancel();
+                oEMng.Cancel(trans);
+                // Verificar si tiene entradas compartidas
+                Entrada_compartidaMng oECMng = new Entrada_compartidaMng();
+                Entrada_compartida oEC = new Entrada_compartida() { Id_entrada = oE.Id };
+                oECMng.O_Entrada_compartida = oEC;
+                oECMng.selByIdEntrada(trans);
+                if (oEC.Id > 0) //Es compartida
+                {
+                    //Inserta nuevamente la entrada compartida pendiente de asignar id de entrada
+
+                    oECMng.addPendienteEntrada(trans);
+                    oECMng.deactive(trans);
+                    //Verifica si es la unica compartida, de ser así entonces elimina compartidas
+                    oEC.Folio = oE.Folio;
+                    if (oECMng.countByFolio(trans) == 0)
+                    {
+                        oECMng.dltByFolio(trans);
+                    }
+                }
+                // Elimina la parcialidad
+                Entrada_parcialMng oEPMng = new Entrada_parcialMng() { O_Entrada_parcial = new Entrada_parcial() { Id_entrada = oE.Id } };
+                oEPMng.dltByEntrada(trans);
+                // Elimina documentos asociados a la entrada
+                Entrada_documentoMng oEDocMng = new Entrada_documentoMng() { O_Entrada_documento = new Entrada_documento() { Id_entrada = oE.Id } };
+                oEDocMng.dltByIdEntrada(trans);
+                // Elimina el transporte de la entrada
+                Entrada_transporteMng oETMng = new Entrada_transporteMng() { O_Entrada_transporte = new Entrada_transporte() { Id_entrada = oE.Id } };
+                oETMng.dltByIdEntrada(trans);
+                GenericDataAccess.CommitTransaction(trans);
             }
             catch 
             {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
         }

@@ -368,6 +368,22 @@ namespace ModelCasc.operation
             }
         }
 
+        internal void dltByEntrada(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_parcial");
+                addParameters(10);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
+
+        
     }
 }
