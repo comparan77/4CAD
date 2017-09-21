@@ -602,8 +602,8 @@ namespace ModelCasc.operation
                 if (oEC.Id > 0) //Es compartida
                 {
                     //Inserta nuevamente la entrada compartida pendiente de asignar id de entrada
-
                     oECMng.addPendienteEntrada(trans);
+                    //Desactiva la operacion cancelada
                     oECMng.deactive(trans);
                     //Verifica si es la unica compartida, de ser así entonces elimina compartidas
                     oEC.Folio = oE.Folio;

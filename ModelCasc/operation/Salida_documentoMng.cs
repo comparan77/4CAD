@@ -191,5 +191,19 @@ namespace ModelCasc.operation
             }
         }
         #endregion
+
+        internal void dltByIdEntrada(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_documento");
+                addParameters(6);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

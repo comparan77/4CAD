@@ -593,14 +593,46 @@ namespace ModelCasc.operation
         /// <param name="oS"></param>
         public static void PartialCancel(Salida oS)
         {
+            IDbTransaction trans = null;
             try
             {
                 SalidaMng oSMng = new SalidaMng();
                 oSMng.O_Salida = oS;
-                oSMng.PartialCancel();
+                string motivoCancelacion = oS.Motivo_cancelacion;
+                oS = SalidaCtrl.SalidaGetAllDataById(oS.Id);
+
+                trans = GenericDataAccess.BeginTransaction();
+                oSMng.cancel(trans);
+                //Verifica si tiene salidas compartidas
+
+                Salida_compartida oSC = new Salida_compartida() { Id_salida = oS.Id };
+                Salida_compartidaMng oSCMng = new Salida_compartidaMng() { O_Salida_compartida = oSC };
+                oSCMng.selByIdSalida(trans);
+                if (oSC.Id > 0) // Es compartida
+                {
+                    //Inserta nuevamente la entrada compartida pendiente de asignar id de entrada
+                    oSCMng.addPendienteSalida(trans);
+                    //Desactiva la operacion cancelada
+                    oSCMng.deactive(trans);
+                    //Verifica si es la unica compartida, de ser así entonces elimina compartidas
+                    oSC.Folio = oS.Folio;
+                    if (oSCMng.countByFolio(trans) == 0)
+                    {
+                        oSCMng.dltByFolio(trans);
+                    }
+                }
+                // Elimina la parcialidad
+                Salida_parcialMng oSPMng = new Salida_parcialMng() { O_Salida_parcial = new Salida_parcial() { Id_salida = oS.Id } };
+                oSPMng.dltBySalida(trans);
+                // Elimina documentos asociados a la entrada
+                Salida_documentoMng oSDocMng = new Salida_documentoMng() { O_Salida_documento = new Salida_documento() { Id_salida = oS.Id } };
+                oSDocMng.dltByIdEntrada(trans);
+                GenericDataAccess.CommitTransaction(trans);
             }
             catch
             {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
                 throw;
             }
         }

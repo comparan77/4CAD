@@ -353,7 +353,8 @@ namespace ModelCasc.operation
         /// <summary>
         /// Cancelacion parcial
         /// Solo se cancela el folio al que se hace referencia.
-        /// </summary>
+        /// </summary
+        [System.Obsolete("La cancelacion se hace en el modelo y no en la base de datos")]
         public void PartialCancel()
         {
             try
@@ -647,6 +648,20 @@ namespace ModelCasc.operation
             }
 
             return piezasInventario;
+        }
+
+        internal void cancel(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida");
+                addParameters(13);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }            
         }
     }
 }

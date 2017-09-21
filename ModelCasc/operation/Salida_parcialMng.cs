@@ -302,5 +302,19 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        internal void dltBySalida(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_parcial");
+                addParameters(8);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
