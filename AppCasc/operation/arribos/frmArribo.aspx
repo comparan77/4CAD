@@ -39,6 +39,7 @@
     <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvCliente" ControlToValidate="ddlCliente" InitialValue="" ErrorMessage="Es necesario seleccionar un cliente"></asp:RequiredFieldValidator>--%>
     <select id="ctl00_body_ddlCliente"></select>
     <asp:HiddenField runat="server" ID="hf_id_cliente" />
+    <asp:HiddenField runat="server" ID="hf_cliente_nombre" />
     <asp:HiddenField runat="server" ID="hf_clientes" />
     <asp:HiddenField runat="server" ID="hf_facturasAvon" />
 </div>

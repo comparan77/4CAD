@@ -87,8 +87,8 @@ namespace ModelCasc.report.operation
                 #region Datos de la entrada
                 reporte.SetParameterValue("direccion_bodega", oE.PBodega.Direccion);
                 reporte.SetParameterValue("bodega", oE.PBodega.Nombre);
-                reporte.SetParameterValue("cortina", oE.PCortina.Nombre);
-                reporte.SetParameterValue("cliente", oE.PCliente.Razon);
+                reporte.SetParameterValue("cortina", oE.Cortina);
+                reporte.SetParameterValue("cliente", oE.Cliente);
                 reporte.SetParameterValue("folio", oE.Folio + oE.Folio_indice);
                 reporte.SetParameterValue("fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
                 reporte.SetParameterValue("hora", oE.Hora.ToString());
@@ -178,30 +178,40 @@ namespace ModelCasc.report.operation
                 #region Datos del Transporte
 
                 StringBuilder sbET = new StringBuilder();
-                foreach (Entrada_transporte oET in oE.PLstEntTrans)
-                {
-                    sbET.Append("Linea: " + oET.Transporte_linea + ", Tipo: " + oET.Transporte_tipo);
-                    if (string.Compare(oET.Placa, "N.A.") != 0)
-                        sbET.Append(", Placa: " + oET.Placa);
-                    if (string.Compare(oET.Caja, "N.A.") != 0)
-                        sbET.Append(", Caja: " + oET.Caja);
-                    if (string.Compare(oET.Caja1, "N.A.") != 0)
-                        sbET.Append(", Contenedor 1: " + oET.Caja1);
-                    if (string.Compare(oET.Caja2, "N.A.") != 0)
-                        sbET.Append(", Contenedor 2: " + oET.Caja2);
-                    sbET.AppendLine();
-                }
+                //foreach (Entrada_transporte oET in oE.PLstEntTrans)
+                //{
+                //    sbET.Append("Linea: " + oET.Transporte_linea + ", Tipo: " + oET.Transporte_tipo);
+                //    if (string.Compare(oET.Placa, "N.A.") != 0)
+                //        sbET.Append(", Placa: " + oET.Placa);
+                //    if (string.Compare(oET.Caja, "N.A.") != 0)
+                //        sbET.Append(", Caja: " + oET.Caja);
+                //    if (string.Compare(oET.Caja1, "N.A.") != 0)
+                //        sbET.Append(", Contenedor 1: " + oET.Caja1);
+                //    if (string.Compare(oET.Caja2, "N.A.") != 0)
+                //        sbET.Append(", Contenedor 2: " + oET.Caja2);
+                //    sbET.AppendLine();
+                //}
+                sbET.Append("Linea: " + oE.Transporte_linea + ", Tipo: " + oE.Transporte_tipo);
+                if (string.Compare(oE.Placa, "N.A.") != 0)
+                    sbET.Append(", Placa: " + oE.Placa);
+                if (string.Compare(oE.Caja, "N.A.") != 0)
+                    sbET.Append(", Caja: " + oE.Caja);
+                if (string.Compare(oE.Caja1, "N.A.") != 0)
+                    sbET.Append(", Contenedor 1: " + oE.Caja1);
+                if (string.Compare(oE.Caja2, "N.A.") != 0)
+                    sbET.Append(", Contenedor 2: " + oE.Caja2);
+                sbET.AppendLine();
 
                 reporte.SetParameterValue("transporte", sbET.ToString());
                 reporte.SetParameterValue("sello", oE.Sello);
-                reporte.SetParameterValue("custodia", oE.PCustodia.Nombre);
+                reporte.SetParameterValue("custodia", oE.Custodia);
 
                 #endregion
 
                 #region Otros Datos
 
                 reporte.SetParameterValue("horaDescarga", oE.Hora_descarga.ToString());
-                reporte.SetParameterValue("tipoDescarga", oE.PTipoCarga.Nombre);
+                reporte.SetParameterValue("tipoDescarga", oE.Tipo_carga);
                 reporte.SetParameterValue("observaciones", "Se recibe unidad y/o contenedor sin daños o menoscabos. " + oE.Observaciones);
 
                 #endregion

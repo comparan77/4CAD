@@ -249,7 +249,7 @@ var MngArribo = function () {
 
         $(jsonCliente).each(function (i, obj) {
             var id_cliente = $('#ctl00_body_hf_id_cliente').val();
-            $('#ctl00_body_ddlCliente').append('<option ' + (id_cliente == obj.Id ? ' selected ' : '') + ' documento="' + obj.Documento + '" fondeo="' + obj.EsFondeo + '" mask="' + obj.Mascara + '" value="' + obj.Id + '">' + obj.Nombre + '</option>');
+            $('#ctl00_body_ddlCliente').append('<option ' + (id_cliente == obj.Id ? ' selected ' : '') + ' documento="' + obj.Documento + '" fondeo="' + obj.EsFondeo + '" razon="' + obj.Razon + '" mask="' + obj.Mascara + '" value="' + obj.Id + '">' + obj.Nombre + '</option>');
         });
     }
 
@@ -371,6 +371,7 @@ var MngArribo = function () {
     function validaCliente() {
         $('#ctl00_body_ddlCliente option:selected').each(function () {
             $('#ctl00_body_hf_id_cliente').val($(this).attr('value'));
+            $('#ctl00_body_hf_cliente_nombre').val($('#ctl00_body_ddlCliente option:selected').attr('razon'));
             var EsFondeo = $(this).attr('fondeo').toUpperCase() == "TRUE";
             var DocumentoReq = $(this).attr('documento');
             var Mascara = $(this).attr('mask');

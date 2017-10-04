@@ -173,6 +173,7 @@ namespace AppCasc.operation.arribos
                 Int32.TryParse(ddlBodega.SelectedItem.Value, out numero);
                 o.Id_bodega = numero;
                 numero = 0;
+                o.Bodega = ddlBodega.SelectedItem.Text;
 
                 //Fecha
                 o.Fecha = Convert.ToDateTime(txt_fecha.Text);
@@ -184,11 +185,13 @@ namespace AppCasc.operation.arribos
                 int.TryParse(ddlCortina.SelectedValue, out numero);
                 o.Id_cortina = numero;
                 numero = 0;
+                o.Cortina = ddlCortina.SelectedItem.Text;
 
                 //Cliente
                 int.TryParse(hf_id_cliente.Value, out numero);
                 o.Id_cliente = numero; //Avon 1
                 numero = 0;
+                o.Cliente = hf_cliente_nombre.Value;
 
                 //Referencia
                 o.Referencia = txt_doc_req.Text;
@@ -212,14 +215,24 @@ namespace AppCasc.operation.arribos
                 int.TryParse(ddlCustodia.SelectedValue, out numero);
                 o.Id_custodia = numero;
                 numero = 0;
+                o.Custodia = ddlCustodia.SelectedItem.Text;
 
                 //Tipo Carga
                 int.TryParse(ddlTipoCarga.SelectedValue, out numero);
                 o.Id_tipo_carga = numero;
                 numero = 0;
+                o.Tipo_carga = ddlTipoCarga.SelectedItem.Text;
 
-                //Operador de la custodia
+                //Operador 
                 o.Operador = txt_operador.Text;
+
+                //Transporte
+                o.Transporte_linea = lstEntTran[0].Transporte_linea;
+                o.Transporte_tipo = lstEntTran[0].Transporte_tipo;
+                o.Placa = lstEntTran[0].Placa;
+                o.Caja = lstEntTran[0].Caja;
+                o.Caja1 = lstEntTran[0].Caja1;
+                o.Caja2 = lstEntTran[0].Caja2;
 
                 //Numero de pallet
                 int.TryParse(txt_no_pallet.Text, out numero);
@@ -287,30 +300,30 @@ namespace AppCasc.operation.arribos
                 o.Observaciones = txt_observaciones.Text.Trim();
 
                 //Bodega
-                Bodega oB = new Bodega();
-                Int32.TryParse(ddlBodega.SelectedItem.Value, out numero);
-                oB.Id = numero;
-                numero = 0;
-                BodegaMng oBMng = new BodegaMng();
-                oBMng.O_Bodega = oB;
-                oBMng.selById();
-                o.PBodega = oB;
+                //Bodega oB = new Bodega();
+                //Int32.TryParse(ddlBodega.SelectedItem.Value, out numero);
+                //oB.Id = numero;
+                //numero = 0;
+                //BodegaMng oBMng = new BodegaMng();
+                //oBMng.O_Bodega = oB;
+                //oBMng.selById();
+                //o.PBodega = oB;
 
                 //Cortina
-                Cortina oCor = new Cortina();
-                oCor.Id = o.Id_cortina;
-                oCor.Nombre = ddlCortina.SelectedItem.Text;
-                oCor.Id_bodega = o.Id_bodega;
-                o.PCortina = oCor;
+                //Cortina oCor = new Cortina();
+                //oCor.Id = o.Id_cortina;
+                //oCor.Nombre = ddlCortina.SelectedItem.Text;
+                //oCor.Id_bodega = o.Id_bodega;
+                //o.PCortina = oCor;
 
                 //Cliente
-                o.PCliente = CatalogCtrl.Cliente_GetById(o.Id_cliente);
+                //o.PCliente = CatalogCtrl.Cliente_GetById(o.Id_cliente);
 
                 //Custodia
-                Custodia oCdia = new Custodia();
-                oCdia.Id = o.Id_custodia;
-                oCdia.Nombre = ddlCustodia.SelectedItem.Text;
-                o.PCustodia = oCdia;
+                //Custodia oCdia = new Custodia();
+                //oCdia.Id = o.Id_custodia;
+                //oCdia.Nombre = ddlCustodia.SelectedItem.Text;
+                //o.PCustodia = oCdia;
 
                 //Es consolidada
                 o.EsConsolidada = lstEntComp.Count > 0;
@@ -329,10 +342,10 @@ namespace AppCasc.operation.arribos
                 }
 
                 //tipo carga
-                Tipo_carga oTipoCarga = new Tipo_carga();
-                oTipoCarga.Id = o.Id_tipo_carga;
-                oTipoCarga.Nombre = ddlTipoCarga.SelectedItem.Text;
-                o.PTipoCarga = oTipoCarga;
+                //Tipo_carga oTipoCarga = new Tipo_carga();
+                //oTipoCarga.Id = o.Id_tipo_carga;
+                //oTipoCarga.Nombre = ddlTipoCarga.SelectedItem.Text;
+                //o.PTipoCarga = oTipoCarga;
 
             }
             catch

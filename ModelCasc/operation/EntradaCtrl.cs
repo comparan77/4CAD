@@ -296,16 +296,16 @@ namespace ModelCasc.operation
                 }
 
                 //Entrada transportes
-                Entrada_transporteMng oETMng = new Entrada_transporteMng();
-                Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
-                if (oE.PLstEntTrans.Count < 1)
-                    throw new Exception("Es necesario agregar por lo menos un transporte");
-                foreach (Entrada_transporte oET in oE.PLstEntTrans)
-                {
-                    oET.Id_entrada = oE.Id;
-                    oETMng.O_Entrada_transporte = oET;
-                    oETMng.add(trans);
-                }
+                //Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                //Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
+                //if (oE.PLstEntTrans.Count < 1)
+                //    throw new Exception("Es necesario agregar por lo menos un transporte");
+                //foreach (Entrada_transporte oET in oE.PLstEntTrans)
+                //{
+                //    oET.Id_entrada = oE.Id;
+                //    oETMng.O_Entrada_transporte = oET;
+                //    oETMng.add(trans);
+                //}
 
                 //Parcial
                 if (oE.PEntPar != null)
@@ -394,13 +394,13 @@ namespace ModelCasc.operation
                 oECMng.udtEntradaCompartida(trans);
 
                 //Entrada transportes
-                Entrada_transporteMng oETMng = new Entrada_transporteMng();
-                foreach (Entrada_transporte oET in oE.PLstEntTrans)
-                {
-                    oET.Id_entrada = oE.Id;
-                    oETMng.O_Entrada_transporte = oET;
-                    oETMng.add(trans);
-                }
+                //Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                //foreach (Entrada_transporte oET in oE.PLstEntTrans)
+                //{
+                //    oET.Id_entrada = oE.Id;
+                //    oETMng.O_Entrada_transporte = oET;
+                //    oETMng.add(trans);
+                //}
 
                 //Parcial
                 if (oE.PEntPar != null)
@@ -453,22 +453,22 @@ namespace ModelCasc.operation
                 oBMng.selById();
                 oE.PBodega = oB;
 
-                CortinaMng oCorMng = new CortinaMng();
-                Cortina oCor = new Cortina();
-                oCor.Id = oE.Id_cortina;
-                oCorMng.O_Cortina = oCor;
-                oCorMng.selById();
-                oE.PCortina = oCor;
+                //CortinaMng oCorMng = new CortinaMng();
+                //Cortina oCor = new Cortina();
+                //oCor.Id = oE.Id_cortina;
+                //oCorMng.O_Cortina = oCor;
+                //oCorMng.selById();
+                //oE.PCortina = oCor;
 
-                oE.Ubicacion = oE.PBodega.Nombre + " " + oE.PCortina.Nombre;
+                oE.Ubicacion = oE.PBodega.Nombre + " " + oE.Cortina;
 
-                Cliente oC = new Cliente();
-                ClienteMng oCMng = new ClienteMng();
-                oC.Id = oE.Id_cliente;
-                oCMng.O_Cliente = oC;
-                oCMng.selById();
-                oE.PCliente = oC;
-                oE.ClienteNombre = oC.Nombre;
+                //Cliente oC = new Cliente();
+                //ClienteMng oCMng = new ClienteMng();
+                //oC.Id = oE.Id_cliente;
+                //oCMng.O_Cliente = oC;
+                //oCMng.selById();
+                //oE.PCliente = oC;
+                //oE.ClienteNombre = oC.Nombre;
 
                 Entrada_documentoMng oEDMng = new Entrada_documentoMng();
                 oED.Id_entrada = oE.Id;
@@ -492,26 +492,26 @@ namespace ModelCasc.operation
                 oECMng.SelByFolio();
                 oE.PLstEntComp = oECMng.Lst;
 
-                Entrada_transporte oET = new Entrada_transporte();
-                Entrada_transporteMng oETMng = new Entrada_transporteMng();
-                oET.Id_entrada = oE.Id;
-                oETMng.O_Entrada_transporte = oET;
-                oETMng.selByIdEntrada();
-                oE.PLstEntTrans = oETMng.Lst;
+                //Entrada_transporte oET = new Entrada_transporte();
+                //Entrada_transporteMng oETMng = new Entrada_transporteMng();
+                //oET.Id_entrada = oE.Id;
+                //oETMng.O_Entrada_transporte = oET;
+                //oETMng.selByIdEntrada();
+                //oE.PLstEntTrans = oETMng.Lst;
 
-                Entrada_transporte_condicion oETC = new Entrada_transporte_condicion();
-                Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
-                oETC.Id_entrada_transporte = oETMng.Lst.First().Id;
-                oETCMng.O_Entrada_transporte_condicion = oETC;
-                oETCMng.selByIdEntradaTransporte();
-                oE.PLstEntTransCond = oETCMng.Lst;
+                //Entrada_transporte_condicion oETC = new Entrada_transporte_condicion();
+                //Entrada_transporte_condicionMng oETCMng = new Entrada_transporte_condicionMng();
+                //oETC.Id_entrada_transporte = oETMng.Lst.First().Id;
+                //oETCMng.O_Entrada_transporte_condicion = oETC;
+                //oETCMng.selByIdEntradaTransporte();
+                //oE.PLstEntTransCond = oETCMng.Lst;
 
-                CustodiaMng oCdiaMng = new CustodiaMng();
-                Custodia oCdia = new Custodia();
-                oCdia.Id = oE.Id_custodia;
-                oCdiaMng.O_Custodia = oCdia;
-                oCdiaMng.selById();
-                oE.PCustodia = oCdia;
+                //CustodiaMng oCdiaMng = new CustodiaMng();
+                //Custodia oCdia = new Custodia();
+                //oCdia.Id = oE.Id_custodia;
+                //oCdiaMng.O_Custodia = oCdia;
+                //oCdiaMng.selById();
+                //oE.PCustodia = oCdia;
 
                 Entrada_usuarioMng oEUMng = new Entrada_usuarioMng();
                 Entrada_usuario oEU = new Entrada_usuario();
@@ -532,12 +532,12 @@ namespace ModelCasc.operation
                 oUMng.O_Usuario = oU;
                 oUMng.selById();
 
-                Tipo_carga oTC = new Tipo_carga();
-                Tipo_cargaMng oTCMng = new Tipo_cargaMng();
-                oTC.Id = oE.Id_tipo_carga;
-                oTCMng.O_Tipo_carga = oTC;
-                oTCMng.selById();
-                oE.PTipoCarga = oTC;
+                //Tipo_carga oTC = new Tipo_carga();
+                //Tipo_cargaMng oTCMng = new Tipo_cargaMng();
+                //oTC.Id = oE.Id_tipo_carga;
+                //oTCMng.O_Tipo_carga = oTC;
+                //oTCMng.selById();
+                //oE.PTipoCarga = oTC;
                                 
                 Tarima_almacenMng oTAMng = new Tarima_almacenMng();
                 Tarima_almacen oTA = new Tarima_almacen();
