@@ -18,6 +18,8 @@ namespace AppCasc.report
             {
                 ControlsMng.fillSalidaDestino(ddlDestino);
                 ddlDestino.Items.Add(new ListItem("TODOS", "0"));
+                fillBodega();
+                fillCuenta();
             }
             catch
             {
@@ -25,7 +27,33 @@ namespace AppCasc.report
             }
         }
 
-        private void showExcel(ReportDataSource rptSource)
+        private void fillBodega()
+        {
+            try
+            {
+                ControlsMng.fillBodega(ddl_bodega);
+                ddl_bodega.Items.Add(new ListItem("--TODAS--", "0"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void fillCuenta()
+        {
+            try
+            {
+                ControlsMng.fillClienteGrupo(ddl_cuenta);
+                ddl_cuenta.Items.Add(new ListItem("--TODAS--", "0"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void showExcel(ReportDataSource rptSource, ReportParameter[] parametros = null)
         {
             ReportViewer rvExcel = new ReportViewer();
             rvExcel.ProcessingMode = ProcessingMode.Local;
@@ -33,9 +61,10 @@ namespace AppCasc.report
             rvExcel.Reset();
 
             string rptSelected = ddl_reporte.SelectedValue;
-
-            rvExcel.LocalReport.DataSources.Add(rptSource);
             rvExcel.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
+            if (parametros != null)
+                rvExcel.LocalReport.SetParameters(parametros);
+            rvExcel.LocalReport.DataSources.Add(rptSource);
 
             Warning[] warnings;
             string[] streamIds;
@@ -64,7 +93,6 @@ namespace AppCasc.report
 
             ReportViewer1.LocalReport.Refresh();
         }
-
 
         protected void clickGetRpt(object sender, EventArgs args)
         {
@@ -100,8 +128,12 @@ namespace AppCasc.report
                         showExcel(rptSource);
                         break;
                     case "Piso":
-                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
-                        showExcel(rptSource);
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddl_bodega.SelectedValue), Convert.ToInt32(ddl_cuenta.SelectedValue)));
+                        ReportParameter[] parametros = new ReportParameter[3];
+                        parametros[0] = new ReportParameter("p_Bodega", ddl_bodega.SelectedItem.Text, false);
+                        parametros[1] = new ReportParameter("p_Cuenta", ddl_cuenta.SelectedItem.Text, false);
+                        parametros[2] = new ReportParameter("p_Periodo", "Del " + txt_fecha_ini.Text + " Al " + txt_fecha_fin.Text, false);
+                        showExcel(rptSource, parametros);
                         break;
                     case "Trafico":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.CitasGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddlDestino.SelectedItem.Value), Convert.ToInt32(ddlEstatus.SelectedValue)));

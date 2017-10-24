@@ -170,7 +170,7 @@ namespace ModelCasc.report.operation
             return lst;
         }
         
-        public static List<rptPiso> PisoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        public static List<rptPiso> PisoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin, int id_bodega, int id_cuenta)
         {
             List<rptPiso> lst = new List<rptPiso>();
             try
@@ -191,27 +191,25 @@ namespace ModelCasc.report.operation
                     GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
                     GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
                 }
+                GenericDataAccess.AddInParameter(comm, "?P_bodega", DbType.Int32, id_bodega);
+                GenericDataAccess.AddInParameter(comm, "?P_cuenta", DbType.Int32, id_cuenta);
                 DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 foreach (DataRow dr in dt.Rows)
                 {
                     rptPiso o = new rptPiso();
-                    o.FechaEntrada = Convert.ToDateTime(dr["fecha_entrada"]);
-                    o.Folio_entrada = dr["folio_entrada"].ToString();
+                    o.Bodega = dr["bodega"].ToString();
                     o.Referencia = dr["referencia"].ToString();
-                    o.Orden = dr["orden_compra"].ToString();
-                    o.Codigo = dr["codigo"].ToString();
-                    o.Mercancia = dr["mercancia"].ToString();
-                    o.Vendor = dr["vendor"].ToString();
-                    o.Proveedor = dr["proveedor"].ToString();
-                    o.Bultos_recibidos = Convert.ToInt32(dr["bultos_recibidos"]);
-                    o.Piezas_recibidas = Convert.ToInt32(dr["piezas_recibidas"]);
-                    DateTime.TryParse(dr["ult_fecha_trabajo"].ToString(), out fecha);
-                    o.Ultima_fecha_trabajo = fecha;
-                    fecha = default(DateTime);
-                    // o.Pallets = Convert.ToInt32(dr["pallets"]);
-                    o.Piezas_maquiladas = Convert.ToInt32(dr["piezas_maquiladas"]);
-                    o.Bultos_maquilados = Convert.ToInt32(dr["bultos_maquilados"]);
-                    o.Piezas_no_maquiladas = Convert.ToInt32(dr["piezas_no_maquiladas"]);
+                    o.Cuenta = dr["cuenta"].ToString();
+                    o.FechaEntrada = Convert.ToDateTime(dr["fecha"]);
+                    o.Pza_e = Convert.ToInt32(dr["pza_e"]);
+                    o.Bto_e = Convert.ToInt32(dr["bto_e"]);
+                    o.Tar_e = Convert.ToInt32(dr["tar_e"]);
+                    o.Pza_s = Convert.ToInt32(dr["pza_s"]);
+                    o.Bto_s = Convert.ToInt32(dr["bto_s"]);
+                    o.Tar_s = Convert.ToInt32(dr["tar_s"]);
+                    o.Pza_i = Convert.ToInt32(dr["pza_i"]);
+                    o.Bto_i = Convert.ToInt32(dr["bto_i"]);
+                    o.Tar_i = Convert.ToInt32(dr["tar_i"]);
                     lst.Add(o);
                 }
             }

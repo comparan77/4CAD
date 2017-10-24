@@ -24,6 +24,16 @@
             <asp:ListItem Text="Inventario" Value="Inventario"></asp:ListItem>
         </asp:DropDownList>
     </div>
+    <div id="div_parametros" style="display: none;">
+        <div>
+            <label>Bodega:</label>
+            <asp:DropDownList runat="server" ID="ddl_bodega"></asp:DropDownList>
+        </div>
+        <div>
+            <label>Cuenta</label>
+            <asp:DropDownList runat="server" ID="ddl_cuenta"></asp:DropDownList>
+        </div>
+    </div>
     <div>
         <label>Fecha Inicial:</label>
         <asp:TextBox runat="server" ID="txt_fecha_ini"></asp:TextBox>

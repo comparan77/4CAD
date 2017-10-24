@@ -7,9 +7,22 @@ namespace ModelCasc.report.operation
 {
     public class rptPiso
     {
-        public DateTime FechaEntrada { get; set; }
         public string Folio_entrada { get; set; }
+
+        public string Bodega { get; set; }
         public string Referencia { get; set; }
+        public string Cuenta { get; set; }
+        public DateTime FechaEntrada { get; set; }
+        public int Pza_e { get; set; }
+        public int Bto_e { get; set; }
+        public int Tar_e { get; set; }
+        public int Pza_s { get; set; }
+        public int Bto_s { get; set; }
+        public int Tar_s { get; set; }
+        public int Pza_i { get; set; }
+        public int Bto_i { get; set; }
+        public int Tar_i { get; set; }
+        
         public string Orden { get; set; }
         public string Codigo { get; set; }
         public string Mercancia { get; set; }

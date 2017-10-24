@@ -27,6 +27,7 @@
             $('#div_destino, #div_estatus').hide();
             $('#ctl00_body_btnGetRpt').hide();
             $('#ctl00_body_btnGetRptXls').hide();
+            $('#div_parametros').hide();
             switch ($(this).val()) {
                 case 'Maquila':
                     $('#ctl00_body_txt_fecha_ini').val(currentDate);
@@ -34,7 +35,10 @@
                     break;
                 case 'Remision':
                 case 'Piso':
-                    $('#ctl00_body_txt_fecha_ini').val('');
+                    $('#div_parametros').show();
+                    iniYear = new Date(moment(new Date()).year(), 0, 1)
+                    iniYear = moment(iniYear).format('DD/MM/YYYY');
+                    $('#ctl00_body_txt_fecha_ini').val(iniYear);
                     $('#ctl00_body_btnGetRptXls').show();
                     break;
                 case 'Trafico':
@@ -44,7 +48,7 @@
                     break;
                 case 'Inventario':
                 case 'Fondeo':
-                    var iniYear = new Date(moment(new Date()).year(), 0, 1)
+                    iniYear = new Date(moment(new Date()).year(), 0, 1)
                     iniYear = moment(iniYear).format('DD/MM/YYYY');
                     $('#ctl00_body_txt_fecha_ini').val(iniYear);
                     $('#ctl00_body_btnGetRptXls').show();

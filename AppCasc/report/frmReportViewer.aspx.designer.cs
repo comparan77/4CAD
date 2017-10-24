@@ -40,6 +40,24 @@ namespace AppCasc.report {
         protected global::System.Web.UI.WebControls.DropDownList ddl_reporte;
         
         /// <summary>
+        /// ddl_bodega control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_bodega;
+        
+        /// <summary>
+        /// ddl_cuenta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_cuenta;
+        
+        /// <summary>
         /// txt_fecha_ini control.
         /// </summary>
         /// <remarks>
