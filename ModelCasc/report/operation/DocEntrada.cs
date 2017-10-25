@@ -258,8 +258,8 @@ namespace ModelCasc.report.operation
                 // set form fields
 
                 fields.SetField("BodegaDireccion", oE.PBodega.Direccion);
-                fields.SetField("Bodega", oE.PBodega.Nombre);
-                fields.SetField("Cortina", oE.PCortina.Nombre);
+                fields.SetField("Bodega", oE.Bodega);
+                fields.SetField("Cortina", oE.Cortina);
                 fields.SetField("Folio", oE.Folio + oE.Folio_indice);
 
                 CultureInfo ci = new CultureInfo("es-MX");
@@ -267,23 +267,21 @@ namespace ModelCasc.report.operation
                 fields.SetField("Fecha", oE.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
                 fields.SetField("Hora", oE.Hora.ToString());
 
-                fields.SetField("Cliente", oE.PCliente.Razon);
+                fields.SetField("Cliente", oE.Cliente);
                 fields.SetField("Origen", oE.Origen);
 
                 StringBuilder sbET = new StringBuilder();
-                foreach (Entrada_transporte oET in oE.PLstEntTrans)
-                {
-                    sbET.Append("Linea: " + oET.Transporte_linea + ", Tipo: " + oET.Transporte_tipo);
-                    if (string.Compare(oET.Placa, "N.A.") != 0)
-                        sbET.Append(", Placa: " + oET.Placa);
-                    if (string.Compare(oET.Caja, "N.A.") != 0)
-                        sbET.Append(", Caja: " + oET.Caja);
-                    if (string.Compare(oET.Caja1, "N.A.") != 0)
-                        sbET.Append(", Contenedor 1: " + oET.Caja1);
-                    if (string.Compare(oET.Caja2, "N.A.") != 0)
-                        sbET.Append(", Contenedor 2: " + oET.Caja2);
-                    sbET.AppendLine();
-                }
+                sbET.Append("Linea: " + oE.Transporte_linea + ", Tipo: " + oE.Transporte_tipo);
+                if (string.Compare(oE.Placa, "N.A.") != 0)
+                    sbET.Append(", Placa: " + oE.Placa);
+                if (string.Compare(oE.Caja, "N.A.") != 0)
+                    sbET.Append(", Caja: " + oE.Caja);
+                if (string.Compare(oE.Caja1, "N.A.") != 0)
+                    sbET.Append(", Contenedor 1: " + oE.Caja1);
+                if (string.Compare(oE.Caja2, "N.A.") != 0)
+                    sbET.Append(", Contenedor 2: " + oE.Caja2);
+                sbET.AppendLine();
+
                 fields.SetField("Transporte", sbET.ToString());
 
                 fields.SetField("DocRef", oE.Referencia);
@@ -291,7 +289,7 @@ namespace ModelCasc.report.operation
                 fields.SetField("Mercancia", oE.Mercancia);
                 fields.SetField("Sello", oE.Sello);
                 fields.SetField("Talon", oE.Talon);
-                fields.SetField("Custodia", oE.PCustodia.Nombre);
+                fields.SetField("Custodia", oE.Custodia);
                 fields.SetField("Operador", oE.Operador);
 
                 StringBuilder sbDocAnexos = new StringBuilder();
@@ -366,7 +364,7 @@ namespace ModelCasc.report.operation
                 fields.SetField("Almacen", oE.PUsuario.Nombre);
                 fields.SetField("Vigilante", oE.Vigilante);
                 fields.SetField("Observaciones", "Se recibe unidad y/o contenedor sin daños o menoscabos. " + oE.Observaciones);
-                fields.SetField("tipo_carga", oE.PTipoCarga.Nombre);
+                fields.SetField("tipo_carga", oE.Tipo_carga);
 
                 stamper.FormFlattening = true;
             }
