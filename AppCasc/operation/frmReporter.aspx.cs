@@ -77,6 +77,7 @@ namespace AppCasc.operation
                             case 15:
                             case 25:
                             case 30:
+                            case 32:
                                 TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/entrada.rpt");
                                 DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
                                 break;
@@ -115,6 +116,7 @@ namespace AppCasc.operation
                             case 15:
                             case 25:
                             case 30:
+                            case 32:
                                 TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salida.rpt");
                                 DocSalida.getSalida(path, TemplatePath, (Salida)obj, ds);
                                 break;

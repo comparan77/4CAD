@@ -404,7 +404,7 @@ namespace AppCasc.operation.arribos
                 txt_fecha.Text = DateTime.Today.ToString("dd MMMM yy");
                 //txt_bodega.Text = CatalogCtrl.BodegaGet(idBodega).Nombre;
                 ControlsMng.fillTipoCarga(ddlTipoCarga);
-                ddlTipoCarga.SelectedItem.Value = "2";// En arribos por lo general llegan a granel
+                ddlTipoCarga.SelectedValue = "2";// En arribos por lo general llegan a granel
                 hf_Documentos.Value = CatalogCtrl.DocumentoLstToJson();
                 //ControlsMng.fillDocumento(ddlDocumento);
                 //ddlDocumento.Items.Remove(ddlDocumento.Items.FindByValue("1"));
