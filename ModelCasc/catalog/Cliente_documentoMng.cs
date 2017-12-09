@@ -33,6 +33,40 @@ namespace ModelCasc.catalog
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oCliente_documento.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oCliente_documento.Id_cliente);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_documento", DbType.Int32, this._oCliente_documento.Id_documento);
+            GenericDataAccess.AddInParameter(this.comm, "?P_es_principal", DbType.Boolean, this._oCliente_documento.Es_principal);
+
+        }
+
+        protected void BindByDataRow(DataRow dr, Cliente_documento o)
+        {
+            try
+            {
+                int.TryParse(dr["id"].ToString(), out entero);
+                o.Id = entero;
+                entero = 0;
+                if (dr["id_cliente"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_cliente"].ToString(), out entero);
+                    o.Id_cliente = entero;
+                    entero = 0;
+                }
+                if (dr["id_documento"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_documento"].ToString(), out entero);
+                    o.Id_documento = entero;
+                    entero = 0;
+                }
+                if (dr["es_principal"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["es_principal"].ToString(), out logica);
+                    o.Es_principal = logica;
+                    logica = false;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public override void fillLst()
@@ -46,21 +80,7 @@ namespace ModelCasc.catalog
                 foreach (DataRow dr in dt.Rows)
                 {
                     Cliente_documento o = new Cliente_documento();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_cliente"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_cliente"].ToString(), out entero);
-                        o.Id_cliente = entero;
-                        entero = 0;
-                    }
-                    if (dr["id_documento"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_documento"].ToString(), out entero);
-                        o.Id_documento = entero;
-                        entero = 0;
-                    }
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }
@@ -80,18 +100,7 @@ namespace ModelCasc.catalog
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    if (dr["id_cliente"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_cliente"].ToString(), out entero);
-                        this._oCliente_documento.Id_cliente = entero;
-                        entero = 0;
-                    }
-                    if (dr["id_documento"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_documento"].ToString(), out entero);
-                        this._oCliente_documento.Id_documento = entero;
-                        entero = 0;
-                    }
+                    BindByDataRow(dr, this._oCliente_documento);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -175,21 +184,7 @@ namespace ModelCasc.catalog
                 foreach (DataRow dr in dt.Rows)
                 {
                     Cliente_documento o = new Cliente_documento();
-                    int.TryParse(dr["id"].ToString(), out entero);
-                    o.Id = entero;
-                    entero = 0;
-                    if (dr["id_cliente"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_cliente"].ToString(), out entero);
-                        o.Id_cliente = entero;
-                        entero = 0;
-                    }
-                    if (dr["id_documento"] != DBNull.Value)
-                    {
-                        int.TryParse(dr["id_documento"].ToString(), out entero);
-                        o.Id_documento = entero;
-                        entero = 0;
-                    }
+                    BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
             }

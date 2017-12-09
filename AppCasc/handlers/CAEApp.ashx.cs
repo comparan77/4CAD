@@ -11,6 +11,7 @@ using ModelCasc.report.operation;
 using AppCasc.report.Formatos;
 using ModelCasc;
 using ModelCasc.report;
+using ModelCasc.operation.liverpool;
 
 namespace AppCasc.handlers
 {
@@ -45,6 +46,9 @@ namespace AppCasc.handlers
                     case "reporte":
                         response = reporte(context);
                         break;
+                    case "entrada_liverpool":
+                        response = entLiverpool(context);
+                        break;
                     default:
                         break;
                 }
@@ -54,6 +58,36 @@ namespace AppCasc.handlers
             {
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
             }
+        }
+
+        private string entLiverpool(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            //string email = context.Request["email"].ToString();
+            //string pass = context.Request["pass"].ToString();
+            try
+            {
+                switch (option)
+                {
+                    case "getCodigosPendientes":
+                        response = JsonConvert.SerializeObject(EntradaCtrl.EntradaLiverpoolGetCodPendientes());
+                        break;
+                    case "subirMaquila":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        List<Entrada_liverpool> lst = JsonConvert.DeserializeObject<List<Entrada_liverpool>>(jsonData);
+
+                         response = JsonConvert.SerializeObject( EntradaCtrl.EntradaLiverpoolSaveMaquila(lst));
+                        
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+            
+            return response;
         }
 
         private string security(HttpContext context)

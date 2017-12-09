@@ -119,6 +119,21 @@ namespace ModelCasc.webApp
             }
             return oMng.Lst;
         }
+
+        public static void fillDocumento(CheckBoxList chbxlist)
+        {
+            DocumentoMng oMng = new DocumentoMng();
+            oMng.fillLst();
+            chbxlist.Items.Clear();
+            foreach (Documento item in oMng.Lst)
+            {
+                ListItem li = new ListItem();
+                li.Text = item.Nombre;
+                li.Value = item.Id.ToString();
+                li.Attributes.Add("mask", item.Mascara);
+                chbxlist.Items.Add(li);
+            }
+        }
         public static List<Cliente_grupo> fillClienteGrupo(DropDownList ddlDocumento)
         {
             Cliente_grupoMng oMng = new Cliente_grupoMng();
@@ -332,6 +347,13 @@ namespace ModelCasc.webApp
             lbox.DataValueField = "id";
             lbox.DataBind();
         }
-            
+
+        public static void fillServicios(CheckBoxList lbox)
+        {
+            lbox.DataSource = CatalogCtrl.ServicioLst();
+            lbox.DataTextField = "nombre";
+            lbox.DataValueField = "id";
+            lbox.DataBind();
+        }
     }
 }

@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AppCasc.catalog {
+namespace AppCasc.operation {
     
     
-    public partial class frmCliente {
+    public partial class frmOrdenTrabajo {
         
         /// <summary>
         /// hfTitleErr control.
@@ -31,156 +31,102 @@ namespace AppCasc.catalog {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
-        /// txt_nombre control.
+        /// txt_trafico control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_nombre;
+        protected global::System.Web.UI.WebControls.TextBox txt_trafico;
         
         /// <summary>
-        /// rfvNombre control.
+        /// chklst_servicio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombre;
+        protected global::System.Web.UI.WebControls.CheckBoxList chklst_servicio;
         
         /// <summary>
-        /// txt_rfc control.
+        /// up_pedido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_rfc;
+        protected global::System.Web.UI.UpdatePanel up_pedido;
         
         /// <summary>
-        /// rfvRfc control.
+        /// txt_pedido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRfc;
+        protected global::System.Web.UI.WebControls.TextBox txt_pedido;
         
         /// <summary>
-        /// txt_razon control.
+        /// lbl_pedido_info control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_razon;
+        protected global::System.Web.UI.WebControls.Label lbl_pedido_info;
         
         /// <summary>
-        /// rfvRazon control.
+        /// lbl_pedido_piezas control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRazon;
+        protected global::System.Web.UI.WebControls.Label lbl_pedido_piezas;
         
         /// <summary>
-        /// chkbxlstDocumento control.
+        /// txt_pedido_pieza control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chkbxlstDocumento;
+        protected global::System.Web.UI.WebControls.TextBox txt_pedido_pieza;
         
         /// <summary>
-        /// ddlDocPrincipal control.
+        /// cv_pedido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDocPrincipal;
+        protected global::System.Web.UI.WebControls.CustomValidator cv_pedido;
         
         /// <summary>
-        /// ddlCuentaTipo control.
+        /// txt_solicitud control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCuentaTipo;
+        protected global::System.Web.UI.WebControls.TextBox txt_solicitud;
         
         /// <summary>
-        /// ddlGrupo control.
+        /// txt_sol_pieza control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlGrupo;
+        protected global::System.Web.UI.WebControls.TextBox txt_sol_pieza;
         
         /// <summary>
-        /// ddlOperacion control.
+        /// btn_guardar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlOperacion;
-        
-        /// <summary>
-        /// upCopias control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upCopias;
-        
-        /// <summary>
-        /// lstCopias control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList lstCopias;
-        
-        /// <summary>
-        /// hfAction control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfAction;
-        
-        /// <summary>
-        /// hfId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfId;
-        
-        /// <summary>
-        /// btnSave control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSave;
-        
-        /// <summary>
-        /// btnCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancel;
+        protected global::System.Web.UI.WebControls.Button btn_guardar;
     }
 }

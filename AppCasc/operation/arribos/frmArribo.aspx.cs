@@ -50,7 +50,7 @@ namespace AppCasc.operation.arribos
                 txt_mercancia.Text = oE.Mercancia;
                 txt_origen.Text = oE.Origen;
 
-                txt_doc_req.Text = oE.Referencia;
+                hf_referencia.Value = oE.Referencia;
                 
                 rb_parcial.Checked = true;
                 chk_ultima.Visible = true;
@@ -65,7 +65,7 @@ namespace AppCasc.operation.arribos
                 hf_codigo_cliente.Value = oE.Codigo;
 
                 ControlsMng.setEnabledControls(false, new WebControl[] {
-                txt_doc_req,
+                //aquiDocRectxt_doc_req,
                 txt_mercancia,
                 rb_parcial,
                 rb_unica
@@ -91,7 +91,7 @@ namespace AppCasc.operation.arribos
                     ControlsMng.fillCortinaByBodega(ddlCortina, oE.Id_bodega);
 
                     ddlCortina.SelectedValue = oE.Id_cortina.ToString();
-                    txt_doc_req.Text = referencia;
+                    hf_referencia.Value = referencia;
                     List<Entrada_fondeo> lstEntFo = EntradaCtrl.FondeoGetByReferencia(referencia);
                     txt_no_pieza_declarada.Text = lstEntFo.Sum(p => p.Piezas).ToString();
 
@@ -194,7 +194,7 @@ namespace AppCasc.operation.arribos
                 o.Cliente = hf_cliente_nombre.Value;
 
                 //Referencia
-                o.Referencia = txt_doc_req.Text;
+                o.Referencia = hf_referencia.Value;
 
                 //Origen
                 o.Origen = txt_origen.Text;
@@ -498,7 +498,7 @@ namespace AppCasc.operation.arribos
 
             ControlsMng.setEnabledControls(false, new WebControl[] {
                 ddlBodega,
-                txt_doc_req,
+                //aquiDocReqtxt_doc_req,
                 ddlCortina,
                 txt_fecha,
                 txt_hora_llegada,
@@ -559,22 +559,18 @@ namespace AppCasc.operation.arribos
 
                 if (exixteFondeo)
                 {
-                    //fillData();
                     hf_fondeoValido.Value = "1";
-                    //ControlsMng.fillCliente(ddlCliente);
                     hf_id_cliente.Value = "1";
-                    rfv_doc_req.Enabled = false;
+                    //aquiDocRecrfv_doc_req.Enabled = false;
 
                     Entrada_fondeo oEFfirst = lstEntFo.First();
-                    txt_doc_req.Text = oEFfirst.Aduana + "-" + oEFfirst.Referencia;
-                    txt_doc_req.Enabled = false;
+                    //aquiDocRectxt_doc_req.Text = oEFfirst.Aduana + "-" + oEFfirst.Referencia;
+                    //aquiDocRectxt_doc_req.Enabled = false;
                     Aduana oAduana = CatalogCtrl.AduanaGetByCodigo(oEFfirst.Aduana);
                     txt_origen.Text = oAduana.Nombre;
                     txt_no_pieza_declarada.Text = lstEntFo.Sum(p => p.Piezas).ToString();
 
                     fillEntradaDocumento(lstEntFo);
-                    //txt_origen.Text = oAduana.Nombre;
-                    //ddlCliente.SelectedValue = ;
                 }
             }
             catch (Exception e)

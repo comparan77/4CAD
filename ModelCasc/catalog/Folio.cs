@@ -18,7 +18,8 @@ namespace ModelCasc.catalog
         TAR,
         RA,
         OCA,
-        PRV
+        PRV,
+        OT
     }
     public class Folio
     {

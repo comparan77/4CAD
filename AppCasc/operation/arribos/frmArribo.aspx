@@ -72,11 +72,7 @@
     <asp:DropDownList runat="server" ID="ddlTipoCarga"></asp:DropDownList>
     <asp:RequiredFieldValidator CssClass="validator" runat="server" ID="rfvTipoCarga" ControlToValidate="ddlTipoCarga" InitialValue="" ErrorMessage="Es necesario seleccionar un tipo de carga"></asp:RequiredFieldValidator>
 </div>
-<div id="div_doc_requerido">
-    <label></label>
-    <asp:TextBox runat="server" ID="txt_doc_req"></asp:TextBox>
-    <asp:RequiredFieldValidator CssClass="validator" ID="rfv_doc_req" runat="server" ControlToValidate="txt_doc_req" ErrorMessage="Es necesario"></asp:RequiredFieldValidator>
-</div>
+
 </div>
 </div>
 
@@ -127,6 +123,16 @@
 <!-- Documentos -->
 <h3 style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Documentos</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+
+<div id="docsRequeridos">
+
+</div>
+<asp:HiddenField runat="server" ID="hf_referencia" />
+<%--div id="div_doc_requerido" style="margin-bottom: 5px">
+    <label></label>
+    <asp:TextBox runat="server" ID="txt_doc_req"></asp:TextBox>
+    <asp:RequiredFieldValidator CssClass="validator" ID="rfv_doc_req" runat="server" ControlToValidate="txt_doc_req" ErrorMessage="Es necesario"></asp:RequiredFieldValidator>
+</div>--%>
 
 <table class="tblItems center" border="0" cellpadding="2" cellspacing="0">
     <thead>

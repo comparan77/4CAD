@@ -11,11 +11,28 @@ using ModelCasc.exception;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using ModelCasc.operation.almacen;
+using ModelCasc.operation.liverpool;
+using System.Globalization;
 
 namespace ModelCasc.operation
 {
     public class EntradaCtrl
     {
+        public static Entrada EntradaByReferencia(string referencia)
+        {
+            Entrada o = new Entrada() { Referencia = referencia };
+            try
+            {
+                EntradaMng oMng = new EntradaMng() { O_Entrada = o };
+                oMng.selByReferencia();
+            }
+            catch 
+            {
+                throw;
+            }
+            return o;
+        }
+
         public static bool EntradaEsCompartida(string referencia, int IdCliente)
         {
             bool EsCompartida = false;
@@ -2216,5 +2233,166 @@ namespace ModelCasc.operation
             
             return fullPedimento;
         }
+
+        #region Orden Trabajo
+
+        public static Orden_trabajo OrdenTrabajoAdd(Orden_trabajo o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                o.Folio = FolioCtrl.getFolio(enumTipo.OT, trans);
+                Orden_trabajoMng oMng = new Orden_trabajoMng() { O_Orden_trabajo = o };
+                oMng.add(trans);
+                Orden_trabajo_servicioMng oOTSMng = new Orden_trabajo_servicioMng();
+                foreach (Orden_trabajo_servicio itemOTS in o.PLstOTSer)
+                {
+                    itemOTS.Id_orden_trabajo = o.Id;
+                    oOTSMng.O_Orden_trabajo_servicio = itemOTS;
+                    oOTSMng.add(trans);
+                }
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+            return o;
+        }
+
+        #endregion
+
+        #region Liverpool
+
+        public static List<Entrada_liverpool> EntradaLiverpoolImport(string data)
+        {
+            IDbTransaction tran = null;
+            List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
+            int codigosCant = 0;
+            DateTime varfechaConfirma = default(DateTime);
+            try
+            {
+                string[] filasTxt;
+                string codigosTxt = string.Empty;
+                string[] dato;
+                filasTxt = data.Split('\r');
+                string referencia;
+                tran = GenericDataAccess.BeginTransaction();
+                
+                Entrada_liverpoolMng oMng = new Entrada_liverpoolMng();
+
+                string patronRef = @"(\d{2})(\d{2})(\d{4})(\d{7})?";
+                string remplazo = "$2-$3-$4";
+                foreach (string fila in filasTxt)
+                {
+                    dato = fila.Split('\t');
+                    referencia = dato[2].Trim();
+
+                    Regex rgx = new Regex(patronRef);
+                    referencia = rgx.Replace(referencia, remplazo);
+
+                    Entrada oE = EntradaByReferencia(referencia);
+                    if (oE.Id > 0 && dato[9].Length > 0)
+                    {
+                        Entrada_liverpool o = new Entrada_liverpool();
+                        o.Id_entrada = oE.Id;
+                        o.Proveedor = dato[1].Trim();
+                        o.Trafico = dato[3].Trim();
+                        o.Pedido = Convert.ToInt32(dato[4]);
+                        o.Piezas = Convert.ToInt32(dato[8].ToString().Split('.')[0].Replace(",",""));
+
+                        //o.Fecha_confirma = DateTime.ParseExact(dato[9].ToString(), "dd/MM/yyyy", new CultureInfo("es-MX"));
+                        string[] fechaArr = dato[9].Split('/');
+                        o.Fecha_confirma = new DateTime(Convert.ToInt32(fechaArr[2]), Convert.ToInt32(fechaArr[0]), Convert.ToInt32(fechaArr[1]));
+                        varfechaConfirma = o.Fecha_confirma;
+                        oMng.O_Entrada_liverpool = o;
+
+                        //Valida si existe el pedido y trafico en la base, de ser así entonces solo atualiza la fecha de confirmación
+                        EntradaLiverpoolGetByUniqueKey(o, tran);
+                        if (o.Id > 0)
+                        {
+                            o.Fecha_confirma = varfechaConfirma;
+                            oMng.udtFechaConfirmacion(tran);
+                        }
+                        else
+                        {
+                            oMng.add(tran);
+                        }
+                        lst.Add(o);
+                        codigosCant++;
+                    }
+                }
+                GenericDataAccess.CommitTransaction(tran);
+            }
+            catch
+            {
+                if (tran != null)
+                    GenericDataAccess.RollbackTransaction(tran);
+                throw;
+            }
+            return lst;
+        }
+
+        public static void EntradaLiverpoolGetByUniqueKey(Entrada_liverpool o, IDbTransaction trans = null)
+        {
+            Entrada_liverpoolMng oMng = new Entrada_liverpoolMng() { O_Entrada_liverpool = o };
+            try
+            {
+                oMng.selByUniqueKey(o, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static List<Entrada_liverpool> EntradaLiverpoolGetCodPendientes()
+        {
+            List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
+            try
+            {
+                Entrada_liverpoolMng oMng = new Entrada_liverpoolMng();
+                oMng.fillLstCodPendientes();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        public static int EntradaLiverpoolSaveMaquila(List<Entrada_liverpool> lst)
+        {
+            IDbTransaction trans = null;
+            int cant = 0;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                Entrada_liverpoolMng oMng = new Entrada_liverpoolMng();
+                foreach (Entrada_liverpool item in lst)
+                {
+                    item.Piezas_maq = item.Piezas_maquiladas_hoy;
+                    oMng.O_Entrada_liverpool = item;
+                    oMng.udtPiezasMaq(trans);
+                    cant++;
+                }
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+            return cant;
+        }
+
+        #endregion
     }
 }

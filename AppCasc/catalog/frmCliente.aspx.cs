@@ -36,10 +36,13 @@ namespace AppCasc.catalog
                 if (!IsPostBack)
                 {
                     hfAction.Value = Request["Action"];
-                    ControlsMng.fillDocumento(ddlDocumento);
+
+                    ControlsMng.fillDocumento(chkbxlstDocumento);
                     ControlsMng.fillClienteGrupo(ddlGrupo);
                     ControlsMng.fillClienteCopias(lstCopias);
-                    ddlDocumento.Items.Add(new ListItem("Sin Documentos", "0"));
+                    //ControlsMng.fillDocumento(ddlDocPrincipal);
+                    ddlDocPrincipal.Items.Add(new ListItem("Sin documento principal", "0"));
+                    
                     ddlGrupo.Items.Add(new ListItem("Sin Grupo", "0"));
                     ControlsMng.fillCuentaTipo(ddlCuentaTipo);
                     lstCCOp = new List<Cliente_copia_operacion>();
@@ -97,12 +100,24 @@ namespace AppCasc.catalog
                 txt_razon.Text = oC.Razon;
                 ddlCuentaTipo.SelectedValue = oC.Id_cuenta_tipo.ToString();
 
-                ddlDocumento.SelectedValue = "0";
+                //ddlDocumento.SelectedValue = "0";
                 List<Cliente_documento> lstCDoc = CatalogCtrl.Cliente_DocumentoFillLstByCliente(oC.Id);
-                if (lstCDoc.Count > 0)
+                foreach (ListItem itemDoc in chkbxlstDocumento.Items)
                 {
-                    ddlDocumento.SelectedValue = lstCDoc.First().Id_documento.ToString();
+                    itemDoc.Selected = lstCDoc.Exists(p => string.Compare(p.Id_documento.ToString(), itemDoc.Value) == 0);
+                    Cliente_documento cteDocFind = lstCDoc.Find(p => string.Compare(p.Id_documento.ToString(), itemDoc.Value) == 0);
+                    if (cteDocFind != null)
+                    {
+                        itemDoc.Selected = true;
+                        ListItem litemPrincipal = new ListItem(itemDoc.Text, itemDoc.Value);
+                        litemPrincipal.Selected = cteDocFind.Es_principal;
+                        ddlDocPrincipal.Items.Add(litemPrincipal);
+                    }
                 }
+                //if (lstCDoc.Count > 0)
+                //{
+                //    ddlDocumento.SelectedValue = lstCDoc.First().Id_documento.ToString();
+                //}
 
                 ddlGrupo.SelectedValue = oC.Id_cliente_grupo.ToString();
 
@@ -139,17 +154,17 @@ namespace AppCasc.catalog
             oC.Rfc = txt_rfc.Text.Trim();
             oC.Razon = txt_razon.Text.Trim();
 
-            List<Cliente_documento> lstCD = new List<Cliente_documento>();
-            Cliente_documento oCD;
+            //List<Cliente_documento> lstCD = new List<Cliente_documento>();
+            //Cliente_documento oCD;
 
-            int IdDocumento = 0;
-            oCD = new Cliente_documento();
-            int.TryParse(ddlDocumento.SelectedValue, out IdDocumento);
-            oCD.Id_documento = IdDocumento;
-            if (IdDocumento > 0) 
-                lstCD.Add(oCD);
+            //int IdDocumento = 0;
+            //oCD = new Cliente_documento();
+            //int.TryParse(ddlDocumento.SelectedValue, out IdDocumento);
+            //oCD.Id_documento = IdDocumento;
+            //if (IdDocumento > 0) 
+            //    lstCD.Add(oCD);
             
-            oC.PLstDocReq = lstCD;
+            //oC.PLstDocReq = lstCD;
 
             int.TryParse(ddlCuentaTipo.SelectedValue, out entero);
             oC.Id_cuenta_tipo = entero;

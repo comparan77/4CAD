@@ -211,24 +211,6 @@ namespace AppCasc.operation.arribos {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoCarga;
         
         /// <summary>
-        /// txt_doc_req control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_doc_req;
-        
-        /// <summary>
-        /// rfv_doc_req control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_doc_req;
-        
-        /// <summary>
         /// pnl_busqueda control.
         /// </summary>
         /// <remarks>
@@ -281,6 +263,15 @@ namespace AppCasc.operation.arribos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnl_infoArribo;
+        
+        /// <summary>
+        /// hf_referencia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_referencia;
         
         /// <summary>
         /// hf_entradaDocumento control.

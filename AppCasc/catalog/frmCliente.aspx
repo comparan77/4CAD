@@ -28,8 +28,12 @@
         <asp:RequiredFieldValidator runat="server" ID="rfvRazon" ControlToValidate="txt_razon" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
     </div>
     <div>
-        <label>Documentos Requerido:</label>
-        <asp:DropDownList runat="server" ID="ddlDocumento"></asp:DropDownList>
+        <label>Documentos Requeridos:</label>
+        <asp:CheckBoxList runat="server" ID="chkbxlstDocumento"></asp:CheckBoxList>
+    </div>
+    <div>
+        <label>Documento Principal:</label>
+        <asp:DropDownList runat="server" ID="ddlDocPrincipal"></asp:DropDownList>
     </div>
     <div>
         <label>Tipo de Cuenta:</label>

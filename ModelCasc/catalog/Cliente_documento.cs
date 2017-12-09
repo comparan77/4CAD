@@ -12,6 +12,7 @@ namespace ModelCasc.catalog
         protected int _id;
         protected int _id_cliente;
         protected int _id_documento;
+        protected bool _es_principal;
         #endregion
 
         #region Propiedades
@@ -22,7 +23,8 @@ namespace ModelCasc.catalog
         /// Se utiliza como bandera en la captura de la entrada, para validar los documentos necesarios 
         /// definidos para cada cliente.
         /// </summary>
-        public bool IsAdd { get; set; } 
+        public bool IsAdd { get; set; }
+        public bool Es_principal { get { return _es_principal; } set { _es_principal = value; } }
         #endregion
 
         #region Constructores

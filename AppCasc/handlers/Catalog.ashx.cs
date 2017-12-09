@@ -43,6 +43,9 @@ namespace AppCasc.handlers
                     case "cliente_vendor":
                         response = clienteVendor(context);
                         break;
+                    case "cliente_documento":
+                        response = clienteDocumento(context);
+                        break;
                     case "documento":
                         response = CatalogCtrl.DocumentoLstToJson();
                         break;
@@ -107,6 +110,21 @@ namespace AppCasc.handlers
                     Cliente_vendor oCV = JsonConvert.DeserializeObject<Cliente_vendor>(jsonData);
                     CatalogCtrl.Cliente_vendorAdd(oCV);
                     response = JsonConvert.SerializeObject("Se guardo correctamente el registro");
+                    break;
+            }
+            return response;
+        }
+
+        private string clienteDocumento(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            string key = string.Empty;
+            switch (option)
+            {
+                case "getList":
+                    key = context.Request["key"].ToString();
+                    response = JsonConvert.SerializeObject(CatalogCtrl.Cliente_DocumentoFillLstByCliente(Convert.ToInt32(key)));
                     break;
             }
             return response;
