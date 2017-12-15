@@ -34,6 +34,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oOrden_trabajo.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio", DbType.String, this._oOrden_trabajo.Folio);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oOrden_trabajo.Referencia);
+            GenericDataAccess.AddInParameter(this.comm, "?P_cerrada", DbType.Boolean, this._oOrden_trabajo.Cerrada);
         }
 
         protected void BindByDataRow(DataRow dr, Orden_trabajo o)
@@ -45,11 +46,17 @@ namespace ModelCasc.operation
                 entero = 0;
                 o.Folio = dr["folio"].ToString();
                 o.Referencia = dr["referencia"].ToString();
-                if (dr["fecha_maq"] != DBNull.Value)
+                if (dr["fecha"] != DBNull.Value)
                 {
                     DateTime.TryParse(dr["fecha"].ToString(), out fecha);
                     o.Fecha = fecha;
                     fecha = default(DateTime);
+                }
+                if (dr["cerrada"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["cerrada"].ToString(), out logica);
+                    o.Cerrada = logica;
+                    logica = false;
                 }
             }
             catch
@@ -155,6 +162,27 @@ namespace ModelCasc.operation
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
                 this._oOrden_trabajo.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillOpen()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Orden_trabajo");
+                addParameters(5);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Orden_trabajo>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Orden_trabajo o = new Orden_trabajo();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
             }
             catch
             {

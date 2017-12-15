@@ -32,7 +32,6 @@ namespace ModelCasc.operation.liverpool
         public DateTime Fecha_maquila { get { return _fecha_maquila; } set { _fecha_maquila = value; } }
         public int Num_pasos { get { return _num_pasos; } set { _num_pasos = value; } }
         public int Piezas_maquiladas_hoy { get; set; }
-        public List<Entrada_liverpool_maquila> PLstMaquila { get; set; }
         #endregion
 
         #region Constructores

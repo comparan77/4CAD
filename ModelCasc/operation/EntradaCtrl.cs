@@ -2234,37 +2234,6 @@ namespace ModelCasc.operation
             return fullPedimento;
         }
 
-        #region Orden Trabajo
-
-        public static Orden_trabajo OrdenTrabajoAdd(Orden_trabajo o)
-        {
-            IDbTransaction trans = null;
-            try
-            {
-                trans = GenericDataAccess.BeginTransaction();
-                o.Folio = FolioCtrl.getFolio(enumTipo.OT, trans);
-                Orden_trabajoMng oMng = new Orden_trabajoMng() { O_Orden_trabajo = o };
-                oMng.add(trans);
-                Orden_trabajo_servicioMng oOTSMng = new Orden_trabajo_servicioMng();
-                foreach (Orden_trabajo_servicio itemOTS in o.PLstOTSer)
-                {
-                    itemOTS.Id_orden_trabajo = o.Id;
-                    oOTSMng.O_Orden_trabajo_servicio = itemOTS;
-                    oOTSMng.add(trans);
-                }
-                GenericDataAccess.CommitTransaction(trans);
-            }
-            catch
-            {
-                if (trans != null)
-                    GenericDataAccess.RollbackTransaction(trans);
-                throw;
-            }
-            return o;
-        }
-
-        #endregion
-
         #region Liverpool
 
         public static List<Entrada_liverpool> EntradaLiverpoolImport(string data)
@@ -2341,7 +2310,7 @@ namespace ModelCasc.operation
             Entrada_liverpoolMng oMng = new Entrada_liverpoolMng() { O_Entrada_liverpool = o };
             try
             {
-                oMng.selByUniqueKey(o, trans);
+                oMng.selByUniqueKey(trans);
             }
             catch
             {
@@ -2394,5 +2363,7 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        
     }
 }

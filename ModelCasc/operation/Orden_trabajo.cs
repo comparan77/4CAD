@@ -12,6 +12,7 @@ namespace ModelCasc.operation
         protected string _folio;
         protected string _referencia;
         protected DateTime _fecha;
+        protected bool _cerrada;
         #endregion
 
         #region Propiedades
@@ -19,6 +20,7 @@ namespace ModelCasc.operation
         public string Folio { get { return _folio; } set { _folio = value; } }
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
+        public bool Cerrada { get { return _cerrada; } set { _cerrada = value; } }
         public List<Orden_trabajo_servicio> PLstOTSer { get; set; }
         #endregion
 
@@ -27,6 +29,7 @@ namespace ModelCasc.operation
 		{
 			this._folio = String.Empty;
 			this._referencia = String.Empty;
+            this._cerrada = false;
 		}
         #endregion
     }

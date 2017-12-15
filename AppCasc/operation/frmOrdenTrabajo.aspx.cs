@@ -63,7 +63,7 @@ namespace AppCasc.operation
             string msg;
             try
             {
-                Orden_trabajo oT = EntradaCtrl.OrdenTrabajoAdd(getFormValues());
+                Orden_trabajo oT = MaquilaCtrl.OrdenTrabajoAdd(getFormValues());
                 msg = "La orden de trabajo se guardó correctamente, folio asignado: " + oT.Folio;
                 ClientScript.RegisterStartupScript(this.GetType(), "alertSave", "<script type=\"text/javascript\">alert('" + msg + "');window.location.href='frmOrdenTrabajo.aspx';</script>");
             }

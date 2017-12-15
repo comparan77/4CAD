@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModelCasc.operation.liverpool;
 
 namespace ModelCasc.operation
 {
@@ -23,6 +24,7 @@ namespace ModelCasc.operation
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
         public string Ref1 { get { return _ref1; } set { _ref1 = value; } }
         public string Ref2 { get { return _ref2; } set { _ref2 = value; } }
+        public Entrada_liverpool PEntLiv { get; set; }
         #endregion
 
         #region Constructores

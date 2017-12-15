@@ -240,7 +240,7 @@ namespace ModelCasc.operation.liverpool
             }
         }
 
-        internal void selByUniqueKey(Entrada_liverpool o, IDbTransaction trans = null)
+        internal void selByUniqueKey(IDbTransaction trans = null)
         {
             try
             {

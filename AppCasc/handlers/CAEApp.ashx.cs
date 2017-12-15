@@ -49,6 +49,12 @@ namespace AppCasc.handlers
                     case "entrada_liverpool":
                         response = entLiverpool(context);
                         break;
+                    case "orden_trabajo":
+                        response = ordTrabajo(context);
+                        break;
+                    case "maquila":
+                        response = maquila(context);
+                        break;
                     default:
                         break;
                 }
@@ -58,6 +64,55 @@ namespace AppCasc.handlers
             {
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
             }
+        }
+
+        private string maquila(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            //string email = context.Request["email"].ToString();
+            //string pass = context.Request["pass"].ToString();
+            try
+            {
+                switch (option)
+                {
+                    case "addLst":
+                        jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                        List<Maquila> lst = JsonConvert.DeserializeObject<List<Maquila>>(jsonData);
+                        string pathImg = HttpContext.Current.Server.MapPath("~/rpt/maqpas/");
+                        response = JsonConvert.SerializeObject(MaquilaCtrl.MaquilaAddLst(lst, pathImg));
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+
+            return response;
+        }
+
+        private string ordTrabajo(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+            //string email = context.Request["email"].ToString();
+            //string pass = context.Request["pass"].ToString();
+            try
+            {
+                switch (option)
+                {
+                    case "getOrdenes":
+                        response = JsonConvert.SerializeObject(MaquilaCtrl.OrdenTrabajoGet());
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+            }
+
+            return response;
         }
 
         private string entLiverpool(HttpContext context)

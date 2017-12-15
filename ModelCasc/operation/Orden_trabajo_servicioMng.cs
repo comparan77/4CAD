@@ -176,5 +176,26 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void selByIdOT()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Orden_trabajo_servicio");
+                addParameters(5);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Orden_trabajo_servicio>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Orden_trabajo_servicio o = new Orden_trabajo_servicio();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

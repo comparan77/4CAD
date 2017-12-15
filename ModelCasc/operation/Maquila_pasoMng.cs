@@ -5,25 +5,25 @@ using System.Text;
 using System.Data;
 using Model;
 
-namespace ModelCasc.operation.liverpool
+namespace ModelCasc.operation
 {
-    internal class Entrada_liverpool_servicioMng:dbTable
+    internal class Maquila_pasoMng: dbTable
     {
         #region Campos
-        protected Entrada_liverpool_servicio _oEntrada_liverpool_servicio;
-        protected List<Entrada_liverpool_servicio> _lst;
+        protected Maquila_paso _oMaquila_paso;
+        protected List<Maquila_paso> _lst;
         #endregion
 
         #region Propiedades
-        public Entrada_liverpool_servicio O_Entrada_liverpool_servicio { get { return _oEntrada_liverpool_servicio; } set { _oEntrada_liverpool_servicio = value; } }
-        public List<Entrada_liverpool_servicio> Lst { get { return _lst; } set { _lst = value; } }
+        public Maquila_paso O_Maquila_paso { get { return _oMaquila_paso; } set { _oMaquila_paso = value; } }
+        public List<Maquila_paso> Lst { get { return _lst; } set { _lst = value; } }
         #endregion
 
         #region Constructores
-        public Entrada_liverpool_servicioMng()
+        public Maquila_pasoMng()
         {
-            this._oEntrada_liverpool_servicio = new Entrada_liverpool_servicio();
-            this._lst = new List<Entrada_liverpool_servicio>();
+            this._oMaquila_paso = new Maquila_paso();
+            this._lst = new List<Maquila_paso>();
         }
         #endregion
 
@@ -31,30 +31,27 @@ namespace ModelCasc.operation.liverpool
         protected override void addParameters(int opcion)
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
-            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oEntrada_liverpool_servicio.Id);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_liverpool_maquila", DbType.Int32, this._oEntrada_liverpool_servicio.Id_liverpool_maquila);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_servicio", DbType.Int32, this._oEntrada_liverpool_servicio.Id_servicio);
+            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oMaquila_paso.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_ord_tbj_srv", DbType.Int32, this._oMaquila_paso.Id_ord_tbj_srv);
+            GenericDataAccess.AddInParameter(this.comm, "?P_foto64", DbType.String, this._oMaquila_paso.Foto64);
+            GenericDataAccess.AddInParameter(this.comm, "?P_descripcion", DbType.String, this._oMaquila_paso.Descripcion);
         }
 
-        protected void BindByDataRow(DataRow dr, Entrada_liverpool_servicio o)
+        protected void BindByDataRow(DataRow dr, Maquila_paso o)
         {
             try
             {
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
-                if (dr["id_liverpool_maquila"] != DBNull.Value)
+                if (dr["id_ord_tbj_srv"] != DBNull.Value)
                 {
-                    int.TryParse(dr["id_liverpool_maquila"].ToString(), out entero);
-                    o.Id_liverpool_maquila = entero;
+                    int.TryParse(dr["id_ord_tbj_srv"].ToString(), out entero);
+                    o.Id_ord_tbj_srv = entero;
                     entero = 0;
                 }
-                if (dr["id_servicio"] != DBNull.Value)
-                {
-                    int.TryParse(dr["id_servicio"].ToString(), out entero);
-                    o.Id_servicio = entero;
-                    entero = 0;
-                }
+                o.Foto64 = dr["foto64"].ToString();
+                o.Descripcion = dr["descripcion"].ToString();
             }
             catch
             {
@@ -66,13 +63,13 @@ namespace ModelCasc.operation.liverpool
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool_servicio");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
                 addParameters(0);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
-                this._lst = new List<Entrada_liverpool_servicio>();
+                this._lst = new List<Maquila_paso>();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Entrada_liverpool_servicio o = new Entrada_liverpool_servicio();
+                    Maquila_paso o = new Maquila_paso();
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
@@ -87,13 +84,13 @@ namespace ModelCasc.operation.liverpool
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool_servicio");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
                 addParameters(1);
                 this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oEntrada_liverpool_servicio);
+                    BindByDataRow(dr, this._oMaquila_paso);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -110,10 +107,10 @@ namespace ModelCasc.operation.liverpool
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool_servicio");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
-                this._oEntrada_liverpool_servicio.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+                this._oMaquila_paso.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
             {
@@ -125,7 +122,7 @@ namespace ModelCasc.operation.liverpool
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool_servicio");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
                 addParameters(3);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
             }
@@ -139,7 +136,7 @@ namespace ModelCasc.operation.liverpool
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool_servicio");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
                 addParameters(4);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
             }
@@ -150,5 +147,20 @@ namespace ModelCasc.operation.liverpool
         }
 
         #endregion
+
+        internal void add(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
+                addParameters(2);
+                GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oMaquila_paso.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
