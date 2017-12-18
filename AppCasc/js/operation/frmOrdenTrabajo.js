@@ -11,6 +11,8 @@
         var uva = document.getElementById('ctl00_body_chklst_servicio_1');
         var up_pedido = $('#ctl00_body_up_pedido');
 
+        $('#ctl00_body_btn_guardar').button();
+
         $(up_pedido).panelReady(function () {
             if (precio.checked) $('#div_pedido').removeClass('hidden');
             if (uva.checked) $('#div_uva').removeClass('hidden');
