@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ModelCasc.operation
 {
+    [Serializable]
     public class Maquila_paso
     {
         #region Campos
@@ -19,6 +20,7 @@ namespace ModelCasc.operation
         public int Id_ord_tbj_srv { get { return _id_ord_tbj_srv; } set { _id_ord_tbj_srv = value; } }
         public string Foto64 { get { return _foto64; } set { _foto64 = value; } }
         public string Descripcion { get { return _descripcion; } set { _descripcion = value; } }
+        public int NumPaso { get; set; }
         #endregion
 
         #region Constructores

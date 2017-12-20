@@ -132,6 +132,15 @@ namespace ModelCasc.operation
                     oMPMng.O_Maquila_paso = oMP;
                     oMPMng.selByIdOTS();
                     itemOTS.PLstPasos = oMPMng.Lst;
+
+                    int numPaso = 1;
+                    foreach (Maquila_paso itemMP in oMPMng.Lst)
+                    {
+                        itemMP.NumPaso = numPaso;
+                        numPaso++;
+                    }
+
+                    itemOTS.PasosMaq = itemOTS.PLstPasos.Count();
                 }
             }
             catch

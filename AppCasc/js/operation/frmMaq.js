@@ -14,9 +14,16 @@
             var digAnio = anioAct.getFullYear().toString().substr(2, 2);
             $('#ctl00_body_txt_folio').mask('OT-999999-' + digAnio);
             $('#ctl00_body_up_info_ot').panelReady(function () {
-                $('#tabs').tabs();    
+
+                $('#tabs').tabs();
+
+                var spn_estado_ot = $('#spn_estado_ot');
+                $(spn_estado_ot).click(function () {
+                    alert('hola');
+                });
+
             });
-            
+
         } catch (err) {
             alert(err.Message);
         }

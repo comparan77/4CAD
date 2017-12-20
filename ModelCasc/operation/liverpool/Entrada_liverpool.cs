@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ModelCasc.operation.liverpool
 {
+    [Serializable]
     public class Entrada_liverpool
     {
         #region Campos

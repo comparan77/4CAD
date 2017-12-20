@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ModelCasc.catalog
 {
+    [Serializable]
     public class Servicio
     {
         #region Campos

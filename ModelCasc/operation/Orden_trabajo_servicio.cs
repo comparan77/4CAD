@@ -7,6 +7,7 @@ using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
+    [Serializable]
     public class Orden_trabajo_servicio
     {
         #region Campos
@@ -30,6 +31,7 @@ namespace ModelCasc.operation
         public List<Maquila> PLstMaq { get; set; }
         public List<Maquila_paso> PLstPasos { get; set; }
         public int PiezasMaq { get; set; }
+        public int PasosMaq { get; set; }
         #endregion
 
         #region Constructores

@@ -65,5 +65,14 @@ namespace AppCasc.operation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView grd_servicios;
+        
+        /// <summary>
+        /// grd_pasos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grd_pasos;
     }
 }

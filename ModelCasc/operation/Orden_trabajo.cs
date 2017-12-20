@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ModelCasc.operation
 {
+    [Serializable]
     public class Orden_trabajo
     {
         #region Campos

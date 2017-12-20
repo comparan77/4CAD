@@ -30,19 +30,44 @@
                     <li><a href="#tabs-3">Aenean lacinia</a></li>
                 </ul>
                 <div id="tabs-1">
-                    <div>
-                        <label>Fecha:</label>
-                        <asp:TextBox runat="server" ID="txt_fecha" CssClass="txtNoBorder" ReadOnly="true"></asp:TextBox>
+                    <div class="divForm">
+                        <div>
+                            <label>Fecha:</label>
+                            <asp:TextBox runat="server" ID="txt_fecha" CssClass="txtNoBorder" ReadOnly="true"></asp:TextBox>
+                        </div>
+                        <div>
+                            <label>Estatus:</label>
+                            <span id="spn_estado_ot" title='<%= VSOrdTbj.Cerrada ? "Abrir Maquila" : "Cerrar Maquila" %>' class='<%= "icon-button-action ui-icon ui-icon-" + (VSOrdTbj.Cerrada ? "locked icon-button-action" : "unlocked") %>'></span>
+                        </div>
                     </div>
-                    <asp:GridView CssClass="grdCascSmall" runat="server" ID="grd_servicios" AutoGenerateColumns="false">
-                    <Columns>
-                        <asp:BoundField DataField="PServ.Nombre" HeaderText="Servicio" />
-                        <asp:BoundField DataField="Ref1" HeaderText="Trafico" />
-                        <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
-                        <asp:BoundField DataField="Piezas" HeaderText="Piezas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
-                        <asp:BoundField DataField="PiezasMaq" HeaderText="Piezas Maquiladas"  ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
-                    </Columns>
-                    </asp:GridView>
+                    <hr style="border-color: transparent" />
+                    <div style="clear: both;">
+                        <asp:GridView DataKeyNames="Id" CssClass="grdCascSmall" runat="server" ID="grd_servicios" AutoGenerateColumns="false" OnRowCommand="grd_servicios_row_command">
+                        <Columns>
+                            <asp:BoundField DataField="PServ.Nombre" HeaderText="Servicio" />
+                            <asp:BoundField DataField="Ref1" HeaderText="Trafico" />
+                            <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
+                            <asp:BoundField DataField="Piezas" HeaderText="Piezas Solicitadas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
+                            <asp:BoundField DataField="PiezasMaq" HeaderText="Piezas Maquiladas"  ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
+                            <asp:ButtonField ButtonType="Link" DataTextField="PasosMaq" HeaderText="Pasos" CommandName="lnkPasos" ItemStyle-HorizontalAlign="Right" DataTextFormatString="{0:N0}" ItemStyle-CssClass="icon-button-action" />
+                        </Columns>
+                        </asp:GridView>
+
+                        <hr style="border-color: transparent" />
+
+                        <asp:GridView runat="server" ID="grd_pasos" AutoGenerateColumns="false" CssClass="grdCascSmall">
+                        <Columns>
+                            <asp:BoundField DataField="NumPaso" HeaderText="Num Paso" ItemStyle-HorizontalAlign="Center" />
+                            <asp:TemplateField HeaderText="Foto">
+                                <ItemStyle HorizontalAlign="Center" />
+                                <ItemTemplate>
+                                    <asp:Image Width="25%" runat="server" ImageUrl='<%# @"~/rpt/maqpas/" + Eval("Foto64") %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:BoundField DataField="Descripcion" HeaderText="Descripción" />
+                        </Columns>
+                        </asp:GridView>
+                    </div>
                 </div>
                 <div id="tabs-2">
                     <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
