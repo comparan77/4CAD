@@ -189,5 +189,28 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void selByFolio()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Orden_trabajo");
+                addParameters(6);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oOrden_trabajo);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

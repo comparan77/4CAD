@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModelCasc.operation.liverpool;
+using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
@@ -24,7 +25,11 @@ namespace ModelCasc.operation
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
         public string Ref1 { get { return _ref1; } set { _ref1 = value; } }
         public string Ref2 { get { return _ref2; } set { _ref2 = value; } }
+        public Servicio PServ { get; set; }
         public Entrada_liverpool PEntLiv { get; set; }
+        public List<Maquila> PLstMaq { get; set; }
+        public List<Maquila_paso> PLstPasos { get; set; }
+        public int PiezasMaq { get; set; }
         #endregion
 
         #region Constructores
@@ -37,5 +42,7 @@ namespace ModelCasc.operation
             this._ref2 = String.Empty;
         }
         #endregion
+
+        
     }
 }

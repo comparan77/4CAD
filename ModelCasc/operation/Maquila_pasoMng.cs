@@ -162,5 +162,26 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void selByIdOTS()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
+                addParameters(5);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Maquila_paso>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Maquila_paso o = new Maquila_paso();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

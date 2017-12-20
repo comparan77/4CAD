@@ -61,7 +61,7 @@ namespace ModelCasc.operation
 
                     Orden_trabajo_servicio oOTS = new Orden_trabajo_servicio() { Id_orden_trabajo = itemOT.Id };
                     oOTSMng.O_Orden_trabajo_servicio = oOTS;
-                    oOTSMng.selByIdOT();
+                    oOTSMng.fillLstByIdOT();
 
                     foreach (Orden_trabajo_servicio itemOTS in oOTSMng.Lst)
                     {
@@ -87,6 +87,58 @@ namespace ModelCasc.operation
                 throw;
             }
             return lst;
+        }
+
+        public static Orden_trabajo OrdenTrabajoGet(string folio)
+        {
+            Orden_trabajo o = new Orden_trabajo() { Folio = folio };
+            try
+            {
+                Orden_trabajoMng oMng = new Orden_trabajoMng() { O_Orden_trabajo = o };
+                oMng.selByFolio();
+
+                Orden_trabajo_servicioMng oOTSMng = new Orden_trabajo_servicioMng() { O_Orden_trabajo_servicio = new Orden_trabajo_servicio() { Id_orden_trabajo = o.Id } };
+                oOTSMng.fillLstByIdOT();
+
+                o.PLstOTSer = oOTSMng.Lst;
+
+                Entrada_liverpoolMng oELMng = new Entrada_liverpoolMng();
+                MaquilaMng oMMng = new MaquilaMng();
+                Maquila_pasoMng oMPMng = new Maquila_pasoMng();
+                ServicioMng oSMng = new ServicioMng();
+                foreach (Orden_trabajo_servicio itemOTS in o.PLstOTSer)
+                {
+                    int ref2 = 0;
+                    int.TryParse(itemOTS.Ref2, out ref2);
+
+                    Entrada_liverpool oEL = new Entrada_liverpool() { Trafico = itemOTS.Ref1, Pedido = ref2 };
+                    oELMng.O_Entrada_liverpool = oEL;
+                    oELMng.selByUniqueKey();
+                    itemOTS.PEntLiv = oEL;
+
+                    Servicio oS = new Servicio() { Id = itemOTS.Id_servicio };
+                    oSMng.O_Servicio = oS;
+                    oSMng.selById();
+                    itemOTS.PServ = oS;
+
+                    Maquila oM = new Maquila() { Id_ord_tbj_srv = itemOTS.Id };
+                    oMMng.O_Maquila = oM;
+                    oMMng.fillLstByOTS();
+                    itemOTS.PLstMaq = oMMng.Lst;
+
+                    itemOTS.PiezasMaq = itemOTS.PLstMaq.Sum(p => p.Piezas);
+
+                    Maquila_paso oMP = new Maquila_paso() { Id_ord_tbj_srv = itemOTS.Id };
+                    oMPMng.O_Maquila_paso = oMP;
+                    oMPMng.selByIdOTS();
+                    itemOTS.PLstPasos = oMPMng.Lst;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return o;
         }
 
         #endregion

@@ -8,9 +8,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
-<div>
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
+
+<div>
 
 <h3 id="div-search" style="cursor: n-resize;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">B&uacute;squeda de Operaciones</h3>
 <div style="position: relative;" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
@@ -101,7 +102,6 @@
 <asp:HiddenField runat="server" ID="hf_pieza_faltante" />
 <asp:HiddenField runat="server" ID="hf_pieza_sobrante" />
 <input type="hidden" id="hf_maquila_abierta" />
-<%--<asp:HiddenField runat="server" ID="hf_EST_MAQ_PAR_CERRADA" />--%>
 
 <div id="div_ordenescodigos" title="Órdenes de compra y códigos del pedimento">   
     <ul>
@@ -190,7 +190,6 @@
 
 <asp:HiddenField runat="server" ID="hf_bultos" Value="0" />
 <asp:HiddenField runat="server" ID="hf_piezasInventario" Value="0" />
-<%--<asp:HiddenField runat="server" ID="hf_pzasXbulto" Value="0" />--%>
 <asp:HiddenField runat="server" ID="hf_bulto_maquilado" Value="0" />
 
 <table border="1" cellpadding="5" cellspacing="0" width="100%">
