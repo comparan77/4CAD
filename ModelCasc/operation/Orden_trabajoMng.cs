@@ -212,5 +212,19 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void udtStatus()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Orden_trabajo");
+                addParameters(7);
+                GenericDataAccess.ExecuteNonQuery(this.comm);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

@@ -19,7 +19,8 @@
 
                 var spn_estado_ot = $('#spn_estado_ot');
                 $(spn_estado_ot).click(function () {
-                    alert('hola');
+                    var state = $(this).hasClass('ui-icon-locked') ? 'open' : 'close';
+                    OrdenTrabajoEstadoChange($('#ctl00_body_hf_id_orden_trabajo').val(), state);
                 });
 
             });
@@ -28,6 +29,37 @@
             alert(err.Message);
         }
     }
+
+    //Cambiar el estado de la maquila
+    function OrdenTrabajoEstadoChange(id_orden_trabajo, state) {
+        $.ajax({
+            type: "POST",
+            url: '/handlers/Operation.ashx?op=orden_trabajo&opt=' + state,
+            data: id_orden_trabajo,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            complete: function () {
+
+            },
+            success: function (data) {
+                alert(data);
+                $('#spn_estado_ot').removeClass('ui-icon-locked');
+                $('#spn_estado_ot').removeClass('ui-icon-unlocked');
+                if (state == 'open') {
+                    $('#spn_estado_ot').addClass('ui-icon-unlocked');
+                }
+                else {
+                    $('#spn_estado_ot').addClass('ui-icon-locked');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
 }
 
 var master = new webApp.Master;

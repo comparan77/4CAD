@@ -173,6 +173,9 @@ namespace AppCasc.handlers
                     case "transCond":
                         response = transporteCondicion(context);
                         break;
+                    case "orden_trabajo":
+                        response = Orden_trabajo(context);
+                        break;
                     default:
                         break;
                 }
@@ -182,6 +185,30 @@ namespace AppCasc.handlers
             {
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
             }
+        }
+
+        private string Orden_trabajo(HttpContext context)
+        {
+            string response = string.Empty;
+            string option = context.Request["opt"].ToString();
+
+            switch (option)
+            {
+                case "open":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    id = JsonConvert.DeserializeObject<Int32>(jsonData);
+                    MaquilaCtrl.OrdenTrabajoOpen(id);
+                    response = JsonConvert.SerializeObject("La orden de trabajo ha sido abierta correctamente");
+                    break;
+                case "close":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    id = JsonConvert.DeserializeObject<Int32>(jsonData);
+                    MaquilaCtrl.OrdenTrabajoClose(id);
+                    response = JsonConvert.SerializeObject("La orden de trabajo ha sido cerrada correctamente");
+                    break;
+            }
+
+            return response;
         }
 
         private string embarque(HttpContext context)

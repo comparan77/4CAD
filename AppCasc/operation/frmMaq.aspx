@@ -23,6 +23,7 @@
             <asp:AsyncPostBackTrigger ControlID="txt_folio" EventName="TextChanged" />
         </Triggers>
         <ContentTemplate>
+            <asp:HiddenField runat="server" ID="hf_id_orden_trabajo" />
             <div id="tabs" style="width: 99%">
                 <ul>
                     <li><a href="#tabs-1">Informaci&oacute;n General</a></li>

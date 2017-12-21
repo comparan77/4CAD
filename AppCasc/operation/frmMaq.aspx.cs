@@ -31,12 +31,14 @@ namespace AppCasc.operation
         private void fillInfo()
         {
             txt_fecha.Text = VSOrdTbj.Fecha.ToShortDateString();
+            hf_id_orden_trabajo.Value = VSOrdTbj.Id.ToString();
             grd_servicios.DataSource = VSOrdTbj.PLstOTSer;
             grd_servicios.DataBind();
         }
 
         private void clearInfo()
         {
+            hf_id_orden_trabajo.Value = string.Empty;
             txt_fecha.Text = string.Empty;
             grd_servicios.DataSource = null;
             grd_servicios.DataBind();

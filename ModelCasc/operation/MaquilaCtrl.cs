@@ -150,6 +150,46 @@ namespace ModelCasc.operation
             return o;
         }
 
+        private static void OrdenTrabajoChangeStatus(int id_orden_trabajo, bool cerrada)
+        {
+            try
+            {
+                Orden_trabajoMng oMng = new Orden_trabajoMng() { O_Orden_trabajo = new Orden_trabajo() { Id = id_orden_trabajo, Cerrada = cerrada } };
+                oMng.udtStatus();
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
+        public static void OrdenTrabajoOpen(int id)
+        {
+            try
+            {
+                OrdenTrabajoChangeStatus(id, false);
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
+        public static void OrdenTrabajoClose(int id)
+        {
+            try
+            {
+                OrdenTrabajoChangeStatus(id, true);
+            }
+            catch
+            {
+                
+                throw;
+            }
+        }
+
         #endregion
 
         #region Maquila

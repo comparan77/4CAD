@@ -49,6 +49,15 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.UpdatePanel up_info_ot;
         
         /// <summary>
+        /// hf_id_orden_trabajo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_id_orden_trabajo;
+        
+        /// <summary>
         /// txt_fecha control.
         /// </summary>
         /// <remarks>
