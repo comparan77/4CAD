@@ -41,7 +41,7 @@ namespace ModelCasc.operation
             return o;
         }
 
-        public static List<Orden_trabajo> OrdenTrabajoGet()
+        public static List<Orden_trabajo> OrdenTrabajoGetLst()
         {
             List<Orden_trabajo> lst = new List<Orden_trabajo>();
             try
@@ -62,6 +62,7 @@ namespace ModelCasc.operation
                     Orden_trabajo_servicio oOTS = new Orden_trabajo_servicio() { Id_orden_trabajo = itemOT.Id };
                     oOTSMng.O_Orden_trabajo_servicio = oOTS;
                     oOTSMng.fillLstByIdOT();
+                    itemOT.Servicios = oOTSMng.Lst.Count();
 
                     foreach (Orden_trabajo_servicio itemOTS in oOTSMng.Lst)
                     {
@@ -246,5 +247,6 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
     }
 }

@@ -113,6 +113,22 @@ namespace AppCasc.operation
             args.IsValid = true;
         }
 
+        protected void btn_consultar_click(object sender, EventArgs args)
+        {
+            try
+            {
+                DateTime fecha_ini = DateTime.Now;
+                DateTime fecha_fin = DateTime.Now;
+                List<Orden_trabajo> lst = MaquilaCtrl.OrdenTrabajoGetLst();
+                grd_ordenes.DataSource = lst;
+                grd_ordenes.DataBind();
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs args)
         {
             try

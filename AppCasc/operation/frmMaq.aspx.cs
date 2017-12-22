@@ -26,6 +26,13 @@ namespace AppCasc.operation
         private void loadFirstTime()
         {
             VSOrdTbj = new Orden_trabajo();
+            string folio = string.Empty;
+            if (Request.QueryString["folio"] != null)
+            {
+                folio = Request.QueryString["folio"].ToString();
+                txt_folio.Text = folio;
+                txt_folio_changed(txt_folio, null);
+            }
         }
 
         private void fillInfo()

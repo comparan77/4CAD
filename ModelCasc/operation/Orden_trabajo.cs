@@ -23,6 +23,7 @@ namespace ModelCasc.operation
         public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
         public bool Cerrada { get { return _cerrada; } set { _cerrada = value; } }
         public List<Orden_trabajo_servicio> PLstOTSer { get; set; }
+        public int Servicios { get; set; }
         #endregion
 
         #region Constructores

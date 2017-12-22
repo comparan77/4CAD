@@ -9,45 +9,81 @@
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Orden de Trabajo</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
 
-    <div class="divForm">
-        <div>
-            <label>No Tr&aacute;fico:</label>
-            <asp:TextBox runat="server" ID="txt_trafico" Text="LT8036IM17"></asp:TextBox>
-        </div>
-        <div>
-            <label style="border:none;">Servicio:</label>
-            <asp:CheckBoxList runat="server" ID="chklst_servicio"></asp:CheckBoxList>
-        </div>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Captruar Nueva</a></li>
+            <li><a href="#tabs-2">Consultar </a></li>
+        </ul>
+        <div id="tabs-1">
+            <div class="divForm">
+                <div>
+                    <label>No Tr&aacute;fico:</label>
+                    <asp:TextBox runat="server" ID="txt_trafico" Text="LT8036IM17"></asp:TextBox>
+                </div>
+                <div>
+                    <label style="border:none;">Servicio:</label>
+                    <asp:CheckBoxList runat="server" ID="chklst_servicio"></asp:CheckBoxList>
+                </div>
 
-        <asp:UpdatePanel runat="server" ID="up_pedido">
-        <ContentTemplate>
-        <div id="div_pedido" class="hidden">
-            <label>No Pedido:</label>
-            <asp:TextBox runat="server" ID="txt_pedido" Text="6141769" CausesValidation="true" AutoPostBack="true" OnTextChanged="pedido_changed"></asp:TextBox>
+                <asp:UpdatePanel runat="server" ID="up_pedido">
+                <ContentTemplate>
+                <div id="div_pedido" class="hidden">
+                    <label>No Pedido:</label>
+                    <asp:TextBox runat="server" ID="txt_pedido" Text="6141769" CausesValidation="true" AutoPostBack="true" OnTextChanged="pedido_changed"></asp:TextBox>
 
-            <div>
-                <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
-                <asp:Label runat="server" ID="lbl_pedido_piezas"></asp:Label>
-                <asp:TextBox runat="server" ID="txt_pedido_pieza" Visible="false" placeholder="Piezas a precio"></asp:TextBox>
-            </div>
+                    <div>
+                        <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
+                        <asp:Label runat="server" ID="lbl_pedido_piezas"></asp:Label>
+                        <asp:TextBox runat="server" ID="txt_pedido_pieza" Visible="false" placeholder="Piezas a precio"></asp:TextBox>
+                    </div>
 
-            <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
+                    <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
 
-        </div>
+                </div>
         
-        </ContentTemplate>
-        </asp:UpdatePanel>
+                </ContentTemplate>
+                </asp:UpdatePanel>
 
-        <div id="div_uva" class="hidden">
-            <label>No Solicitud:</label>
-            <asp:TextBox runat="server" ID="txt_solicitud"></asp:TextBox>
-            <asp:TextBox runat="server" ID="txt_sol_pieza" placeholder="Piezas a NOM"></asp:TextBox>
-        </div>
-        <div>
-            <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
-        </div>
+                <div id="div_uva" class="hidden">
+                    <label>No Solicitud:</label>
+                    <asp:TextBox runat="server" ID="txt_solicitud"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="txt_sol_pieza" placeholder="Piezas a NOM"></asp:TextBox>
+                </div>
+                <div>
+                    <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
+                </div>
         
+            </div>        
+        </div>
+        <div id="tabs-2">
+            <asp:Button runat="server" ID="btn_consultar" Text="Consultar" CausesValidation="false" OnClick="btn_consultar_click" />
+            <asp:UpdatePanel runat="server" ID="up_consulta" UpdateMode="Conditional">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="btn_consultar" EventName="click" />
+                </Triggers>
+                <ContentTemplate>
+                    <asp:GridView runat="server" ID="grd_ordenes" AutoGenerateColumns="false">
+                        <Columns>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <a href='<%# "frmMaq.aspx?folio=" + Eval("Folio") %>' ><%#Eval("Folio") %></a>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:dd/MM/yy}" />
+                            <asp:BoundField DataField="Servicios" HeaderText="Servicios" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />
+                            <asp:TemplateField HeaderText="Estatus">
+                                <ItemTemplate>
+                                    <span class='<%# "ui-icon ui-icon-" + (Convert.ToBoolean(Eval("Cerrada")) ? "locked icon-button-action" : "unlocked") %>'></span>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
     </div>
+
+    
 
 </div>
 

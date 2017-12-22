@@ -103,7 +103,7 @@ namespace AppCasc.handlers
                 switch (option)
                 {
                     case "getOrdenes":
-                        response = JsonConvert.SerializeObject(MaquilaCtrl.OrdenTrabajoGet());
+                        response = JsonConvert.SerializeObject(MaquilaCtrl.OrdenTrabajoGetLst());
                         break;
                 }
             }
