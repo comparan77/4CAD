@@ -15,7 +15,17 @@
             $('#ctl00_body_txt_folio').mask('OT-999999-' + digAnio);
             $('#ctl00_body_up_info_ot').panelReady(function () {
 
-                $('#tabs').tabs();
+                $('.ot_faltantes').each(function () {
+                    $(this).removeClass('error');
+                    if ($(this).html() * 1 > 0)
+                        $(this).addClass('error');
+                });
+
+                $('.ot_sobrantes').each(function () {
+                    $(this).removeClass('error');
+                    if ($(this).html() * 1 > 0)
+                        $(this).addClass('error');
+                });
 
                 var spn_estado_ot = $('#spn_estado_ot');
                 $(spn_estado_ot).click(function () {

@@ -32,6 +32,8 @@ namespace ModelCasc.operation
         public List<Maquila_paso> PLstPasos { get; set; }
         public int PiezasMaq { get; set; }
         public int PasosMaq { get; set; }
+        public int Faltantes { get; set; }
+        public int Sobrantes { get; set; }
         #endregion
 
         #region Constructores

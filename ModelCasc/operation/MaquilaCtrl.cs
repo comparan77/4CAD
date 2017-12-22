@@ -127,6 +127,18 @@ namespace ModelCasc.operation
                     itemOTS.PLstMaq = oMMng.Lst;
 
                     itemOTS.PiezasMaq = itemOTS.PLstMaq.Sum(p => p.Piezas);
+                    int dif = itemOTS.Piezas - itemOTS.PiezasMaq;
+                    itemOTS.Faltantes = 0;
+                    itemOTS.Sobrantes = 0;
+                    if (dif > 0)
+                    {
+                        itemOTS.Faltantes = dif;
+                    }
+                    else
+                    {
+                        itemOTS.Sobrantes = Math.Abs(dif);
+                    }
+
 
                     Maquila_paso oMP = new Maquila_paso() { Id_ord_tbj_srv = itemOTS.Id };
                     oMPMng.O_Maquila_paso = oMP;
