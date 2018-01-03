@@ -92,7 +92,7 @@
 
     function porPeriodo() {
         $('#div_periodo').removeClass('hidden');
-        var iniYear = new Date(moment(new Date()).year(), new Date().getMonth(), 1)
+        var iniYear = new Date(moment(new Date()).year(), new Date(). + 1, 1)
         iniYear = moment(iniYear).format('DD/MM/YYYY');
         $('#ctl00_body_txt_fecha_ini').val(iniYear);
     }

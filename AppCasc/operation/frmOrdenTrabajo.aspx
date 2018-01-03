@@ -34,6 +34,9 @@
                     <div>
                         <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
                         <asp:Label runat="server" ID="lbl_pedido_piezas"></asp:Label>
+                        
+                    </div>
+                    <div>
                         <asp:TextBox runat="server" ID="txt_pedido_pieza" Visible="false" placeholder="Piezas a precio"></asp:TextBox>
                     </div>
 
@@ -47,7 +50,9 @@
                 <div id="div_uva" class="hidden">
                     <label>No Solicitud:</label>
                     <asp:TextBox runat="server" ID="txt_solicitud"></asp:TextBox>
-                    <asp:TextBox runat="server" ID="txt_sol_pieza" placeholder="Piezas a NOM"></asp:TextBox>
+                    <div>
+                        <asp:TextBox runat="server" ID="txt_sol_pieza" placeholder="Piezas a NOM"></asp:TextBox>
+                    </div>
                 </div>
                 <div>
                     <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
