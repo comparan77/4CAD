@@ -15,6 +15,11 @@
 
         $('#ctl00_body_btn_guardar').button();
 
+        $('#accordion').accordion({
+            icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" },
+            heigthStyle: "content"
+        });
+
         $(up_pedido).panelReady(function () {
 
             var precio = document.getElementById('ctl00_body_chklst_servicio_0');

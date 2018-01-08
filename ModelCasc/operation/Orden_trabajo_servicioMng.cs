@@ -34,6 +34,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oOrden_trabajo_servicio.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_orden_trabajo", DbType.Int32, this._oOrden_trabajo_servicio.Id_orden_trabajo);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_servicio", DbType.Int32, this._oOrden_trabajo_servicio.Id_servicio);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_etiqueta_tipo", DbType.Int32, this._oOrden_trabajo_servicio.Id_etiqueta_tipo);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oOrden_trabajo_servicio.Piezas);
             GenericDataAccess.AddInParameter(this.comm, "?P_ref1", DbType.String, this._oOrden_trabajo_servicio.Ref1);
             GenericDataAccess.AddInParameter(this.comm, "?P_ref2", DbType.String, this._oOrden_trabajo_servicio.Ref2);
@@ -56,6 +57,12 @@ namespace ModelCasc.operation
                 {
                     int.TryParse(dr["id_servicio"].ToString(), out entero);
                     o.Id_servicio = entero;
+                    entero = 0;
+                }
+                if (dr["id_etiqueta_tipo"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_etiqueta_tipo"].ToString(), out entero);
+                    o.Id_etiqueta_tipo = entero;
                     entero = 0;
                 }
                 if (dr["piezas"] != DBNull.Value)

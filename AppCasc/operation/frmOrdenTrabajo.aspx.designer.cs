@@ -40,85 +40,13 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.TextBox txt_trafico;
         
         /// <summary>
-        /// chklst_servicio control.
+        /// rep_servicios control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chklst_servicio;
-        
-        /// <summary>
-        /// up_pedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel up_pedido;
-        
-        /// <summary>
-        /// txt_pedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_pedido;
-        
-        /// <summary>
-        /// lbl_pedido_info control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pedido_info;
-        
-        /// <summary>
-        /// lbl_pedido_piezas control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pedido_piezas;
-        
-        /// <summary>
-        /// txt_pedido_pieza control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_pedido_pieza;
-        
-        /// <summary>
-        /// cv_pedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cv_pedido;
-        
-        /// <summary>
-        /// txt_solicitud control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_solicitud;
-        
-        /// <summary>
-        /// txt_sol_pieza control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_sol_pieza;
+        protected global::System.Web.UI.WebControls.Repeater rep_servicios;
         
         /// <summary>
         /// btn_guardar control.

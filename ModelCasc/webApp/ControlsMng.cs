@@ -355,5 +355,13 @@ namespace ModelCasc.webApp
             lbox.DataValueField = "id";
             lbox.DataBind();
         }
+
+        public static void fillEtiquetaTipo(DropDownList ddl)
+        {
+            ddl.DataSource = CatalogCtrl.etiquetaTipoGet();
+            ddl.DataTextField = "nombre";
+            ddl.DataValueField = "id";
+            ddl.DataBind();
+        }
     }
 }

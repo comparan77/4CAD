@@ -20,7 +20,65 @@
                     <label>No Tr&aacute;fico:</label>
                     <asp:TextBox runat="server" ID="txt_trafico" Text="LT8036IM17"></asp:TextBox>
                 </div>
-                <div>
+
+
+                <div id="accordion">
+                    <asp:Repeater runat="server" ID="rep_servicios"  OnItemDataBound="rep_serv_data_bound">
+                        <ItemTemplate>
+                        <h3><%# Eval("Nombre") %></h3>
+                        <div>
+
+                        <asp:UpdatePanel runat="server" ID="up_pedido">
+                            <ContentTemplate>
+                            <div id="div_pedido">
+                                <label>No Pedido:</label>
+                                <asp:TextBox runat="server" ID="txt_pedido" Text="6141769" CausesValidation="true" AutoPostBack="true" OnTextChanged="pedido_changed"></asp:TextBox>
+
+                                <div>
+                                    <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
+                                    <asp:Label runat="server" ID="lbl_pedido_piezas"></asp:Label>
+                        
+                                </div>
+
+                                <asp:Panel runat="server" ID="pnl_pedido" Visible="false">
+                                    <div>
+                                        <label>Tipo de etiqueta</label>
+                                        <asp:DropDownList runat="server" ID="ddl_eti_tipo_precio"></asp:DropDownList>
+                                    </div>
+                                    <div>
+                                        <label>Piezas a precio</label>
+                                        <asp:TextBox runat="server" ID="txt_pedido_pieza"></asp:TextBox>
+                                    </div>
+                                </asp:Panel>
+
+                                <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
+
+                            </div>
+        
+                            </ContentTemplate>
+                            </asp:UpdatePanel>
+                        
+                        <asp:Panel runat="server" ID="up_uva" Visible="false">
+                            <label>No Solicitud:</label>
+                            <asp:TextBox runat="server" ID="txt_solicitud"></asp:TextBox>
+                            <div>
+                                <label>Tipo de etiqueta</label>
+                                <asp:DropDownList runat="server" ID="ddl_eti_tipo_uva"></asp:DropDownList>
+                            </div>
+                            <div>
+                                <label>Piezas a NOM</label>
+                                <asp:TextBox runat="server" ID="txt_sol_pieza"></asp:TextBox>
+                            </div>
+                        </asp:Panel>
+
+                        <asp:HiddenField runat="server" ID="hf_id_servicio" Value='<%#Eval("Id") %>' />
+                        </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
+
+
+                <%--<div>
                     <label style="border:none;">Servicio:</label>
                     <asp:CheckBoxList runat="server" ID="chklst_servicio"></asp:CheckBoxList>
                 </div>
@@ -36,9 +94,17 @@
                         <asp:Label runat="server" ID="lbl_pedido_piezas"></asp:Label>
                         
                     </div>
-                    <div>
-                        <asp:TextBox runat="server" ID="txt_pedido_pieza" Visible="false" placeholder="Piezas a precio"></asp:TextBox>
-                    </div>
+
+                    <asp:Panel runat="server" ID="pnl_pedido" Visible="false">
+                        <div>
+                            <label>Tipo de etiqueta</label>
+                            <asp:DropDownList runat="server" ID="ddl_eti_tipo_precio"></asp:DropDownList>
+                        </div>
+                        <div>
+                            <label>Piezas a precio</label>
+                            <asp:TextBox runat="server" ID="txt_pedido_pieza"></asp:TextBox>
+                        </div>
+                    </asp:Panel>
 
                     <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
 
@@ -51,9 +117,14 @@
                     <label>No Solicitud:</label>
                     <asp:TextBox runat="server" ID="txt_solicitud"></asp:TextBox>
                     <div>
-                        <asp:TextBox runat="server" ID="txt_sol_pieza" placeholder="Piezas a NOM"></asp:TextBox>
+                        <label>Tipo de etiqueta</label>
+                        <asp:DropDownList runat="server" ID="ddl_eti_tipo_uva"></asp:DropDownList>
                     </div>
-                </div>
+                    <div>
+                        <label>Piezas a NOM</label>
+                        <asp:TextBox runat="server" ID="txt_sol_pieza"></asp:TextBox>
+                    </div>
+                </div>--%>
                 <div>
                     <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
                 </div>

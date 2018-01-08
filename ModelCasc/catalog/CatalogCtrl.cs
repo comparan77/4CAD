@@ -1494,12 +1494,32 @@ namespace ModelCasc.catalog
 
         #region Servicios
 
-        internal static List<Servicio> ServicioLst()
+        public static List<Servicio> ServicioLst()
         {
             List<Servicio> lst = new List<Servicio>();
             try
             {
                 ServicioMng oMng = new ServicioMng();
+                oMng.fillLst();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Etiqueta tipo
+
+        public static List<Etiqueta_tipo> etiquetaTipoGet()
+        {
+            List<Etiqueta_tipo> lst = new List<Etiqueta_tipo>();
+            try
+            {
+                Etiqueta_tipoMng oMng = new Etiqueta_tipoMng();
                 oMng.fillLst();
                 lst = oMng.Lst;
             }
