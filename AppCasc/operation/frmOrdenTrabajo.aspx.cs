@@ -35,8 +35,39 @@ namespace AppCasc.operation
             Orden_trabajo o = new Orden_trabajo();
             o.PLstOTSer = new List<Orden_trabajo_servicio>();
             Orden_trabajo_servicio oOTS;
-            //foreach (ListItem itemB in chklst_servicio.Items)
-            //{
+            foreach (RepeaterItem itemB in rep_servicios.Items)
+            {
+                oOTS = new Orden_trabajo_servicio();
+
+                HiddenField hf_id_servicio = itemB.FindControl("hf_id_servicio") as HiddenField;
+                int id_servicio = Convert.ToInt32(hf_id_servicio.Value);
+
+                oOTS.Id_servicio = id_servicio;
+                oOTS.Ref1 = txt_trafico.Text;
+                DropDownList ddlEtiqueta_tipo =null;
+                switch (oOTS.Id_servicio)
+                {
+                    case 1:
+                        TextBox txt_pedido = itemB.FindControl("txt_pedido") as TextBox;
+                        TextBox txt_pedido_pieza = itemB.FindControl("txt_pedido_pieza") as TextBox;
+                        oOTS.Ref2 = txt_pedido.Text;
+                        oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
+                        ddlEtiqueta_tipo = itemB.FindControl("ddl_eti_tipo_precio") as DropDownList;
+                        break;
+                    case 2:
+                        TextBox txt_solicitud = itemB.FindControl("txt_solicitud") as TextBox;
+                        TextBox txt_sol_pieza = itemB.FindControl("txt_sol_pieza") as TextBox;
+                        oOTS.Ref2 = txt_solicitud.Text;
+                        oOTS.Piezas = Convert.ToInt32(txt_sol_pieza.Text);
+                        ddlEtiqueta_tipo = itemB.FindControl("ddl_eti_tipo_uva") as DropDownList;
+                        break;
+                    default:
+                        break;
+                }
+                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddlEtiqueta_tipo.SelectedValue);
+                o.PLstOTSer.Add(oOTS);
+                
+            }
             //    if (itemB.Selected)
             //    {
             //        oOTS = new Orden_trabajo_servicio();

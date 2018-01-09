@@ -55,6 +55,11 @@ namespace ModelCasc.operation
                 Entrada_liverpoolMng oELMng = new Entrada_liverpoolMng();
                 Entrada_liverpool oEL;
 
+                Etiqueta_tipoMng oETMng = new Etiqueta_tipoMng();
+
+                MaquilaMng oMaqMng = new MaquilaMng();
+                Maquila_pasoMng oMaqPasoMng = new Maquila_pasoMng();
+
                 foreach (Orden_trabajo itemOT in lst)
                 {
                     itemOT.PLstOTSer = new List<Orden_trabajo_servicio>();
@@ -66,6 +71,22 @@ namespace ModelCasc.operation
 
                     foreach (Orden_trabajo_servicio itemOTS in oOTSMng.Lst)
                     {
+                        Etiqueta_tipo oET = new Etiqueta_tipo() { Id = itemOTS.Id_etiqueta_tipo };
+                        oETMng.O_Etiqueta_tipo = oET;
+                        oETMng.selById();
+                        itemOTS.PEtiquetaTipo = oET;
+
+                        Maquila oMaq = new Maquila() { Id_ord_tbj_srv = itemOTS.Id };
+                        oMaqMng.O_Maquila = oMaq;
+                        oMaqMng.fillLstByOTS();
+                        itemOTS.PLstMaq = oMaqMng.Lst;
+
+                        itemOTS.PiezasMaq = itemOTS.PLstMaq.Sum(p => p.Piezas);
+
+                        Maquila_paso oMaqPaso = new Maquila_paso() { Id_ord_tbj_srv = itemOTS.Id };
+                        oMaqPasoMng.O_Maquila_paso = oMaqPaso;
+                        oMaqPasoMng.fillByIdOTS();
+                        itemOTS.PLstPasos = oMaqPasoMng.Lst;
 
                         switch (itemOTS.Id_servicio)
                         {
@@ -143,7 +164,7 @@ namespace ModelCasc.operation
 
                     Maquila_paso oMP = new Maquila_paso() { Id_ord_tbj_srv = itemOTS.Id };
                     oMPMng.O_Maquila_paso = oMP;
-                    oMPMng.selByIdOTS();
+                    oMPMng.fillByIdOTS();
                     itemOTS.PLstPasos = oMPMng.Lst;
 
                     int numPaso = 1;

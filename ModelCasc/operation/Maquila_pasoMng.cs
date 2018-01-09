@@ -163,7 +163,7 @@ namespace ModelCasc.operation
             }
         }
 
-        internal void selByIdOTS()
+        internal void fillByIdOTS()
         {
             try
             {

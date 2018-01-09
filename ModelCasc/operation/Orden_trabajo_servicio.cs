@@ -32,6 +32,7 @@ namespace ModelCasc.operation
         public Entrada_liverpool PEntLiv { get; set; }
         public List<Maquila> PLstMaq { get; set; }
         public List<Maquila_paso> PLstPasos { get; set; }
+        public Etiqueta_tipo PEtiquetaTipo { get; set; }
         public int PiezasMaq { get; set; }
         public int PasosMaq { get; set; }
         public int Faltantes { get; set; }
