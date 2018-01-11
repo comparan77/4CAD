@@ -13,59 +13,53 @@ namespace AppCasc.operation
 {
     public partial class frmOrdenTrabajo : System.Web.UI.Page
     {
+        protected List<Orden_trabajo_servicio> VSLstOTS
+        {
+            get
+            {
+                object o = ViewState["VSLstOTS"];
+                return o == null ? null : (List<Orden_trabajo_servicio>)o;
+            }
+            set
+            {
+                ViewState["VSLstOTS"] = value;
+            }
+        }
+
+        private List<Servicio> VSLstServ
+        {
+            get
+            {
+                object o = ViewState["VSLstServ"];
+                return o == null ? null : (List<Servicio>)o;
+            }
+            set
+            {
+                ViewState["VSLstServ"] = value;
+            }
+        }
 
         private void loadFirstTime()
         {
             try
             {
-                rep_servicios.DataSource = CatalogCtrl.ServicioLst();
+                VSLstOTS = new List<Orden_trabajo_servicio>();
+                VSLstServ = CatalogCtrl.ServicioLst();
+                rep_servicios.DataSource = VSLstServ;
                 rep_servicios.DataBind();
             }
             catch 
             {
                 throw;
             }
-        }
-
+        }        
+        
         private Orden_trabajo getFormValues()
         {
             Orden_trabajo o = new Orden_trabajo();
-            o.PLstOTSer = new List<Orden_trabajo_servicio>();
-            Orden_trabajo_servicio oOTS;
             o.Referencia = txt_trafico.Text.Trim();
-            foreach (RepeaterItem itemB in rep_servicios.Items)
-            {
-                oOTS = new Orden_trabajo_servicio();
 
-                HiddenField hf_id_servicio = itemB.FindControl("hf_id_servicio") as HiddenField;
-                int id_servicio = Convert.ToInt32(hf_id_servicio.Value);
-
-                oOTS.Id_servicio = id_servicio;
-                oOTS.Ref1 = txt_trafico.Text;
-                DropDownList ddlEtiqueta_tipo =null;
-                switch (oOTS.Id_servicio)
-                {
-                    case 1:
-                        TextBox txt_pedido = itemB.FindControl("txt_pedido") as TextBox;
-                        TextBox txt_pedido_pieza = itemB.FindControl("txt_pedido_pieza") as TextBox;
-                        oOTS.Ref2 = txt_pedido.Text;
-                        oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
-                        ddlEtiqueta_tipo = itemB.FindControl("ddl_eti_tipo_precio") as DropDownList;
-                        break;
-                    case 2:
-                        TextBox txt_solicitud = itemB.FindControl("txt_solicitud") as TextBox;
-                        TextBox txt_sol_pieza = itemB.FindControl("txt_sol_pieza") as TextBox;
-                        oOTS.Ref2 = txt_solicitud.Text;
-                        oOTS.Piezas = Convert.ToInt32(txt_sol_pieza.Text);
-                        ddlEtiqueta_tipo = itemB.FindControl("ddl_eti_tipo_uva") as DropDownList;
-                        break;
-                    default:
-                        break;
-                }
-                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddlEtiqueta_tipo.SelectedValue);
-                o.PLstOTSer.Add(oOTS);
-                
-            }
+            o.PLstOTSer = VSLstOTS;
             
             return o;
         }
@@ -129,7 +123,7 @@ namespace AppCasc.operation
             {
                 ((MstCasc)this.Master).setError = e.Message;
             }
-            
+
             args.IsValid = true;
         }
 
@@ -157,30 +151,76 @@ namespace AppCasc.operation
                 {
                     HiddenField hf_id_servicio = args.Item.FindControl("hf_id_servicio") as HiddenField;
                     int id_servicio = Convert.ToInt32( hf_id_servicio.Value);
-                    
-                    UpdatePanel up_pedido = args.Item.FindControl("up_pedido") as UpdatePanel;
-                    up_pedido.Visible = false;
 
-                    Panel up_uva = args.Item.FindControl("up_uva") as Panel;
-                    up_uva.Visible = false;
+                    Panel pnl_precio = args.Item.FindControl("pnl_precio") as Panel;
+                    pnl_precio.Visible = false;
+
+                    Panel pnl_uva = args.Item.FindControl("pnl_uva") as Panel;
+                    pnl_uva.Visible = false;
 
                     DropDownList ddlEtiqueta_tipo = null;
 
                     switch (id_servicio)
                     {
                         case 1:
-                            ddlEtiqueta_tipo = up_uva.FindControl("ddl_eti_tipo_precio") as DropDownList;
-                            up_pedido.Visible = true;
+                            ddlEtiqueta_tipo = pnl_precio.FindControl("ddl_eti_tipo_precio") as DropDownList;
+                            pnl_precio.Visible = true;
                             break;
                         case 2:
-                            up_uva.Visible = true;
-                            ddlEtiqueta_tipo = up_uva.FindControl("ddl_eti_tipo_uva") as DropDownList;
+                            pnl_uva.Visible = true;
+                            ddlEtiqueta_tipo = pnl_uva.FindControl("ddl_eti_tipo_uva") as DropDownList;
                             break;
                     }
                     ControlsMng.fillEtiquetaTipo(ddlEtiqueta_tipo);
                 }
             }
             catch (Exception e )
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void addServicio(object sender, CommandEventArgs args)
+        {
+            Control oC = ((Control)sender).Parent;
+            int id_servicio = Convert.ToInt32(args.CommandArgument);
+
+            Orden_trabajo_servicio oOTS = new Orden_trabajo_servicio();
+
+            oOTS.Id_servicio = id_servicio;
+            oOTS.PServ = new Servicio() { Nombre = VSLstServ.Find(p => p.Id == id_servicio).Nombre };
+            oOTS.Ref1 = txt_trafico.Text;
+            DropDownList ddlEtiqueta_tipo = null;
+            try
+            {
+                switch (args.CommandName)
+                {
+                    case "precio":
+                        TextBox txt_pedido = oC.FindControl("txt_pedido") as TextBox;
+                        TextBox txt_pedido_pieza = oC.FindControl("txt_pedido_pieza") as TextBox;
+                        oOTS.Ref2 = txt_pedido.Text;
+                        oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
+                        ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_precio") as DropDownList;
+                        
+                        break;
+                    case "nom":
+                        TextBox txt_solicitud = oC.FindControl("txt_solicitud") as TextBox;
+                        TextBox txt_sol_pieza = oC.FindControl("txt_sol_pieza") as TextBox;
+                        oOTS.Ref2 = txt_solicitud.Text;
+                        oOTS.Piezas = Convert.ToInt32(txt_sol_pieza.Text);
+                        ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_uva") as DropDownList;
+                        break;
+                    default:
+                        break;
+                }
+                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddlEtiqueta_tipo.SelectedValue);
+                oOTS.PEtiquetaTipo = new Etiqueta_tipo() { Nombre = ddlEtiqueta_tipo.SelectedItem.Text };
+                oOTS.Id = VSLstOTS.Count + 1;
+                VSLstOTS.Add(oOTS);
+                grd_ordenesXGuardar.DataSource = VSLstOTS;
+                grd_ordenesXGuardar.DataBind();
+            }
+            catch (Exception e)
             {
                 ((MstCasc)this.Master).setError = e.Message;
             }

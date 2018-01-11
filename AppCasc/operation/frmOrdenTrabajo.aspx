@@ -28,11 +28,17 @@
                         <h3><%# Eval("Nombre") %></h3>
                         <div>
 
-                        <asp:UpdatePanel runat="server" ID="up_pedido">
+                        <asp:UpdatePanel runat="server" ID="up_servicios" UpdateMode="Conditional">
+                        <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btn_add_pedido" EventName="click" />
+                        <asp:AsyncPostBackTrigger ControlID="btn_add_nom" EventName="click" />
+                        </Triggers>
+                            
                             <ContentTemplate>
-                            <div id="div_pedido">
+                            <asp:Panel runat="server" ID="pnl_precio" Visible="false">
+                            
                                 <label>No Pedido:</label>
-                                <asp:TextBox runat="server" ID="txt_pedido" Text="6141769" MaxLength="8" CausesValidation="true" AutoPostBack="true" OnTextChanged="pedido_changed"></asp:TextBox>
+                                <asp:TextBox runat="server" CssClass="accordionPedido" ID="txt_pedido" Text="6141769" MaxLength="8" CausesValidation="true" AutoPostBack="true" ValidationGroup="vg_pedido" OnTextChanged="pedido_changed"></asp:TextBox>
 
                                 <div style="padding: 1em">
                                     <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
@@ -47,17 +53,18 @@
                                     <div>
                                         <label>Piezas a precio</label>
                                         <asp:TextBox runat="server" ID="txt_pedido_pieza"></asp:TextBox>
+                                        <asp:RequiredFieldValidator runat="server" ID="rfv_pedido_pieza" ControlToValidate="txt_pedido_pieza" ValidationGroup="vg_pedido" ErrorMessage="Es necesario proporcionar las piezas"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <div>
+                                        <asp:Button runat="server" ID="btn_add_pedido" OnCommand="addServicio" CommandName="precio" CommandArgument='<%#Eval("Id") %>' ValidationGroup="vg_pedido" Text="Agregar servicio" />
                                     </div>
                                 </asp:Panel>
 
-                                <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
-
-                            </div>
-        
-                            </ContentTemplate>
-                            </asp:UpdatePanel>
+                                <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" ValidationGroup="vg_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
+                                
+                            </asp:Panel>                                   
                         
-                        <asp:Panel runat="server" ID="up_uva" Visible="false">
+                        <asp:Panel runat="server" ID="pnl_uva" Visible="false">
                             <label>No Solicitud:</label>
                             <asp:TextBox runat="server" ID="txt_solicitud"></asp:TextBox>
                             <div>
@@ -67,20 +74,42 @@
                             <div>
                                 <label>Piezas a NOM</label>
                                 <asp:TextBox runat="server" ID="txt_sol_pieza"></asp:TextBox>
+                                <asp:RequiredFieldValidator runat="server" ID="rfv_sol_pieza" ControlToValidate="txt_sol_pieza" ValidationGroup="vg_nom" ErrorMessage="Es neceasrio proporcionar el número de piezas"></asp:RequiredFieldValidator>
                             </div>
+                            
+                            <asp:Button runat="server" ID="btn_add_nom" OnCommand="addServicio" CommandArgument='<%#Eval("Id") %>' CommandName="nom" Text="Agregar servicio" ValidationGroup="vg_nom" />
                         </asp:Panel>
 
                         <asp:HiddenField runat="server" ID="hf_id_servicio" Value='<%#Eval("Id") %>' />
-                        </div>
+                        </div>                        
+
+                        </ContentTemplate>
+                            </asp:UpdatePanel>
+
                         </ItemTemplate>
                     </asp:Repeater>
-                </div>
+                </div>                        
+            </div>    
+            
+            <hr />
+            <asp:UpdatePanel runat="server" ID="up_xguardar" UpdateMode="Always">
+            <ContentTemplate>
+                <asp:GridView runat="server" CssClass="grdCascSmall" ID="grd_ordenesXGuardar" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:BoundField DataField="PServ.Nombre" HeaderText="Servicio Solicitado" />
+                    <asp:BoundField DataField="PEtiquetaTipo.Nombre" HeaderText="Tipo de Etiqueta" />
+                    <asp:BoundField DataField="REf1" HeaderText="Trafico" />
+                    <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
+                    <asp:BoundField DataField="Piezas" HeaderText="Piezas" />
 
-                <div>
-                    <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
-                </div>
-        
-            </div>        
+                </Columns>
+                </asp:GridView>
+            </ContentTemplate>
+            </asp:UpdatePanel>
+
+            <div>
+                <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
+            </div>    
         </div>
         <div id="tabs-2">
             <asp:Button runat="server" ID="btn_consultar" Text="Consultar" CausesValidation="false" OnClick="btn_consultar_click" />
@@ -89,7 +118,7 @@
                     <asp:AsyncPostBackTrigger ControlID="btn_consultar" EventName="click" />
                 </Triggers>
                 <ContentTemplate>
-                    <asp:GridView runat="server" ID="grd_ordenes" AutoGenerateColumns="false">
+                    <asp:GridView runat="server" CssClass="grdCascSmall" ID="grd_ordenes" AutoGenerateColumns="false">
                         <Columns>
                             <asp:TemplateField HeaderText="Folio">
                                 <ItemTemplate>
@@ -98,7 +127,7 @@
                                 
                             </asp:TemplateField>
                             <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:dd/MM/yy}" />
-                            <asp:BoundField DataField="Referencia" HeaderText="Referencia"/>
+                            <asp:BoundField DataField="Referencia" HeaderText="Trafico"/>
                             <asp:BoundField DataField="Servicios" HeaderText="Servicios" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />
                             <asp:TemplateField HeaderText="Estatus">
                                 <ItemTemplate>

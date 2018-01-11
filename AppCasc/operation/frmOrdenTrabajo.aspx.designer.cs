@@ -49,6 +49,24 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.Repeater rep_servicios;
         
         /// <summary>
+        /// up_xguardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel up_xguardar;
+        
+        /// <summary>
+        /// grd_ordenesXGuardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grd_ordenesXGuardar;
+        
+        /// <summary>
         /// btn_guardar control.
         /// </summary>
         /// <remarks>

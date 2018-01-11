@@ -8,29 +8,20 @@
 
     function initControls() {
 
-        var up_pedido = $('#ctl00_body_up_pedido');
-
         $("#tabs").tabs();
         $('#ctl00_body_btn_consultar').button();
 
         $('#ctl00_body_btn_guardar').button();
 
         $('#accordion').accordion({
-            icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" },
-            heigthStyle: "content"
+            icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
         });
 
-        $(up_pedido).panelReady(function () {
-
-            var precio = document.getElementById('ctl00_body_chklst_servicio_0');
-            var uva = document.getElementById('ctl00_body_chklst_servicio_1');
-
-            if (precio.checked) $('#div_pedido').removeClass('hidden');
-            if (uva.checked) $('#div_uva').removeClass('hidden');
-
-            precioClick(precio);
-            UvaClick(uva);
+        $('#ctl00_body_rep_servicios_ctl00_up_servicios').panelReady(function () {
+            $('#accordion').accordion('refresh');
         });
+
+
     }
 
     function precioClick(chk_precio) {
