@@ -7,8 +7,9 @@ namespace ModelCasc
 {
     public class Globals
     {
-        public const string REFERENCIA_NAME_XLS_FONDEO = "[Número de Pedimento]";
+        //para avon public const string REFERENCIA_NAME_XLS_FONDEO = "[Número de Pedimento]";
 
+        public const string REFERENCIA_NAME_XLS_FONDEO = "REFERENCIA";
         public const int EST_CAPTURA = 0;
         public const int EST_INV_SIN_APROBACION = 1;
         public const int EST_INV_CON_APROBACION = 2;

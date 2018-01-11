@@ -1245,7 +1245,78 @@ namespace ModelCasc.operation
                 throw;
             }
         }
-        
+
+        public static List<Entrada_liverpool> FondeoUpLoadData(string path)
+        {
+            List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
+            IDbTransaction tran;
+
+            string patronRef = @"(\d{2})(\d{2})(\d{4})(\d{7})?";
+            string remplazo = "$2-$3-$4";
+
+            try
+            {
+                Entrada_liverpool o;
+                DataTable dtImport = Model.CommonFunctions.ImportXls(path, " where " + Globals.REFERENCIA_NAME_XLS_FONDEO + " is not null");
+
+                tran = GenericDataAccess.BeginTransaction();
+                Entrada_liverpoolMng oMng = new Entrada_liverpoolMng();
+
+                for (int i = 0; i < dtImport.Rows.Count; i++)
+                {
+                    DataRow dr = dtImport.Rows[i];
+                    int pedido = 0;
+                    int piezas = 0;
+                    DateTime fecha_confirma = default(DateTime);
+                    string referencia = string.Empty;
+
+                    int.TryParse(dr["PEDIDO"].ToString(), out pedido);
+                    int.TryParse(dr["PIEZAS"].ToString(), out piezas);
+                    DateTime.TryParse(dr["FECHA_CONFIRMA"].ToString(), out fecha_confirma);
+                    referencia = dr["REFERENCIA"].ToString();
+
+                    o = new Entrada_liverpool()
+                    {
+                        Proveedor = dr["PROVEEDOR"].ToString(),
+                        Trafico = dr["TRAFICO"].ToString(),
+                        Pedido = pedido,
+                        Piezas = piezas,
+                        Fecha_confirma = fecha_confirma
+                    };
+
+                    Regex rgx = new Regex(patronRef);
+                    referencia = rgx.Replace(referencia, remplazo);
+
+                    Entrada oE = EntradaByReferencia(referencia);
+                    if (oE.Id > 0)
+                    {
+                        o.Id_entrada = oE.Id;
+                        EntradaLiverpoolGetByUniqueKey(o, tran);
+                        oMng.O_Entrada_liverpool = o;
+                        if (o.Id > 0)
+                        {
+                            o.Fecha_confirma = o.Fecha_confirma;
+                            oMng.udtFechaConfirmacion(tran);
+                        }
+                        else
+                        {
+                            oMng.add(tran);
+                        }
+                        lst.Add(o);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+            return lst;
+        }
+
         public static DataTable FondeoUpLoadData(string path, DateTime fecha, string importador, string aduana)
         {
             DataTable dtReviewFile = new DataTable();
@@ -2242,6 +2313,7 @@ namespace ModelCasc.operation
             List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
             int codigosCant = 0;
             DateTime varfechaConfirma = default(DateTime);
+            int filaXls = 0;
             try
             {
                 string[] filasTxt;
@@ -2257,6 +2329,7 @@ namespace ModelCasc.operation
                 string remplazo = "$2-$3-$4";
                 foreach (string fila in filasTxt)
                 {
+                    filaXls++;
                     dato = fila.Split('\t');
                     referencia = dato[2].Trim();
 
@@ -2300,7 +2373,7 @@ namespace ModelCasc.operation
             {
                 if (tran != null)
                     GenericDataAccess.RollbackTransaction(tran);
-                throw;
+                throw new Exception("Error en fila " + filaXls.ToString());
             }
             return lst;
         }
@@ -2363,7 +2436,5 @@ namespace ModelCasc.operation
         }
 
         #endregion
-
-        
     }
 }

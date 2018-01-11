@@ -31,22 +31,31 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
-        /// txt_data control.
+        /// fu_fondeo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_data;
+        protected global::System.Web.UI.WebControls.FileUpload fu_fondeo;
         
         /// <summary>
-        /// btn_loaddata control.
+        /// hf_path control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_loaddata;
+        protected global::System.Web.UI.WebControls.HiddenField hf_path;
+        
+        /// <summary>
+        /// btn_procesar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_procesar;
         
         /// <summary>
         /// grdProcesados control.

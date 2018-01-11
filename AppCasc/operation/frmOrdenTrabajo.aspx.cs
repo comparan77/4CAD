@@ -20,9 +20,6 @@ namespace AppCasc.operation
             {
                 rep_servicios.DataSource = CatalogCtrl.ServicioLst();
                 rep_servicios.DataBind();
-                //ControlsMng.fillServicios(chklst_servicio);
-                //ControlsMng.fillEtiquetaTipo(ddl_eti_tipo_precio);
-                //ControlsMng.fillEtiquetaTipo(ddl_eti_tipo_uva);
             }
             catch 
             {
@@ -35,6 +32,7 @@ namespace AppCasc.operation
             Orden_trabajo o = new Orden_trabajo();
             o.PLstOTSer = new List<Orden_trabajo_servicio>();
             Orden_trabajo_servicio oOTS;
+            o.Referencia = txt_trafico.Text.Trim();
             foreach (RepeaterItem itemB in rep_servicios.Items)
             {
                 oOTS = new Orden_trabajo_servicio();
@@ -68,29 +66,6 @@ namespace AppCasc.operation
                 o.PLstOTSer.Add(oOTS);
                 
             }
-            //    if (itemB.Selected)
-            //    {
-            //        oOTS = new Orden_trabajo_servicio();
-            //        oOTS.Id_servicio = Convert.ToInt32(itemB.Value);
-            //        oOTS.Ref1 = txt_trafico.Text;
-            //        switch (oOTS.Id_servicio)
-            //        {
-            //            case 1:
-            //                oOTS.Ref2 = txt_pedido.Text;
-            //                oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
-            //                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddl_eti_tipo_precio.SelectedValue);
-            //                break;
-            //            case 2:
-            //                oOTS.Ref2 = txt_solicitud.Text;
-            //                oOTS.Piezas = Convert.ToInt32(txt_sol_pieza.Text);
-            //                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddl_eti_tipo_uva.SelectedValue);
-            //                break;
-            //            default:
-            //                break;
-            //        }
-            //        o.PLstOTSer.Add(oOTS);
-            //    }
-            //}
             
             return o;
         }
@@ -141,11 +116,14 @@ namespace AppCasc.operation
         {
             args.IsValid = false;
             if (args.Value.Trim().Length <= 0) return;
+
+            TextBox txt_pedido = ((Control)sender).Parent.FindControl("txt_pedido") as TextBox;
+
             try
             {
-                //Entrada_liverpool o = new Entrada_liverpool() { Trafico = txt_trafico.Text.Trim(), Pedido = Convert.ToInt32(txt_pedido.Text.Trim()) };
-                //EntradaCtrl.EntradaLiverpoolGetByUniqueKey(o);
-                //if (o.Id <= 0) return;
+                Entrada_liverpool o = new Entrada_liverpool() { Trafico = txt_trafico.Text.Trim(), Pedido = Convert.ToInt32(txt_pedido.Text.Trim()) };
+                EntradaCtrl.EntradaLiverpoolGetByUniqueKey(o);
+                if (o.Id <= 0) return;
             }
             catch (Exception e)
             {

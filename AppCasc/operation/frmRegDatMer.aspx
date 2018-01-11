@@ -5,7 +5,18 @@
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
 
-<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">&Aacute;rea de pegado de informaci&oacute;n</h3>
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Importar archivo</h3>
+<div style="position: relative;" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+
+<asp:FileUpload runat="server" ID="fu_fondeo" />
+<asp:HiddenField runat="server" ID="hf_path" />
+<asp:Button runat="server" ID="btn_procesar" Text="Importar archivo" CommandName="save_file" OnCommand="procesar_archivo"/>
+
+<div style="position: absolute; top: 5px; right: 5px"><a href="../report/Fondeo/testfondeo.xls">Descargar Layout</a></div>
+
+</div>
+
+<%--<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">&Aacute;rea de pegado de informaci&oacute;n</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
 <!-- Copy-paste data <<ini>>-->
 <div style="">
@@ -14,7 +25,7 @@
 <div>
 <asp:Button runat="server" ID="btn_loaddata" Text="Cargar información" OnClick="click_load" />
 </div>
-</div>
+</div>--%>
 
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Pedidos procesados</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
