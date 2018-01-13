@@ -17,27 +17,25 @@
             icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
         });
 
-        $('#ctl00_body_rep_servicios_ctl00_up_servicios').panelReady(function () {
-            $('#accordion').accordion('refresh');
-        });
+//        $('#ctl00_body_rep_servicios_ctl00_up_servicios').panelReady(function () {
+//            $('#accordion').accordion('refresh');
+//        });
 
+        $('#ctl00_body_txt_referencia').mask('99-9999-9999999');
 
-    }
+        $(".txtPedidos").autocomplete({
+            source: function (request, response) {
+                var data = $.parseJSON($('#ctl00_body_hf_pedidos').val());
 
-    function precioClick(chk_precio) {
-        $(chk_precio).click(function () {
-            $('#div_pedido').addClass('hidden');
-            if (this.checked) {
-                $('#div_pedido').removeClass('hidden');
-            }
-        });
-    }
-
-    function UvaClick(chk_uva) {
-        $(chk_uva).click(function () {
-            $('#div_uva').addClass('hidden');
-            if (this.checked) {
-                $('#div_uva').removeClass('hidden');
+                data = $.grep(data, function (obj, idx) {
+                    return obj.label.substring(0, request.term.length) == request.term;
+                });
+                response(data);
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                //console.log("Selected: " + ui.item.value + " aka " + ui.item.Id);
+                $('#accordion').accordion('refresh');
             }
         });
     }

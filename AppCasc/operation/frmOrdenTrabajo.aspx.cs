@@ -39,6 +39,19 @@ namespace AppCasc.operation
             }
         }
 
+        private List<Entrada_liverpool> VSLstEntLiv
+        {
+            get
+            {
+                object o = ViewState["VSEntLiv"];
+                return o == null ? null : (List<Entrada_liverpool>)o;
+            }
+            set
+            {
+                ViewState["VSEntLiv"] = value;
+            }
+        }
+
         private void loadFirstTime()
         {
             try
@@ -219,6 +232,25 @@ namespace AppCasc.operation
                 VSLstOTS.Add(oOTS);
                 grd_ordenesXGuardar.DataSource = VSLstOTS;
                 grd_ordenesXGuardar.DataBind();
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void change_referencia(object sender, EventArgs args)
+        {
+            try
+            {
+                txt_trafico.Text = string.Empty;
+                hf_pedidos.Value = string.Empty;
+                VSLstEntLiv = EntradaCtrl.EntradaLiverpoolGetByReferencia(txt_referencia.Text.Trim());
+                if (VSLstEntLiv.Count > 0)
+                {
+                    hf_pedidos.Value = Newtonsoft.Json.JsonConvert.SerializeObject(VSLstEntLiv);
+                    txt_trafico.Text = VSLstEntLiv.First().Trafico;
+                }
             }
             catch (Exception e)
             {

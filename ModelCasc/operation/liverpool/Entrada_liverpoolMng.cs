@@ -277,5 +277,26 @@ namespace ModelCasc.operation.liverpool
                 throw;
             }
         }
+
+        internal void fillByEntrada()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool");
+                addParameters(9);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Entrada_liverpool>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entrada_liverpool o = new Entrada_liverpool();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

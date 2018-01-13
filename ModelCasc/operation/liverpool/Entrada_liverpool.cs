@@ -6,7 +6,7 @@ using System.Text;
 namespace ModelCasc.operation.liverpool
 {
     [Serializable]
-    public class Entrada_liverpool
+    public class Entrada_liverpool : IAutoCompleteJqueryUI
     {
         #region Campos
         protected int _id;
@@ -33,6 +33,8 @@ namespace ModelCasc.operation.liverpool
         public DateTime Fecha_maquila { get { return _fecha_maquila; } set { _fecha_maquila = value; } }
         public int Num_pasos { get { return _num_pasos; } set { _num_pasos = value; } }
         public int Piezas_maquiladas_hoy { get; set; }
+        public string value { get { return Pedido.ToString(); } }
+        public string label { get { return Pedido.ToString(); } }
         #endregion
 
         #region Constructores

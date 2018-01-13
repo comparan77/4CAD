@@ -1249,7 +1249,7 @@ namespace ModelCasc.operation
         public static List<Entrada_liverpool> FondeoUpLoadData(string path)
         {
             List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
-            IDbTransaction tran;
+            IDbTransaction tran = null;
 
             string patronRef = @"(\d{2})(\d{2})(\d{4})(\d{7})?";
             string remplazo = "$2-$3-$4";
@@ -1305,9 +1305,12 @@ namespace ModelCasc.operation
                         lst.Add(o);
                     }
                 }
+                GenericDataAccess.CommitTransaction(tran);
             }
             catch
             {
+                if (tran != null)
+                    GenericDataAccess.RollbackTransaction(tran);
                 throw;
             }
             finally
@@ -2433,6 +2436,26 @@ namespace ModelCasc.operation
                 throw;
             }
             return cant;
+        }
+
+        public static List<Entrada_liverpool> EntradaLiverpoolGetByReferencia(string referencia)
+        {
+            List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
+            try
+            {
+                EntradaMng oEMng = new EntradaMng();
+                Entrada oE = new Entrada() { Referencia = referencia };
+                oEMng.O_Entrada = oE;
+                oEMng.selByReferencia();
+                Entrada_liverpoolMng oMng = new Entrada_liverpoolMng() { O_Entrada_liverpool = new Entrada_liverpool() { Id_entrada = oE.Id } };
+                oMng.fillByEntrada();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
         }
 
         #endregion

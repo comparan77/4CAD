@@ -154,8 +154,8 @@ namespace AppCasc.catalog
             oC.Rfc = txt_rfc.Text.Trim();
             oC.Razon = txt_razon.Text.Trim();
 
-            //List<Cliente_documento> lstCD = new List<Cliente_documento>();
-            //Cliente_documento oCD;
+            List<Cliente_documento> lstCD = new List<Cliente_documento>();
+            Cliente_documento oCD;
 
             //int IdDocumento = 0;
             //oCD = new Cliente_documento();
@@ -165,6 +165,22 @@ namespace AppCasc.catalog
             //    lstCD.Add(oCD);
             
             //oC.PLstDocReq = lstCD;
+
+            foreach (ListItem itemDoc in chkbxlstDocumento.Items)
+            {
+                if (itemDoc.Selected)
+                {
+                    oCD = new Cliente_documento()
+                    {
+                        Id_documento = Convert.ToInt32(itemDoc.Value),
+                        Id_cliente = oC.Id,
+                        Es_principal = Convert.ToInt32(itemDoc.Value) == Convert.ToInt32(ddlDocPrincipal.SelectedValue)
+                    };
+                    lstCD.Add(oCD);
+                }
+            }
+
+            oC.PLstDocReq = lstCD;
 
             int.TryParse(ddlCuentaTipo.SelectedValue, out entero);
             oC.Id_cuenta_tipo = entero;

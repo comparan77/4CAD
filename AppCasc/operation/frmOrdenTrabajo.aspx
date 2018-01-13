@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmOrdenTrabajo.aspx.cs" Inherits="AppCasc.operation.frmOrdenTrabajo" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script src="../js/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script src="../js/operation/frmOrdenTrabajo.js" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -16,9 +17,16 @@
         </ul>
         <div id="tabs-1">
             <div class="divForm">
+                
+                <div>
+                    <label>Pedimento:</label>
+                    <asp:TextBox runat="server" ID="txt_referencia" Text="" AutoPostBack="true" OnTextChanged="change_referencia"></asp:TextBox>
+                    <asp:HiddenField runat="server" ID="hf_pedidos" />
+                </div>
+                
                 <div>
                     <label>No Tr&aacute;fico:</label>
-                    <asp:TextBox runat="server" ID="txt_trafico" Text="LT8036IM17"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="txt_trafico" Text=""></asp:TextBox>
                 </div>
 
 
@@ -38,7 +46,7 @@
                             <asp:Panel runat="server" ID="pnl_precio" Visible="false">
                             
                                 <label>No Pedido:</label>
-                                <asp:TextBox runat="server" CssClass="accordionPedido" ID="txt_pedido" Text="6141769" MaxLength="8" CausesValidation="true" AutoPostBack="true" ValidationGroup="vg_pedido" OnTextChanged="pedido_changed"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="txt_pedido" CssClass="txtPedidos" MaxLength="8"></asp:TextBox>
 
                                 <div style="padding: 1em">
                                     <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
