@@ -17,12 +17,19 @@
             icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
         });
 
-//        $('#ctl00_body_rep_servicios_ctl00_up_servicios').panelReady(function () {
-//            $('#accordion').accordion('refresh');
-//        });
-
         $('#ctl00_body_txt_referencia').mask('99-9999-9999999');
 
+        $('#ctl00_body_rep_servicios_ctl00_up_servicios').panelReady(function () {
+            autoCompletePedido();
+        });
+
+        $('#ctl00_body_up_trafico').panelReady(function () {
+            console.log('up_trafico');
+            autoCompletePedido();
+        });
+    }
+
+    function autoCompletePedido() {
         $(".txtPedidos").autocomplete({
             source: function (request, response) {
                 var data = $.parseJSON($('#ctl00_body_hf_pedidos').val());
@@ -35,6 +42,13 @@
             minLength: 2,
             select: function (event, ui) {
                 //console.log("Selected: " + ui.item.value + " aka " + ui.item.Id);
+                $('#accordion').accordion('refresh');
+                var spanProveedor = $(this).next().children('span').first();
+                $(spanProveedor).html('Proveedor: ' + ui.item.Proveedor);
+                var spanPiezas = $(spanProveedor).next();
+                $(spanPiezas).html('Piezas: ' + ui.item.Piezas);
+                var pnl_pedido = $(this).next().next();
+                $(pnl_pedido).removeClass('hidden');
                 $('#accordion').accordion('refresh');
             }
         });

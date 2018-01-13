@@ -21,14 +21,20 @@
                 <div>
                     <label>Pedimento:</label>
                     <asp:TextBox runat="server" ID="txt_referencia" Text="" AutoPostBack="true" OnTextChanged="change_referencia"></asp:TextBox>
-                    <asp:HiddenField runat="server" ID="hf_pedidos" />
+                    
                 </div>
-                
+                <asp:UpdatePanel runat="server" ID="up_trafico" UpdateMode="Conditional">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
+                </Triggers>
+                <ContentTemplate>
                 <div>
                     <label>No Tr&aacute;fico:</label>
                     <asp:TextBox runat="server" ID="txt_trafico" Text=""></asp:TextBox>
+                    <asp:HiddenField runat="server" ID="hf_pedidos" />
                 </div>
-
+                </ContentTemplate>
+                </asp:UpdatePanel>
 
                 <div id="accordion">
                     <asp:Repeater runat="server" ID="rep_servicios"  OnItemDataBound="rep_serv_data_bound">
@@ -49,11 +55,11 @@
                                 <asp:TextBox runat="server" ID="txt_pedido" CssClass="txtPedidos" MaxLength="8"></asp:TextBox>
 
                                 <div style="padding: 1em">
-                                    <asp:Label runat="server" ID="lbl_pedido_info"></asp:Label>
-                                    <asp:Label runat="server" ID="lbl_pedido_piezas"></asp:Label>
+                                    <span></span>
+                                    <span></span>
                                 </div>
 
-                                <asp:Panel runat="server" ID="pnl_pedido" Visible="false">
+                                <asp:Panel runat="server" ID="pnl_pedido" CssClass="hidden" >
                                     <div>
                                         <label>Tipo de etiqueta</label>
                                         <asp:DropDownList runat="server" ID="ddl_eti_tipo_precio"></asp:DropDownList>
