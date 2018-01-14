@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script src="../js/operation/frmMaq.js" type="text/javascript"></script>
+    <script src="../js/operation/frmMaq.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 <asp:HiddenField runat="server" ID="hfTitleErr" />
