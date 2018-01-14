@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmOrdenTrabajo.aspx.cs" Inherits="AppCasc.operation.frmOrdenTrabajo" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../css/frmOperation.css" rel="stylesheet" type="text/css" />
     <script src="../js/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script src="../js/operation/frmOrdenTrabajo.js" type="text/javascript"></script>
 </asp:Content>
@@ -114,16 +115,22 @@
                     <asp:BoundField DataField="PEtiquetaTipo.Nombre" HeaderText="Tipo de Etiqueta" />
                     <asp:BoundField DataField="REf1" HeaderText="Trafico" />
                     <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
-                    <asp:BoundField DataField="Piezas" HeaderText="Piezas" />
-
+                    <asp:BoundField DataField="Piezas" HeaderText="Pzs Sol" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                 </Columns>
                 </asp:GridView>
             </ContentTemplate>
             </asp:UpdatePanel>
 
-            <div>
-                <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
-            </div>    
+            <div class="divForm" style="margin-top: 1em">
+                <div>
+                    <label>Supervisor:</label>
+                    <asp:TextBox runat="server" CssClass="txtLarge" ID="txt_supervisor" ValidationGroup="vg_orden_trabajo"></asp:TextBox>
+                    <asp:RequiredFieldValidator runat="server"  ValidationGroup="vg_orden_trabajo" ID="rfv_supervisor" ControlToValidate="txt_supervisor" ErrorMessage="Es necesario capturar el supervisor"></asp:RequiredFieldValidator>
+                </div>
+                <div>
+                    <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
+                </div>    
+            </div>
         </div>
         <div id="tabs-2">
             <asp:Button runat="server" ID="btn_consultar" Text="Consultar" CausesValidation="false" OnClick="btn_consultar_click" />
@@ -140,6 +147,7 @@
                                 </ItemTemplate>
                                 
                             </asp:TemplateField>
+                            <asp:BoundField DataField="Supervisor" HeaderText="Supervisor Asignado" />
                             <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:dd/MM/yy}" />
                             <asp:BoundField DataField="Referencia" HeaderText="Trafico"/>
                             <asp:BoundField DataField="Servicios" HeaderText="Servicios" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />

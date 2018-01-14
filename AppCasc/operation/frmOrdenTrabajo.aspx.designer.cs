@@ -94,6 +94,24 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.GridView grd_ordenesXGuardar;
         
         /// <summary>
+        /// txt_supervisor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_supervisor;
+        
+        /// <summary>
+        /// rfv_supervisor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_supervisor;
+        
+        /// <summary>
         /// btn_guardar control.
         /// </summary>
         /// <remarks>

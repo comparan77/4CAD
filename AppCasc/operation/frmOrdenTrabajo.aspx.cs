@@ -71,7 +71,7 @@ namespace AppCasc.operation
         {
             Orden_trabajo o = new Orden_trabajo();
             o.Referencia = txt_trafico.Text.Trim();
-
+            o.Supervisor = txt_supervisor.Text.Trim().ToUpper();
             o.PLstOTSer = VSLstOTS;
             
             return o;
@@ -214,7 +214,8 @@ namespace AppCasc.operation
                         oOTS.Ref2 = txt_pedido.Text;
                         oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
                         ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_precio") as DropDownList;
-                        
+                        txt_pedido.Text = string.Empty;
+                        txt_pedido_pieza.Text = string.Empty;
                         break;
                     case "nom":
                         TextBox txt_solicitud = oC.FindControl("txt_solicitud") as TextBox;
@@ -222,6 +223,8 @@ namespace AppCasc.operation
                         oOTS.Ref2 = txt_solicitud.Text;
                         oOTS.Piezas = Convert.ToInt32(txt_sol_pieza.Text);
                         ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_uva") as DropDownList;
+                        txt_solicitud.Text = string.Empty;
+                        txt_sol_pieza.Text = string.Empty;
                         break;
                     default:
                         break;
