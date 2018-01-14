@@ -35,6 +35,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_folio", DbType.String, this._oOrden_trabajo.Folio);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oOrden_trabajo.Referencia);
             GenericDataAccess.AddInParameter(this.comm, "?P_cerrada", DbType.Boolean, this._oOrden_trabajo.Cerrada);
+            GenericDataAccess.AddInParameter(this.comm, "?P_supervisor", DbType.String, this._oOrden_trabajo.Supervisor);
         }
 
         protected void BindByDataRow(DataRow dr, Orden_trabajo o)
@@ -58,6 +59,7 @@ namespace ModelCasc.operation
                     o.Cerrada = logica;
                     logica = false;
                 }
+                o.Supervisor = dr["supervisor"].ToString();
             }
             catch
             {

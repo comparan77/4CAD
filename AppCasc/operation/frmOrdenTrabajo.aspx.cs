@@ -92,32 +92,32 @@ namespace AppCasc.operation
             }
         }
 
-        protected void pedido_changed(object sender, EventArgs args)
-        {
-            Label lbl_pedido_info = ((Control)sender).Parent.FindControl("lbl_pedido_info") as Label;
-            Label lbl_pedido_piezas = ((Control)sender).Parent.FindControl("lbl_pedido_piezas") as Label;
-            Panel pnl_pedido = ((Control)sender).Parent.FindControl("pnl_pedido") as Panel;
-            TextBox txt_pedido = ((Control)sender).Parent.FindControl("txt_pedido") as TextBox;
-            lbl_pedido_info.Text = string.Empty;
-            lbl_pedido_piezas.Text = string.Empty;
-            pnl_pedido.Visible = false;
+        //protected void pedido_changed(object sender, EventArgs args)
+        //{
+        //    Label lbl_pedido_info = ((Control)sender).Parent.FindControl("lbl_pedido_info") as Label;
+        //    Label lbl_pedido_piezas = ((Control)sender).Parent.FindControl("lbl_pedido_piezas") as Label;
+        //    Panel pnl_pedido = ((Control)sender).Parent.FindControl("pnl_pedido") as Panel;
+        //    TextBox txt_pedido = ((Control)sender).Parent.FindControl("txt_pedido") as TextBox;
+        //    lbl_pedido_info.Text = string.Empty;
+        //    lbl_pedido_piezas.Text = string.Empty;
+        //    pnl_pedido.Visible = false;
 
-            try
-            {
-                if (IsValid)
-                {
-                    Entrada_liverpool o = new Entrada_liverpool() { Trafico = txt_trafico.Text.Trim(), Pedido = Convert.ToInt32(txt_pedido.Text.Trim()) };
-                    EntradaCtrl.EntradaLiverpoolGetByUniqueKey(o);
-                    lbl_pedido_info.Text = "Proveedor: " + o.Proveedor;
-                    lbl_pedido_piezas.Text = "Piezas: " + o.Piezas.ToString();
-                    pnl_pedido.Visible = true;
-                }
-            }
-            catch (Exception e)
-            {
-                ((MstCasc)this.Master).setError = e.Message;
-            }
-        }
+        //    try
+        //    {
+        //        if (IsValid)
+        //        {
+        //            Entrada_liverpool o = new Entrada_liverpool() { Trafico = txt_trafico.Text.Trim(), Pedido = Convert.ToInt32(txt_pedido.Text.Trim()) };
+        //            EntradaCtrl.EntradaLiverpoolGetByUniqueKey(o);
+        //            lbl_pedido_info.Text = "Proveedor: " + o.Proveedor;
+        //            lbl_pedido_piezas.Text = "Piezas: " + o.Piezas.ToString();
+        //            pnl_pedido.Visible = true;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ((MstCasc)this.Master).setError = e.Message;
+        //    }
+        //}
 
         protected void validatePedido(object sender, ServerValidateEventArgs args)
         {
