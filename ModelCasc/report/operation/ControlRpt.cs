@@ -460,6 +460,43 @@ namespace ModelCasc.report.operation
 
         #endregion
 
-        
+        public static List<rptOrdenTrabajo> odntbjGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptOrdenTrabajo> lst = new List<rptOrdenTrabajo>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZOrdenTrabajo");
+
+                if (anio_ini == 1)
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                }
+                else
+                {
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                }
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptOrdenTrabajo o = new rptOrdenTrabajo();
+                    o.Supervisor = dr["supervisor"].ToString();
+                    o.Folio = dr["folio"].ToString();
+                    o.Referencia = dr["referencia"].ToString();
+                    o.Fecha = Convert.ToDateTime(dr["fecha"]);
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
     }
 }

@@ -117,11 +117,20 @@ namespace AppCasc.report
 
                 string rptSelected = ddl_reporte.SelectedValue;
                 ReportDataSource rptSource = null;
+
+                ReportParameter[] parametros;
+
                 switch (ddl_reporte.SelectedValue)
                 {
                     case "Fondeo":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.FondeoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         showExcel(rptSource);
+                        break;
+                    case "Odntbj":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.odntbjGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        parametros = new ReportParameter[1];
+                        parametros[0] = new ReportParameter("p_Periodo", "Del " + txt_fecha_ini.Text + " Al " + txt_fecha_fin.Text, false);
+                        showExcel(rptSource, parametros);
                         break;
                     case "Maquila":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.MaquilaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
@@ -129,7 +138,7 @@ namespace AppCasc.report
                         break;
                     case "Piso":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddl_bodega.SelectedValue), Convert.ToInt32(ddl_cuenta.SelectedValue)));
-                        ReportParameter[] parametros = new ReportParameter[3];
+                        parametros = new ReportParameter[3];
                         parametros[0] = new ReportParameter("p_Bodega", ddl_bodega.SelectedItem.Text, false);
                         parametros[1] = new ReportParameter("p_Cuenta", ddl_cuenta.SelectedItem.Text, false);
                         parametros[2] = new ReportParameter("p_Periodo", "Del " + txt_fecha_ini.Text + " Al " + txt_fecha_fin.Text, false);

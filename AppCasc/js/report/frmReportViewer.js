@@ -30,6 +30,7 @@
             $('#div_parametros').hide();
             switch ($(this).val()) {
                 case 'Maquila':
+                case 'Odntbj':
                     $('#ctl00_body_txt_fecha_ini').val(currentDate);
                     $('#ctl00_body_btnGetRptXls').show();
                     break;

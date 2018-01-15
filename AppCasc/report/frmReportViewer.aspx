@@ -17,6 +17,7 @@
         <label>Reporte:</label>
         <asp:DropDownList runat="server" ID="ddl_reporte">
             <asp:ListItem Text="Fondeo sin Entrada" Value="Fondeo"></asp:ListItem>
+            <asp:ListItem Text="Orden de Trabajo" Value="Odntbj"></asp:ListItem>
             <asp:ListItem Text="Maquila" Value="Maquila"></asp:ListItem>
             <asp:ListItem Text="Trafico" Value="Trafico"></asp:ListItem>
             <asp:ListItem Text="Piso" Value="Piso"></asp:ListItem>

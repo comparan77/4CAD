@@ -151,7 +151,8 @@
                             <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:dd/MM/yy}" />
                             <asp:BoundField DataField="Referencia" HeaderText="Trafico"/>
                             <asp:BoundField DataField="Servicios" HeaderText="Servicios" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />
-                            <asp:TemplateField HeaderText="Estatus">
+                            <asp:TemplateField HeaderText="Estatus" HeaderStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
                                 <ItemTemplate>
                                     <span class='<%# "ui-icon ui-icon-" + (Convert.ToBoolean(Eval("Cerrada")) ? "locked icon-button-action" : "unlocked") %>'></span>
                                 </ItemTemplate>
