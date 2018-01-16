@@ -37,7 +37,7 @@
             </div>
             <hr style="border-color: transparent" />
             <div style="clear: both;">
-                <asp:GridView DataKeyNames="Id" CssClass="grdCascSmall" runat="server" ID="grd_servicios" AutoGenerateColumns="false" OnRowCommand="grd_servicios_row_command">
+                <asp:GridView DataKeyNames="Id" CssClass="grdCascSmall" runat="server" ID="grd_servicios" AutoGenerateColumns="false" OnRowCommand="grd_servicios_row_command" SelectedRowStyle-BackColor="CornflowerBlue">
                 <Columns>
                     <asp:BoundField DataField="PServ.Nombre" HeaderText="Servicio" />
                     <asp:BoundField DataField="Ref1" HeaderText="Trafico" />
@@ -47,6 +47,7 @@
                     <asp:BoundField DataField="Faltantes" ItemStyle-CssClass="ot_faltantes" HeaderText="Piezas Faltantes" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:BoundField DataField="Sobrantes" ItemStyle-CssClass="ot_sobrantes" HeaderText="Piezas Sobrantes" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:ButtonField ButtonType="Link" DataTextField="PasosMaq" HeaderText="Pasos" CommandName="lnkPasos" ItemStyle-HorizontalAlign="Right" DataTextFormatString="{0:N0}" ItemStyle-CssClass="icon-button-action" />
+                    <asp:ButtonField ButtonType="Image" ControlStyle-CssClass="ui-icon ui-icon-print" CommandName="lnkPrint" ItemStyle-HorizontalAlign="Center" />
                 </Columns>
                 </asp:GridView>
 
@@ -58,7 +59,7 @@
                     <asp:TemplateField HeaderText="Foto">
                         <ItemStyle HorizontalAlign="Center" />
                         <ItemTemplate>
-                            <asp:Image Width="25%" runat="server" ImageUrl='<%# @"~/rpt/maqpas/" + Eval("Foto64") %>' />
+                            <asp:Image Width="25%" ID="imgPaso" runat="server" ImageUrl='<%# @"~/rpt/maqpas/" + Eval("Foto64") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="Descripcion" HeaderText="Descripción" />

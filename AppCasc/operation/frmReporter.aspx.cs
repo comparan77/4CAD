@@ -181,6 +181,14 @@ namespace AppCasc.operation
                         Session.Remove("SSalida_ord_carga");
                         ShowPdf(path);
                         break;
+                    case "maqpso":
+                        obj = (Orden_trabajo_servicio)Session["SOrdTbjSer"];
+                        RptFileName = ((Orden_trabajo_servicio)obj).Ref1 + ".pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/maqpso/") + RptFileName;
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/maqpso.rpt");
+                        //DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
+                        ShowPdf(path);
+                        break;
                     default:
                         break;
                 }

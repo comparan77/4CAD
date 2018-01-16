@@ -23,6 +23,16 @@ namespace AppCasc.operation
             }
         }
 
+        private Orden_trabajo_servicio SOrdTbjSer
+        {
+            set
+            {
+                if (Session["SOrdTbjSer"] != null)
+                    Session.Remove("SOrdTbjSer");
+                Session.Add("SOrdTbjSer", value);
+            }
+        }
+
         private void loadFirstTime()
         {
             VSOrdTbj = new Orden_trabajo();
@@ -73,6 +83,9 @@ namespace AppCasc.operation
             {
                 int index = Convert.ToInt32(args.CommandArgument);
                 int Id_ord_tbj_ser;
+
+                grd_servicios.SelectRow(index);
+
                 int.TryParse(grd_servicios.DataKeys[index][0].ToString(), out Id_ord_tbj_ser);
                 grd_pasos.DataSource = null;
                 grd_pasos.DataBind();
@@ -82,6 +95,20 @@ namespace AppCasc.operation
                     case "lnkPasos":
                         grd_pasos.DataSource = VSOrdTbj.PLstOTSer.Find(p => p.Id == Id_ord_tbj_ser).PLstPasos;
                         grd_pasos.DataBind();
+                        break;
+                    case "lnkPrint":
+                        //reg_replace(/\D+/g, '', your_string);
+                        Orden_trabajo_servicio ots = new Orden_trabajo_servicio()
+                        {
+                            PServ = new ModelCasc.catalog.Servicio() { Nombre = grd_servicios.Rows[index].Cells[0].Text },
+                            Ref1 = grd_servicios.Rows[index].Cells[1].Text,
+                            Ref2 = grd_servicios.Rows[index].Cells[2].Text,
+                            Piezas = Convert.ToInt32(grd_servicios.Rows[index].Cells[3].Text.Replace(",", "")),
+                            PiezasMaq = Convert.ToInt32(grd_servicios.Rows[index].Cells[4].Text.Replace(",", ""))
+                        };
+                        ots.PLstPasos = VSOrdTbj.PLstOTSer.Find(p => p.Id == Id_ord_tbj_ser).PLstPasos;
+                        SOrdTbjSer = ots;
+                        this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=maqpso','_blank', 'toolbar=no');</script>");
                         break;
                     default:
                         break;
