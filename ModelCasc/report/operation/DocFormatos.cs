@@ -13,7 +13,7 @@ namespace ModelCasc.report.operation
 {
     public class DocFormatos
     {
-        private static byte[] getImg(string fileImagePath)
+        public static byte[] getImg(string fileImagePath)
         {
             FileStream fs = null;
             // define te binary reader to read the bytes of image 

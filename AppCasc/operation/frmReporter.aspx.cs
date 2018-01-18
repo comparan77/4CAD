@@ -187,6 +187,7 @@ namespace AppCasc.operation
                         path = HttpContext.Current.Server.MapPath("~/rpt/maqpso/") + RptFileName;
                         TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/maqpso.rpt");
                         //DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
+                        Session.Remove("SOrdTbjSer");
                         ShowPdf(path);
                         break;
                     default:
