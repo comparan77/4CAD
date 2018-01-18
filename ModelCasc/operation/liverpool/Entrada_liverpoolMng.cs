@@ -298,5 +298,26 @@ namespace ModelCasc.operation.liverpool
                 throw;
             }
         }
+
+        internal void selByTrafico()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_liverpool");
+                addParameters(10);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oEntrada_liverpool);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

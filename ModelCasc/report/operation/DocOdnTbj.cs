@@ -25,12 +25,15 @@ namespace ModelCasc.report.operation
                 string fileImagePath = string.Empty;
 
                 DataRow dr = null;
+
+                string pathPhoto = Directory.GetParent(path).ToString();
+
                 for (int indFile = 0; indFile < oTS.PLstPasos.Count; indFile++)
                 {
                     Maquila_paso mp = oTS.PLstPasos[indFile];
                     dr = dtPaso.NewRow();
                     dr["descripcion"] = mp.Descripcion;
-                    dr["imagen"] = DocFormatos.getImg(mp.Foto64);
+                    dr["imagen"] = DocFormatos.getImg(Path.Combine(pathPhoto, mp.Foto64));
                     dr["numpaso"] = mp.NumPaso;
                     dtPaso.Rows.Add(dr);
                 }
@@ -38,7 +41,13 @@ namespace ModelCasc.report.operation
                 reporte.SetDataSource(ds.Tables["maqpaso"]);
 
                 #region Encabezado
-                //reporte.SetParameterValue("referencia", );
+                reporte.SetParameterValue("servicio", oTS.PServ.Nombre);
+                reporte.SetParameterValue("referencia", oTS.PEntLiv.PEnt.Referencia);
+                reporte.SetParameterValue("folio", oTS.POrdTbj.Folio);
+                reporte.SetParameterValue("supervisor", oTS.POrdTbj.Supervisor);
+                reporte.SetParameterValue("piezas", oTS.Piezas);
+                reporte.SetParameterValue("ref1", oTS.Ref1);
+                reporte.SetParameterValue("ref2", oTS.Ref2);
                 #endregion
 
                 reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);

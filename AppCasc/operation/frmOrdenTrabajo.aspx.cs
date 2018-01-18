@@ -248,7 +248,7 @@ namespace AppCasc.operation
             {
                 txt_trafico.Text = string.Empty;
                 hf_pedidos.Value = string.Empty;
-                VSLstEntLiv = EntradaCtrl.EntradaLiverpoolGetByReferencia(txt_referencia.Text.Trim());
+                VSLstEntLiv = EntradaCtrl.EntradaLiverpoolLstByReferencia(txt_referencia.Text.Trim());
                 if (VSLstEntLiv.Count > 0)
                 {
                     hf_pedidos.Value = Newtonsoft.Json.JsonConvert.SerializeObject(VSLstEntLiv);

@@ -11,6 +11,14 @@ namespace AppCasc
 {
     public partial class MstCasc : System.Web.UI.MasterPage
     {
+        public ScriptManager getScriptManager
+        {
+            get
+            {
+                return this.scrManager;
+            }
+        }
+
         public string setError
         {
             set

@@ -35,6 +35,7 @@ namespace ModelCasc.operation.liverpool
         public int Piezas_maquiladas_hoy { get; set; }
         public string value { get { return Pedido.ToString(); } }
         public string label { get { return Pedido.ToString(); } }
+        public Entrada PEnt { get; set; }
         #endregion
 
         #region Constructores

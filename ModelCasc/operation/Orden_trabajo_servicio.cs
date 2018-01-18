@@ -33,6 +33,7 @@ namespace ModelCasc.operation
         public List<Maquila> PLstMaq { get; set; }
         public List<Maquila_paso> PLstPasos { get; set; }
         public Etiqueta_tipo PEtiquetaTipo { get; set; }
+        public Orden_trabajo POrdTbj { get; set; }
         public int PiezasMaq { get; set; }
         public int PasosMaq { get; set; }
         public int Faltantes { get; set; }

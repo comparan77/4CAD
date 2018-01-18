@@ -21,6 +21,7 @@
     <asp:UpdatePanel runat="server" ID="up_info_ot" UpdateMode="Conditional">
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="txt_folio" EventName="TextChanged" />
+            <asp:PostBackTrigger ControlID="grd_servicios" />
         </Triggers>
         <ContentTemplate>
             <asp:HiddenField runat="server" ID="hf_id_orden_trabajo" />

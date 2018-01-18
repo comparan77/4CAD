@@ -184,8 +184,9 @@ namespace AppCasc.operation
                     case "maqpso":
                         obj = (Orden_trabajo_servicio)Session["SOrdTbjSer"];
                         RptFileName = ((Orden_trabajo_servicio)obj).Ref1 + ".pdf";
-                        path = HttpContext.Current.Server.MapPath("~/rpt/maqpso/") + RptFileName;
+                        path = HttpContext.Current.Server.MapPath("~/rpt/maqpas/") + RptFileName;
                         TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/maqpso.rpt");
+                        DocOdnTbj.getOdnTbjSrv(path, TemplatePath, (Orden_trabajo_servicio)obj, ds); 
                         //DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
                         Session.Remove("SOrdTbjSer");
                         ShowPdf(path);

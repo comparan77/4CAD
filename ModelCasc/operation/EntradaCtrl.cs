@@ -2438,7 +2438,7 @@ namespace ModelCasc.operation
             return cant;
         }
 
-        public static List<Entrada_liverpool> EntradaLiverpoolGetByReferencia(string referencia)
+        public static List<Entrada_liverpool> EntradaLiverpoolLstByReferencia(string referencia)
         {
             List<Entrada_liverpool> lst = new List<Entrada_liverpool>();
             try
@@ -2456,6 +2456,32 @@ namespace ModelCasc.operation
                 throw;
             }
             return lst;
+        }
+
+        /// <summary>
+        /// Busca el pedimento asociado al trafico
+        /// </summary>
+        /// <param name="referencia">referencia de la entradad de liverpool</param>
+        /// <returns>referencia de la entrada</returns>
+        public static Entrada EntradaLiverpoolGetRefEntByRef(string referencia)
+        {
+            Entrada oE = new Entrada();
+            try
+            {
+                Entrada_liverpoolMng oMng = new Entrada_liverpoolMng();
+                Entrada_liverpool o = new Entrada_liverpool() { Trafico = referencia };
+                oMng.O_Entrada_liverpool = o;
+                oMng.selByTrafico();
+                EntradaMng oEMng = new EntradaMng();
+                oE = new Entrada() { Id = o.Id_entrada };
+                oEMng.O_Entrada = oE;
+                oEMng.selById();
+            }
+            catch
+            {
+                throw;
+            }
+            return oE;
         }
 
         #endregion
