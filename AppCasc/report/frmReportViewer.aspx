@@ -54,6 +54,10 @@
             <asp:ListItem Text="Entregadas" Value="1"></asp:ListItem>
         </asp:DropDownList>
     </div>
+    <div id="div_piso" style="display:none;">
+        <label>Existencia mayor o igual:</label>
+        <asp:TextBox runat="server" ID="txt_existencia" Text="0"></asp:TextBox>
+    </div>
     <div>
         <asp:Button runat="server" ID="btnGetRpt" OnClick="clickGetRpt" Text="Mostrar Reporte" />
         <asp:Button runat="server" ID="btnGetRptXls" OnClick="clickGetRpt" Text="Obtener Reporte Xls" />

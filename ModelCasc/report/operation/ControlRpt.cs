@@ -170,7 +170,7 @@ namespace ModelCasc.report.operation
             return lst;
         }
         
-        public static List<rptPiso> PisoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin, int id_bodega, int id_cuenta)
+        public static List<rptPiso> PisoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin, int id_bodega, int id_cuenta, int existencia)
         {
             List<rptPiso> lst = new List<rptPiso>();
             try
@@ -193,6 +193,7 @@ namespace ModelCasc.report.operation
                 }
                 GenericDataAccess.AddInParameter(comm, "?P_bodega", DbType.Int32, id_bodega);
                 GenericDataAccess.AddInParameter(comm, "?P_cuenta", DbType.Int32, id_cuenta);
+                GenericDataAccess.AddInParameter(comm, "?P_existencia", DbType.Int32, existencia);
                 DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 foreach (DataRow dr in dt.Rows)
                 {

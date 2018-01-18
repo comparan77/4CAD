@@ -137,7 +137,7 @@ namespace AppCasc.report
                         showExcel(rptSource);
                         break;
                     case "Piso":
-                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddl_bodega.SelectedValue), Convert.ToInt32(ddl_cuenta.SelectedValue)));
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddl_bodega.SelectedValue), Convert.ToInt32(ddl_cuenta.SelectedValue), Convert.ToInt32(txt_existencia.Text)));
                         parametros = new ReportParameter[3];
                         parametros[0] = new ReportParameter("p_Bodega", ddl_bodega.SelectedItem.Text, false);
                         parametros[1] = new ReportParameter("p_Cuenta", ddl_cuenta.SelectedItem.Text, false);
