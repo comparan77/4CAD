@@ -44,6 +44,8 @@
                     <asp:BoundField DataField="Ref1" HeaderText="Trafico" />
                     <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
                     <asp:BoundField DataField="Piezas" HeaderText="Piezas Solicitadas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
+                    <asp:BoundField DataField="PalletMaq" HeaderText="Pallets Maquilados" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
+                    <asp:BoundField DataField="BultosMaq" HeaderText="Bultos Maquilados" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:BoundField DataField="PiezasMaq" HeaderText="Piezas Maquiladas"  ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:BoundField DataField="Faltantes" ItemStyle-CssClass="ot_faltantes" HeaderText="Piezas Faltantes" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:BoundField DataField="Sobrantes" ItemStyle-CssClass="ot_sobrantes" HeaderText="Piezas Sobrantes" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />

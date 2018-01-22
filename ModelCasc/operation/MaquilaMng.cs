@@ -35,6 +35,8 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_id_ord_tbj_srv", DbType.Int32, this._oMaquila.Id_ord_tbj_srv);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha", DbType.DateTime, this._oMaquila.Fecha);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oMaquila.Piezas);
+            GenericDataAccess.AddInParameter(this.comm, "?P_bultos", DbType.Int32, this._oMaquila.Bultos);
+            GenericDataAccess.AddInParameter(this.comm, "?P_pallets", DbType.Int32, this._oMaquila.Pallets);
             GenericDataAccess.AddInParameter(this.comm, "?P_capturada", DbType.Boolean, this._oMaquila.Capturada);
         }
 
@@ -61,6 +63,18 @@ namespace ModelCasc.operation
                 {
                     int.TryParse(dr["piezas"].ToString(), out entero);
                     o.Piezas = entero;
+                    entero = 0;
+                }
+                if (dr["bultos"] != DBNull.Value)
+                {
+                    int.TryParse(dr["bultos"].ToString(), out entero);
+                    o.Bultos = entero;
+                    entero = 0;
+                }
+                if (dr["pallets"] != DBNull.Value)
+                {
+                    int.TryParse(dr["pallets"].ToString(), out entero);
+                    o.Pallets = entero;
                     entero = 0;
                 }
                 if (dr["capturada"] != DBNull.Value)

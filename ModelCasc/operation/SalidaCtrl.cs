@@ -128,15 +128,26 @@ namespace ModelCasc.operation
         {
             try
             {
-                if (IdCliente == 1 || IdCliente == 23)//TEMPORL PARA AVON
+                switch (IdCliente)
                 {
-                    Entrada oE = new Entrada();
-                    EntradaMng oEMng = new EntradaMng();
-                    oE.Referencia = referencia.Trim();
-                    oE.Id_cliente = IdCliente;
-                    oEMng.O_Entrada = oE;
-                    if (!oEMng.Exists())
-                        throw new Exception("Es necesario capturar la entrada de esta referencia: " + referencia);
+                    case 1:
+                    case 23:
+                    case 11:
+                    case 12:
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 34:
+                        Entrada oE = new Entrada();
+                        EntradaMng oEMng = new EntradaMng();
+                        oE.Referencia = referencia.Trim();
+                        oE.Id_cliente = IdCliente;
+                        oEMng.O_Entrada = oE;
+                        if (!oEMng.Exists())
+                            throw new Exception("Es necesario capturar la entrada de esta referencia: " + referencia + ", para el cliente seleccionado");
+                        break;
+                    default:
+                        break;
                 }
             }
             catch

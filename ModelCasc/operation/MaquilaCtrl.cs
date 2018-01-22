@@ -148,6 +148,8 @@ namespace ModelCasc.operation
                     oMMng.fillLstByOTS();
                     itemOTS.PLstMaq = oMMng.Lst;
 
+                    itemOTS.PalletMaq = itemOTS.PLstMaq.Sum(p => p.Pallets);
+                    itemOTS.BultosMaq = itemOTS.PLstMaq.Sum(p => p.Bultos);
                     itemOTS.PiezasMaq = itemOTS.PLstMaq.Sum(p => p.Piezas);
                     int dif = itemOTS.Piezas - itemOTS.PiezasMaq;
                     itemOTS.Faltantes = 0;

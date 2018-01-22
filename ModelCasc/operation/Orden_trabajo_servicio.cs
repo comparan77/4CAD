@@ -35,6 +35,8 @@ namespace ModelCasc.operation
         public Etiqueta_tipo PEtiquetaTipo { get; set; }
         public Orden_trabajo POrdTbj { get; set; }
         public int PiezasMaq { get; set; }
+        public int BultosMaq { get; set; }
+        public int PalletMaq { get; set; }
         public int PasosMaq { get; set; }
         public int Faltantes { get; set; }
         public int Sobrantes { get; set; }
