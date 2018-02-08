@@ -60,6 +60,10 @@ namespace ModelCasc.operation
                 MaquilaMng oMaqMng = new MaquilaMng();
                 Maquila_pasoMng oMaqPasoMng = new Maquila_pasoMng();
 
+                Entrada oE;
+                EntradaMng oEMng = new EntradaMng();
+
+
                 foreach (Orden_trabajo itemOT in lst)
                 {
                     itemOT.PLstOTSer = new List<Orden_trabajo_servicio>();
@@ -68,6 +72,18 @@ namespace ModelCasc.operation
                     oOTSMng.O_Orden_trabajo_servicio = oOTS;
                     oOTSMng.fillLstByIdOT();
                     itemOT.Servicios = oOTSMng.Lst.Count();
+
+                    oEL = new Entrada_liverpool();
+                    oEL.Trafico = itemOT.Referencia;
+                    oELMng.O_Entrada_liverpool = oEL;
+                    oELMng.selByTrafico();
+
+                    oE = new Entrada();
+                    oE.Id = oEL.Id_entrada;
+                    oEMng.O_Entrada = oE;
+                    oEMng.selById();
+
+                    itemOT.PEnt = oE;
 
                     foreach (Orden_trabajo_servicio itemOTS in oOTSMng.Lst)
                     {

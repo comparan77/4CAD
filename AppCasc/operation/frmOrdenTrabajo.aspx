@@ -47,21 +47,52 @@
                         <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btn_add_pedido" EventName="click" />
                         <asp:AsyncPostBackTrigger ControlID="btn_add_nom" EventName="click" />
+                        <asp:AsyncPostBackTrigger ControlID="txt_referencia" EventName="TextChanged" />
                         </Triggers>
                             
                             <ContentTemplate>
                             <asp:Panel runat="server" ID="pnl_precio" Visible="false">
-                            
-                                <label>No Pedido:</label>
+                                
+
+                                <asp:GridView runat="server" ID="grd_pedidos" 
+                                OnRowDataBound="grd_pedidosRowDataBound" 
+                                CssClass="grdCascSmall" 
+                                AutoGenerateColumns="false"
+                                ShowFooter="true">
+                                <Columns>
+                                    <asp:BoundField DataField="Proveedor" HeaderText="Proveedor" />
+                                    <asp:BoundField DataField="Pedido" HeaderText="Pedido" />
+                                    <asp:BoundField DataField="Piezas" HeaderText="Piezas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />                                    
+                                    <asp:TemplateField HeaderText="Servicio">
+                                        <HeaderTemplate>
+                                            <span>Tipo:</span>
+                                            <asp:DropDownList runat="server" ID="ddl_all_etiqueta_tipo" AutoPostBack="true" OnSelectedIndexChanged="ddl_all_etiqueta_tipo_changed"></asp:DropDownList>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:DropDownList runat="server" ID="ddl_etiqueta_tipo"></asp:DropDownList>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <HeaderTemplate>
+                                            <asp:CheckBox runat="server" ID="chk_all_pedido" AutoPostBack="true" OnCheckedChanged="chkAllPedido_checkedChange" />
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:CheckBox runat="server" ID="chk_pedido" AutoPostBack="true" OnCheckedChanged="chk_pedido_Changed" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                </asp:GridView>
+
+                                <%--<label>No Pedido:</label>
                                 <asp:TextBox runat="server" ID="txt_pedido" CssClass="txtPedidos" MaxLength="8"></asp:TextBox>
 
                                 <div style="padding: 1em">
                                     <span></span>
                                     <span></span>
-                                </div>
+                                </div>--%>
 
-                                <asp:Panel runat="server" ID="pnl_pedido" CssClass="hidden" >
-                                    <div>
+                                <asp:Panel runat="server" ID="pnl_pedido" Visible="false" >
+                                    <%--<div>
                                         <label>Tipo de etiqueta</label>
                                         <asp:DropDownList runat="server" ID="ddl_eti_tipo_precio"></asp:DropDownList>
                                     </div>
@@ -70,12 +101,12 @@
                                         <asp:TextBox runat="server" ID="txt_pedido_pieza"></asp:TextBox>
                                         <asp:RequiredFieldValidator runat="server" ID="rfv_pedido_pieza" ControlToValidate="txt_pedido_pieza" ValidationGroup="vg_pedido" ErrorMessage="Es necesario proporcionar las piezas"></asp:RequiredFieldValidator>
                                     </div>
-                                    <div>
-                                        <asp:Button runat="server" ID="btn_add_pedido" OnCommand="addServicio" CommandName="precio" CommandArgument='<%#Eval("Id") %>' ValidationGroup="vg_pedido" Text="Agregar servicio" />
+                                    <div>--%>
+                                        <asp:Button runat="server" ID="btn_add_pedido" Enabled="false" OnCommand="addServicio" CommandName="precio" CommandArgument='<%#Eval("Id") %>' Text="Agregar servicio(s)" />
                                     </div>
                                 </asp:Panel>
 
-                                <asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" ValidationGroup="vg_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>
+                                <%--<asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" ValidationGroup="vg_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>--%>
                                 
                             </asp:Panel>                                   
                         
@@ -128,7 +159,7 @@
                     <asp:RequiredFieldValidator runat="server"  ValidationGroup="vg_orden_trabajo" ID="rfv_supervisor" ControlToValidate="txt_supervisor" ErrorMessage="Es necesario capturar el supervisor"></asp:RequiredFieldValidator>
                 </div>
                 <div>
-                    <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" OnClick="guardar_ot" />
+                    <asp:Button runat="server" ID="btn_guardar" Text="Guardar Orden de Trabajo" ValidationGroup="vg_orden_trabajo" OnClick="guardar_ot" />
                 </div>    
             </div>
         </div>

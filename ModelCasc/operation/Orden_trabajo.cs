@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModelCasc.operation.liverpool;
 
 namespace ModelCasc.operation
 {
@@ -27,6 +28,7 @@ namespace ModelCasc.operation
         public List<Orden_trabajo_servicio> PLstOTSer { get; set; }
         public int Servicios { get; set; }
         public string Supervisor { get { return _supervisor; } set { _supervisor = value; } }
+        public Entrada PEnt { get; set;}
         #endregion
 
         #region Constructores

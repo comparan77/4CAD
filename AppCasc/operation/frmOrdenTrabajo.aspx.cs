@@ -52,6 +52,31 @@ namespace AppCasc.operation
             }
         }
 
+        private void fillGrd_pedidos()
+        {
+            try
+            {
+                foreach (RepeaterItem iServ in rep_servicios.Items)
+                {
+                    if (iServ.ItemType == ListItemType.Item || iServ.ItemType == ListItemType.AlternatingItem)
+                    {
+                        Panel pnl_precio = iServ.FindControl("pnl_precio") as Panel;
+                        if (pnl_precio != null)
+                        {
+                            GridView grd_pedidos = pnl_precio.FindControl("grd_pedidos") as GridView;
+                            grd_pedidos.DataSource = VSLstEntLiv;
+                            grd_pedidos.DataBind();
+                        }
+                    }
+                }
+            }
+            catch 
+            {
+                throw;
+            }
+
+        }
+
         private void loadFirstTime()
         {
             try
@@ -75,6 +100,27 @@ namespace AppCasc.operation
             o.PLstOTSer = VSLstOTS;
             
             return o;
+        }
+
+        private void updateGrdPrecio(GridView grd, bool isCheckAll = false, bool checkAll = false)
+        {
+            int sumPzas = 0;
+            foreach (GridViewRow row in grd.Rows)
+            {
+                CheckBox chk_pedido = row.Cells[4].FindControl("chk_pedido") as CheckBox;
+                if (isCheckAll)
+                    chk_pedido.Checked = checkAll;
+                if (chk_pedido.Checked)
+                {
+                    sumPzas += Convert.ToInt32(row.Cells[2].Text.Replace(",", ""));
+                }
+            }
+            grd.FooterRow.Cells[2].Text = sumPzas.ToString("N0");
+            grd.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
+            Panel pnl_pedido = grd.Parent.FindControl("pnl_pedido") as Panel;
+            pnl_pedido.Visible = sumPzas > 0;
+            Button btn_add_pedido = pnl_pedido.FindControl("btn_add_pedido") as Button;
+            btn_add_pedido.Enabled = sumPzas > 0;
         }
 
         protected void guardar_ot(object sender, EventArgs args)
@@ -176,15 +222,16 @@ namespace AppCasc.operation
                     switch (id_servicio)
                     {
                         case 1:
-                            ddlEtiqueta_tipo = pnl_precio.FindControl("ddl_eti_tipo_precio") as DropDownList;
+                        //    ddlEtiqueta_tipo = pnl_precio.FindControl("ddl_eti_tipo_precio") as DropDownList;
                             pnl_precio.Visible = true;
                             break;
                         case 2:
                             pnl_uva.Visible = true;
                             ddlEtiqueta_tipo = pnl_uva.FindControl("ddl_eti_tipo_uva") as DropDownList;
+                            ControlsMng.fillEtiquetaTipo(ddlEtiqueta_tipo);
                             break;
                     }
-                    ControlsMng.fillEtiquetaTipo(ddlEtiqueta_tipo);
+                    
                 }
             }
             catch (Exception e )
@@ -209,13 +256,40 @@ namespace AppCasc.operation
                 switch (args.CommandName)
                 {
                     case "precio":
-                        TextBox txt_pedido = oC.FindControl("txt_pedido") as TextBox;
-                        TextBox txt_pedido_pieza = oC.FindControl("txt_pedido_pieza") as TextBox;
-                        oOTS.Ref2 = txt_pedido.Text;
-                        oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
-                        ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_precio") as DropDownList;
-                        txt_pedido.Text = string.Empty;
-                        txt_pedido_pieza.Text = string.Empty;
+                        //TextBox txt_pedido = oC.FindControl("txt_pedido") as TextBox;
+                        //TextBox txt_pedido_pieza = oC.FindControl("txt_pedido_pieza") as TextBox;
+                        //oOTS.Ref2 = txt_pedido.Text;
+                        //oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
+                        //ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_precio") as DropDownList;
+                        //txt_pedido.Text = string.Empty;
+                        //txt_pedido_pieza.Text = string.Empty;
+                        GridView grd_pedidos = oC.Parent.FindControl("grd_pedidos") as GridView;
+                        foreach (GridViewRow row in grd_pedidos.Rows)
+                        {
+                            CheckBox chk_pedido = row.Cells[4].FindControl("chk_pedido") as CheckBox;
+                            if (chk_pedido.Checked)
+                            {
+                                oOTS = new Orden_trabajo_servicio();
+
+                                oOTS.Id_servicio = id_servicio;
+                                oOTS.PServ = new Servicio() { Nombre = VSLstServ.Find(p => p.Id == id_servicio).Nombre };
+                                oOTS.Ref1 = txt_trafico.Text;
+
+                                oOTS.Ref2 = row.Cells[1].Text;
+                                oOTS.Piezas = Convert.ToInt32(row.Cells[2].Text.Replace(",", ""));
+                                DropDownList ddl_etiqueta_tipo = row.Cells[3].FindControl("ddl_etiqueta_tipo") as DropDownList;
+                                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddl_etiqueta_tipo.SelectedValue);
+                                oOTS.PEtiquetaTipo = new Etiqueta_tipo() { Nombre = ddl_etiqueta_tipo.SelectedItem.Text };
+                                oOTS.Id = VSLstOTS.Count + 1;
+                                VSLstOTS.Add(oOTS);
+                                VSLstEntLiv.Remove(VSLstEntLiv.Find(p => p.Pedido == Convert.ToInt32(oOTS.Ref2)));
+                            }
+                        }
+                        grd_pedidos.DataSource = VSLstEntLiv;
+                        grd_pedidos.DataBind();
+                        Panel pnl_pedido = grd_pedidos.Parent.FindControl("pnl_pedido") as Panel;
+                        Button btn_add_pedido = pnl_pedido.FindControl("btn_add_pedido") as Button;
+                        btn_add_pedido.Enabled = false;
                         break;
                     case "nom":
                         TextBox txt_solicitud = oC.FindControl("txt_solicitud") as TextBox;
@@ -225,14 +299,15 @@ namespace AppCasc.operation
                         ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_uva") as DropDownList;
                         txt_solicitud.Text = string.Empty;
                         txt_sol_pieza.Text = string.Empty;
+                        oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddlEtiqueta_tipo.SelectedValue);
+                        oOTS.PEtiquetaTipo = new Etiqueta_tipo() { Nombre = ddlEtiqueta_tipo.SelectedItem.Text };
+                        oOTS.Id = VSLstOTS.Count + 1;
+                        VSLstOTS.Add(oOTS);
                         break;
                     default:
                         break;
                 }
-                oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddlEtiqueta_tipo.SelectedValue);
-                oOTS.PEtiquetaTipo = new Etiqueta_tipo() { Nombre = ddlEtiqueta_tipo.SelectedItem.Text };
-                oOTS.Id = VSLstOTS.Count + 1;
-                VSLstOTS.Add(oOTS);
+                
                 grd_ordenesXGuardar.DataSource = VSLstOTS;
                 grd_ordenesXGuardar.DataBind();
             }
@@ -253,12 +328,60 @@ namespace AppCasc.operation
                 {
                     hf_pedidos.Value = Newtonsoft.Json.JsonConvert.SerializeObject(VSLstEntLiv);
                     txt_trafico.Text = VSLstEntLiv.First().Trafico;
+                    fillGrd_pedidos();
                 }
             }
             catch (Exception e)
             {
                 ((MstCasc)this.Master).setError = e.Message;
             }
+        }
+
+        protected void grd_pedidosRowDataBound(object sender, GridViewRowEventArgs args)
+        {
+            try
+            {
+                if (args.Row.RowType == DataControlRowType.Header)
+                {
+                    DropDownList ddl_all_etiqueta_tipo = (args.Row.FindControl("ddl_all_etiqueta_tipo") as DropDownList);
+                    ControlsMng.fillEtiquetaTipo(ddl_all_etiqueta_tipo);
+                }
+                if (args.Row.RowType == DataControlRowType.DataRow)
+                {
+                    //Find the DropDownList in the Row
+                    DropDownList ddl_etiqueta_tipo = (args.Row.FindControl("ddl_etiqueta_tipo") as DropDownList);
+                    ControlsMng.fillEtiquetaTipo(ddl_etiqueta_tipo);
+                }
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void ddl_all_etiqueta_tipo_changed(object sender, EventArgs args)
+        {
+            GridView grd = (GridView)((Control)sender).Parent.Parent.Parent.Parent;
+            DropDownList ddl_all_etiqueta_tipo = (DropDownList)sender;
+            foreach (GridViewRow row in grd.Rows)
+            {
+                DropDownList ddl_etiqueta_tipo = row.Cells[3].FindControl("ddl_etiqueta_tipo") as DropDownList;
+                ddl_etiqueta_tipo.SelectedValue = ddl_all_etiqueta_tipo.SelectedValue;
+            }
+        }
+
+        protected void chk_pedido_Changed(object sender, EventArgs args)
+        {
+            GridView grd = (GridView)((Control)sender).Parent.Parent.Parent.Parent;
+            CheckBox chk_pedido = (CheckBox)sender;
+            updateGrdPrecio(grd);
+        }
+
+        protected void chkAllPedido_checkedChange(object sender, EventArgs args)
+        {
+            GridView grd = (GridView)((Control)sender).Parent.Parent.Parent.Parent;
+            CheckBox chk_all_pedido = (CheckBox)sender;
+            updateGrdPrecio(grd, true, chk_all_pedido.Checked);
         }
 
         protected void Page_Load(object sender, EventArgs args)
