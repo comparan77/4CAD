@@ -69,6 +69,8 @@ namespace AppCasc.operation
             {
                 VSOrdTbj = MaquilaCtrl.OrdenTrabajoGet(txt_folio.Text.Trim().ToUpper());
                 fillInfo();
+                grd_pasos.DataSource = null;
+                grd_pasos.DataBind();
             }
             catch (Exception e)
             {
