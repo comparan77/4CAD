@@ -13,7 +13,7 @@
 
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-1">Captruar Nueva</a></li>
+            <li><a href="#tabs-1">Registrar Nueva</a></li>
             <li><a href="#tabs-2">Consultar </a></li>
         </ul>
         <div id="tabs-1">
@@ -164,7 +164,7 @@
             </div>
         </div>
         <div id="tabs-2">
-            <asp:Button runat="server" ID="btn_consultar" Text="Consultar" CausesValidation="false" OnClick="btn_consultar_click" />
+            <asp:Button runat="server" ID="btn_consultar" Text="Actualizar registros" CausesValidation="false" OnClick="btn_consultar_click" />
             <asp:UpdatePanel runat="server" ID="up_consulta" UpdateMode="Conditional">
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btn_consultar" EventName="click" />
