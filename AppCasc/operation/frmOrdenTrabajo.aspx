@@ -83,31 +83,10 @@
                                 </Columns>
                                 </asp:GridView>
 
-                                <%--<label>No Pedido:</label>
-                                <asp:TextBox runat="server" ID="txt_pedido" CssClass="txtPedidos" MaxLength="8"></asp:TextBox>
-
-                                <div style="padding: 1em">
-                                    <span></span>
-                                    <span></span>
-                                </div>--%>
-
                                 <asp:Panel runat="server" ID="pnl_pedido" Visible="false" >
-                                    <%--<div>
-                                        <label>Tipo de etiqueta</label>
-                                        <asp:DropDownList runat="server" ID="ddl_eti_tipo_precio"></asp:DropDownList>
-                                    </div>
-                                    <div>
-                                        <label>Piezas a precio</label>
-                                        <asp:TextBox runat="server" ID="txt_pedido_pieza"></asp:TextBox>
-                                        <asp:RequiredFieldValidator runat="server" ID="rfv_pedido_pieza" ControlToValidate="txt_pedido_pieza" ValidationGroup="vg_pedido" ErrorMessage="Es necesario proporcionar las piezas"></asp:RequiredFieldValidator>
-                                    </div>
-                                    <div>--%>
                                         <asp:Button runat="server" ID="btn_add_pedido" Enabled="false" OnCommand="addServicio" CommandName="precio" CommandArgument='<%#Eval("Id") %>' Text="Agregar servicio(s)" />
                                     </div>
                                 </asp:Panel>
-
-                                <%--<asp:CustomValidator runat="server" ID="cv_pedido" ControlToValidate="txt_pedido" ValidationGroup="vg_pedido" OnServerValidate="validatePedido" ErrorMessage="El pedido y código proporcionado no existe"></asp:CustomValidator>--%>
-                                
                             </asp:Panel>                                   
                         
                         <asp:Panel runat="server" ID="pnl_uva" Visible="false">

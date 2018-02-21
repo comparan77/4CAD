@@ -33,7 +33,9 @@
             switch ($(this).val()) {
                 case 'Maquila':
                 case 'Odntbj':
-                    $('#ctl00_body_txt_fecha_ini').val(currentDate);
+                    iniYear = new Date(moment(new Date()).year(), 0, 1)
+                    iniYear = moment(iniYear).format('DD/MM/YYYY');
+                    $('#ctl00_body_txt_fecha_ini').val(iniYear);
                     $('#ctl00_body_btnGetRptXls').show();
                     break;
                 case 'Remision':

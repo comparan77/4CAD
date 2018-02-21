@@ -265,20 +265,23 @@ namespace ModelCasc.operation
                     //si no cuenta con captura de pasos
                     string path = Path.Combine(pathImg, itemMaq.Id_ord_tbj_srv + @"\");
                     int numFoto = 1;
-                    foreach (Maquila_paso itemMP in itemMaq.PLstPasos)
-                    {
-                        string foto64 = itemMP.Foto64;
-                        itemMP.Foto64 = Path.Combine(itemMaq.Id_ord_tbj_srv + @"\" +  numFoto + ".jpg");
-                        oMPMng.O_Maquila_paso = itemMP;
-                        oMPMng.add(trans);
-                        CommonCtrl.AddImgToDirectory(path, numFoto.ToString(), foto64);
-                        numFoto++;
-                        rowsAfected++;
-                    }
+                    oMPMng.O_Maquila_paso = new Maquila_paso() { Id_ord_tbj_srv = itemMaq.Id_ord_tbj_srv };
+                    oMPMng.fillByIdOTS(trans);
+                    if (oMPMng.Lst.Count == 0)
+                        foreach (Maquila_paso itemMP in itemMaq.PLstPasos)
+                        {
+                            string foto64 = itemMP.Foto64;
+                            itemMP.Foto64 = Path.Combine(itemMaq.Id_ord_tbj_srv + @"\" + numFoto + ".jpg");
+                            oMPMng.O_Maquila_paso = itemMP;
+                            oMPMng.add(trans);
+                            CommonCtrl.AddImgToDirectory(path, numFoto.ToString(), foto64);
+                            numFoto++;
+                        }
+                    rowsAfected++;
                 }
                 GenericDataAccess.CommitTransaction(trans);
             }
-            catch 
+            catch
             {
                 if (trans != null)
                     GenericDataAccess.RollbackTransaction(trans);

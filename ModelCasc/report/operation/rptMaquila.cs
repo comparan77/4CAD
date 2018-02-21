@@ -10,22 +10,17 @@ namespace ModelCasc.report.operation
         public DateTime FechaEntrada { get; set; }
         public string Folio_entrada { get; set; }
         public string Referencia { get; set; }
-        public string Clasificacion { get; set; }
-        public string Orden { get; set; }
-        public string Codigo { get; set; }
-        public string Mercancia { get; set; }
-        public string Vendor { get; set; }
-        public string Proveedor { get; set; }
-        public int Bultos_recibidos { get; set; }
-        public int Bultos_desglosados { get; set; }
-        public int Piezas_recibidas { get; set; }
-        public int Piezas_desglosadas { get; set; }
-        public DateTime Ultima_fecha_trabajo { get; set; }
-        public int Pallets { get; set; }
-        public int Piezas_maquiladas { get; set; }
-        public int Piezas_danadas { get; set; }
-        public int Piezas_sobrante { get; set; }
-        public int Piezas_no_maquiladas { get; set; }
-
+        public string Folio_ot { get; set; }
+        public DateTime Fecha_ot { get; set; }
+        public string Ref_cte { get; set; }
+        public string Supervisor { get; set; }
+        public string Servcio { get; set; }
+        public string Etiqueta { get; set; }
+        public string Ref_serv { get; set; }
+        public int Pzas_sol { get; set; }
+        public string Fecha_maq { get; set; }
+        public int Piezas_maq { get; set; }
+        public int Bultos_maq { get; set; }
+        public int Pallets_maq { get; set; }
     }
 }

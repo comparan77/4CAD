@@ -249,23 +249,20 @@ namespace ModelCasc.report.operation
                     o.FechaEntrada = Convert.ToDateTime(dr["fecha_entrada"]);
                     o.Folio_entrada = dr["folio_entrada"].ToString();
                     o.Referencia = dr["referencia"].ToString();
-                    o.Orden = dr["orden_compra"].ToString();
-                    o.Codigo = dr["codigo"].ToString();
-                    o.Clasificacion = dr["negocio"].ToString();
-                    o.Mercancia = dr["mercancia"].ToString();
-                    o.Vendor = dr["vendor"].ToString();
-                    o.Proveedor = dr["proveedor"].ToString();
-                    o.Bultos_recibidos = Convert.ToInt32(dr["bultos_recibidos"]);
-                    o.Bultos_desglosados = Convert.ToInt32(dr["bultos_desglosados"]);
-                    o.Piezas_recibidas = Convert.ToInt32(dr["piezas_recibidas"]);
-                    o.Piezas_desglosadas = Convert.ToInt32(dr["piezas_desglosadas"]);
-                    o.Ultima_fecha_trabajo = Convert.ToDateTime(dr["ult_fecha_trabajo"]);
-                    o.Pallets = Convert.ToInt32(dr["pallets"]);
-                    o.Piezas_maquiladas = Convert.ToInt32(dr["piezas_maquiladas"]);
-                    o.Piezas_danadas = Convert.ToInt32(dr["piezas_danadas"]);
-                    o.Piezas_sobrante = Convert.ToInt32(dr["piezas_sobrante"]);
-                    o.Piezas_no_maquiladas = Convert.ToInt32(dr["piezas_no_maquiladas"]);
-                    lst.Add(o) ;
+                    o.Folio_ot = dr["folio_ot"].ToString();
+                    o.Fecha_ot = Convert.ToDateTime(dr["fecha_ot"]);
+                    o.Ref_cte = dr["ref_cte"].ToString();
+                    o.Supervisor = dr["supervisor"].ToString();
+                    o.Servcio = dr["servicio"].ToString();
+                    o.Etiqueta = dr["etiqueta"].ToString();
+                    o.Ref_serv = dr["ref_serv"].ToString();
+                    o.Pzas_sol = Convert.ToInt32(dr["pzas_sol"]);
+                    o.Fecha_maq = dr["fecha_maq"].ToString();
+                    o.Piezas_maq = Convert.ToInt32(dr["piezas_maq"]);
+                    o.Bultos_maq = Convert.ToInt32(dr["bultos_maq"]);
+                    o.Pallets_maq = Convert.ToInt32(dr["pallets_maq"]);
+
+                    lst.Add(o);
                 }
             }
             catch

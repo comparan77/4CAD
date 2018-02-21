@@ -134,7 +134,9 @@ namespace AppCasc.report
                         break;
                     case "Maquila":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.MaquilaGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
-                        showExcel(rptSource);
+                        parametros = new ReportParameter[1];
+                        parametros[0] = new ReportParameter("p_Periodo", "Del " + txt_fecha_ini.Text + " Al " + txt_fecha_fin.Text, false);
+                        showExcel(rptSource, parametros);
                         break;
                     case "Piso":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.PisoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear, Convert.ToInt32(ddl_bodega.SelectedValue), Convert.ToInt32(ddl_cuenta.SelectedValue), Convert.ToInt32(txt_existencia.Text)));

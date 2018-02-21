@@ -163,13 +163,16 @@ namespace ModelCasc.operation
             }
         }
 
-        internal void fillByIdOTS()
+        internal void fillByIdOTS(IDbTransaction tran = null)
         {
             try
             {
                 this.comm = GenericDataAccess.CreateCommandSP("sp_Maquila_paso");
                 addParameters(5);
-                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                if(tran== null)
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                else
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, tran);
                 this._lst = new List<Maquila_paso>();
                 foreach (DataRow dr in dt.Rows)
                 {

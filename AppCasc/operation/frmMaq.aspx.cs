@@ -51,6 +51,7 @@ namespace AppCasc.operation
             hf_id_orden_trabajo.Value = VSOrdTbj.Id.ToString();
             grd_servicios.DataSource = VSOrdTbj.PLstOTSer;
             grd_servicios.DataBind();
+            updateTotal();
         }
 
         private void clearInfo()
@@ -121,6 +122,64 @@ namespace AppCasc.operation
                     default:
                         break;
                 }
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        private void updateTotal()
+        {
+            try
+            {
+                int pzaSol = 0;
+                int pallet = 0;
+                int bulto = 0;
+                int pzaMaq = 0;
+                int pzaFal = 0;
+                int pzaSob = 0;
+
+                foreach (GridViewRow row in grd_servicios.Rows)
+                {
+                    switch (row.RowType)
+                    {
+                        case DataControlRowType.DataRow:
+                            pzaSol += Convert.ToInt32(row.Cells[3].Text.Replace(",", ""));
+                            pallet += Convert.ToInt32(row.Cells[4].Text.Replace(",", ""));
+                            bulto += Convert.ToInt32(row.Cells[5].Text.Replace(",", ""));
+                            pzaMaq += Convert.ToInt32(row.Cells[6].Text.Replace(",", ""));
+                            pzaFal += Convert.ToInt32(row.Cells[7].Text.Replace(",", ""));
+                            pzaSol += Convert.ToInt32(row.Cells[8].Text.Replace(",", ""));
+                            break;
+                        case DataControlRowType.EmptyDataRow:
+                            break;
+                        case DataControlRowType.Footer:
+                            break;
+                        case DataControlRowType.Header:
+                            break;
+                        case DataControlRowType.Pager:
+                            break;
+                        case DataControlRowType.Separator:
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                grd_servicios.FooterRow.Cells[3].Text = pzaSol.ToString("N0");
+                grd_servicios.FooterRow.Cells[4].Text = pallet.ToString("N0");
+                grd_servicios.FooterRow.Cells[5].Text = bulto.ToString("N0");
+                grd_servicios.FooterRow.Cells[6].Text = pzaMaq.ToString("N0");
+                grd_servicios.FooterRow.Cells[7].Text = pzaFal.ToString("N0");
+                grd_servicios.FooterRow.Cells[8].Text = pzaSob.ToString("N0");
+
+                grd_servicios.FooterRow.Cells[3].HorizontalAlign = HorizontalAlign.Right;
+                grd_servicios.FooterRow.Cells[4].HorizontalAlign = HorizontalAlign.Right;
+                grd_servicios.FooterRow.Cells[5].HorizontalAlign = HorizontalAlign.Right;
+                grd_servicios.FooterRow.Cells[6].HorizontalAlign = HorizontalAlign.Right;
+                grd_servicios.FooterRow.Cells[7].HorizontalAlign = HorizontalAlign.Right;
+                grd_servicios.FooterRow.Cells[8].HorizontalAlign = HorizontalAlign.Right;
+
             }
             catch (Exception e)
             {

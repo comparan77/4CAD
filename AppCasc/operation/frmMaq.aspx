@@ -38,7 +38,14 @@
             </div>
             <hr style="border-color: transparent" />
             <div style="clear: both;">
-                <asp:GridView DataKeyNames="Id" CssClass="grdCascSmall" runat="server" ID="grd_servicios" AutoGenerateColumns="false" OnRowCommand="grd_servicios_row_command" SelectedRowStyle-BackColor="CornflowerBlue">
+                <asp:GridView DataKeyNames="Id" 
+                CssClass="grdCascSmall" 
+                runat="server" 
+                ID="grd_servicios" 
+                AutoGenerateColumns="false" 
+                OnRowCommand="grd_servicios_row_command" 
+                SelectedRowStyle-BackColor="CornflowerBlue"
+                ShowFooter="true">
                 <Columns>
                     <asp:BoundField DataField="PServ.Nombre" HeaderText="Servicio" />
                     <asp:BoundField DataField="Ref1" HeaderText="Trafico" />
