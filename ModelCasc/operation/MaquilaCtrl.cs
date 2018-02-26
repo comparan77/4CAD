@@ -244,6 +244,22 @@ namespace ModelCasc.operation
             }
         }
 
+        public static List<Orden_trabajo> OrdenTrabajoGetLstCloseOrOpen(bool cerrada)
+        {
+            List<Orden_trabajo> lst = new List<Orden_trabajo>();
+            try
+            {
+                Orden_trabajoMng oMng = new Orden_trabajoMng() { O_Orden_trabajo = new Orden_trabajo() { Cerrada = cerrada } };
+                oMng.fillLstCloseOrOpen();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         #endregion
 
         #region Maquila

@@ -80,6 +80,7 @@
       <siteMapNode url="~/operation/frmRegDatMer.aspx" title="Registro Mercancía" description="Registro de datos de la Mercancía"></siteMapNode>
       <siteMapNode url="~/operation/frmOrdenTrabajo.aspx" title="Órden de Trabajo" description="Registro de orden de trabajo"></siteMapNode>
       <siteMapNode url="~/operation/frmMaq.aspx" title="Consulta de Maquila" description="Consulta Maquila"></siteMapNode>
+      <siteMapNode url="~/operation/frmOrdCrg.aspx" title="Orden de Carga" description="Orden de Carga"></siteMapNode>
     </siteMapNode>
     <siteMapNode roles="Administracion, Operacion, Ejecutivo, GteAlmacen, GteMaquila, Super, Reportes, EjecutivoAux, GteRecHum" title="Reportes" >
       <siteMapNode url="~/report/frmChart.aspx" title="Chart"  description="Chart" />

@@ -228,5 +228,27 @@ namespace ModelCasc.operation
                 throw;
             }
         }
+
+        internal void fillLstCloseOrOpen()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Orden_trabajo");
+                addParameters(8);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Orden_trabajo>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Orden_trabajo o = new Orden_trabajo();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                    o.PEnt = new Entrada() { Referencia = dr["refEnt"].ToString() };
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
