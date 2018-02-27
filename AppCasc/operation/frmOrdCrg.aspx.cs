@@ -14,6 +14,7 @@ namespace AppCasc.operation
         {
             grd_ot_cerrada.DataSource = MaquilaCtrl.OrdenTrabajoGetLstCloseOrOpen(true);
             grd_ot_cerrada.DataBind();
+            grd_ot_cerrada.SelectRow(-1);
         }
 
         private void loadFirstTime()
@@ -27,11 +28,51 @@ namespace AppCasc.operation
             {
                 grd_ot_cerrada.PageIndex = args.NewPageIndex;
                 fillGrdOt();
-                grd_ot_cerrada.SelectRow(-1);
             }
             catch (Exception e)
             {
                 
+            }
+        }
+
+        protected void txtRefEnt_textChanged(object sender, EventArgs args)
+        {
+            try
+            {
+                List<Orden_trabajo> lst = MaquilaCtrl.OrdenTrabajoGetLstCloseOrOpen(true);
+                var results = (from c in lst
+                               where c.PEnt.Referencia.Contains(((TextBox)sender).Text)
+                               select new Orden_trabajo()
+                               {
+                                   Id = c.Id,
+                                   Folio = c.Folio,
+                                   Referencia = c.Referencia,
+                                   Fecha = c.Fecha,
+                                   Cerrada = c.Cerrada,
+                                   PEnt = c.PEnt,
+                                   Servicios = c.Servicios,
+                                   Supervisor = c.Supervisor
+                               }).ToList();
+                grd_ot_cerrada.DataSource = results;
+                grd_ot_cerrada.DataBind();
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
+        }
+
+        protected void lnk_clear_click(object sender, EventArgs args)
+        {
+            try
+            {
+                fillGrdOt();
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
 
@@ -43,6 +84,8 @@ namespace AppCasc.operation
                 int Id_ord_tbj;
 
                 grd_ot_cerrada.SelectRow(index);
+
+                int.TryParse(grd_ot_cerrada.DataKeys[index][0].ToString(), out Id_ord_tbj);
 
                 switch (args.CommandName)
                 {

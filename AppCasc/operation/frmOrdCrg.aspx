@@ -15,7 +15,15 @@ SelectedRowStyle-BackColor="CornflowerBlue" DataKeyNames="Id"
 >
 <Columns>
 <asp:ButtonField ButtonType="Link" ControlStyle-CssClass="ui-icon ui-icon-triangle-1-e icon-button-action" CommandName="sel_ot" />
-<asp:BoundField DataField="PEnt.Referencia" HeaderText="Ref. Ent." />
+<asp:TemplateField SortExpression="Item">
+<HeaderTemplate>
+    <asp:TextBox runat="server" ID="txtRefEnt" AutoPostBack="true" OnTextChanged="txtRefEnt_textChanged"></asp:TextBox>
+    <asp:LinkButton runat="server" ID="lnk_clear" OnClick="lnk_clear_click" CssClass="ui-icon ui-icon-refresh"></asp:LinkButton>
+</HeaderTemplate>
+<ItemTemplate>
+<span><%# Eval("PEnt.Referencia")%></span>
+</ItemTemplate>
+</asp:TemplateField>
 <asp:BoundField DataField="Referencia" HeaderText="Ref. Cte." />
 <asp:BoundField DataField="Folio" HeaderText="Folio" />
 </Columns>
