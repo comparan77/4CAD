@@ -90,6 +90,8 @@ namespace AppCasc.operation
                 switch (args.CommandName)
                 {
                     case "sel_ot":
+                        grd_maquila.DataSource = MaquilaCtrl.OrdenTrabajoGet(grd_ot_cerrada.Rows[index].Cells[3].Text).PLstOTSer;
+                        grd_maquila.DataBind();
                         break;
                     default:
                         break;

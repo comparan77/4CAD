@@ -11,7 +11,7 @@
 <ContentTemplate>
 <asp:GridView runat="server" ID="grd_ot_cerrada" AutoGenerateColumns="false" AllowPaging="true" AllowSorting="true" PageSize="5"
 OnPageIndexChanging="grd_ot_Page_idx_chg" OnRowCommand="grd_ot_RowCommand"
-SelectedRowStyle-BackColor="CornflowerBlue" DataKeyNames="Id"
+SelectedRowStyle-BackColor="CornflowerBlue" DataKeyNames="Id" CssClass="grdCascSmall"
 >
 <Columns>
 <asp:ButtonField ButtonType="Link" ControlStyle-CssClass="ui-icon ui-icon-triangle-1-e icon-button-action" CommandName="sel_ot" />
@@ -26,10 +26,28 @@ SelectedRowStyle-BackColor="CornflowerBlue" DataKeyNames="Id"
 </asp:TemplateField>
 <asp:BoundField DataField="Referencia" HeaderText="Ref. Cte." />
 <asp:BoundField DataField="Folio" HeaderText="Folio" />
+<asp:BoundField DataField="Fecha" HeaderText="Fecha O.T." DataFormatString="{0:dd/MM/yyyy}" />
 </Columns>
 </asp:GridView>
 </ContentTemplate>
 </asp:UpdatePanel>
 
+<asp:UpdatePanel runat="server" ID="up_maquila" UpdateMode="Conditional">
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="grd_ot_cerrada" EventName="RowCommand" />
+    </Triggers>
+    <ContentTemplate>
+        <asp:GridView runat="server" ID="grd_maquila" CssClass="grdCascSmall" AutoGenerateColumns="false">
+        <Columns>
+            <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
+            <asp:BoundField DataField="Piezas" HeaderText="Pz(s) Tot" DataFormatString="{0:N0}" />
+            <asp:BoundField DataField="PiezasMaq" HeaderText="Pz(s) Maq" DataFormatString="{0:N0}" />
+            <asp:BoundField DataField="Faltantes" HeaderText="Pz(s) Faltantes" DataFormatString="{0:N0}" />
+            <asp:BoundField DataField="Sobrantes" HeaderText="Pz(s) Sobrantes" DataFormatString="{0:N0}" />
+            <asp:BoundField DataField="PasosMaq" HeaderText="Pasos" DataFormatString="{0:N0}" />
+        </Columns>
+        </asp:GridView>
+    </ContentTemplate>
+</asp:UpdatePanel>
 
 </asp:Content>
