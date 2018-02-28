@@ -54,3 +54,13 @@
     } // SetCaretAtEnd()
 }
 
+
+Common.fillSelect = function (id_control, array, first_element) {
+    var ddl = document.getElementById(id_control);
+    for (var i = 0; i < array.length; i++) {
+        opt = document.createElement('option');
+        opt.innerHTML = array[i].datatext;
+        opt.value = array[i].datavalue;
+        ddl.appendChild(opt);
+    }
+}

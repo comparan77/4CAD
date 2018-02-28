@@ -50,6 +50,7 @@
     </siteMapNode>
     <siteMapNode roles="Mantenimiento, Operacion, GteAlmacen, Super" title="Operación">
       <siteMapNode url="~/operation/arribos/frmArribo.aspx" title="Arribos"  description="Arribos" />
+      <siteMapNode url="~/operation/frmAudUni.aspx" title="Auditoría de Unidades para Embarques"  description="Auditoria de unidades" />
       <siteMapNode url="~/operation/frmSalidas.aspx" title="Embarques"  description="Embarques" />
       <!--<siteMapNode url="~/operation/frmReingreso.aspx" title="Reingresos"  description="Reingresos" />-->
       <siteMapNode url="~/operation/frmRelEntSal.aspx" title="Relación de Movimientos"  description="Relación de Movimientos" />
