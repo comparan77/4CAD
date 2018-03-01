@@ -8,6 +8,22 @@
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
 
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Bodega</h3>
+<div id="div2" style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+    <div>
+        <label>Bodega:</label>
+        <asp:DropDownList runat="server" ID="ddlBodega" OnSelectedIndexChanged="ddlBodega_changed" AutoPostBack="true"></asp:DropDownList>
+    </div>
+    <asp:UpdatePanel runat="server" ID="up_prev_pred_user" UpdateMode="Conditional">
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="ddlBodega" EventName="SelectedIndexChanged" />
+        </Triggers>
+        <ContentTemplate>
+            <asp:HiddenField runat="server" ID="hf_usr_prv_perd" />
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</div>
+
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Destino</h3>
 <div id="div_transporte" style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
     
@@ -21,7 +37,7 @@
     <div>
         <label>Calle y n&uacute;mero</label>
         <asp:TextBox runat="server" ID="txt_calle_num"></asp:TextBox>
-        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_calle_num" ControlToValidate="txt_cp" ErrorMessage="Es necesario proporcionar la calle y número"></asp:RequiredFieldValidator>        
+        <asp:RequiredFieldValidator runat="server" CssClass="validator" ID="rfv_calle_num" ControlToValidate="txt_calle_num" ErrorMessage="Es necesario proporcionar la calle y número"></asp:RequiredFieldValidator>        
     </div>
 
     <div>
@@ -132,6 +148,12 @@
 </div>
 
 <div id="div_prev_perdidas" title="Código prevención de pérdidas">
+    <div class="divForm">
+        <div>
+            <label>Autoriza</label>
+            <select id="ddl_autoriza" class="txtMedium"></select>
+        </div>
+    </div>
     <div id="div_pwd_per">
     </div>
     

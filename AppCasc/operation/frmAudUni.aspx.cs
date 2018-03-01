@@ -11,6 +11,19 @@ namespace AppCasc.operation
 {
     public partial class frmAudUni : System.Web.UI.Page
     {
+        private void fillUsrPrvPerdByIdBodega(int id_bodega)
+        {
+            try
+            {
+                List<Usuario> lst = CatalogCtrl.UsuarioSelByRolAndBodega(enumRol.PrevPerdidas, id_bodega);
+                hf_usr_prv_perd.Value = Newtonsoft.Json.JsonConvert.SerializeObject(lst);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         private void loadFirstTime()
         {
             try
@@ -20,6 +33,9 @@ namespace AppCasc.operation
                 int IdTransporteTipo = 0;
                 int.TryParse(ddlTipo_Transporte.SelectedValue, out IdTransporteTipo);
                 validarTipo(IdTransporteTipo);
+
+                ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
+                fillUsrPrvPerdByIdBodega(Convert.ToInt32(ddlBodega.Items[0].Value));
             }
             catch
             {
@@ -88,6 +104,18 @@ namespace AppCasc.operation
                 int.TryParse(ddlTipo_Transporte.SelectedValue, out IdTransporteTipo);
                 validarTipo(IdTransporteTipo);
                 upDatosVehiculo.Update();
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void ddlBodega_changed(object sender, EventArgs args)
+        {
+            try
+            {
+                fillUsrPrvPerdByIdBodega(Convert.ToInt32(ddlBodega.SelectedValue));
             }
             catch (Exception e)
             {

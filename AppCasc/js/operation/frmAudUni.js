@@ -20,6 +20,10 @@ var AudUni = function () {
     var cod_prev_valido = false;
     var txt_cod_prev_perd;
     var div_pwd_per;
+    var up_prev_pred_user;
+    var ddlBodega;
+    var ddl_autoriza;
+    var hf_usr_prv_perd;
 
     var arrCondTran = [
         'Presenta Placas',
@@ -52,8 +56,11 @@ var AudUni = function () {
         div_colonia = $('#div_colonia');
         div_otra_razon = $('#div_otra_razon');
         div_prev_perdidas = $('#div_prev_perdidas');
-
         div_pwd_per = $('#div_pwd_per');
+        up_prev_pred_user = $('#ctl00_body_up_prev_pred_user');
+        ddlBodega = $('#ctl00_body_ddlBodega');
+        ddl_autoriza = $('#ddl_autoriza');
+        hf_usr_prv_perd = $('#ctl00_body_hf_usr_prv_perd');
 
         $(div_colonia).dialog({
             autoOpen: false,
@@ -71,7 +78,8 @@ var AudUni = function () {
             autoOpen: false,
             open: function (event, ui) {
                 $(div_pwd_per).html('');
-                $(div_pwd_per).html('<input style="width:0px; border: none; background-color:inherit;"><label for="txt_cod_prev_perd">C&oacute;digo de autorizaci&oacute;n</label><input type="password" id="txt_cod_prev_perd" autocomplete="off" readonly onfocus="this.removeAttribute(&quot;readonly&quot);"/>');
+                //<input style="width:0px; border: none; background-color:inherit;">
+                $(div_pwd_per).html('<label for="txt_cod_prev_perd">C&oacute;digo de autorizaci&oacute;n</label><input type="password" id="txt_cod_prev_perd" autocomplete="off" readonly onfocus="this.removeAttribute(&quot;readonly&quot);"/>');
                 txt_cod_prev_perd = $('#txt_cod_prev_perd');
                 $(txt_cod_prev_perd).val('');
             },
@@ -89,9 +97,7 @@ var AudUni = function () {
             },
             buttons: {
                 'ok': function () {
-                    cod_prev_valido = ('1234' == $(txt_cod_prev_perd).val());
-                    $(this).dialog('close');
-                    $('#ctl00_body_btnGuardar').trigger('click');
+                    validaPersonalPrev($(ddl_autoriza).val(), $(txt_cod_prev_perd).val());
                 }
             }
         });
@@ -126,6 +132,67 @@ var AudUni = function () {
 
             return IsValid == cod_prev_valido == true;
         });
+
+        $(up_prev_pred_user).panelReady(function () {
+            fillPersonalPrev();
+            $(ddlBodega).change(function () {
+                fillPersonalPrev();
+            });
+        });
+    }
+
+    function validaPersonalPrev(clave, contrasenia) {
+        cod_prev_valido = false;
+        $.ajax({
+            type: 'POST',
+            url: '/handlers/CAEApp.ashx?op=usuario&&opt=UsuarioValido',
+            data: JSON.stringify({
+                Id: 0,
+                Nombre: '',
+                Clave: clave,
+                Email: '',
+                Contrasenia: contrasenia,
+                Id_bodega: 0,
+                Id_rol: 0,
+                IsActive: 1
+            }),
+            complete: function () {
+                $('#div-info-codigo').removeClass('ajaxLoading');
+            },
+            success: function (data) {
+                switch (typeof (data)) {
+                    case 'string':
+                        alert('Las credenciales proporcionadas no son correctas');
+                        break;
+                    case 'object':
+                        cod_prev_valido = true;
+                        $(div_prev_perdidas).dialog('close');
+                        $('#ctl00_body_btnGuardar').trigger('click');
+                        break;
+                    default:
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var oErrorMessage = new ErrorMessage();
+                oErrorMessage.SetError(jqXHR.responseText);
+                oErrorMessage.Init();
+            }
+        });
+    }
+
+    function fillPersonalPrev() {
+        $(ddl_autoriza).html('');
+        var arrAut = JSON.parse($(hf_usr_prv_perd).val());
+        var arrCol = [];
+        for (var aut in arrAut) {
+            var item = arrAut[aut];
+            var col = {
+                datatext: item.Nombre,
+                datavalue: item.Clave
+            }
+            arrCol.push(col);
+        }
+        Common.fillSelect('ddl_autoriza', arrCol);
     }
 
     function validarFrm() {

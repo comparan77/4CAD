@@ -1186,13 +1186,13 @@ namespace ModelCasc.catalog
 
         #region usuario
 
-        public static bool UsuarioHasRol(Usuario o, enumRol rol)
-        {
-            bool hasRol = false;
-            List<string> roles = Roles.GetRolesForUser(o.Clave).ToList();
-            hasRol = roles.Exists(p => string.Compare(p.ToString(), rol.ToString()) == 0);
-            return hasRol;
-        }
+        //public static bool UsuarioHasRol(Usuario o, enumRol rol)
+        //{
+        //    bool hasRol = false;
+        //    List<string> roles = Roles.GetRolesForUser(o.Clave).ToList();
+        //    hasRol = roles.Exists(p => string.Compare(p.ToString(), rol.ToString()) == 0);
+        //    return hasRol;
+        //}
 
         public static List<Usuario> usuarioFillAllList()
         {
@@ -1343,6 +1343,38 @@ namespace ModelCasc.catalog
 
             }
             return o;
+        }
+
+        public static List<Usuario> UsuarioSelByRolAndBodega(enumRol rol, int id_bodega)
+        {
+            List<Usuario> lstBodega = new List<Usuario>();
+            List<Usuario> lstRol = new List<Usuario>();
+            try
+            {
+                UsuarioMng oUMng = new UsuarioMng();
+                Usuario o = new Usuario() { Id_bodega = id_bodega };
+                oUMng.O_Usuario = o;
+                oUMng.fillLst();
+                lstBodega = oUMng.Lst.FindAll(p => p.Id_bodega == id_bodega);
+
+                string[] strRoles;
+
+                foreach (Usuario itemUsr in lstBodega)
+                {
+                    strRoles = Roles.GetRolesForUser(itemUsr.Clave);
+                    if (Array.Exists(strRoles, p => p.Equals(rol.ToString())))
+                    {
+                        itemUsr.Contrasenia = string.Empty;
+                        lstRol.Add(itemUsr);
+                    }
+                }
+            }
+            catch
+            {
+
+                throw;
+            }
+            return lstRol;
         }
 
         #endregion

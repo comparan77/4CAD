@@ -151,12 +151,18 @@ namespace AppCasc.handlers
             string option = context.Request["opt"].ToString();
             //string email = context.Request["email"].ToString();
             //string pass = context.Request["pass"].ToString();
+            Usuario o;
             switch (option)
             {
                 case "CredencialesValidas":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    Usuario o = JsonConvert.DeserializeObject<Usuario>(jsonData);
+                    o = JsonConvert.DeserializeObject<Usuario>(jsonData);
                     response = JsonConvert.SerializeObject(CatalogCtrl.UsuarioCredencialesValidas(o.Email, o.Contrasenia));
+                    break;
+                case "UsuarioValido":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Usuario>(jsonData);
+                    response = JsonConvert.SerializeObject(CatalogCtrl.UsuarioSelByClaveContrasenia(o.Clave, o.Contrasenia));
                     break;
             }
 

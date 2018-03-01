@@ -5,6 +5,24 @@ using System.Text;
 
 namespace ModelCasc.catalog
 {
+    public enum enumRol
+    {
+        Mantenimiento = 1,
+        Administracion,
+        Operacion,
+        Ejecutivo,
+        GteAlmacen,
+        GteMaquila,
+        Super,
+        AlmAvonSuper,
+        Contabilidad,
+        Reportes,
+        EjecutivoAux,
+        GteRecHum,
+        CtrlAcceso,
+        PrevPerdidas
+    }
+
     public class Rol
     {
         #region Campos

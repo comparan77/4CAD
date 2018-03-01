@@ -31,6 +31,33 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hfDescErr;
         
         /// <summary>
+        /// ddlBodega control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlBodega;
+        
+        /// <summary>
+        /// up_prev_pred_user control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel up_prev_pred_user;
+        
+        /// <summary>
+        /// hf_usr_prv_perd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_usr_prv_perd;
+        
+        /// <summary>
         /// txt_cp control.
         /// </summary>
         /// <remarks>
