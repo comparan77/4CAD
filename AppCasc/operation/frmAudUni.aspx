@@ -89,6 +89,7 @@
     <asp:AsyncPostBackTrigger ControlID="ddlTipo_Transporte" EventName="SelectedIndexChanged" />
     </Triggers>
     <ContentTemplate>
+    <asp:HiddenField runat="server" ID="hf_cond_trans" />
     <div>
         <label>Placa:</label>
         <asp:TextBox id="txt_placa" runat="server" MaxLength="50"></asp:TextBox>

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ModelCasc.webApp;
 using ModelCasc.catalog;
+using ModelCasc.operation;
 
 namespace AppCasc.operation
 {
@@ -103,6 +104,7 @@ namespace AppCasc.operation
                 int IdTransporteTipo = 0;
                 int.TryParse(ddlTipo_Transporte.SelectedValue, out IdTransporteTipo);
                 validarTipo(IdTransporteTipo);
+                hf_cond_trans.Value = Newtonsoft.Json.JsonConvert.SerializeObject(TransporteCtrl.TransCondByTransporteTipo(IdTransporteTipo, false, true));
                 upDatosVehiculo.Update();
             }
             catch (Exception e)

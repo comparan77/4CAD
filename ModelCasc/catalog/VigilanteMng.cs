@@ -177,7 +177,7 @@ namespace ModelCasc.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cortina");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Vigilante");
                 addParameters(-2);
                 GenericDataAccess.ExecuteNonQuery(this.comm);
             }
