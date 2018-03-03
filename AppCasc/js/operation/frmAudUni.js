@@ -24,6 +24,8 @@ var AudUni = function () {
     var ddlBodega;
     var ddl_autoriza;
     var hf_usr_prv_perd;
+    var hf_cond_trans;
+    var upDatosVehiculo;
 
     var arrCondTran = [
         'Presenta Placas',
@@ -61,6 +63,8 @@ var AudUni = function () {
         ddlBodega = $('#ctl00_body_ddlBodega');
         ddl_autoriza = $('#ddl_autoriza');
         hf_usr_prv_perd = $('#ctl00_body_hf_usr_prv_perd');
+        hf_cond_trans = $('#ctl00_body_hf_cond_trans');
+        upDatosVehiculo = $('#ctl00_body_upDatosVehiculo');
 
         $(div_colonia).dialog({
             autoOpen: false,
@@ -102,7 +106,7 @@ var AudUni = function () {
             }
         });
 
-        fillCondicionesTransporte();
+        //fillCondicionesTransporte();
 
         initEvents();
     }
@@ -138,6 +142,10 @@ var AudUni = function () {
             $(ddlBodega).change(function () {
                 fillPersonalPrev();
             });
+        });
+
+        $(upDatosVehiculo).panelReady(function () {
+            fillCondicionesTransporte();
         });
     }
 
@@ -260,10 +268,14 @@ var AudUni = function () {
         var tr;
         var td;
         var ind = 1;
+        var objCondTrans;
+        arrCondTran = JSON.parse($(hf_cond_trans));
+
         for (var itemCT in arrCondTran) {
+            objCondTrans = arrCondTran[itemCT];
             tr = '<tr id="condTr_' + ind + '">';
             td = '<td>';
-            td += arrCondTran[itemCT];
+            td += objCondTrans.Nombre;
             td += '</td>';
             tr += td;
             td = '<td><input name="name_' + ind + '" type="radio" value="1" /></td>';
