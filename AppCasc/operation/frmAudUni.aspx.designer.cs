@@ -301,6 +301,33 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.TextBox txt_otra_razon;
         
         /// <summary>
+        /// rb_aprobada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rb_aprobada;
+        
+        /// <summary>
+        /// rb_noaprobada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rb_noaprobada;
+        
+        /// <summary>
+        /// txt_motivo_rechazo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_motivo_rechazo;
+        
+        /// <summary>
         /// btnGuardar control.
         /// </summary>
         /// <remarks>

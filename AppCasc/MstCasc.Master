@@ -24,6 +24,11 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
+<div id="div_loading" class="modal" style="display: none;">
+    <div class="modal-content">
+        <img alt="cargando..." src="../images/ajax-loader.gif" />
+    </div>
+</div>
 <form id="form1" runat="server">
 <asp:ScriptManager ID="scrManager" runat="server"></asp:ScriptManager>
 

@@ -12,6 +12,8 @@
                     oErrorMessage.Init();
                 });
 
+                
+
                 obj.Init();
 
                 $('body').keydown(function (e) {
@@ -25,6 +27,19 @@
         } // Init <<fin>>
     }
 }
+
+webApp.Master.loading = function (open) {
+
+    var div_loading = document.getElementById('div_loading');
+    if (open)
+        div_loading.style.display = 'block';
+    else
+        div_loading.style.display = 'none';
+}
+
+//Master.openLoading = function () {
+//    $('#div_loading').dialog('open');
+//}
 
 var ErrorMessage = function () {
 

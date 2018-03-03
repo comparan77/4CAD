@@ -26,26 +26,13 @@ var AudUni = function () {
     var hf_usr_prv_perd;
     var hf_cond_trans;
     var upDatosVehiculo;
+    var upTipoTransporte;
+    var ddlTipo_Transporte;
+    var ddlTransporte;
+    var rb_noaprobada;
+    var rb_aprobada;
 
-    var arrCondTran = [
-        'Presenta Placas',
-        'Licencia de conductor vigente',
-        'Faros íntegros sin roturas',
-        'Parabrisas íntegro sin rotura',
-        'Cuenta con espejos laterales',
-        'Libre de bultos o carga no identificada',
-        'Piso íntegro sin daños',
-        'Paredes de caga íntegras sin daños',
-        'Techo de cada íntegro sin daños',
-        'Puertas de caja íntegra con cerrojo funcional',
-        'Pernos de caja soldados con tuerca de contra',
-        'Presenta placas en caja parte posterior',
-        'Limpia (sin basura en el interior)',
-        'Íntegras sin desprendimientos o abultamientos',
-        'Presenta todos los birlos',
-        'Profundidad (huella de la llanta)',
-        'Carga aprobada'
-        ];
+    var arrCondTran = [];
     var lstCondTran = [];
 
     function init() {
@@ -65,6 +52,10 @@ var AudUni = function () {
         hf_usr_prv_perd = $('#ctl00_body_hf_usr_prv_perd');
         hf_cond_trans = $('#ctl00_body_hf_cond_trans');
         upDatosVehiculo = $('#ctl00_body_upDatosVehiculo');
+        upTipoTransporte = $('#ctl00_body_upTipoTransporte');
+        ddlTransporte = $('#ctl00_body_ddlTransporte');
+        rb_noaprobada = $('#ctl00_body_rb_noaprobada');
+        rb_aprobada = $('#ctl00_body_rb_aprobada');
 
         $(div_colonia).dialog({
             autoOpen: false,
@@ -138,14 +129,38 @@ var AudUni = function () {
         });
 
         $(up_prev_pred_user).panelReady(function () {
+            ddl_autoriza = $('#ddl_autoriza');
             fillPersonalPrev();
             $(ddlBodega).change(function () {
                 fillPersonalPrev();
             });
         });
 
+        $(ddlTransporte).change(function () {
+            webApp.Master.loading(true);
+        });
+
+        $(upTipoTransporte).panelReady(function () {
+            //webApp.Master.loading();
+            ddlTipo_Transporte = $('#ctl00_body_ddlTipo_Transporte');
+            $(ddlTipo_Transporte).change(function () {
+                webApp.Master.loading(true);
+            });
+            webApp.Master.loading(false);
+        });
+
         $(upDatosVehiculo).panelReady(function () {
+            hf_cond_trans = $('#ctl00_body_hf_cond_trans');
             fillCondicionesTransporte();
+            webApp.Master.loading(false);
+        });
+
+        $(rb_noaprobada).click(function () {
+            $('#div_rechazo').removeClass('hidden');
+        });
+
+        $(rb_aprobada).click(function () {
+            $('#div_rechazo').addClass('hidden');
         });
     }
 
@@ -230,11 +245,12 @@ var AudUni = function () {
     function validarCp() {
         $(ddl_colonia).html('');
         $(txt_colonia).val('');
+        webApp.Master.loading(true);
         $.ajax({
             type: 'GET',
             url: 'https://api-codigos-postales.herokuapp.com/v2/codigo_postal/' + $(txt_cp).val(),
             complete: function () {
-                $('#div-info-codigo').removeClass('ajaxLoading');
+                webApp.Master.loading(false);
             },
             success: function (data) {
                 $(txt_estado).val(data.estado);
@@ -269,12 +285,29 @@ var AudUni = function () {
         var td;
         var ind = 1;
         var objCondTrans;
-        arrCondTran = JSON.parse($(hf_cond_trans));
+        arrCondTran = JSON.parse($(hf_cond_trans).val());
+        //console.log($(hf_cond_trans).val());
+        //alert($(hf_cond_trans).val());
+
+        var idCat = 0;
+        var rowSpan = 0;
+        var arrCatg = [];
 
         for (var itemCT in arrCondTran) {
             objCondTrans = arrCondTran[itemCT];
             tr = '<tr id="condTr_' + ind + '">';
-            td = '<td>';
+            if (idCat != objCondTrans.PTransCondCat.Id) {
+                arrCatg = arrCondTran.filter(function (obj) {
+                    return obj.PTransCondCat.Id == objCondTrans.PTransCondCat.Id;
+                });
+                td = '<td rowspan="' + arrCatg.length + '" id="tdCondCat_' + idCat + '">' + objCondTrans.PTransCondCat.Nombre + '</td>';
+                td += '<td>';
+                idCat = objCondTrans.PTransCondCat.Id;
+            } else {
+                td = '<td>';
+                rowSpan++;
+            }
+
             td += objCondTrans.Nombre;
             td += '</td>';
             tr += td;
@@ -285,6 +318,7 @@ var AudUni = function () {
             $('#tbody_condiciones').append(tr);
             ind++;
         }
+
         $('#condTr_' + arrCondTran.length).children('td').each(function () {
             $(this).children('input').each(function () {
                 $(this).click(function () {

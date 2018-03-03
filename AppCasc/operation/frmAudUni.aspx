@@ -125,7 +125,8 @@
         <table class="grdCascSmall">
             <thead>
                 <tr>
-                    <th>Condiciones del Transporte</th>
+                    <th>&nbsp;</th>
+                    <th>Revisi&oacute;n de la unidad</th>
                     <th>S&iacute;</th>
                     <th>No</th>
                 </tr>
@@ -143,7 +144,24 @@
 
 </div>
 
-<div>
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">Estatus</h3>
+<div id="div3" style="margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+    <table width="100%">
+        <tr>
+            <td>
+                <asp:RadioButton runat="server" ID="rb_aprobada" Text="Carga Aprobada" GroupName="estatus" />    
+            </td>
+            <td>
+                <asp:RadioButton runat="server" ID="rb_noaprobada" Text="Carga No Aprobada" GroupName="estatus" />        
+            </td>
+        </tr>
+    </table>
+    <div id="div_rechazo" class="hidden">
+        <asp:TextBox TextMode="MultiLine" CssClass="txtLarge" placeholder="En caso de detectar alguna otra razón para no autorizar la carga, indicarla" Rows="2" runat="server" ID="txt_motivo_rechazo"></asp:TextBox>
+    </div>
+</div>
+
+<div style="clear: both;">
     <asp:Button runat="server" ID="btnGuardar" Text="Guardar" OnClick="btnGuardar_click" />
     <asp:HiddenField runat="server" ID="hf_click_save" />
 </div>
