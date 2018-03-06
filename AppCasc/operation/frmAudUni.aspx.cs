@@ -25,10 +25,29 @@ namespace AppCasc.operation
             }
         }
 
+        private void printSalAud(int IdSalAud)
+        {
+            try
+            {
+                this.ClientScript.RegisterClientScriptBlock(this.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=SalAud&_key=" + IdSalAud.ToString() + "','_blank', 'toolbar=no');</script>");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private void loadFirstTime()
         {
             try
             {
+                int IdSalAduPrint = 0;
+                if (Request.QueryString["_kp"] != null)
+                {
+                    int.TryParse(Request.QueryString["_kp"].ToString(), out IdSalAduPrint);
+                    printSalAud(IdSalAduPrint);
+                }
+
                 ControlsMng.fillTransporte(ddlTransporte);
                 ControlsMng.fillTipoTransporte(ddlTipo_Transporte, ddlTransporte);
                 int IdTransporteTipo = 0;
@@ -86,6 +105,38 @@ namespace AppCasc.operation
             }
         }
 
+        private Salida_transporte_auditoria getFormValues()
+        {
+            List<Salida_transporte_condicion> lstSalTranCond = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Salida_transporte_condicion>>(hf_condiciones_transporte.Value);
+            if (lstSalTranCond.Count != 8)
+                throw new Exception("Es necesario proporcionar TODAS LAS CONDICIONES del transporte.");
+
+            Salida_transporte_auditoria o = new Salida_transporte_auditoria();
+
+            o.Id_bodega = Convert.ToInt32(ddlBodega.SelectedValue);
+            o.Cp = txt_cp.Text;
+            o.Callenum = txt_calle_num.Text;
+            o.Estado = txt_estado.Text;
+            o.Municipio = txt_municipio.Text;
+            o.Colonia = txt_colonia.Text;
+
+            o.Id_transporte = Convert.ToInt32(ddlTransporte.SelectedValue);
+            o.Id_transporte_tipo = Convert.ToInt32(ddlTipo_Transporte.SelectedValue);
+            o.Placa = txt_placa.Text;
+            o.Caja = txt_caja.Text;
+            o.Caja1 = txt_caja_1.Text;
+            o.Caja2 = txt_caja_2.Text;
+            o.Operador = txt_operador.Text;
+
+            o.PLstSalTransCond = lstSalTranCond;
+            o.Aprovada = rb_aprobada.Checked;
+            o.Motivo_rechazo = txt_motivo_rechazo.Text;
+
+            o.Prevencion = ((MstCasc)this.Master).getUsrLoged().Nombre;
+
+            return o;
+        }
+
         protected void ddlTransporte_changed(object sender, EventArgs args)
         {
             try
@@ -130,7 +181,8 @@ namespace AppCasc.operation
         {
             try
             {
-                //Response.Redirect("frmEmbarqueWH.aspx?_kp=" + oS.Id);
+                Salida_transporte_auditoria o = getFormValues();
+                Response.Redirect("frmAudUni.aspx?_kp=" + o.Id);
             }
             catch (Exception e)
             {

@@ -1526,6 +1526,81 @@ namespace ModelCasc.operation
 
         #region Salida Auditoria Unidades
 
+        public static Salida_transporte_auditoria SalidaTransporteAuditoriaGet(int id_salida_transporte_auditoria)
+        {
+            Salida_transporte_auditoria o = new Salida_transporte_auditoria() { Id = id_salida_transporte_auditoria };
+            try
+            {
+                Salida_transporte_auditoriaMng Mng = new Salida_transporte_auditoriaMng() { O_Salida_transporte_auditoria = o };
+                Mng.selById();
+                Salida_transporte_condicionMng oSTCMng = new Salida_transporte_condicionMng()
+                {
+                    O_Salida_transporte_condicion = new Salida_transporte_condicion()
+                    {
+                        Id_salida_transporte_auditoria = id_salida_transporte_auditoria
+                    }
+                };
+                oSTCMng.fillLstBySalidaAud();
+                Transporte_condicionMng oTCMng = new Transporte_condicionMng();
+                Transporte_condicion_categoriaMng oTCCMng = new Transporte_condicion_categoriaMng();
+                foreach (Salida_transporte_condicion itemSTC in oSTCMng.Lst)
+                {
+                    Transporte_condicion oTC = new Transporte_condicion()
+                    {
+                        Id = itemSTC.Id_transporte_condicion
+                    };
+                    oTCMng.O_Transporte_condicion = oTC;
+                    oTCMng.selById();
+
+                    Transporte_condicion_categoria oTCC = new Transporte_condicion_categoria()
+                    {
+                        Id = (int)oTC.Id_transporte_condicion_categoria
+                    };
+                    oTCCMng.O_Transporte_condicion_categoria = oTCC;
+                    oTCCMng.selById();
+                    oTC.PTransCondCat = oTCC;
+
+                    itemSTC.PTransCond = oTC;
+
+                }
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return o;
+        }
+
+        public static void SalidaTransporteAuditoriaAdd(Salida_transporte_auditoria o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                Salida_transporte_auditoriaMng oMng = new Salida_transporte_auditoriaMng() { O_Salida_transporte_auditoria = o };
+                trans = GenericDataAccess.BeginTransaction();
+
+                o.Folio = FolioCtrl.getFolio(enumTipo.SAU, trans);
+                oMng.add(trans);
+
+                Salida_transporte_condicionMng oSTCMng = new Salida_transporte_condicionMng();
+                foreach (Salida_transporte_condicion itemSTC in o.PLstSalTransCond)
+                {
+                    itemSTC.Id_salida_transporte_auditoria = o.Id;
+                    oSTCMng.O_Salida_transporte_condicion = itemSTC;
+                    oSTCMng.add(trans);
+                }
+
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
         public static void SalidaAudUniAdd(Salida_aud_uni o, string path)
         {
             IDbTransaction trans = null;

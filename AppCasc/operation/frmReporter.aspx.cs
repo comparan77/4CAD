@@ -54,11 +54,13 @@ namespace AppCasc.operation
             string RptFileName = string.Empty;
             string TemplatePath = string.Empty;
             string TemplatePathCond = string.Empty;
+            string key;
             object obj;
             dsFormatos ds = new dsFormatos();
             try
             {
                 rpt = Request["rpt"].ToString();
+                
                 switch (rpt)
                 {
                     case "entrada":
@@ -189,6 +191,16 @@ namespace AppCasc.operation
                         DocOdnTbj.getOdnTbjSrv(path, TemplatePath, (Orden_trabajo_servicio)obj, ds); 
                         //DocEntrada.getEntrada(path, TemplatePath, (Entrada)obj, ds);
                         Session.Remove("SOrdTbjSer");
+                        ShowPdf(path);
+                        break;
+                    case "SalAud":
+                        key = Request["_key"].ToString();
+                        Salida_transporte_auditoria sTA = SalidaCtrl.SalidaTransporteAuditoriaGet(Convert.ToInt32(key));
+                        RptFileName = sTA.Folio + ".pdf";
+                        path = HttpContext.Current.Server.MapPath("~/rpt/salaudtrans/") + RptFileName;
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salaudtran.rpt");
+                        DocSalida.getSalidaAudUni(path, RptFileName, sTA, ds);
+                        //DocOdnTbj.getOdnTbjSrv(path, TemplatePath, (Orden_trabajo_servicio)obj, ds); 
                         ShowPdf(path);
                         break;
                     default:

@@ -32,6 +32,20 @@ namespace ModelCasc.operation
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oSalida_transporte_condicion.Id);
+            if(this._oSalida_transporte_condicion.Id_salida!=null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oSalida_transporte_condicion.Id_salida);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, DBNull.Value);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_condicion", DbType.Int32, this._oSalida_transporte_condicion.Id_transporte_condicion);
+            if(this._oSalida_transporte_condicion.Id_salida_transporte_auditoria!=null)
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_transporte_auditria", DbType.Int32, this._oSalida_transporte_condicion.Id_salida_transporte_auditoria);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_transporte_auditria", DbType.Int32, DBNull.Value);
+            GenericDataAccess.AddInParameter(this.comm, "?P_si_no", DbType.Boolean, this._oSalida_transporte_condicion.Si_no);
+
+
+            GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
+            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oSalida_transporte_condicion.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oSalida_transporte_condicion.Id_salida);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_condicion", DbType.Int32, this._oSalida_transporte_condicion.Id_transporte_condicion);
             GenericDataAccess.AddInParameter(this.comm, "?P_si_no", DbType.Boolean, this._oSalida_transporte_condicion.Si_no);
@@ -50,11 +64,25 @@ namespace ModelCasc.operation
                     o.Id_salida = entero;
                     entero = 0;
                 }
+                else
+                {
+                    o.Id_salida = null;
+                }
                 if (dr["id_transporte_condicion"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_transporte_condicion"].ToString(), out entero);
                     o.Id_transporte_condicion = entero;
                     entero = 0;
+                }
+                if (dr["id_salida_transporte_auditoria"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_salida_transporte_auditoria"].ToString(), out entero);
+                    o.Id_salida_transporte_auditoria = entero;
+                    entero = 0;
+                }
+                else
+                {
+                    o.Id_salida_transporte_auditoria = null;
                 }
                 if (dr["si_no"] != DBNull.Value)
                 {
@@ -194,6 +222,27 @@ namespace ModelCasc.operation
             {
                 throw;
             }            
+        }
+
+        internal void fillLstBySalidaAud()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_transporte_condicion");
+                addParameters(6);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_transporte_condicion>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_transporte_condicion o = new Salida_transporte_condicion();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

@@ -782,6 +782,101 @@ namespace ModelCasc.report.operation
             }
         }
 
+        public static void getSalidaAudUni(string path, string rptPath, Salida_transporte_auditoria o, DataSet ds)
+        {
+            try
+            {
+                CultureInfo ci = new CultureInfo("es-MX");
+                ReportDocument reporte = new ReportDocument();
+                reporte.Load(rptPath);
+
+                foreach (Salida_transporte_condicion item in o.PLstSalTransCond)
+                {
+                    DataRow dr = ds.Tables["auduniemb"].NewRow();
+                    dr["categoria"] = item.PTransCond.PTransCondCat.Nombre;
+                    dr["condicion"] = item.PTransCond.Nombre;
+                    dr["si"] = string.Empty;
+                    dr["no"] = string.Empty;
+                    if (item.Si_no)
+                        dr["si"] = "X";
+                    else
+                        dr["no"] = "X";
+                    ds.Tables["auduniemb"].Rows.Add(dr);
+                }
+                reporte.SetDataSource(ds.Tables["auduniemb"]);
+
+                //#region Datos de la entrada
+                //reporte.SetParameterValue("cliente", oS.PCliente.Razon);
+                //reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                //reporte.SetParameterValue("folio_oc", oSOC.Folio_orden_carga);
+                //#endregion
+
+                //#region Documentos Salida
+                //StringBuilder sbCompartida = new StringBuilder();
+                //int saltoCompartida = 1;
+                //foreach (Salida_compartida oSC in oS.PLstSalComp)
+                //{
+                //    if (string.Compare(oS.Referencia, oSC.Referencia) != 0)
+                //    {
+                //        sbCompartida.Append(oSC.Referencia);
+                //        if (saltoCompartida % 2 == 0)
+                //        {
+                //            sbCompartida.AppendLine();
+                //            saltoCompartida = 0;
+                //        }
+                //        else
+                //            sbCompartida.Append(", ");
+                //        saltoCompartida++;
+                //    }
+                //}
+
+                //if (sbCompartida.Length == 0)
+                //    reporte.SetParameterValue("referencia", oS.Referencia);
+                //else
+                //    reporte.SetParameterValue("referencia", oS.Referencia + ", " + sbCompartida.ToString().Substring(0, sbCompartida.ToString().Length - 2));
+
+                //#endregion
+
+                //#region Datos del Transporte
+
+                //reporte.SetParameterValue("tipo_vehiculo", oS.PTransporteTipo.Nombre);
+                //StringBuilder sbET = new StringBuilder();
+
+                //string strPlaca = string.Empty;
+                //if (string.Compare(oS.Placa, "N.A.") != 0)
+                //{
+                //    strPlaca = "Placa: " + oS.Placa;
+                //    if (string.Compare(oS.Caja, "N.A.") != 0)
+                //        strPlaca += ", Caja: " + oS.Caja;
+                //    if (string.Compare(oS.Caja1, "N.A.") != 0)
+                //    {
+                //        strPlaca += ", Cont. 1: " + oS.Caja1;
+                //        if (string.Compare(oS.Caja2, "N.A.") != 0)
+                //            strPlaca += ", Cont. 2: " + oS.Caja2;
+                //    }
+                //    sbET.Append(" " + strPlaca);
+                //}
+
+                //reporte.SetParameterValue("placas", sbET.ToString());
+                //reporte.SetParameterValue("comentario", oSOC.Observaciones_tranpsorte.Length == 0 ? "--- Sin comentarios ---" : oSOC.Observaciones_tranpsorte);
+                //#endregion
+
+                //#region Firmas
+
+                //reporte.SetParameterValue("operador", oS.Operador);
+                //reporte.SetParameterValue("vigilante", oS.Vigilante);
+
+                //#endregion
+
+                reporte.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
     }
 
     class _events : PdfPageEventHelper
