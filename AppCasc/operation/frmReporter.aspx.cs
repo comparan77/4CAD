@@ -198,9 +198,8 @@ namespace AppCasc.operation
                         Salida_transporte_auditoria sTA = SalidaCtrl.SalidaTransporteAuditoriaGet(Convert.ToInt32(key));
                         RptFileName = sTA.Folio + ".pdf";
                         path = HttpContext.Current.Server.MapPath("~/rpt/salaudtrans/") + RptFileName;
-                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/salaudtran.rpt");
-                        DocSalida.getSalidaAudUni(path, RptFileName, sTA, ds);
-                        //DocOdnTbj.getOdnTbjSrv(path, TemplatePath, (Orden_trabajo_servicio)obj, ds); 
+                        TemplatePath = HttpContext.Current.Server.MapPath("~/report/Formatos/auduniemb.rpt");
+                        DocSalida.getSalidaAudUni(path, TemplatePath, sTA, ds);
                         ShowPdf(path);
                         break;
                     default:

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModelCasc.catalog;
 
 namespace ModelCasc.operation
 {
@@ -26,6 +27,7 @@ namespace ModelCasc.operation
         protected string _estado;
         protected string _municipio;
         protected string _colonia;
+        protected DateTime _fecha;
         protected bool _IsActive;
         #endregion
 
@@ -48,9 +50,11 @@ namespace ModelCasc.operation
         public string Estado { get { return _estado; } set { _estado = value; } }
         public string Municipio { get { return _municipio; } set { _municipio = value; } }
         public string Colonia { get { return _colonia; } set { _colonia = value; } }
+        public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
         public bool IsActive { get { return _IsActive; } set { _IsActive = value; } }
-        public List<Salida_transporte_condicion> PLstSalTransCond { get; set; } 
-
+        public List<Salida_transporte_condicion> PLstSalTransCond { get; set; }
+        public Transporte PTransporte { get; set; }
+        public Transporte_tipo PTransTipo { get; set; }
         #endregion
 
         #region Constructores

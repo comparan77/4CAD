@@ -108,7 +108,7 @@ namespace AppCasc.operation
         private Salida_transporte_auditoria getFormValues()
         {
             List<Salida_transporte_condicion> lstSalTranCond = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Salida_transporte_condicion>>(hf_condiciones_transporte.Value);
-            if (lstSalTranCond.Count != 8)
+            if (lstSalTranCond.Count != Convert.ToInt32(hf_num_cond.Value))
                 throw new Exception("Es necesario proporcionar TODAS LAS CONDICIONES del transporte.");
 
             Salida_transporte_auditoria o = new Salida_transporte_auditoria();
@@ -182,6 +182,7 @@ namespace AppCasc.operation
             try
             {
                 Salida_transporte_auditoria o = getFormValues();
+                SalidaCtrl.SalidaTransporteAuditoriaAdd(o);
                 Response.Redirect("frmAudUni.aspx?_kp=" + o.Id);
             }
             catch (Exception e)

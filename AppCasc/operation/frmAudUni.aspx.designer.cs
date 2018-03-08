@@ -292,6 +292,15 @@ namespace AppCasc.operation {
         protected global::System.Web.UI.WebControls.HiddenField hf_condiciones_transporte;
         
         /// <summary>
+        /// hf_num_cond control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_num_cond;
+        
+        /// <summary>
         /// txt_otra_razon control.
         /// </summary>
         /// <remarks>

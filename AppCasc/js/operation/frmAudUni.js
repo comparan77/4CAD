@@ -289,6 +289,7 @@ var AudUni = function () {
         //console.log($(hf_cond_trans).val());
         //alert($(hf_cond_trans).val());
 
+        $('#ctl00_body_hf_num_cond').val(arrCondTran.length);
         var idCat = 0;
         var rowSpan = 0;
         var arrCatg = [];

@@ -38,16 +38,9 @@ namespace ModelCasc.operation
                 GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, DBNull.Value);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_condicion", DbType.Int32, this._oSalida_transporte_condicion.Id_transporte_condicion);
             if(this._oSalida_transporte_condicion.Id_salida_transporte_auditoria!=null)
-                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_transporte_auditria", DbType.Int32, this._oSalida_transporte_condicion.Id_salida_transporte_auditoria);
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_transporte_auditoria", DbType.Int32, this._oSalida_transporte_condicion.Id_salida_transporte_auditoria);
             else
-                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_transporte_auditria", DbType.Int32, DBNull.Value);
-            GenericDataAccess.AddInParameter(this.comm, "?P_si_no", DbType.Boolean, this._oSalida_transporte_condicion.Si_no);
-
-
-            GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
-            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oSalida_transporte_condicion.Id);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_salida", DbType.Int32, this._oSalida_transporte_condicion.Id_salida);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte_condicion", DbType.Int32, this._oSalida_transporte_condicion.Id_transporte_condicion);
+                GenericDataAccess.AddInParameter(this.comm, "?P_id_salida_transporte_auditoria", DbType.Int32, DBNull.Value);
             GenericDataAccess.AddInParameter(this.comm, "?P_si_no", DbType.Boolean, this._oSalida_transporte_condicion.Si_no);
         }
 

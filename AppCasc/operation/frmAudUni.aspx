@@ -135,6 +135,7 @@
                 
             </tbody>
         </table>
+        <asp:HiddenField runat="server" ID="hf_num_cond" />
     </div>
 
     <div id="div_otra_razon" class="hidden">

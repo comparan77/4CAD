@@ -807,7 +807,34 @@ namespace ModelCasc.report.operation
 
                 //#region Datos de la entrada
                 //reporte.SetParameterValue("cliente", oS.PCliente.Razon);
-                //reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("fecha", o.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("direccion", o.Callenum + ", " + o.Colonia + ", " + o.Municipio + ", " + "C.P.: " + o.Cp + ", " + o.Estado);
+                reporte.SetParameterValue("linea", o.PTransporte.Nombre);
+                reporte.SetParameterValue("tipo_vehiculo", o.PTransTipo.Nombre);
+
+                StringBuilder sbET = new StringBuilder();
+                string strPlaca = string.Empty;
+                if (string.Compare(o.Placa, "N.A.") != 0)
+                {
+                    strPlaca = "Placa: " + o.Placa;
+                    if (string.Compare(o.Caja, "N.A.") != 0)
+                        strPlaca += ", Caja: " + o.Caja;
+                    if (string.Compare(o.Caja1, "N.A.") != 0)
+                    {
+                        strPlaca += ", Cont. 1: " + o.Caja1;
+                        if (string.Compare(o.Caja2, "N.A.") != 0)
+                            strPlaca += ", Cont. 2: " + o.Caja2;
+                    }
+                    sbET.Append(" " + strPlaca);
+                }
+                reporte.SetParameterValue("placas", sbET.ToString());
+
+                reporte.SetParameterValue("operador", o.Operador);
+                reporte.SetParameterValue("vigilante", o.Prevencion);
+                reporte.SetParameterValue("aprobada", o.Aprovada);
+                reporte.SetParameterValue("rechazo_comentario", o.Motivo_rechazo);
+
+
                 //reporte.SetParameterValue("folio_oc", oSOC.Folio_orden_carga);
                 //#endregion
 

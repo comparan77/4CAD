@@ -1540,7 +1540,17 @@ namespace ModelCasc.operation
                         Id_salida_transporte_auditoria = id_salida_transporte_auditoria
                     }
                 };
+
+                TransporteMng oTMng = new TransporteMng();
+                Transporte oT = new Transporte() { Id = o.Id_transporte };
+                oTMng.O_Transporte = oT;
+                oTMng.selById();
+                o.PTransporte = oT;
+
+                o.PTransTipo = CatalogCtrl.Transporte_tipo_getyById(o.Id_transporte_tipo);
+
                 oSTCMng.fillLstBySalidaAud();
+                o.PLstSalTransCond = oSTCMng.Lst;
                 Transporte_condicionMng oTCMng = new Transporte_condicionMng();
                 Transporte_condicion_categoriaMng oTCCMng = new Transporte_condicion_categoriaMng();
                 foreach (Salida_transporte_condicion itemSTC in oSTCMng.Lst)
@@ -1587,6 +1597,7 @@ namespace ModelCasc.operation
                 foreach (Salida_transporte_condicion itemSTC in o.PLstSalTransCond)
                 {
                     itemSTC.Id_salida_transporte_auditoria = o.Id;
+                    itemSTC.Id_salida = null;
                     oSTCMng.O_Salida_transporte_condicion = itemSTC;
                     oSTCMng.add(trans);
                 }

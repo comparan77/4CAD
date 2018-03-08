@@ -95,6 +95,12 @@ namespace ModelCasc.operation
                 o.Estado = dr["estado"].ToString();
                 o.Municipio = dr["municipio"].ToString();
                 o.Colonia = dr["colonia"].ToString();
+                if (dr["fecha"] != DBNull.Value)
+                {
+                    DateTime.TryParse(dr["fecha"].ToString(), out fecha);
+                    o.Fecha = fecha;
+                    fecha = default(DateTime);
+                }
                 if (dr["IsActive"] != DBNull.Value)
                 {
                     bool.TryParse(dr["IsActive"].ToString(), out logica);
