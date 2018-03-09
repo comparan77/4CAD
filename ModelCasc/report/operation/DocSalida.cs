@@ -808,6 +808,7 @@ namespace ModelCasc.report.operation
                 //#region Datos de la entrada
                 //reporte.SetParameterValue("cliente", oS.PCliente.Razon);
                 reporte.SetParameterValue("fecha", o.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
+                reporte.SetParameterValue("folio", o.Folio);
                 reporte.SetParameterValue("direccion", o.Callenum + ", " + o.Colonia + ", " + o.Municipio + ", " + "C.P.: " + o.Cp + ", " + o.Estado);
                 reporte.SetParameterValue("linea", o.PTransporte.Nombre);
                 reporte.SetParameterValue("tipo_vehiculo", o.PTransTipo.Nombre);
