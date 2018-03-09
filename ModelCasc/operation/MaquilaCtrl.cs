@@ -78,13 +78,15 @@ namespace ModelCasc.operation
                     oELMng.O_Entrada_liverpool = oEL;
                     oELMng.selByTrafico();
 
-                    oE = new Entrada();
-                    oE.Id = oEL.Id_entrada;
-                    oEMng.O_Entrada = oE;
-                    oEMng.selById();
+                    if (oEL.Id_entrada > 0)
+                    {
+                        oE = new Entrada();
+                        oE.Id = oEL.Id_entrada;
+                        oEMng.O_Entrada = oE;
+                        oEMng.selById();
 
-                    itemOT.PEnt = oE;
-
+                        itemOT.PEnt = oE;
+                    }
                     foreach (Orden_trabajo_servicio itemOTS in oOTSMng.Lst)
                     {
                         Etiqueta_tipo oET = new Etiqueta_tipo() { Id = itemOTS.Id_etiqueta_tipo };

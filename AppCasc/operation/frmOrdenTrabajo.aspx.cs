@@ -95,9 +95,19 @@ namespace AppCasc.operation
         private Orden_trabajo getFormValues()
         {
             Orden_trabajo o = new Orden_trabajo();
-            o.Referencia = txt_trafico.Text.Trim();
-            o.Supervisor = txt_supervisor.Text.Trim().ToUpper();
-            o.PLstOTSer = VSLstOTS;
+
+            try
+            {
+                if (VSLstOTS.Count == 0)
+                    throw new Exception("Es necesario agregar por lo menos un servicio a la orden de trabajo");
+                o.Referencia = txt_trafico.Text.Trim();
+                o.Supervisor = txt_supervisor.Text.Trim().ToUpper();
+                o.PLstOTSer = VSLstOTS;
+            }
+            catch
+            {
+                throw;
+            }
             
             return o;
         }
