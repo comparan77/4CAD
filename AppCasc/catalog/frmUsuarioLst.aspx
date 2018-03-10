@@ -1,14 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmUsuarioLst.aspx.cs" Inherits="AppCasc.catalog.frmUsuarioLst" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%--<link href="../css/common.css" rel="stylesheet" type="text/css" />
-    <link href="../css/redmond/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />--%>
     <link href="../css/frmCatalog.css" rel="stylesheet" type="text/css" />
 
-    <%--<script src="../js/jquery.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>--%>
-    <script src="../js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="../js/catalog/frmLst.js" type="text/javascript"></script>
-    <script src="../js/catalog/frmLstUsuario.js" type="text/javascript"></script>
+    <script src="../js/jquery.dataTables.min.js?v1.1.150619_1446" type="text/javascript"></script>
+    <script src="../js/catalog/frmLst.js?v1.1.150619_1446" type="text/javascript"></script>
+    <script src="../js/catalog/frmLstUsuario.js?v1.1.150619_1446" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 <asp:HiddenField runat="server" ID="hfTitleErr" />
@@ -27,6 +23,7 @@
             <th>Bodega</th>
             <th align="center" class="columnAction">Editar</th>
             <th align="center" class="columnAction">Estado</th>
+            <th class="hidden"></th>
         </tr>
     </thead>
     <tbody>
@@ -40,6 +37,7 @@
                     <td id="bodega"><%# Eval("bodega") %></td>
                     <td align="center"><a href='<%# "frmUsuario.aspx?Key=" + Eval("id") + "&Action=Udt" %>'><span class="ui-icon ui-icon-pencil spnIcon"></span></a></td>
                     <td align="center"><asp:LinkButton runat="server" CommandArgument='<%# Eval("IsActive") %>' CommandName='<%# Eval("id") %>' ID="lnk_change_status" CssClass='<%# "ui-icon ui-icon-circle-" + (Convert.ToBoolean(Eval("IsActive")) ? "check" : "close") + " spnIcon" %>' OnCommand="lnk_change_status_click"></asp:LinkButton> </td>
+                    <td class="hidden"><%# Eval("IsActive") %></td>
                 </tr>
             </ItemTemplate>
         </asp:Repeater>

@@ -18,12 +18,12 @@
     </div>
     <div>
         <label>Clave:</label>
-        <asp:TextBox runat="server" ID="txt_clave"></asp:TextBox>
+        <asp:TextBox runat="server" MaxLength="10" ID="txt_clave"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" ID="rfvClave" ControlToValidate="txt_clave" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
     </div>
     <div>
         <label>Contraseña:</label>
-        <asp:TextBox runat="server" ID="txt_contrasenia"></asp:TextBox>
+        <asp:TextBox runat="server" MaxLength="10" ID="txt_contrasenia"></asp:TextBox>
         <asp:RequiredFieldValidator runat="server" ID="rfvContrasenia" ControlToValidate="txt_contrasenia" ErrorMessage="Campo Requerido"></asp:RequiredFieldValidator>
         <asp:HiddenField runat="server" ID="hf_old_pwd" />
     </div>

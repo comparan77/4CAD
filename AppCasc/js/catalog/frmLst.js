@@ -2,24 +2,44 @@
 
     var fkey;
     var gridView;
+    var lastCol;
 
     this.CreateGrid = createGrid;
     this.Fkey = fkey;
 
     function createGrid(gridView, urlIst) {
 
-        gridView.dataTable({
-            'bJQueryUI': true,
-            'bPaginate': false,
-            'oLanguage': {
-                'sEmptyTable': 'No existen datos para este catalogo',
-                'sZeroRecords': 'No existen coincidencias',
-                'sSearch': 'Buscar:',
-                'sInfo': 'Total: _TOTAL_ Registro(s), Mostrando de _START_ a _END_',
-                'sInfoEmpty': 'Mostrando 0 Registros',
-                'sInfoFiltered': ' - Filtrando de _MAX_ registros'
-            }
-        });
+        lastCol = gridView.children('tbody').children('tr').first().children('td').length - 1;
+
+        if (lastCol > 0) {
+
+            gridView.dataTable({
+                'bJQueryUI': true,
+                'bPaginate': false,
+                'oLanguage': {
+                    'sEmptyTable': 'No existen datos para este catalogo',
+                    'sZeroRecords': 'No existen coincidencias',
+                    'sSearch': 'Buscar:',
+                    'sInfo': 'Total: _TOTAL_ Registro(s), Mostrando de _START_ a _END_',
+                    'sInfoEmpty': 'Mostrando 0 Registros',
+                    'sInfoFiltered': ' - Filtrando de _MAX_ registros'
+                },
+                'order': [[lastCol, 'desc'], [0, 'asc']]
+            });
+        } else {
+            gridView.dataTable({
+                'bJQueryUI': true,
+                'bPaginate': false,
+                'oLanguage': {
+                    'sEmptyTable': 'No existen datos para este catalogo',
+                    'sZeroRecords': 'No existen coincidencias',
+                    'sSearch': 'Buscar:',
+                    'sInfo': 'Total: _TOTAL_ Registro(s), Mostrando de _START_ a _END_',
+                    'sInfoEmpty': 'Mostrando 0 Registros',
+                    'sInfoFiltered': ' - Filtrando de _MAX_ registros'
+                }
+            });
+        }
 
         gridView.children('tbody').children('tr').click(function (e) {
             if ($(this).hasClass('row_selected')) {
@@ -51,7 +71,7 @@
         gridView.children('tbody').children('tr').each(function () {
 
             var Msg = '¿Desea DESActivar este registro?';
-            var lnkAction = $(this).children('td').last().children('a');
+            var lnkAction = $(this).children('td:nth-child(' + lastCol + ')').children('a');
             if (lnkAction.hasClass('ui-icon-circle-close')) {
                 $(this).css('text-decoration', 'line-through');
                 Msg = '¿Desea Activar este registro?';
