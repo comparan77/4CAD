@@ -49,6 +49,26 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_estado", DbType.String, this._oSalida_transporte_auditoria.Estado);
             GenericDataAccess.AddInParameter(this.comm, "?P_municipio", DbType.String, this._oSalida_transporte_auditoria.Municipio);
             GenericDataAccess.AddInParameter(this.comm, "?P_colonia", DbType.String, this._oSalida_transporte_auditoria.Colonia);
+
+            if(this._oSalida_transporte_auditoria.anio_ini == 0)
+                GenericDataAccess.AddInParameter(this.comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_anio_ini", DbType.Int32, this._oSalida_transporte_auditoria.anio_ini);
+
+            if (this._oSalida_transporte_auditoria.dia_ini == 0)
+                GenericDataAccess.AddInParameter(this.comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_dia_ini", DbType.Int32, this._oSalida_transporte_auditoria.dia_ini);
+
+            if (this._oSalida_transporte_auditoria.anio_fin == 0)
+                GenericDataAccess.AddInParameter(this.comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_anio_fin", DbType.Int32, this._oSalida_transporte_auditoria.anio_fin);
+
+            if (this._oSalida_transporte_auditoria.dia_fin == 0)
+                GenericDataAccess.AddInParameter(this.comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+            else
+                GenericDataAccess.AddInParameter(this.comm, "?P_dia_fin", DbType.Int32, this._oSalida_transporte_auditoria.dia_fin);
         }
 
         protected void BindByDataRow(DataRow dr, Salida_transporte_auditoria o)
@@ -211,6 +231,27 @@ namespace ModelCasc.operation
                 addParameters(2);
                 GenericDataAccess.ExecuteNonQuery(this.comm, trans);
                 this._oSalida_transporte_auditoria.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void fillLstByPeriod()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Salida_transporte_auditoria");
+                addParameters(7);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                this._lst = new List<Salida_transporte_auditoria>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Salida_transporte_auditoria o = new Salida_transporte_auditoria();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
             }
             catch
             {

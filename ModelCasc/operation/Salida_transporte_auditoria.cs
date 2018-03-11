@@ -55,6 +55,11 @@ namespace ModelCasc.operation
         public List<Salida_transporte_condicion> PLstSalTransCond { get; set; }
         public Transporte PTransporte { get; set; }
         public Transporte_tipo PTransTipo { get; set; }
+
+        public int anio_ini { get; set; }
+        public int dia_ini { get; set; }
+        public int anio_fin { get; set; }
+        public int dia_fin { get; set; }
         #endregion
 
         #region Constructores
@@ -78,6 +83,11 @@ namespace ModelCasc.operation
             this._municipio = String.Empty;
             this._colonia = String.Empty;
             this._IsActive = false;
+
+            this.anio_ini = 0;
+            this.anio_fin = 0;
+            this.dia_ini = 0;
+            this.dia_fin = 0;
         }
         #endregion
     }

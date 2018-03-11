@@ -1526,6 +1526,27 @@ namespace ModelCasc.operation
 
         #region Salida Auditoria Unidades
 
+        public static List<Salida_transporte_auditoria> SalidaTransporteAuditoriaLst(int anio_ini, int dia_ini, int anio_fin, int dia_fin) 
+        {
+            List<Salida_transporte_auditoria> lst = new List<Salida_transporte_auditoria>();
+            try
+            {
+                Salida_transporte_auditoriaMng oMng = new Salida_transporte_auditoriaMng();
+                Salida_transporte_auditoria o = new Salida_transporte_auditoria() { anio_ini = anio_ini, dia_ini = dia_ini, anio_fin = anio_fin, dia_fin = dia_fin };
+                oMng.fillLstByPeriod();
+                foreach (Salida_transporte_auditoria itemSTA in oMng.Lst)
+                {
+                    o = SalidaTransporteAuditoriaGet(itemSTA.Id);
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         public static Salida_transporte_auditoria SalidaTransporteAuditoriaGet(int id_salida_transporte_auditoria)
         {
             Salida_transporte_auditoria o = new Salida_transporte_auditoria() { Id = id_salida_transporte_auditoria };

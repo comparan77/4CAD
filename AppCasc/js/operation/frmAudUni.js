@@ -31,6 +31,8 @@ var AudUni = function () {
     var ddlTransporte;
     var rb_noaprobada;
     var rb_aprobada;
+    var btn_consultar;
+    var up_consulta;
 
     var arrCondTran = [];
     var lstCondTran = [];
@@ -56,6 +58,14 @@ var AudUni = function () {
         ddlTransporte = $('#ctl00_body_ddlTransporte');
         rb_noaprobada = $('#ctl00_body_rb_noaprobada');
         rb_aprobada = $('#ctl00_body_rb_aprobada');
+        btn_consultar = $('#ctl00_body_btn_consultar');
+        up_consulta = $('#ctl00_body_up_consulta');
+
+        $('#ctl00_body_txt_fecha_ini, #ctl00_body_txt_fecha_fin').datepicker({
+            'dateFormat': 'dd/mm/yy'
+        });
+
+        $('#tabs').tabs();
 
         $(div_colonia).dialog({
             autoOpen: false,
@@ -103,6 +113,11 @@ var AudUni = function () {
     }
 
     function initEvents() {
+
+        $(btn_consultar).button().click(function () {
+            consultar_reg();
+        });
+
         $(btn_valid_cp).click(function () {
             validarCp();
             return false;
@@ -126,6 +141,10 @@ var AudUni = function () {
                 return false;
 
             return IsValid == cod_prev_valido == true;
+        });
+
+        $(up_consulta).panelReady(function () {
+            webApp.Master.loading(false);
         });
 
         $(up_prev_pred_user).panelReady(function () {
@@ -162,6 +181,10 @@ var AudUni = function () {
         $(rb_aprobada).click(function () {
             $('#div_rechazo').addClass('hidden');
         });
+    }
+
+    function consultar_reg() {
+        webApp.Master.loading(true);
     }
 
     function validaPersonalPrev(clave, contrasenia) {

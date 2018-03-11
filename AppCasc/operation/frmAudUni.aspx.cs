@@ -25,6 +25,15 @@ namespace AppCasc.operation
             }
         }
 
+        private void setDateRange()
+        {
+            DateTime fecha = DateTime.Today;
+            DateTime fecha_ini = fecha.AddDays(-7);
+            DateTime fecha_fin = fecha;
+            txt_fecha_ini.Text = fecha_ini.ToString("dd/MM/yyyy");
+            txt_fecha_fin.Text = fecha_fin.ToString("dd/MM/yyyy");
+        }
+
         private void printSalAud(int IdSalAud)
         {
             try
@@ -56,6 +65,8 @@ namespace AppCasc.operation
 
                 ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
                 fillUsrPrvPerdByIdBodega(Convert.ToInt32(ddlBodega.Items[0].Value));
+
+                setDateRange();
             }
             catch
             {
@@ -184,6 +195,31 @@ namespace AppCasc.operation
                 Salida_transporte_auditoria o = getFormValues();
                 SalidaCtrl.SalidaTransporteAuditoriaAdd(o);
                 Response.Redirect("frmAudUni.aspx?_kp=" + o.Id);
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void btn_consultar_click(object sender, EventArgs args) 
+        {
+            try
+            {
+                DateTime fecha = new DateTime(1, 1, 1);
+
+                DateTime periodo_ini = new DateTime();
+                DateTime.TryParse(txt_fecha_ini.Text, out fecha);
+                periodo_ini = fecha;
+                fecha = new DateTime(1, 1, 1);
+
+                DateTime periodo_fin = new DateTime();
+                DateTime.TryParse(txt_fecha_fin.Text, out fecha);
+                periodo_fin = fecha;
+                fecha = new DateTime(1, 1, 1);
+
+                grd_consulta.DataSource = SalidaCtrl.SalidaTransporteAuditoriaLst(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear);
+                grd_consulta.DataBind();
             }
             catch (Exception e)
             {
