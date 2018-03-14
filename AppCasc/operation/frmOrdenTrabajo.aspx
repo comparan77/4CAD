@@ -22,7 +22,7 @@
                 <div>
                     <label>Pedimento:</label>
                     <asp:TextBox runat="server" ID="txt_referencia" Text="" AutoPostBack="true" OnTextChanged="change_referencia"></asp:TextBox>
-                    
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txt_referencia" ValidationGroup="vg_orden_trabajo" ID="rfv_referencia" ErrorMessage="Es necesario proporcionar la referencia"></asp:RequiredFieldValidator>
                 </div>
                 <asp:UpdatePanel runat="server" ID="up_trafico" UpdateMode="Conditional">
                 <Triggers>
