@@ -204,7 +204,7 @@
                 <asp:AsyncPostBackTrigger ControlID="btn_consultar" EventName="click" />
             </Triggers>
             <ContentTemplate>
-                <asp:GridView runat="server" CssClass="grdCascSmall" ID="grd_consulta" AutoGenerateColumns="false">
+                <asp:GridView runat="server" CssClass="grdCascSmall" ID="grd_consulta" AutoGenerateColumns="false" EmptyDataText="No existen folios para el periodo proporcionado">
                     <Columns>
                         <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:dd/MM/yy}" />
                         <asp:BoundField DataField="Folio" HeaderText="Folio" />
