@@ -102,9 +102,7 @@ namespace AppCasc.operation
                     throw new Exception("Es necesario agregar por lo menos un servicio a la orden de trabajo");
 
                 o.Referencia = txt_trafico.Text.Trim();
-                EntradaCtrl.EntradaLiverpoolGetRefEntByRef(o.Referencia);
-
-                
+                //EntradaCtrl.EntradaLiverpoolGetRefEntByRef(o.Referencia);
                 o.Supervisor = txt_supervisor.Text.Trim().ToUpper();
                 o.PLstOTSer = VSLstOTS;
             }
@@ -151,33 +149,6 @@ namespace AppCasc.operation
                 ((MstCasc)this.Master).setError = e.Message;
             }
         }
-
-        //protected void pedido_changed(object sender, EventArgs args)
-        //{
-        //    Label lbl_pedido_info = ((Control)sender).Parent.FindControl("lbl_pedido_info") as Label;
-        //    Label lbl_pedido_piezas = ((Control)sender).Parent.FindControl("lbl_pedido_piezas") as Label;
-        //    Panel pnl_pedido = ((Control)sender).Parent.FindControl("pnl_pedido") as Panel;
-        //    TextBox txt_pedido = ((Control)sender).Parent.FindControl("txt_pedido") as TextBox;
-        //    lbl_pedido_info.Text = string.Empty;
-        //    lbl_pedido_piezas.Text = string.Empty;
-        //    pnl_pedido.Visible = false;
-
-        //    try
-        //    {
-        //        if (IsValid)
-        //        {
-        //            Entrada_liverpool o = new Entrada_liverpool() { Trafico = txt_trafico.Text.Trim(), Pedido = Convert.ToInt32(txt_pedido.Text.Trim()) };
-        //            EntradaCtrl.EntradaLiverpoolGetByUniqueKey(o);
-        //            lbl_pedido_info.Text = "Proveedor: " + o.Proveedor;
-        //            lbl_pedido_piezas.Text = "Piezas: " + o.Piezas.ToString();
-        //            pnl_pedido.Visible = true;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ((MstCasc)this.Master).setError = e.Message;
-        //    }
-        //}
 
         protected void validatePedido(object sender, ServerValidateEventArgs args)
         {
@@ -270,13 +241,6 @@ namespace AppCasc.operation
                 switch (args.CommandName)
                 {
                     case "precio":
-                        //TextBox txt_pedido = oC.FindControl("txt_pedido") as TextBox;
-                        //TextBox txt_pedido_pieza = oC.FindControl("txt_pedido_pieza") as TextBox;
-                        //oOTS.Ref2 = txt_pedido.Text;
-                        //oOTS.Piezas = Convert.ToInt32(txt_pedido_pieza.Text);
-                        //ddlEtiqueta_tipo = oC.FindControl("ddl_eti_tipo_precio") as DropDownList;
-                        //txt_pedido.Text = string.Empty;
-                        //txt_pedido_pieza.Text = string.Empty;
                         GridView grd_pedidos = oC.Parent.FindControl("grd_pedidos") as GridView;
                         foreach (GridViewRow row in grd_pedidos.Rows)
                         {
@@ -306,6 +270,9 @@ namespace AppCasc.operation
                         btn_add_pedido.Enabled = false;
                         break;
                     case "nom":
+                        Entrada oE = EntradaCtrl.EntradaByReferencia(txt_referencia.Text);
+                        if (oE.Id < 1)
+                            throw new Exception("El pedimento proporcionado no cuenta con una entrada");
                         TextBox txt_solicitud = oC.FindControl("txt_solicitud") as TextBox;
                         TextBox txt_sol_pieza = oC.FindControl("txt_sol_pieza") as TextBox;
                         oOTS.Ref2 = txt_solicitud.Text;
