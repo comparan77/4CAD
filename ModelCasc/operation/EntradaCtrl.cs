@@ -1257,6 +1257,7 @@ namespace ModelCasc.operation
             try
             {
                 Entrada_liverpool o;
+                Entrada_liverpool oELiv_db;
                 DataTable dtImport = Model.CommonFunctions.ImportXls(path, " where " + Globals.REFERENCIA_NAME_XLS_FONDEO + " is not null");
 
                 tran = GenericDataAccess.BeginTransaction();
@@ -1272,7 +1273,11 @@ namespace ModelCasc.operation
 
                     int.TryParse(dr["PEDIDO"].ToString(), out pedido);
                     int.TryParse(dr["PIEZAS"].ToString(), out piezas);
-                    DateTime.TryParse(dr["FECHA_CONFIRMA"].ToString(), out fecha_confirma);
+                    DateTime.TryParseExact(dr["FECHA_CONFIRMA"].ToString(),
+                        "MM/dd/yyyy",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out fecha_confirma);
                     referencia = dr["REFERENCIA"].ToString();
 
                     o = new Entrada_liverpool()
@@ -1290,16 +1295,18 @@ namespace ModelCasc.operation
                     Entrada oE = EntradaByReferencia(referencia);
                     if (oE.Id > 0)
                     {
-                        o.Id_entrada = oE.Id;
-                        EntradaLiverpoolGetByUniqueKey(o, tran);
-                        oMng.O_Entrada_liverpool = o;
-                        if (o.Id > 0)
+                        oELiv_db = new Entrada_liverpool() { Trafico = o.Trafico, Pedido = o.Pedido};
+                        EntradaLiverpoolGetByUniqueKey(oELiv_db, tran);
+                        if (oELiv_db.Id > 0)
                         {
-                            o.Fecha_confirma = o.Fecha_confirma;
+                            oMng.O_Entrada_liverpool = oELiv_db;
+                            oELiv_db.Fecha_confirma = o.Fecha_confirma;
                             oMng.udtFechaConfirmacion(tran);
                         }
                         else
                         {
+                            o.Id_entrada = oE.Id;
+                            oMng.O_Entrada_liverpool = o;
                             oMng.add(tran);
                         }
                         lst.Add(o);
