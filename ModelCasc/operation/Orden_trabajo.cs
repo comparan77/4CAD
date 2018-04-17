@@ -13,6 +13,7 @@ namespace ModelCasc.operation
         protected int _id;
         protected string _folio;
         protected string _referencia;
+        protected string _referencia_entrada;
         protected DateTime _fecha;
         protected bool _cerrada;
         protected string _supervisor;
@@ -23,6 +24,7 @@ namespace ModelCasc.operation
         public int Id { get { return _id; } set { _id = value; } }
         public string Folio { get { return _folio; } set { _folio = value; } }
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
+        public string Referencia_entrada { get { return _referencia_entrada; } set { _referencia_entrada = value; } }
         public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
         public bool Cerrada { get { return _cerrada; } set { _cerrada = value; } }
         public List<Orden_trabajo_servicio> PLstOTSer { get; set; }
@@ -35,7 +37,8 @@ namespace ModelCasc.operation
         public Orden_trabajo()
 		{
 			this._folio = String.Empty;
-			this._referencia = String.Empty;
+            this._referencia = String.Empty;
+            this._referencia_entrada = String.Empty;
             this._cerrada = false;
             this._supervisor = string.Empty;
 		}
