@@ -10,6 +10,12 @@ namespace AppCasc.operation
 {
     public partial class frmOrdCrg : System.Web.UI.Page
     {
+        private void clearGrdMaquila()
+        {
+            grd_maquila.DataSource = null;
+            grd_maquila.DataBind();
+        }
+
         private void fillGrdOt()
         {
             grd_ot_cerrada.DataSource = MaquilaCtrl.OrdenTrabajoGetLstCloseOrOpen(true);
@@ -28,6 +34,8 @@ namespace AppCasc.operation
             {
                 grd_ot_cerrada.PageIndex = args.NewPageIndex;
                 fillGrdOt();
+                clearGrdMaquila();
+                up_maquila.Update();
             }
             catch (Exception e)
             {
@@ -68,6 +76,7 @@ namespace AppCasc.operation
             try
             {
                 fillGrdOt();
+                clearGrdMaquila();
             }
             catch (Exception e)
             {
@@ -81,15 +90,13 @@ namespace AppCasc.operation
             try
             {
                 int index = Convert.ToInt32(args.CommandArgument);
-                int Id_ord_tbj;
-
-                grd_ot_cerrada.SelectRow(index);
-
-                int.TryParse(grd_ot_cerrada.DataKeys[index][0].ToString(), out Id_ord_tbj);
+                int Id_ord_tbj;                
 
                 switch (args.CommandName)
                 {
                     case "sel_ot":
+                        grd_ot_cerrada.SelectRow(index);
+                        int.TryParse(grd_ot_cerrada.DataKeys[index][0].ToString(), out Id_ord_tbj);
                         grd_maquila.DataSource = MaquilaCtrl.OrdenTrabajoGet(grd_ot_cerrada.Rows[index].Cells[3].Text).PLstOTSer;
                         grd_maquila.DataBind();
                         break;
