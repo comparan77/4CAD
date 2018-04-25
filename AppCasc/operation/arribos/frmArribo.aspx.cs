@@ -24,6 +24,19 @@ namespace AppCasc.operation.arribos
             }
         }
 
+        private List<Entrada_partida> VSLstEntPart
+        {
+            get
+            {
+                object o = ViewState["VSLstEntPart"];
+                return o == null ? null : (List<Entrada_partida>)o;
+            }
+            set
+            {
+                ViewState["VSLstEntPart"] = value;
+            }
+        }
+
         /// <summary>
         /// Llena los documentos pertenecientes al pedimento
         /// </summary>
@@ -395,7 +408,7 @@ namespace AppCasc.operation.arribos
             try
             {
                 hf_clientes.Value = JsonConvert.SerializeObject(CatalogCtrl.Cliente_GetAll(), Formatting.Indented);
-                
+
                 //int idBodega = ((MstCasc)this.Master).getUsrLoged().Id_bodega;
                 ControlsMng.fillBodegaByUser(ddlBodega, ((MstCasc)this.Master).getUsrLoged().Id);
                 ddlBodega.Items[0].Selected = true;
@@ -411,6 +424,12 @@ namespace AppCasc.operation.arribos
                 hf_id_usuario.Value = ((MstCasc)this.Master).getUsrLoged().Id.ToString();
                 ControlsMng.fillCustodia(ddlCustodia);
                 ControlsMng.fillVigilanciaByBodega(ddlVigilante, Convert.ToInt32(ddlBodega.SelectedValue));
+
+                #region partidas
+                VSLstEntPart = new List<Entrada_partida>();
+                grd_partidas.DataSource = VSLstEntPart;
+                grd_partidas.DataBind();
+                #endregion
             }
             catch
             {
@@ -596,6 +615,65 @@ namespace AppCasc.operation.arribos
             {
                 ((MstCasc)this.Master).setError = e.Message;
             }
+        }
+
+        protected void btnAddPartida_click(object sender, EventArgs args)
+        {
+            try
+            {
+                Entrada_partida o = new Entrada_partida();
+                VSLstEntPart.Add(o);
+                grd_partidas.DataSource = VSLstEntPart;
+                grd_partidas.DataBind();
+                up_partidas.Update();
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        protected void grd_partidas_command(object sender, GridViewCommandEventArgs args)
+        {
+            try
+            {
+                switch (args.CommandName)
+                {
+                    case "addPartida":
+                        TextBox txt_pza = grd_partidas.HeaderRow.Cells[1].FindControl("txt_pza") as TextBox;
+                        CheckBox chkNom = grd_partidas.HeaderRow.Cells[2].FindControl("chkNom") as CheckBox;
+                        Entrada_partida o = new Entrada_partida() { Id = VSLstEntPart.Count() == 0 ? 1 : VSLstEntPart.Last().Id + 1, Piezas = Convert.ToInt32(txt_pza.Text), Nom = chkNom.Checked };
+                        VSLstEntPart.Add(o);
+                        grd_partidas.DataSource = VSLstEntPart;
+                        grd_partidas.DataBind();
+                        sumPiezasPartidas();
+                        break;
+                    case "remPartida":
+                        int idPartida = Convert.ToInt32(args.CommandArgument);
+                        VSLstEntPart.Remove(VSLstEntPart.Find(p => p.Id == idPartida));
+                        idPartida = 1;
+                        foreach (Entrada_partida itemEP in VSLstEntPart)
+                        {
+                            itemEP.Id = idPartida;
+                            idPartida++;
+                        }
+                        grd_partidas.DataSource = VSLstEntPart;
+                        grd_partidas.DataBind();
+                        sumPiezasPartidas();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                ((MstCasc)this.Master).setError = e.Message;
+            }
+        }
+
+        private void sumPiezasPartidas()
+        {
+            hf_sum_piezas_partidas.Value = VSLstEntPart.Sum(p => p.Piezas).ToString();
         }
 
         protected void Page_Load(object sender, EventArgs args)

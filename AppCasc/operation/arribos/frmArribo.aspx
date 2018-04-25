@@ -273,6 +273,49 @@
 <!-- Cantidades -->
 <h3 style="cursor: n-resize; margin-top: 5px;" class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Cantidades</h3>
 <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection divForm">
+
+<div id="div_partidas" title="Partidas" style="margin-bottom: 5px">
+    <asp:UpdatePanel runat="server" ID="up_partidas" UpdateMode="Conditional">
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="grd_partidas" EventName="RowCommand" />
+    </Triggers>
+    <ContentTemplate>
+        <asp:GridView runat="server" ID="grd_partidas" ShowHeaderWhenEmpty="true" 
+        EmptyDataText="Sin partidas registradas" AutoGenerateColumns="false" CssClass="grdCascSmall"
+        OnRowCommand="grd_partidas_command">
+            <Columns>
+                <asp:BoundField HeaderText="No" DataField="id" />
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:TextBox runat="server" ID="txt_pza" placeholder="Piezas"></asp:TextBox>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:TextBox Text='<%#Eval("Piezas") %>' Enabled="false" runat="server" ID="txt_pza"></asp:TextBox>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:CheckBox ID="chkNom" runat="server" Text="Nom" Checked="false" />
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:CheckBox ID="chkNom" Enabled="false" Checked='<%#Eval("Nom") %>' runat="server"  Text="Nom" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:Button runat="server" ID="btn_add_partida" Text="Agregar Partida" CommandName="addPartida" CausesValidation="false" />
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Button runat="server" ID="RemPartida" Text="Eliminar Partida" CommandArgument='<%#Eval("Id") %>' CommandName="remPartida" CausesValidation="false" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+        <asp:HiddenField runat="server" ID="hf_sum_piezas_partidas" />
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</div>
+
 <div id="cantidadesNormal">
     <div>
         <label>Pallets Armados:</label>

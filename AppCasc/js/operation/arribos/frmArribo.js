@@ -213,6 +213,10 @@ var MngArribo = function () {
             }
         });
 
+        $('#ctl00_body_up_partidas').panelReady(function () {
+            $('#ctl00_body_txt_no_pieza_recibida').val($('#ctl00_body_hf_sum_piezas_partidas').val());
+        });
+
     } // init <<fin>>
 
     function verificaCompartidaPendiente() {
@@ -449,16 +453,24 @@ var MngArribo = function () {
 
                 pnlInfoArribo.show();
                 div_doc_requerido.show();
+                var pedimentoValidado = false;
+                $('#div_partidas').hide();
                 if (data.length > 0) {
                     //                    div_doc_requerido.children('label').html(DocumentoReq);
                     //                    if (Mascara.length > 0)
                     //                        div_doc_requerido.children('input').mask(Mascara);
                     //                    div_doc_requerido.children('span').html('Es necesario proporcionar ' + DocumentoReq);
-                    //                    fillDdlDocumento(data, DocumentoReq);
+                    //                    fillDdlDocumento(data, DocumentoReq);                   
                     $.each(data, function (i, oDocReq) {
                         objDocReq = $.grep(lstDocumento, function (obj) {
                             return obj.Id == oDocReq.Id_documento;
                         });
+                        if (!pedimentoValidado) {
+                            if (oDocReq.Id_documento == 1) {
+                                pedimentoValidado = true;
+                                $('#div_partidas').show();
+                            }
+                        }
                         var divDocReq = '<div id="divReq_' + objDocReq[0].Id + '" style="margin-bottom: 5px"><label>' + objDocReq[0].Nombre + '</label><input es_principal="' + oDocReq.Es_principal + '" type="text" id="txt_' + objDocReq[0].Nombre + '" /><span class="validator" style="color:Red;visibility:hidden;"></span></div>';
                         $('#docsRequeridos').append(divDocReq);
                         if (objDocReq[0].Mascara.length > 0)

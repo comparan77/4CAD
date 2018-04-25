@@ -472,6 +472,33 @@ namespace AppCasc.operation.arribos {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvOperador;
         
         /// <summary>
+        /// up_partidas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel up_partidas;
+        
+        /// <summary>
+        /// grd_partidas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grd_partidas;
+        
+        /// <summary>
+        /// hf_sum_piezas_partidas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hf_sum_piezas_partidas;
+        
+        /// <summary>
         /// txt_no_pallet control.
         /// </summary>
         /// <remarks>

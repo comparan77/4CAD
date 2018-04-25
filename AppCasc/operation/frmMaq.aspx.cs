@@ -150,7 +150,7 @@ namespace AppCasc.operation
                             bulto += Convert.ToInt32(row.Cells[5].Text.Replace(",", ""));
                             pzaMaq += Convert.ToInt32(row.Cells[6].Text.Replace(",", ""));
                             pzaFal += Convert.ToInt32(row.Cells[7].Text.Replace(",", ""));
-                            pzaSol += Convert.ToInt32(row.Cells[8].Text.Replace(",", ""));
+                            pzaSob += Convert.ToInt32(row.Cells[8].Text.Replace(",", ""));
                             break;
                         case DataControlRowType.EmptyDataRow:
                             break;
