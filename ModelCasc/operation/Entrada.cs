@@ -122,6 +122,7 @@ namespace ModelCasc.operation
         public List<Tarima_almacen> PLstTarAlm { get; set; }
         public Tarima_almacen_estandar PTarAlmEstd { get; set; }
         public List<Cliente_copia> PLstCCopia { get; set; }
+        public List<Entrada_partida> PLstEntPart { get; set; }
         #endregion
 
         #region Constructores

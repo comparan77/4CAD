@@ -171,6 +171,9 @@ namespace AppCasc.operation.arribos
                 if (lstEntTran == null || lstEntTran.Count == 0)
                     throw new Exception("Es necesario agregar al menos un trasporte");
 
+
+                o.PLstEntPart = VSLstEntPart;
+
                 if (lstEntDoc == null)
                     lstEntDoc = new List<Entrada_documento>();
 
@@ -205,6 +208,11 @@ namespace AppCasc.operation.arribos
                 o.Id_cliente = numero; //Avon 1
                 numero = 0;
                 o.Cliente = hf_cliente_nombre.Value;
+
+                List<Cliente_documento> lstCteDocReq = CatalogCtrl.Cliente_DocumentoFillLstByCliente(o.Id_cliente);
+                if (lstCteDocReq.Find(p => p.Id_documento == 1) != null)
+                    if (VSLstEntPart == null || VSLstEntPart.Count == 0)
+                        throw new Exception("Es necesario agregar al menos una partida");
 
                 //Referencia
                 o.Referencia = hf_referencia.Value;

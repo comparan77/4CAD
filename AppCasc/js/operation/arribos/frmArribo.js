@@ -201,6 +201,7 @@ var MngArribo = function () {
                             }
                         });
                         alert('Las cantidades proporcionadas no coinciden, favor de verficarlas.');
+                        $('#ctl00_body_txt_no_pieza_recibida').val($('#ctl00_body_hf_sum_piezas_partidas').val());
                     }
 
                 },

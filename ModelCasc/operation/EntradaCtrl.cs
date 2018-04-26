@@ -339,6 +339,8 @@ namespace ModelCasc.operation
 
                 oE.IsActive = true;
 
+                EntradaPartidaAddLst(oE.PLstEntPart, oE, trans);
+
                 GenericDataAccess.CommitTransaction(trans);
             }
             catch
@@ -430,6 +432,8 @@ namespace ModelCasc.operation
                 }
 
                 oE.IsActive = true;
+
+                EntradaPartidaAddLst(oE.PLstEntPart, oE, trans);
 
                 GenericDataAccess.CommitTransaction(trans);
             }
@@ -659,6 +663,30 @@ namespace ModelCasc.operation
             lst = oMng.Lst;
             return lst;
         }
+
+        #region Entrada_partida
+
+        public static void EntradaPartidaAddLst(List<Entrada_partida> lst, Entrada oE = null, IDbTransaction trans = null)
+        {
+            try
+            {
+                Entrada_partidaMng oMng = new Entrada_partidaMng();
+
+                foreach (Entrada_partida itemEP in lst)
+                {
+                    itemEP.Id_entrada = oE.Id;
+                    itemEP.Ref_entrada = oE.Referencia;
+                    oMng.O_Entrada_partida = itemEP;
+                    oMng.add(trans);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
 
         #region Entrada Almacen
 

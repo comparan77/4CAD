@@ -159,5 +159,23 @@ namespace ModelCasc.operation
         }
 
         #endregion
+
+        internal void add(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Entrada_partida");
+                addParameters(2);
+                if(trans == null)
+                    GenericDataAccess.ExecuteNonQuery(this.comm);
+                else
+                    GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+                this._oEntrada_partida.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
