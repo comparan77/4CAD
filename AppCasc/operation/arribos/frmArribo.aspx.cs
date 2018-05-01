@@ -213,6 +213,8 @@ namespace AppCasc.operation.arribos
                 if (lstCteDocReq.Find(p => p.Id_documento == 1) != null)
                     if (VSLstEntPart == null || VSLstEntPart.Count == 0)
                         throw new Exception("Es necesario agregar al menos una partida");
+                    else
+                        o.No_pieza_recibida = VSLstEntPart.Sum(p => p.Piezas);
 
                 //Referencia
                 o.Referencia = hf_referencia.Value;

@@ -1,9 +1,15 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MstCasc.Master" AutoEventWireup="true" CodeBehind="frmRegDatMer.aspx.cs" Inherits="AppCasc.operation.frmRegDatMer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script src="../js/operation/frmRegDatMer.js" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 <asp:HiddenField runat="server" ID="hfTitleErr" />
 <asp:HiddenField runat="server" ID="hfDescErr" />
+
+<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Actualizar información</h3>
+<div style="position: relative; margin-bottom: 5px" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
+    <button id="udt_drive">Actualizar del drive</button>
+</div>
 
 <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-header-active ui-state-active ui-corner-top">Importar archivo</h3>
 <div style="position: relative;" class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active contentSection">
