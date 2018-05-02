@@ -18,17 +18,13 @@
     function update_liverpool_drive() {
         try {
             $.ajax({
-                
-                url: "http://localhost:8001/liverpool",
-                //            data: {
-                //                id_salida_trafico: id_salida_trafico
-                //            },
+
+                url: "https://4cad.casc.com.mx:8001/liverpool",
                 crossDomain: true,
                 dataType: 'jsonp',
                 complete: function () {
                     $('#udt_drive').removeAttr('disabled');
                     $('#udt_drive').html('Actualizar del drive');
-                    //$('#up_cantidades').removeClass('ajaxLoading');
                 },
                 success: function (data) {
                     alert(data);
@@ -45,7 +41,3 @@
         }
     }
 }
-
-var master = new webApp.Master;
-var pag = new MngRegDatMer();
-master.Init(pag);
