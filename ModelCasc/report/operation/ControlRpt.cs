@@ -64,6 +64,93 @@ namespace ModelCasc.report.operation
             return lst;
         }
 
+        public static List<rptResProd> ResProd(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptResProd> lst = new List<rptResProd>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZResProd");
+
+                //if (anio_ini == 1)
+                //{
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                //}
+                //else
+                //{
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                //}
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptResProd o = new rptResProd()
+                    {
+                        Bodega = dr["bodega"].ToString(),
+                        Cuenta = dr["cuenta"].ToString(),
+                        Cliente = dr["cliente"].ToString(),
+                        Referencia = dr["referencia"].ToString(),
+                        Servicio = dr["servicio"].ToString(),
+                        Piezas = Convert.ToInt32(dr["Piezas"])
+                    };
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<rptPartNom> PartNom(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptPartNom> lst = new List<rptPartNom>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZPartNom");
+
+                //if (anio_ini == 1)
+                //{
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                //}
+                //else
+                //{
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                //}
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptPartNom o = new rptPartNom()
+                    {
+                        Fecha = Convert.ToDateTime(dr["fecha"]),
+                        Bodega = dr["bodega"].ToString(),
+                        Cuenta = dr["cuenta"].ToString(),
+                        Cliente = dr["cliente"].ToString(),
+                        Ref_entrada = dr["ref_entrada"].ToString(),
+                        Pza_tot = Convert.ToInt32(dr["pza_tot"]),
+                        Nom = Convert.ToInt32(dr["nom"]),
+                    };
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         public static List<rptProdDiario> ProdDiarioGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
             List<rptProdDiario> lst = new List<rptProdDiario>();
