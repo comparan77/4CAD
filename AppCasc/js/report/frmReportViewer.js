@@ -33,6 +33,7 @@
             switch ($(this).val()) {
                 case 'Maquila':
                 case 'Odntbj':
+                case 'ProdDiario':
                     iniYear = new Date(moment(new Date()).year(), 0, 1)
                     iniYear = moment(iniYear).format('DD/MM/YYYY');
                     $('#ctl00_body_txt_fecha_ini').val(iniYear);

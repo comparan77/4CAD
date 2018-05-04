@@ -122,6 +122,10 @@ namespace AppCasc.report
 
                 switch (ddl_reporte.SelectedValue)
                 {
+                    case "ProdDiario":
+                        rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.ProdDiarioGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
+                        showExcel(rptSource);
+                        break;
                     case "Fondeo":
                         rptSource = new ReportDataSource("ds" + rptSelected, ControlRpt.FondeoGet(periodo_ini.Year, periodo_ini.DayOfYear, periodo_fin.Year, periodo_fin.DayOfYear));
                         showExcel(rptSource);

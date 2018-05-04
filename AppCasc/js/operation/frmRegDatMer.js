@@ -18,7 +18,6 @@
     function update_liverpool_drive() {
         try {
             $.ajax({
-
                 url: "https://4cad.casc.com.mx:8001/liverpool",
                 crossDomain: true,
                 dataType: 'jsonp',

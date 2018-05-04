@@ -64,6 +64,55 @@ namespace ModelCasc.report.operation
             return lst;
         }
 
+        public static List<rptProdDiario> ProdDiarioGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
+        {
+            List<rptProdDiario> lst = new List<rptProdDiario>();
+            try
+            {
+                IDbCommand comm = GenericDataAccess.CreateCommandSP("sp_ZProdDiario");
+
+                //if (anio_ini == 1)
+                //{
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, DBNull.Value);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, DBNull.Value);
+                //}
+                //else
+                //{
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_ini", DbType.Int32, anio_ini);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_ini", DbType.Int32, dia_ini);
+                //    GenericDataAccess.AddInParameter(comm, "?P_anio_fin", DbType.Int32, anio_fin);
+                //    GenericDataAccess.AddInParameter(comm, "?P_dia_fin", DbType.Int32, dia_fin);
+                //}
+                DataTable dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptProdDiario o = new rptProdDiario()
+                    {
+                        Bodega = dr["bodega"].ToString(),
+                        Cuenta = dr["cuenta"].ToString(),
+                        Cliente = dr["cliente"].ToString(),
+                        Ot = dr["ot"].ToString(),
+                        Pedimento = dr["pedimento"].ToString(),
+                        Trafico = dr["trafico"].ToString(),
+                        Proceso = dr["proceso"].ToString(),
+                        Pza_sol = Convert.ToInt32(dr["pza_sol"]),
+                        Maq = Convert.ToInt32(dr["maq"]),
+                        Sin_proc = Convert.ToInt32(dr["sin_proc"]),
+                        Bultos = Convert.ToInt32(dr["bultos"]),
+                        Pallets = Convert.ToInt32(dr["pallets"]),
+                    };
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
         public static List<rptFondeo> FondeoGet(int anio_ini, int dia_ini, int anio_fin, int dia_fin)
         {
             List<rptFondeo> lst = new List<rptFondeo>();
