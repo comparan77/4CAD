@@ -14,6 +14,7 @@ namespace ModelCasc.operation.liverpool
         protected string _proveedor;
         protected string _trafico;
         protected int _pedido;
+        protected int _parcial;
         protected int _piezas;
         protected DateTime _fecha_confirma;
         protected int _piezas_maq;
@@ -27,6 +28,7 @@ namespace ModelCasc.operation.liverpool
         public string Proveedor { get { return _proveedor; } set { _proveedor = value; } }
         public string Trafico { get { return _trafico; } set { _trafico = value; } }
         public int Pedido { get { return _pedido; } set { _pedido = value; } }
+        public int Parcial { get { return _parcial; } set { _parcial = value; } }
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
         public DateTime Fecha_confirma { get { return _fecha_confirma; } set { _fecha_confirma = value; } }
         public int Piezas_maq { get { return _piezas_maq; } set { _piezas_maq = value; } }
@@ -45,6 +47,7 @@ namespace ModelCasc.operation.liverpool
             this._proveedor = String.Empty;
             this._trafico = String.Empty;
             this._pedido = 0;
+            this._parcial = 0;
             this._piezas = 0;
             this._fecha_confirma = default(DateTime);
             this._piezas_maq = 0;

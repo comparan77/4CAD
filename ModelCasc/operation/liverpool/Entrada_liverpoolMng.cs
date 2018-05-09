@@ -36,6 +36,7 @@ namespace ModelCasc.operation.liverpool
             GenericDataAccess.AddInParameter(this.comm, "?P_proveedor", DbType.String, this._oEntrada_liverpool.Proveedor);
             GenericDataAccess.AddInParameter(this.comm, "?P_trafico", DbType.String, this._oEntrada_liverpool.Trafico);
             GenericDataAccess.AddInParameter(this.comm, "?P_pedido", DbType.Int32, this._oEntrada_liverpool.Pedido);
+            GenericDataAccess.AddInParameter(this.comm, "?P_parcial", DbType.Int32, this._oEntrada_liverpool.Parcial);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oEntrada_liverpool.Piezas);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_confirma", DbType.DateTime, this._oEntrada_liverpool.Fecha_confirma);
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas_maq", DbType.Int32, this._oEntrada_liverpool.Piezas_maq);
@@ -62,6 +63,12 @@ namespace ModelCasc.operation.liverpool
                 {
                     int.TryParse(dr["pedido"].ToString(), out entero);
                     o.Pedido = entero;
+                    entero = 0;
+                }
+                if (dr["parcial"] != DBNull.Value)
+                {
+                    int.TryParse(dr["parcial"].ToString(), out entero);
+                    o.Parcial  = entero;
                     entero = 0;
                 }
                 if (dr["piezas"] != DBNull.Value)
