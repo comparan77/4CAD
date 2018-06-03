@@ -44,6 +44,7 @@ namespace ModelCasc.operation
         public static List<Orden_trabajo> OrdenTrabajoGetLst()
         {
             List<Orden_trabajo> lst = new List<Orden_trabajo>();
+            string folioError = string.Empty;
             try
             {
                 Orden_trabajoMng oMng = new Orden_trabajoMng();
@@ -67,7 +68,6 @@ namespace ModelCasc.operation
                 foreach (Orden_trabajo itemOT in lst)
                 {
                     itemOT.PLstOTSer = new List<Orden_trabajo_servicio>();
-
                     Orden_trabajo_servicio oOTS = new Orden_trabajo_servicio() { Id_orden_trabajo = itemOT.Id };
                     oOTSMng.O_Orden_trabajo_servicio = oOTS;
                     oOTSMng.fillLstByIdOT();
@@ -109,7 +109,7 @@ namespace ModelCasc.operation
                         switch (itemOTS.Id_servicio)
                         {
                             case 1: //etiqueta de precio
-                                oEL = new Entrada_liverpool() { Trafico = itemOTS.Ref1, Pedido = Convert.ToInt32(itemOTS.Ref2) };
+                                oEL = new Entrada_liverpool() { Trafico = itemOTS.Ref1, Pedido = Convert.ToInt32(itemOTS.Ref2), Parcial = itemOTS.Parcial };
                                 oELMng.O_Entrada_liverpool = oEL;
                                 oELMng.selByUniqueKey();
                                 itemOTS.PEntLiv = oEL;
@@ -124,7 +124,7 @@ namespace ModelCasc.operation
             catch
             {
 
-                throw;
+                throw new Exception(folioError);
             }
             return lst;
         }

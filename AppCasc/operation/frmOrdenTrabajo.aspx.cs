@@ -255,6 +255,7 @@ namespace AppCasc.operation
                                 oOTS.Ref1 = txt_trafico.Text;
 
                                 oOTS.Ref2 = row.Cells[1].Text;
+                                oOTS.Parcial = Convert.ToInt32(row.Cells[3].Text);
                                 oOTS.Piezas = Convert.ToInt32(row.Cells[2].Text.Replace(",", ""));
                                 DropDownList ddl_etiqueta_tipo = row.Cells[3].FindControl("ddl_etiqueta_tipo") as DropDownList;
                                 oOTS.Id_etiqueta_tipo = Convert.ToInt32(ddl_etiqueta_tipo.SelectedValue);

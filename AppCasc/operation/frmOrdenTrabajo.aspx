@@ -61,7 +61,8 @@
                                 <Columns>
                                     <asp:BoundField DataField="Proveedor" HeaderText="Proveedor" />
                                     <asp:BoundField DataField="Pedido" HeaderText="Pedido" />
-                                    <asp:BoundField DataField="Piezas" HeaderText="Piezas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />                                    
+                                    <asp:BoundField DataField="Piezas" HeaderText="Piezas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
+                                    <asp:BoundField DataField="Parcial" HeaderText="Parcial" ItemStyle-HorizontalAlign="Center" />
                                     <asp:TemplateField HeaderText="Servicio">
                                         <HeaderTemplate>
                                             <span>Tipo:</span>

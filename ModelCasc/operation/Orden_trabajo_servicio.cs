@@ -18,6 +18,7 @@ namespace ModelCasc.operation
         protected int _piezas;
         protected string _ref1;
         protected string _ref2;
+        protected int _parcial;
         #endregion
 
         #region Propiedades
@@ -28,6 +29,7 @@ namespace ModelCasc.operation
         public int Piezas { get { return _piezas; } set { _piezas = value; } }
         public string Ref1 { get { return _ref1; } set { _ref1 = value; } }
         public string Ref2 { get { return _ref2; } set { _ref2 = value; } }
+        public int Parcial { get { return _parcial; } set { _parcial = value; } }
         public Servicio PServ { get; set; }
         public Entrada_liverpool PEntLiv { get; set; }
         public List<Maquila> PLstMaq { get; set; }
@@ -51,6 +53,7 @@ namespace ModelCasc.operation
             this._piezas = 0;
             this._ref1 = String.Empty;
             this._ref2 = String.Empty;
+            this._parcial = 0;
         }
         #endregion
 

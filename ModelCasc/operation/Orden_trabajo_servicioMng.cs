@@ -38,6 +38,7 @@ namespace ModelCasc.operation
             GenericDataAccess.AddInParameter(this.comm, "?P_piezas", DbType.Int32, this._oOrden_trabajo_servicio.Piezas);
             GenericDataAccess.AddInParameter(this.comm, "?P_ref1", DbType.String, this._oOrden_trabajo_servicio.Ref1);
             GenericDataAccess.AddInParameter(this.comm, "?P_ref2", DbType.String, this._oOrden_trabajo_servicio.Ref2);
+            GenericDataAccess.AddInParameter(this.comm, "?P_parcial", DbType.Int32, this._oOrden_trabajo_servicio.Parcial);
         }
 
         protected void BindByDataRow(DataRow dr, Orden_trabajo_servicio o)
@@ -73,6 +74,12 @@ namespace ModelCasc.operation
                 }
                 o.Ref1 = dr["ref1"].ToString();
                 o.Ref2 = dr["ref2"].ToString();
+                if (dr["parcial"] != DBNull.Value)
+                {
+                    int.TryParse(dr["parcial"].ToString(), out entero);
+                    o.Parcial = entero;
+                    entero = 0;
+                }
             }
             catch
             {

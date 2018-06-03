@@ -50,6 +50,7 @@
                     <asp:BoundField DataField="PServ.Nombre" HeaderText="Servicio" />
                     <asp:BoundField DataField="Ref1" HeaderText="Trafico" />
                     <asp:BoundField DataField="Ref2" HeaderText="Referencia" />
+                    <asp:BoundField DataField="Parcial" HeaderText="Parcial" />
                     <asp:BoundField DataField="Piezas" HeaderText="Piezas Solicitadas" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:BoundField DataField="PalletMaq" HeaderText="Pallets Maquilados" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
                     <asp:BoundField DataField="BultosMaq" HeaderText="Bultos Maquilados" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:N0}" />
