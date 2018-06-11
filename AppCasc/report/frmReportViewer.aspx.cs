@@ -92,6 +92,15 @@ namespace AppCasc.report
             ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("~/report/" + rptSelected + "/") + "rpt" + rptSelected + ".rdlc";
 
             ReportViewer1.LocalReport.Refresh();
+
+            byte[] byteViewer = ReportViewer1.LocalReport.Render("Excel");
+
+            string path = HttpContext.Current.Server.MapPath("~/rpt/maqpas/temp.xls");
+
+            System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create);
+            fs.Write(byteViewer, 0, byteViewer.Length);
+            fs.Close();
+
         }
 
         protected void clickGetRpt(object sender, EventArgs args)

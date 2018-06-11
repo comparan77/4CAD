@@ -111,9 +111,7 @@ namespace AppCasc.operation
                         };
                         ots.PLstPasos = VSOrdTbj.PLstOTSer.Find(p => p.Id == Id_ord_tbj_ser).PLstPasos;
                         ots.POrdTbj = VSOrdTbj;
-                        ots.PEntLiv = new ModelCasc.operation.liverpool.Entrada_liverpool();
-                        ots.PEntLiv.PEnt = EntradaCtrl.EntradaLiverpoolGetRefEntByRef(ots.Ref1);
-
+                        
                         SOrdTbjSer = ots;
 
                         //ScriptManager.RegisterClientScriptBlock(up_info_ot, up_info_ot.GetType(), "openRpt", "<script type='text/javascript'>window.open('frmReporter.aspx?rpt=maqpso','_blank', 'toolbar=no');</script>", true);

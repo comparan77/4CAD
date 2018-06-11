@@ -42,7 +42,7 @@ namespace ModelCasc.report.operation
 
                 #region Encabezado
                 reporte.SetParameterValue("servicio", oTS.PServ.Nombre);
-                reporte.SetParameterValue("referencia", oTS.PEntLiv.PEnt.Referencia);
+                reporte.SetParameterValue("referencia", oTS.POrdTbj.Referencia_entrada);
                 reporte.SetParameterValue("folio", oTS.POrdTbj.Folio);
                 reporte.SetParameterValue("supervisor", oTS.POrdTbj.Supervisor);
                 reporte.SetParameterValue("piezas", oTS.Piezas);

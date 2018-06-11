@@ -2508,9 +2508,12 @@ namespace ModelCasc.operation
                 oMng.O_Entrada_liverpool = o;
                 oMng.selByTrafico();
                 EntradaMng oEMng = new EntradaMng();
-                oE = new Entrada() { Id = o.Id_entrada };
-                oEMng.O_Entrada = oE;
-                oEMng.selById();
+                if (o.Id_entrada > 0)
+                {
+                    oE = new Entrada() { Id = o.Id_entrada };
+                    oEMng.O_Entrada = oE;
+                    oEMng.selById();
+                }
             }
             catch
             {
