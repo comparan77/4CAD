@@ -193,6 +193,90 @@ namespace logisticaModel.catalog
             }
         }
 
+        public void fillLstTarifaByServicio(int id_cliente, int id_servicio)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommand(
+                    "select ms.id, cm.sku, cm.nombre, ms.precio " +
+                    "from cliente_mercancia cm " +
+                    "join mercancia_servicio ms on " +
+                    "   cm.id = ms.id_cliente_mercancia " +
+                    "   and cm.id_cliente = ?id_cliente " +
+                    "   and ms.id_servicio = ?id_servicio ");
+
+                GenericDataAccess.AddInParameter(this.comm, "?id_cliente", DbType.Int32, id_cliente);
+                GenericDataAccess.AddInParameter(this.comm, "?id_servicio", DbType.Int32, id_servicio);
+
+                this.dt = GenericDataAccess.ExecuteSelectCommand(this.comm);
+                var qry =
+                    from result in this.dt.AsEnumerable()
+                    select new
+                    {
+                        id = result.Field<Int32>("id"),
+                        sku = result.Field<string>("sku"),
+                        nombre = result.Field<string>("nombre"),
+                        precio = result.Field<decimal>("precio")
+                    };
+
+                foreach (var item in qry)
+                {
+                    Mercancia o = new Mercancia()
+                    {
+                        Id = item.id,
+                        Sku = item.sku,
+                        Nombre = item.nombre,
+                        Tarifa = item.precio
+                    };
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void fillLstNoTarifaByServicio(int id_cliente, int id_servicio)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommand(
+                    "select cm.sku, cm.nombre " +
+                    "from cliente_mercancia cm " +
+                    "where cm.id not in (select id_cliente_mercancia from mercancia_servicio where id_servicio = ?id_servicio) " +
+                    "and cm.id_cliente = ?id_cliente");
+
+                GenericDataAccess.AddInParameter(this.comm, "?id_cliente", DbType.Int32, id_cliente);
+                GenericDataAccess.AddInParameter(this.comm, "?id_servicio", DbType.Int32, id_servicio);
+
+                this.dt = GenericDataAccess.ExecuteSelectCommand(this.comm);
+                var qry =
+                    from result in this.dt.AsEnumerable()
+                    select new
+                    {
+                        sku = result.Field<string>("sku"),
+                        nombre = result.Field<string>("nombre"),
+                    };
+
+                foreach (var item in qry)
+                {
+                    Mercancia o = new Mercancia()
+                    {
+                        Id = 0,
+                        Sku = item.sku,
+                        Nombre = item.nombre,
+                        Tarifa = 0
+                    };
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

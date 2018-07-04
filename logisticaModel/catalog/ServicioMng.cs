@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Model;
+using System.Globalization;
 
 namespace logisticaModel.catalog
 {
@@ -165,6 +166,49 @@ namespace logisticaModel.catalog
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
                     GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void fillLstTarifaByClienteMercancia(int id_cliente, int total = 0)
+        {
+            try
+            {
+
+                this.comm = GenericDataAccess.CreateCommand(
+                    "select s.id, s.nombre, count(cm.id) cantidad " + 
+                    "from servicio s " + 
+                    "left join mercancia_servicio ms on " +
+                    "   ms.id_servicio = s.id " +
+                    "left join cliente_mercancia cm on " +
+                    "   cm.id = ms.id_cliente_mercancia " + 
+                    "   and cm.id_cliente = ?id_cliente " +
+                    "group by s.id");
+                GenericDataAccess.AddInParameter(this.comm, "?id_cliente", DbType.Int32, id_cliente);
+                this.dt = GenericDataAccess.ExecuteSelectCommand(this.comm);
+                var qry =
+                    from result in this.dt.AsEnumerable()
+                    select new
+                    {
+                        id = result.Field<Int32>("id"),
+                        servicio = result.Field<string>("nombre"),
+                        cantidad = result.Field<Int64>("cantidad")
+                    };
+
+                foreach (var item in qry)
+                {
+                    Servicio o = new Servicio()
+                    {
+                        Id = item.id,
+                        Nombre = item.servicio,
+                        Tarifas = item.cantidad,
+                        Total_mercancia = total
+                    };
+                    this._lst.Add(o);
+                }
             }
             catch
             {

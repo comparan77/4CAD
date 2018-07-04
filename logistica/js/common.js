@@ -66,3 +66,13 @@ Common.getCurrencyFormat = function (dato, decimals) {
     dato = Math.abs(dato);
     return isNegative + dato.toFixed(num_decimal).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
 }
+
+Common.fillSelect = function (id_control, array, first_element) {
+    var ddl = document.getElementById(id_control);
+    for (var i = 0; i < array.length; i++) {
+        opt = document.createElement('option');
+        opt.innerHTML = array[i].datatext;
+        opt.value = array[i].datavalue;
+        ddl.appendChild(opt);
+    }
+}

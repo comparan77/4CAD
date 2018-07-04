@@ -11,11 +11,9 @@
         var defaults = {
             idtable: '',
             dataKey: 'Id',
-            getDataFunction: null,
             callBackRowFill: null,
             callBackRowClick: null,
-            callBackSave: null,
-            callBackChangeTab: null
+            callBackColClick: null
         }
 
         // Create options by extending defaults with the passed in arugments
@@ -39,6 +37,23 @@
             grdCatalogClear(_);
         }
         grdCatalogBind.call(this, data, callback);
+    }
+
+    DataGrid.prototype.getIdSelected = function(row) {
+        //console.log(row._DT_CellIndex.row);
+        var nthChild = row._DT_CellIndex.row + 1;
+        var id = $('#' + this.options.idtable).children('tbody').children('tr:nth-child(' + nthChild + ')').attr('id').split('_')[1];
+        var tr = $('#' + this.options.idtable).children('tbody').children('tr:nth-child(' + nthChild + ')');
+
+        var rowInfo = {
+            Id: id
+        }
+
+        $.each($(tr).children('td'), function(i, obj) {
+            rowInfo["col_" + i] = $(obj).html();
+        });
+        //console.log(JSON.stringify(rowInfo));
+        return rowInfo;
     }
 
     // Private methods    
@@ -98,6 +113,17 @@
         _.table.on('click', 'tr', function () {
             _.key = _.table.row(this).id().split('_')[1];
             if(_.options.callBackRowClick) _.options.callBackRowClick(this, _.key);
+        });
+    }
+
+    function grdCatalogColClick(_) {
+        _.table.on('click', 'tr', function () {
+            _.key = _.table.row(this).id().split('_')[1];
+            if(_.options.callBackColClick) {
+                for(var cc in _.options.callBackColClick) {
+                    if(_.options.callBackColClick[cc]) _.options.callBackColClick[cc](this, _.key);
+                }
+            }
         });
     }
 

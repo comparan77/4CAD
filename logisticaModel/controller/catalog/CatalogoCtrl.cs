@@ -239,5 +239,60 @@ namespace logisticaModel.controller.catalog
         }
 
         #endregion
+
+        #region Tarifa
+
+        public static List<Servicio> tarifaClienteMercancia(int id_cliente)
+        {
+            List<Servicio> lst = new List<Servicio>();
+            try
+            {
+                Mercancia_servicioMng oMSMng = new Mercancia_servicioMng();
+                int total = oMSMng.countClienteMercanciaServicio(id_cliente);
+                ServicioMng oSMng = new ServicioMng();
+                oSMng.fillLstTarifaByClienteMercancia(id_cliente, total);
+                lst = oSMng.Lst;
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<Mercancia> tarifaClienteMercanciaServicio(int id_cliente, int id_servicio)
+        {
+            List<Mercancia> lst = new List<Mercancia>();
+            try
+            {
+                MercanciaMng oMng = new MercanciaMng();
+                oMng.fillLstTarifaByServicio(id_cliente, id_servicio);
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public static List<Mercancia> noTarifaClienteMercanciaServicio(int id_cliente, int id_servicio)
+        {
+            List<Mercancia> lst = new List<Mercancia>();
+            try
+            {
+                MercanciaMng oMng = new MercanciaMng();
+                oMng.fillLstNoTarifaByServicio(id_cliente, id_servicio);
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
     }
 }

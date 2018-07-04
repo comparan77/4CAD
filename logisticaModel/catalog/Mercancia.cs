@@ -27,6 +27,7 @@ namespace logisticaModel.catalog
         public float Precio { get { return _precio; } set { _precio = value; } }
         public int Piezas_x_caja { get { return _piezas_x_caja; } set { _piezas_x_caja = value; } }
         public int Cajas_x_tarima { get { return _cajas_x_tarima; } set { _cajas_x_tarima = value; } }
+        public decimal Tarifa { get; set; }
         #endregion
 
         #region Constructores

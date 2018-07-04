@@ -16,21 +16,22 @@ namespace logistica.pages.catalog
         protected int clienteCantidad = 0;
         protected int mercanciaCantidad = 0;
         protected int servicioCantidad = 0;
+        protected int destinatarioCantidad = 0;
+        protected int transportistaCantidad = 0;
+        protected int vendorCantidad = 0;
 
         protected void Page_Load(object sender, EventArgs args)
         {
             try
             {
-                Bodega oB = new Bodega();
-                bodegaCantidad = CatalogoCtrl.catalogGetAllLst(oB).Cast<Bodega>().ToList().FindAll(p => p.IsActive == true).Count();
-                Cortina oCor = new Cortina();
-                cortinaCantidad = CatalogoCtrl.catalogGetAllLst(oCor).Cast<Cortina>().ToList().FindAll(p => p.IsActive == true).Count();
-                Cliente oC = new Cliente();
-                clienteCantidad = CatalogoCtrl.catalogGetAllLst(oC).Cast<Cliente>().ToList().FindAll(p => p.IsActive == true).Count();
-                Mercancia oM = new Mercancia();
-                mercanciaCantidad = CatalogoCtrl.catalogGetLst(oM).Cast<Mercancia>().ToList().Count();
-                Servicio oS = new Servicio();
-                servicioCantidad = CatalogoCtrl.catalogGetLst(oS).Cast<Servicio>().ToList().Count();
+                bodegaCantidad = CatalogoCtrl.catalogGetAllLst(new Bodega()).Cast<Bodega>().ToList().FindAll(p => p.IsActive == true).Count();
+                cortinaCantidad = CatalogoCtrl.catalogGetAllLst(new Cortina()).Cast<Cortina>().ToList().FindAll(p => p.IsActive == true).Count();
+                clienteCantidad = CatalogoCtrl.catalogGetAllLst(new Cliente()).Cast<Cliente>().ToList().FindAll(p => p.IsActive == true).Count();
+                mercanciaCantidad = CatalogoCtrl.catalogGetLst(new Mercancia()).Cast<Mercancia>().ToList().Count();
+                servicioCantidad = CatalogoCtrl.catalogGetLst(new Servicio()).Cast<Servicio>().ToList().Count();
+                destinatarioCantidad = CatalogoCtrl.catalogGetLst(new Destinatario()).Cast<Destinatario>().ToList().FindAll(p => p.IsActive == true).Count();
+                transportistaCantidad = CatalogoCtrl.catalogGetLst(new Transporte()).Cast<Transporte>().ToList().FindAll(p => p.IsActive == true).Count();
+                vendorCantidad = CatalogoCtrl.catalogGetLst(new Vendor()).Cast<Vendor>().ToList().FindAll(p => p.IsActive == true).Count();
             }
             catch
             {

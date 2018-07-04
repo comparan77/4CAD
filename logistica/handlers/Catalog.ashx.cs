@@ -49,6 +49,18 @@ namespace logistica.handlers
                     case "servicio_periodo":
                         response = servicio_periodo(context);
                         break;
+                    case "tarifa":
+                        response = tarifa(context);
+                        break;
+                    case "destino":
+                        response = destino(context);
+                        break;
+                    case "transporte":
+                        response = transporte(context);
+                        break;
+                    case "vendor":
+                        response = vendor(context);
+                        break;
                 }
             }
             catch (Exception e)
@@ -317,6 +329,190 @@ namespace logistica.handlers
                 case "lst":
                     List<Servicio_periodo> lst = CatalogoCtrl.catalogGetLst(o).Cast<Servicio_periodo>().ToList();
                     response = JsonConvert.SerializeObject(lst);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string tarifa(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Bodega o = new Bodega();
+            switch (option)
+            {
+                case "clienteMercancia":
+                    if (context.Request["key"] != null)
+                    {
+                        key = context.Request["key"].ToString();
+                    }
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.tarifaClienteMercancia(Convert.ToInt32(key)));
+                    break;
+                case "clienteMercanciaServicio":
+                    response = JsonConvert.SerializeObject(
+                        CatalogoCtrl.tarifaClienteMercanciaServicio(
+                                Convert.ToInt32(context.Request["id_cliente"]),
+                                Convert.ToInt32(context.Request["id_servicio"])
+                                )
+                            );
+                    break;
+                case "clienteMercanciaNoServicio":
+                    response = JsonConvert.SerializeObject(
+                        CatalogoCtrl.noTarifaClienteMercanciaServicio(
+                                Convert.ToInt32(context.Request["id_cliente"]),
+                                Convert.ToInt32(context.Request["id_servicio"])
+                                )
+                            );
+                    break;
+
+            }
+            return response;
+        }
+
+        private string destino(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Destinatario o = new Destinatario();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Destinatario>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Destinatario>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Destinatario>().ToList());
+                    break;
+                case "enb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogEnabled(o);
+                    o.IsActive = true;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "dsb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogDisabled(o);
+                    o.IsActive = false;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string transporte(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Transporte o = new Transporte();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Transporte>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Transporte>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Transporte>().ToList());
+                    break;
+                case "enb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogEnabled(o);
+                    o.IsActive = true;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "dsb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogDisabled(o);
+                    o.IsActive = false;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string vendor(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Vendor o = new Vendor();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Vendor>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Vendor>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Vendor>().ToList());
+                    break;
+                case "enb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogEnabled(o);
+                    o.IsActive = true;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "dsb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogDisabled(o);
+                    o.IsActive = false;
+                    response = JsonConvert.SerializeObject(o);
                     break;
                 default:
                     break;

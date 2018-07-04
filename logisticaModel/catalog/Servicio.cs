@@ -26,6 +26,8 @@ namespace logisticaModel.catalog
         public string Campo_cantidad { get { return _campo_cantidad; } set { _campo_cantidad = value; } }
         public string Campo_importe { get { return _campo_importe; } set { _campo_importe = value; } }
         public Servicio_periodo PServPer { get; set; }
+        public Int64 Tarifas { get; set; }
+        public int Total_mercancia { get; set; }
         #endregion
 
         #region Constructores

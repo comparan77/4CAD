@@ -51,6 +51,18 @@ var CatalogosModel = (function () {
 
         catalogosDsb: function (catalogo, obj, callback, error) {
             catalogosAjax("POST", "json", catalogo, obj, 'dsb', callback, error);
+        },
+
+        tarifaClienteMercancia: function (obj, callback, error) {
+            catalogosAjax("POST", "json", "tarifa", obj, "clienteMercancia", callback, error);
+        },
+
+        tarifaClienteMercanciaServicio: function (obj, callback, error) {
+            catalogosAjax("POST", "json", "tarifa", obj, "clienteMercanciaServicio", callback, error);
+        },
+
+        tarifaClienteMercanciaNoServicio: function (obj, callback, error) {
+            catalogosAjax("POST", "json", "tarifa", obj, "clienteMercanciaNoServicio", callback, error);
         }
 
     };
