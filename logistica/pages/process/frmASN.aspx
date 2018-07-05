@@ -1,18 +1,27 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="frmBodega.aspx.cs" Inherits="logistica.pages.catalog.frmBodega" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="frmASN.aspx.cs" Inherits="logistica.pages.process.frmASN" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <link href="../../vendor/datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../vendor/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../vendor/datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="../../vendor/datepicker/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
+    <script src="../../vendor/select2/select2.min.js" type="text/javascript"></script>
     <script src="../../vendor/datatables/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="../../vendor/datatables-plugins/dataTables.bootstrap.min.js" type="text/javascript"></script>
     <script src="../../vendor/datatables-responsive/dataTables.responsive.js" type="text/javascript"></script>
     <script src="../../js/common.js" type="text/javascript"></script>
+    <script src="../../js/process/procesosModel.js" type="text/javascript"></script>
     <script src="../../js/catalog/catalogosModel.js" type="text/javascript"></script>
     <script src="../../js/webcontrols/datagrid.js" type="text/javascript"></script>
+    <script src="../../js/webcontrols/monthPicker.js" type="text/javascript"></script>
+    <script src="../../vendor/moment/moment.min.js" type="text/javascript"></script>
     <script src="../../js/webcontrols/tabCatalog.js" type="text/javascript"></script>
-    <script src="../../js/catalog/bodega.js" type="text/javascript"></script>
+    <script src="../../js/process/asn.js" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header"><asp:LinkButton runat="server" PostBackUrl="~/pages/catalog/frmCatalogos.aspx" Text="Catálogos"></asp:LinkButton> / Almacén</h1>
+        <h1 class="page-header">Advanced Shipping Notice</h1>
     </div>
 </div>
 
@@ -49,28 +58,29 @@
                     <div id="div-nuevo" class="row hidden">
                       <div class="col-md-3 col-md-offset-5"><button type="button" id="btn_nuevo" class="btn btn-light">Nuevo</button></div>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="txt_nombre">Nombre</label>
-                        <input type="text" class="form-control" id="txt_nombre" placeholder="Nombre del almacén">
+                        <label for="ddl_bodega">Almac&eacute;n
+                            <select id="ddl_bodega" style="width: 100%" class="form-control"></select>
+                        </label>
                     </div>
+
                     <div class="form-group">
-                        <label for="txt_direccion">Dirección</label>
-                        <input type="text" class="form-control" id="txt_direccion" placeholder="Dirección del almacén">
+                        <label for="txt_fecha">Fecha Inicial</label>
+                        <input type="text" class="form-control" id="txt_fecha" placeholder="Fecha">
                     </div>
+
                     <div class="form-group">
-                        <div id="div_active_opt" class="btn-group btn-group-toggle" data-toggle="buttons">
-                          <label class="btn btn-secondary active">
-                            <input type="radio" name="activo" id="opt_active" autocomplete="off" checked> Activo
-                          </label>
-                          <label class="btn btn-secondary">
-                            <input type="radio" name="activo" id="opt_inactive" autocomplete="off"> Inactivo
-                          </label>
-                        </div>
+                        <label for="ddl_transporte">Almac&eacute;n
+                            <select id="ddl_transporte" style="width: 100%" class="form-control"></select>
+                        </label>
                     </div>
+
                     <button type="button" id="btn_save" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>
         <!-- /.panel-body -->
     </div>
+
 </asp:Content>

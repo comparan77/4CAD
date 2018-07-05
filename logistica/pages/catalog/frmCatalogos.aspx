@@ -8,16 +8,17 @@
     </div>
 </div>
 <div class="row">
+
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-primary">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-building-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><%= bodegaCantidad.ToString() %></div>
-                        <div>Bodegas</div>
+                        <div class="huge">&nbsp;</div>
+                        <div>Almacenes</div>
                     </div>
                 </div>
             </div>
@@ -36,10 +37,33 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
+                        <i class="fa fa-th-large fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">&nbsp;</div>
+                        <div>Zonas</div>
+                    </div>
+                </div>
+            </div>
+            <a href="frmBodegaZona.aspx">
+                <div class="panel-footer">
+                    <span class="pull-left">Acceder</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
                         <i class="fa fa-columns fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><%= cortinaCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Cortinas</div>
                     </div>
                 </div>
@@ -55,14 +79,14 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-yellow">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="glyphicon glyphicon-user fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><%= clienteCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Clientes</div>
                     </div>
                 </div>
@@ -78,14 +102,14 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-brown">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-cube fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><%= mercanciaCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Mercanc&iacute;a</div>
                     </div>
                 </div>
@@ -101,14 +125,14 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-red">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-briefcase fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><%= servicioCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Servicios</div>
                     </div>
                 </div>
@@ -124,7 +148,7 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-golden">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
@@ -147,14 +171,14 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-gray">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-location-arrow fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><% = destinatarioCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Destinos</div>
                     </div>
                 </div>
@@ -170,14 +194,14 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-aliceblue">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-truck fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><% = transportistaCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Transportistas</div>
                     </div>
                 </div>
@@ -193,14 +217,14 @@
     </div>
 
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-darkseagreen">
+        <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-truck fa-5x"></i>
+                        <i class="fa fa-tags fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><% = vendorCantidad.ToString() %></div>
+                        <div class="huge">&nbsp;</div>
                         <div>Vendor</div>
                     </div>
                 </div>

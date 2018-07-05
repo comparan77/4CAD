@@ -21,7 +21,7 @@ var Bodega = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLst('bodega', function (data) {
+        CatalogosModel.catalogosLstAll('bodega', function (data) {
             grdCatalog.DataBind(data, function () {
                 tabCatalog.changeListTab();
                 });
@@ -82,7 +82,7 @@ var Bodega = function () {
             }
         });
 
-        CatalogosModel.catalogosLst('bodega', function (data) {
+        CatalogosModel.catalogosLstAll('bodega', function (data) {
             grdCatalog.DataBind(data, function (data) {
             });
         },

@@ -33,6 +33,9 @@ namespace logistica.handlers
             {
                 switch (op)
                 {
+                    case "asn":
+                        response = asn(context);
+                        break;
                     case "proforma":
                         response = proforma(context);
                         break;
@@ -43,6 +46,26 @@ namespace logistica.handlers
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
             }
             context.Response.Write(response);
+        }
+
+        private string asn(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            //int id_cliente = 0;
+            //string folio_aplicada = string.Empty;
+            //DateTime corte_ini = default(DateTime);
+            //DateTime corte_fin = default(DateTime);
+            Asn o = null;
+            switch (option)
+            {
+                case "lst":
+                    o = new Asn();
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Asn>().ToList());
+                    break;
+                default:
+                    break;
+            }
+            return response;
         }
 
         private string proforma(HttpContext context)
@@ -56,14 +79,14 @@ namespace logistica.handlers
             switch (option)
             {
                 case "procesar":
-                    ProformaCtrl.Procesar(CatalogoCtrl.catalogGetAllLst(new Cliente()).Cast<Cliente>().ToList().FindAll(p => p.IsActive == true));
+                    ProcessCtrl.Procesar(CatalogoCtrl.catalogGetAllLst(new Cliente()).Cast<Cliente>().ToList().FindAll(p => p.IsActive == true));
                     response = JsonConvert.SerializeObject(true);
                     break;
                 case "concentrado_get":
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concentradoGetAll());
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concentradoGetAll());
                     break;
                 case "concentrado_getAplicada":
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concentradoGetAll(true));
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concentradoGetAll(true));
                     break;
                 case "concentrado_getAllCliente":
                     o = new Proforma_concentrado();
@@ -76,7 +99,7 @@ namespace logistica.handlers
                         int.TryParse(context.Request["key"], out id_cliente);
                     }
                     o = new Proforma_concentrado() { Id_cliente = id_cliente, Fecha_servicio = fecha };
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concentradoGetAllCliente(o));
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concentradoGetAllCliente(o));
                     break;
                 case "concentrado_getAllClienteApp":
                     o = new Proforma_concentrado();
@@ -85,7 +108,7 @@ namespace logistica.handlers
                         int.TryParse(context.Request["key"], out id_cliente);
                     }
                     o = new Proforma_concentrado() { Id_cliente = id_cliente, Fecha_servicio = fecha };
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concentradoGetAllCliente(o,  true));
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concentradoGetAllCliente(o,  true));
                     break;
                 case "concentrado_getByCte":
                     int anio = 0;
@@ -106,7 +129,7 @@ namespace logistica.handlers
                         int.TryParse(key, out mes);
                     }
 
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concentradoGetByCliente(id_cliente, anio, mes));
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concentradoGetByCliente(id_cliente, anio, mes));
                     break;
                 case "concentradoUdtActiva":
                     if (context.Request["corte_ini"] != null)
@@ -121,14 +144,14 @@ namespace logistica.handlers
                     {
                         int.TryParse(context.Request["key"], out id_cliente);
                     }
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concentradoUdtActiva(id_cliente, corte_ini, corte_fin));
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concentradoUdtActiva(id_cliente, corte_ini, corte_fin));
                     break;
                 case "concetradoProfActByFolio":
                     if (context.Request["folio"] != null)
                     {
                         folio_aplicada = context.Request["folio"].ToString();
                     }
-                    response = JsonConvert.SerializeObject(ProformaCtrl.concetradoProfActByFolio(folio_aplicada));
+                    response = JsonConvert.SerializeObject(ProcessCtrl.concetradoProfActByFolio(folio_aplicada));
                     break;
                 default:
                     break;

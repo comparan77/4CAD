@@ -34,6 +34,9 @@ namespace logistica.handlers
                     case "bodega":
                         response = bodega(context);
                         break;
+                    case "bodega_zona":
+                        response = bodega_zona(context);
+                        break;
                     case "cortina":
                         response = cortina(context);
                         break;
@@ -96,7 +99,66 @@ namespace logistica.handlers
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Bodega>().ToList());
+                    break;
+                case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Bodega>().ToList());
+                    break;
+                case "enb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogEnabled(o);
+                    o.IsActive = true;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "dsb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogDisabled(o);
+                    o.IsActive = false;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string bodega_zona(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Bodega_zona o = new Bodega_zona();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Bodega_zona>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Bodega_zona>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lstAll":
+                    List<Bodega_zona> lst = CatalogoCtrl.catalogGetAllLst(o).Cast<Bodega_zona>().ToList();
+                    if (context.Request["key"] != null)
+                    {
+                        key = context.Request["key"].ToString();
+                        lst = lst.FindAll(p => p.Id_bodega == Convert.ToInt32(key));
+                    }
+                    response = JsonConvert.SerializeObject(lst);
                     break;
                 case "enb":
                     if (context.Request["key"] != null)
@@ -145,7 +207,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     List<Cortina> lst = CatalogoCtrl.catalogGetAllLst(o).Cast<Cortina>().ToList();
                     if (context.Request["key"] != null)
                     {
@@ -201,7 +263,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Cliente>().ToList());
                     break;
                 case "enb":
@@ -251,7 +313,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     List<Mercancia> lst = CatalogoCtrl.catalogGetLst(o).Cast<Mercancia>().ToList();
                     if (context.Request["pk"] != null)
                     {
@@ -291,7 +353,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     List<Servicio> lst = CatalogoCtrl.catalogGetLst(o).Cast<Servicio>().ToList();
                     List<Servicio_periodo> lstSP = CatalogoCtrl.catalogGetLst(new Servicio_periodo()).Cast<Servicio_periodo>().ToList();
                     foreach (Servicio itemS in lst)
@@ -326,7 +388,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     List<Servicio_periodo> lst = CatalogoCtrl.catalogGetLst(o).Cast<Servicio_periodo>().ToList();
                     response = JsonConvert.SerializeObject(lst);
                     break;
@@ -395,7 +457,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Destinatario>().ToList());
                     break;
                 case "enb":
@@ -446,6 +508,9 @@ namespace logistica.handlers
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Transporte>().ToList());
+                    break;
+                case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Transporte>().ToList());
                     break;
                 case "enb":
@@ -495,7 +560,7 @@ namespace logistica.handlers
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
-                case "lst":
+                case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Vendor>().ToList());
                     break;
                 case "enb":

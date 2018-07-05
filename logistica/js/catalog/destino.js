@@ -23,7 +23,7 @@ var Destino = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLst('destino', function (data) {
+        CatalogosModel.catalogosLstAll('destino', function (data) {
             grdCatalog.DataBind(data, function () {
                 tabCatalog.changeListTab();
             });
@@ -84,7 +84,7 @@ var Destino = function () {
             }
         });
 
-        CatalogosModel.catalogosLst('destino', function (data) {
+        CatalogosModel.catalogosLstAll('destino', function (data) {
             grdCatalog.DataBind(data, function (data) {
             });
         },

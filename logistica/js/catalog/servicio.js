@@ -21,7 +21,7 @@ var Servicio = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLst(
+        CatalogosModel.catalogosLstAll(
             'servicio', 
             function (data) {
                 grdCatalog.DataBind(data, function () {
@@ -97,7 +97,7 @@ var Servicio = function () {
             }
         });
 
-        CatalogosModel.catalogosLst('servicio', function (data) {
+        CatalogosModel.catalogosLstAll('servicio', function (data) {
             grdCatalog.DataBind(data, function (data) {
             });
         },
@@ -113,7 +113,7 @@ var Servicio = function () {
 
     function loadPeriodo() {
 
-        CatalogosModel.catalogosLst('servicio_periodo', function (data) {
+        CatalogosModel.catalogosLstAll('servicio_periodo', function (data) {
             var dataMap = $.map(data, function (obj) {
                 obj.id = obj.Id; // replace pk with your identifier
                 obj.text = obj.Nombre;

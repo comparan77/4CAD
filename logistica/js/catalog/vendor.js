@@ -21,7 +21,7 @@ var Vendor = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLst('vendor', function (data) {
+        CatalogosModel.catalogosLstAll('vendor', function (data) {
             grdCatalog.DataBind(data, function () {
                 tabCatalog.changeListTab();
             });
@@ -90,7 +90,7 @@ var Vendor = function () {
             }
         });
 
-        CatalogosModel.catalogosLst('vendor', function (data) {
+        CatalogosModel.catalogosLstAll('vendor', function (data) {
             grdCatalog.DataBind(data, function (data) {
             });
         },

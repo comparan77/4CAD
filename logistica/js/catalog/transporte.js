@@ -21,7 +21,7 @@ var Transporte = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLst('transporte', function (data) {
+        CatalogosModel.catalogosLstAll('transporte', function (data) {
             grdCatalog.DataBind(data, function () {
                 tabCatalog.changeListTab();
             });
@@ -74,7 +74,7 @@ var Transporte = function () {
             }
         });
 
-        CatalogosModel.catalogosLst('transporte', function (data) {
+        CatalogosModel.catalogosLstAll('transporte', function (data) {
             grdCatalog.DataBind(data, function (data) {
             });
         },

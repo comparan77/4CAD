@@ -29,7 +29,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#list" data-toggle="tab">Listado</a>
                 </li>
-                <li><a href="#admon" data-toggle="tab">Administración</a>
+                <li><a href="#admon" data-toggle="tab">Edición</a>
                 </li>
             </ul>
 

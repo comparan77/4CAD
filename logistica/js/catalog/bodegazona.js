@@ -3,16 +3,16 @@
 /// <reference path="../webcontrols/tabCatalog.js" />
 /// <reference path="../common.js" />
 
-var Mercancia = function () {
+var Bodega_zona = function () {
 
     var grdCatalog;
     var tabCatalog;
-    var id_cliente;
+    var id_bodega;
 
     this.Init = function () {
 
         tabCatalog = new TabCatalog({
-            catalogo: 'mercancia',
+            catalogo: 'bodega_zona',
             callBackSaveData: saveData,
             parametersGet: parametersGet,
             callBackEnbDis: saveData,
@@ -27,12 +27,12 @@ var Mercancia = function () {
     function changeTab(tab) {
         switch (tab) {
             case "admon":
-                $('#h4-action').html($('#ddl_cliente').select2('data')[0].text);
+                $('#h4-action').html($('#ddl_almacen').select2('data')[0].text);
                 break;
             case "list":
                 $('#h4-action').html('');
-                $('#ddl_cliente').val(id_cortina); // Select the option with a value of '1'
-                $('#ddl_cliente').trigger('change');
+                $('#ddl_almacen').val(id_bodega); // Select the option with a value of '1'
+                $('#ddl_almacen').trigger('change');
                 break;
             default:
         }
@@ -40,13 +40,14 @@ var Mercancia = function () {
 
     function saveData() {
         CatalogosModel.catalogosLstAllBy(
-                'mercancia',
-                { key: id_cliente },
+                'bodega_zona',
+                { key: id_bodega },
                 function (data) {
                     grdCatalog.DataBind(data, function () {
                         tabCatalog.changeListTab();
 
                     });
+                    //console.log(id_bodega);
                 },
                 function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
@@ -56,13 +57,9 @@ var Mercancia = function () {
 
     function parametersGet() {
         return {
-            Id_cliente: id_cliente,
-            Sku: $('#txt_sku').val(),
-            Upc: $('#txt_upc').val(),
-            Nombre: $('#txt_nombre').val(),
-            Precio: $('#txt_precio').val(),
-            Piezas_x_caja: $('#txt_piezas_x_caja').val(),
-            Cajas_x_tarima: $('#txt_cajas_x_tarima').val()
+            Id_bodega: id_bodega,
+            Clave: $('#txt_clave').val(),
+            Nombre: $('#txt_nombre').val()
         };
     }
 
@@ -73,12 +70,7 @@ var Mercancia = function () {
             callBackRowFill: function (tr, obj) {
 
                 td = document.createElement('td');
-                field = document.createTextNode(obj.Sku);
-                td.appendChild(field);
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                field = document.createTextNode(obj.Upc);
+                field = document.createTextNode(obj.Clave);
                 td.appendChild(field);
                 tr.appendChild(td);
 
@@ -88,40 +80,21 @@ var Mercancia = function () {
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                field = document.createTextNode(obj.Precio);
+                field = document.createTextNode(obj.IsActive == true ? 'Si' : 'No');
                 td.appendChild(field);
                 tr.appendChild(td);
-
-//                td = document.createElement('td');
-//                field = document.createTextNode(obj.Cajas_x_tarima);
-//                td.appendChild(field);
-//                tr.appendChild(td);
-
-//                td = document.createElement('td');
-//                field = document.createTextNode(obj.Piezas_x_caja);
-//                td.appendChild(field);
-//                tr.appendChild(td);
 
             },
             callBackRowClick: function (tbl, id) {
                 CatalogosModel.catalogosSltById(
-                    'mercancia',
+                    'bodega_zona',
                     { key: id },
                     function (data) {
-
-                        var sku = data.Sku;
-                        var upc = data.Upc;
+                        var clave = data.Clave;
                         var nombre = data.Nombre;
-                        var precio = data.Precio;
-                        var piezas_x_caja = data.Piezas_x_caja;
-                        var cajas_x_tarima = data.Cajas_x_tarima;
 
-                        $('#txt_sku').val(sku);
-                        $('#txt_upc').val(upc);
+                        $('#txt_clave').val(clave);
                         $('#txt_nombre').val(nombre);
-                        $('#txt_precio').val(precio);
-                        $('#txt_piezas_x_caja').val(piezas_x_caja);
-                        $('#txt_cajas_x_tarima').val(cajas_x_tarima);
 
                         tabCatalog.validateOptActive(data.IsActive);
 
@@ -135,8 +108,8 @@ var Mercancia = function () {
         });
 
         CatalogosModel.catalogosLstAllBy(
-            'mercancia',
-            { key: id_cliente },
+            'bodega_zona',
+            { key: id_bodega },
             function (data) {
                 grdCatalog.DataBind(data, function (data) {
                 });
@@ -148,26 +121,26 @@ var Mercancia = function () {
     }
 
     function initControls() {
-        loadCliente();
+        loadAlmacen();
         initializeEvents();
     }
 
-    function loadCliente() {
+    function loadAlmacen() {
 
-        CatalogosModel.catalogosLstAll('cliente', function (data) {
+        CatalogosModel.catalogosLstAll('bodega', function (data) {
             var dataMap = $.map(data, function (obj) {
                 obj.id = obj.Id; // replace pk with your identifier
                 obj.text = obj.Nombre;
                 return obj;
             });
 
-            $('#ddl_cliente').select2({
+            $('#ddl_almacen').select2({
                 tags: "true",
-                placeholder: "Selecciona un cliente",
+                placeholder: "Selecciona un almacen",
                 data: dataMap
             });
 
-            id_cliente = $('#ddl_cliente').select2('data')[0].Id;
+            id_bodega = $('#ddl_almacen').select2('data')[0].Id;
             fillgrdCatalog();
         });
     }
@@ -177,11 +150,11 @@ var Mercancia = function () {
     }
 
     function ddl_change() {
-        $('#ddl_cliente').on('select2:select', function (e) {
-            id_cliente = $('#ddl_cliente').select2('data')[0].Id;
+        $('#ddl_almacen').on('select2:select', function (e) {
+            id_bodega = $('#ddl_almacen').select2('data')[0].Id;
             CatalogosModel.catalogosLstAllBy(
-                'mercancia',
-                { key: id_cliente },
+                'bodega_zona',
+                { key: id_bodega },
                 function (data) {
                     grdCatalog.DataBind(data, function () {
                     });
@@ -196,5 +169,5 @@ var Mercancia = function () {
 }
 
 var master = new webApp.Master;
-var pag = new Mercancia();
+var pag = new Bodega_zona();
 master.Init(pag);

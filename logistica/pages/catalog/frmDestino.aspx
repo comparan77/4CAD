@@ -26,7 +26,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#list" data-toggle="tab">Listado</a>
                 </li>
-                <li><a href="#admon" data-toggle="tab">Administración</a>
+                <li><a href="#admon" data-toggle="tab">Edición</a>
                 </li>
             </ul>
 
@@ -58,7 +58,7 @@
                         <label for="txt_cp">C.P.</label>
                         <input type="text" class="form-control" id="txt_cp" placeholder="C.P.">
                     </div>
-                    <button type="button" id="btn_cp" class="btn btn-success">Validar C.P.</button>
+                    <button type="button" id="btn_cp" class="btn btn-default">Validar C.P.</button>
                     <div class="form-group">
                         <label for="txt_calle_num">Calle y N&uacute;mero</label>
                         <input type="text" class="form-control" id="txt_calle_num" placeholder="Calle y número">

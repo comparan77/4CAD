@@ -67,7 +67,7 @@ var Recepcion = function () {
 
     function loadCliente() {
 
-        CatalogosModel.catalogosLst('cliente', function (data) {
+        CatalogosModel.catalogosLstAll('cliente', function (data) {
             var dataMap = $.map(data, function (obj) {
                 obj.id = obj.Id; // replace pk with your identifier
                 obj.text = obj.Nombre;
@@ -85,7 +85,7 @@ var Recepcion = function () {
 
     function loadBodega() {
 
-        CatalogosModel.catalogosLst('bodega', function (data) {
+        CatalogosModel.catalogosLstAll('bodega', function (data) {
             var dataMap = $.map(data, function (obj) {
                 obj.id = obj.Id; // replace pk with your identifier
                 obj.text = obj.Nombre;
@@ -109,7 +109,7 @@ var Recepcion = function () {
 
     function loadMercanciaCliente(id_cliente, callback) {
 
-        CatalogosModel.catalogosLstBy(
+        CatalogosModel.catalogosLstAllBy(
             'mercancia',
             { key: id_cliente },
             callback

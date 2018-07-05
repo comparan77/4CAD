@@ -7,23 +7,23 @@ using Model;
 
 namespace logisticaModel.catalog
 {
-    internal class BodegaMng: Crud
+    internal class Bodega_zonaMng: Crud
     {
         #region Campos
-        protected Bodega _oBodega;
-        protected List<Bodega> _lst;
+        protected Bodega_zona _oBodega_zona;
+        protected List<Bodega_zona> _lst;
         #endregion
 
         #region Propiedades
-        public Bodega O_Bodega { get { return _oBodega; } set { _oBodega = value; } }
-        public List<Bodega> Lst { get { return _lst; } set { _lst = value; } }
+        public Bodega_zona O_Bodega_zona { get { return _oBodega_zona; } set { _oBodega_zona = value; } }
+        public List<Bodega_zona> Lst { get { return _lst; } set { _lst = value; } }
         #endregion
 
         #region Constructores
-        public BodegaMng()
+        public Bodega_zonaMng()
         {
-            this._oBodega = new Bodega();
-            this._lst = new List<Bodega>();
+            this._oBodega_zona = new Bodega_zona();
+            this._lst = new List<Bodega_zona>();
         }
         #endregion
 
@@ -31,12 +31,13 @@ namespace logisticaModel.catalog
         protected override void addParameters(int opcion)
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
-            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oBodega.Id);
-            GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oBodega.Nombre);
-            GenericDataAccess.AddInParameter(this.comm, "?P_direccion", DbType.String, this._oBodega.Direccion);
+            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oBodega_zona.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oBodega_zona.Id_bodega);
+            GenericDataAccess.AddInParameter(this.comm, "?P_clave", DbType.String, this._oBodega_zona.Clave);
+            GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oBodega_zona.Nombre);
         }
 
-        protected void BindByDataRow(DataRow dr, Bodega o)
+        protected void BindByDataRow(DataRow dr, Bodega_zona o)
         {
             try
             {
@@ -46,8 +47,14 @@ namespace logisticaModel.catalog
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
+                if (dr["id_bodega"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_bodega"].ToString(), out entero);
+                    o.Id_bodega = entero;
+                    entero = 0;
+                }
+                o.Clave = dr["clave"].ToString();
                 o.Nombre = dr["nombre"].ToString();
-                o.Direccion = dr["direccion"].ToString();
                 if (dr["IsActive"] != DBNull.Value)
                 {
                     bool.TryParse(dr["IsActive"].ToString(), out logica);
@@ -65,16 +72,16 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(0);
                 if (trans == null)
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 else
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
-                this._lst = new List<Bodega>();
+                this._lst = new List<Bodega_zona>();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Bodega o = new Bodega();
+                    Bodega_zona o = new Bodega_zona();
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
@@ -89,7 +96,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(1);
                 if (trans == null)
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
@@ -98,7 +105,7 @@ namespace logisticaModel.catalog
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oBodega);
+                    BindByDataRow(dr, this._oBodega_zona);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -115,13 +122,13 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(2);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
                     GenericDataAccess.ExecuteNonQuery(this.comm, trans);
-                this._oBodega.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+                this._oBodega_zona.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
             {
@@ -133,7 +140,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(3);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
@@ -150,7 +157,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(4);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
@@ -167,7 +174,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(5);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
@@ -185,16 +192,16 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Bodega_zona");
                 addParameters(6);
                 if (trans == null)
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 else
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
-                this._lst = new List<Bodega>();
+                this._lst = new List<Bodega_zona>();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Bodega o = new Bodega();
+                    Bodega_zona o = new Bodega_zona();
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }

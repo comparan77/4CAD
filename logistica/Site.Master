@@ -329,9 +329,26 @@
                                 </li>
                             </ul>
                         </li>
+
                         <li>
-                            <asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/pages/process/frmProcesos.aspx"><i class="fa fa-gears fa-fw"></i>Procesos</asp:HyperLink>
+                            <a href="#"><i class="fa fa-laptop fa-fw"></i> Administraci&oacute;n<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <asp:HyperLink ID="HyperLink8" runat="server" NavigateUrl="~/pages/process/frmASN.aspx"><i class="fa fa-inbox fa-fw"></i>ASN</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/pages/process/frmProcesos.aspx"><i class="fa fa-gears fa-fw"></i>Procesos</asp:HyperLink>
+                                </li>
+                                <%--<li>
+                                    <a href="#"><i class="fa fa-arrows-alt fa-fw"></i>Preparación</a>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink9" runat="server" NavigateUrl="~/pages/warehouse/frmExpedicion.aspx"><i class="fa fa-arrow-circle-left fa-fw"></i>Expedición</asp:HyperLink>
+                                </li>--%>
+                            </ul>
                         </li>
+                        
+                        
                         <li>
                             <asp:HyperLink ID="HyperLink7" runat="server" NavigateUrl="~/pages/report/frmReportes.aspx"><i class="fa fa-file-text-o fa-fw"></i>Reportes</asp:HyperLink>
                         </li>

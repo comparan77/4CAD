@@ -216,7 +216,7 @@ var Tarifa = function () {
 
     function loadCliente() {
 
-        CatalogosModel.catalogosLst('cliente', function (data) {
+        CatalogosModel.catalogosLstAll('cliente', function (data) {
             var dataMap = $.map(data, function (obj) {
                 obj.id = obj.Id; // replace pk with your identifier
                 obj.text = obj.Nombre;

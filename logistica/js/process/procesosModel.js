@@ -69,6 +69,18 @@ var ProcesosModel = (function () {
                     if (error) error(jqXHR, textStatus);
                 }
             );
+        },
+
+        proformaConcetradoProfActByFolio: function (folio, callback, error) {
+            procesosAjax("GET", "json", 'proforma', null, 'concetradoProfActByFolio&folio=' + folio, callback, error);
+        },
+
+        procesosLst: function (catalogo, callback, error) {
+            procesosAjax("GET", "json", catalogo, null, 'lst', callback, error);
+        },
+
+        procesosLstById: function (catalogo, obj, callback, error) {
+            procesosAjax("GET", "json", catalogo, obj, 'lst', callback, error);
         }
 
     };

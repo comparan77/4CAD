@@ -21,7 +21,7 @@ var Cliente = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLst('cliente', function (data) {
+        CatalogosModel.catalogosLstAll('cliente', function (data) {
             grdCatalog.DataBind(data, function () {
                 tabCatalog.changeListTab();
             });
@@ -90,7 +90,7 @@ var Cliente = function () {
             }
         });
 
-        CatalogosModel.catalogosLst('cliente', function (data) {
+        CatalogosModel.catalogosLstAll('cliente', function (data) {
             grdCatalog.DataBind(data, function (data) {
             });
         },

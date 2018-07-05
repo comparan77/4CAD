@@ -39,7 +39,7 @@ var Cortina = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLstBy(
+        CatalogosModel.catalogosLstAllBy(
                 'cortina',
                 { key: id_bodega },
                 function (data) {
@@ -85,7 +85,6 @@ var Cortina = function () {
                     { key: id },
                     function (data) {
                         var nombre = data.Nombre;
-                        var direccion = data.Direccion;
 
                         $('#txt_nombre').val(nombre);
 
@@ -100,7 +99,7 @@ var Cortina = function () {
             }
         });
 
-        CatalogosModel.catalogosLstBy(
+        CatalogosModel.catalogosLstAllBy(
             'cortina',
             { key: id_bodega },
             function (data) {
@@ -120,7 +119,7 @@ var Cortina = function () {
 
     function loadAlmacen() {
 
-        CatalogosModel.catalogosLst('bodega', function (data) {
+        CatalogosModel.catalogosLstAll('bodega', function (data) {
             var dataMap = $.map(data, function (obj) {
                 obj.id = obj.Id; // replace pk with your identifier
                 obj.text = obj.Nombre;
@@ -145,7 +144,7 @@ var Cortina = function () {
     function ddl_change() {
         $('#ddl_almacen').on('select2:select', function (e) {
             id_bodega = $('#ddl_almacen').select2('data')[0].Id;
-            CatalogosModel.catalogosLstBy(
+            CatalogosModel.catalogosLstAllBy(
                 'cortina',
                 { key: id_bodega },
                 function (data) {

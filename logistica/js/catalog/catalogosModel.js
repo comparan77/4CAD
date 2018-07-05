@@ -33,8 +33,12 @@ var CatalogosModel = (function () {
             catalogosAjax("GET", "json", catalogo, null, 'lst', callback, error);
         },
 
-        catalogosLstBy: function (catalogo, obj, callback, error) {
-            catalogosAjax("GET", "json", catalogo, obj, 'lst', callback, error);
+        catalogosLstAll: function (catalogo, callback, error) {
+            catalogosAjax("GET", "json", catalogo, null, 'lstAll', callback, error);
+        },
+
+        catalogosLstAllBy: function (catalogo, obj, callback, error) {
+            catalogosAjax("GET", "json", catalogo, obj, 'lstAll', callback, error);
         },
 
         catalogosAdd: function (catalogo, obj, callback, error) {
