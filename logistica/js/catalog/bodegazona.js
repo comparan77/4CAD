@@ -135,7 +135,7 @@ var Bodega_zona = function () {
             });
 
             $('#ddl_almacen').select2({
-                tags: "true",
+                
                 placeholder: "Selecciona un almacen",
                 data: dataMap
             });

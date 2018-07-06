@@ -75,7 +75,7 @@ var Recepcion = function () {
             });
 
             $('#ddl_cliente').select2({
-                tags: "true",
+                
                 placeholder: "Selecciona un cliente",
                 data: dataMap,
                 allowClear: true
@@ -93,7 +93,7 @@ var Recepcion = function () {
             });
 
             $('#ddl_bodega').select2({
-                tags: "true",
+                
                 placeholder: "Selecciona una bodega",
                 data: dataMap,
                 allowClear: true
@@ -133,7 +133,7 @@ var Recepcion = function () {
         }
 
         $('#ddl_mercancia_cliente').select2({
-            tags: "true",
+            
             placeholder: "Selecciona una mercancía",
             data: dataCteMcia,
             allowClear: true

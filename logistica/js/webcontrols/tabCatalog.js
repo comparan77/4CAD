@@ -9,6 +9,7 @@
         // Define option defaults
         var defaults = {
             catalogo: '',
+            isCatalog: true,
             callBackChangeTab: null,
             parametersGet: null,
             callBackSaveData: null,
@@ -153,9 +154,14 @@
 
             var obj = _.options.parametersGet();
             obj.Id = _.key;
-            // console.log(JSON.stringify(obj));
-            saveData(obj, _);
-
+            //console.log(JSON.stringify(obj));
+            if(_.options.isCatalog)
+                saveData(obj, _);
+            else {
+                $(this).addClass('disabled');
+                $(this).html('Guardando la información ...');
+                _.options.callBackSaveData(obj, $(this))
+            }
         });
     }
 

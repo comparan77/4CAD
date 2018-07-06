@@ -9,17 +9,20 @@ namespace logisticaModel.catalog
     {
         #region Campos
         protected int _id;
+        protected string _clave;
         protected string _nombre;
         #endregion
 
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
+        public string Clave { get { return _clave; } set { _clave = value; } }
         public string Nombre { get { return _nombre; } set { _nombre = value; } }
         #endregion
 
         #region Constructores
         public Aduana()
         {
+            this._clave = String.Empty;
             this._nombre = String.Empty;
         }
         #endregion

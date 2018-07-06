@@ -61,7 +61,7 @@ namespace logistica.handlers
             {
                 case "lst":
                     o = new Asn();
-                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Asn>().ToList());
+                    response = JsonConvert.SerializeObject(ProcessCtrl.asnLst());
                     break;
                 case "add":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();

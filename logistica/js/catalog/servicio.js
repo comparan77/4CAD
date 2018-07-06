@@ -121,7 +121,7 @@ var Servicio = function () {
             });
 
             $('#ddl_periodo').select2({
-                tags: "true",
+                
                 placeholder: "Selecciona un periodo",
                 data: dataMap
             });

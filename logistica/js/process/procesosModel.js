@@ -75,12 +75,16 @@ var ProcesosModel = (function () {
             procesosAjax("GET", "json", 'proforma', null, 'concetradoProfActByFolio&folio=' + folio, callback, error);
         },
 
-        procesosLst: function (catalogo, callback, error) {
-            procesosAjax("GET", "json", catalogo, null, 'lst', callback, error);
+        procesosLst: function (tabla, callback, error) {
+            procesosAjax("GET", "json", tabla, null, 'lst', callback, error);
         },
 
-        procesosLstById: function (catalogo, obj, callback, error) {
-            procesosAjax("GET", "json", catalogo, obj, 'lst', callback, error);
+        procesosLstById: function (tabla, obj, callback, error) {
+            procesosAjax("GET", "json", tabla, obj, 'lst', callback, error);
+        },
+
+        procesosAdd: function (tabla, obj, callback, error) {
+            procesosAjax("POST", "json", tabla, obj, 'add', callback, error);
         }
 
     };

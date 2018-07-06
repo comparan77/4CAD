@@ -14,6 +14,23 @@ namespace logisticaModel.controller.process
     {
         #region Asn
 
+        public static List<Asn> asnLst()
+        {
+            List<Asn> lst = new List<Asn>();
+            try
+            {
+                AsnMng oMng = new AsnMng();
+                oMng.getLstConcentrado();
+                lst = oMng.Lst;
+            }
+            catch 
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
         public static void asnAdd(Asn o)
         {
             IDbTransaction tran = null;
@@ -21,7 +38,9 @@ namespace logisticaModel.controller.process
             Asn_partidaMng oAPMng = new Asn_partidaMng();
             try
             {
-                string folio = CatalogoCtrl.getFolio(enumTipo.PRF, tran);
+                tran = GenericDataAccess.BeginTransaction();
+
+                string folio = CatalogoCtrl.getFolio(enumTipo.ASN, tran);
                 o.Folio = folio;
                 oMng.add(tran);
 

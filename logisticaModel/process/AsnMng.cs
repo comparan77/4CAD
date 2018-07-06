@@ -32,7 +32,9 @@ namespace logisticaModel.process
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oAsn.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oAsn.Id_cliente);
             GenericDataAccess.AddInParameter(this.comm, "?P_folio", DbType.String, this._oAsn.Folio);
+            GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oAsn.Referencia);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oAsn.Id_bodega);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha", DbType.DateTime, this._oAsn.Fecha);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, this._oAsn.Id_transporte);
@@ -50,7 +52,14 @@ namespace logisticaModel.process
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
+                if (dr["id_cliente"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_cliente"].ToString(), out entero);
+                    o.Id_cliente = entero;
+                    entero = 0;
+                }
                 o.Folio = dr["folio"].ToString();
+                o.Referencia = dr["referencia"].ToString();
                 if (dr["id_bodega"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_bodega"].ToString(), out entero);
@@ -215,6 +224,51 @@ namespace logisticaModel.process
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
                     GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void getLstConcentrado()
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommand(
+                    "select a.id, a.folio, a.fecha, c.nombre cliente, a.referencia, a.pallet, a.caja, a.pieza from asn a " +
+                    "left join cliente c on c.id = a.id_cliente");
+
+                this.dt = GenericDataAccess.ExecuteSelectCommand(this.comm);
+                var qry =
+                    from result in this.dt.AsEnumerable()
+                    select new
+                    {
+                        id = result.Field<Int32>("id"),
+                        folio = result.Field<string>("folio"),
+                        fecha = result.Field<DateTime>("fecha"),
+                        cliente = result.Field<string>("cliente"),
+                        referencia = result.Field<string>("referencia"),
+                        pallet = result.Field<Int32>("pallet"),
+                        caja = result.Field<Int32>("caja"),
+                        pieza = result.Field<Int32>("pieza")
+                    };
+
+                foreach (var item in qry)
+                {
+                    Asn o = new Asn()
+                    {
+                        Id = item.id,
+                        Folio = item.folio,
+                        Fecha = item.fecha,
+                        ClienteNombre = item.cliente,
+                        Referencia = item.referencia,
+                        Pallet = item.pallet,
+                        Caja = item.caja,
+                        Pieza = item.pieza
+                    };
+                    this._lst.Add(o);
+                }
             }
             catch
             {

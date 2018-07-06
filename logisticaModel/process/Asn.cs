@@ -9,7 +9,9 @@ namespace logisticaModel.process
     {
         #region Campos
         protected int _id;
+        protected int _id_cliente;
         protected string _folio;
+        protected string _referencia;
         protected int? _id_bodega;
         protected DateTime? _fecha;
         protected int? _id_transporte;
@@ -22,7 +24,9 @@ namespace logisticaModel.process
 
         #region Propiedades
         public int Id { get { return _id; } set { _id = value; } }
+        public int Id_cliente { get { return _id_cliente; } set { _id_cliente = value; } }
         public string Folio { get { return _folio; } set { _folio = value; } }
+        public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public int? Id_bodega { get { return _id_bodega; } set { _id_bodega = value; } }
         public DateTime? Fecha { get { return _fecha; } set { _fecha = value; } }
         public int? Id_transporte { get { return _id_transporte; } set { _id_transporte = value; } }
@@ -32,12 +36,15 @@ namespace logisticaModel.process
         public int? Caja { get { return _caja; } set { _caja = value; } }
         public int? Pieza { get { return _pieza; } set { _pieza = value; } }
         public List<Asn_partida> PLstPartida { get; set; }
+        public string ClienteNombre { get; set; }
         #endregion
 
         #region Constructores
         public Asn()
         {
+            this._id_cliente = 0;
             this._folio = String.Empty;
+            this._referencia = null;
             this._id_bodega = null;
             this._fecha = null;
             this._id_transporte = null;
@@ -47,6 +54,7 @@ namespace logisticaModel.process
             this._caja = null;
             this._pieza = null;
         }
+
         #endregion
     }
 }

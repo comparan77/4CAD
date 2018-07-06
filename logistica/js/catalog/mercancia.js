@@ -162,7 +162,7 @@ var Mercancia = function () {
             });
 
             $('#ddl_cliente').select2({
-                tags: "true",
+                
                 placeholder: "Selecciona un cliente",
                 data: dataMap
             });

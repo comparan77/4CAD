@@ -45,9 +45,13 @@
                     <table id="grdCatalog" class="table table-striped table-bordered table-hover" width="100%">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Direcci&oacute;n</th>
-                                <th>Activo</th>
+                                <th>Folio</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Referencia</th>
+                                <th>Tarimas</th>
+                                <th>Cajas</th>
+                                <th>Piezas</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -96,7 +100,7 @@
                     <div id="div_extranjero" class="hidden">
 
                         <div class="form-group">
-                            <label for="ddl_aduana">Almac&eacute;n
+                            <label for="ddl_aduana">Aduana
                                 <select id="ddl_aduana" style="width: 100%" class="form-control"></select>
                             </label>
                         </div>
@@ -160,6 +164,8 @@
                                             </th>
                                         </tr>
                                     </thead>
+                                    <tbody id="t_body_partidas"></tbody>
+                                    <tfoot class="tbl_foot_total" id="t_foot_partidas"></tfoot>
                                 </table>
                             </div>
                         </div>

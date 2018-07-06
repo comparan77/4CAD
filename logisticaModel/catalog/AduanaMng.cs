@@ -32,6 +32,7 @@ namespace logisticaModel.catalog
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oAduana.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_clave", DbType.String, this._oAduana.Clave);
             GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oAduana.Nombre);
         }
 
@@ -42,6 +43,7 @@ namespace logisticaModel.catalog
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
+                o.Clave = dr["clave"].ToString();
                 o.Nombre = dr["nombre"].ToString();
             }
             catch

@@ -76,3 +76,29 @@ Common.fillSelect = function (id_control, array, first_element) {
         ddl.appendChild(opt);
     }
 }
+
+Common.clearNode = function (node) {
+    var myNode = document.getElementById(node);
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+}
+
+Common.fillTableBody = function (id_table_body, data, datakey, callbackRowAdd, callbackFill) {
+    var table = document.getElementById(id_table_body);
+    Common.clearNode(id_table_body);
+    for (var i in data) {
+        var tr = document.createElement('tr');
+        if (datakey != undefined) tr.setAttribute('id', id_table_body + '_' + data[datakey]);
+        var values = Object.values(data[i]);
+        for (var y in values) {
+            var td = document.createElement('td');
+            field = document.createTextNode(values[y]);
+            td.appendChild(field);
+            tr.appendChild(td);
+        }
+        if (callbackRowAdd) callbackRowAdd(tr, data[i]);
+        table.appendChild(tr);
+    }
+    if (callbackFill) callbackFill();
+}

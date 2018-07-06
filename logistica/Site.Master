@@ -24,7 +24,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
       
-      <%--<link href="/css/master.css" rel="stylesheet" type="text/css" />--%>
+      <link href="/css/master.css" rel="stylesheet" type="text/css" />
     <!-- Bootstrap Core CSS -->
       <link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
 

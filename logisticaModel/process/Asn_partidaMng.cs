@@ -33,6 +33,7 @@ namespace logisticaModel.process
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oAsn_partida.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_asn", DbType.Int32, this._oAsn_partida.Id_asn);
+            GenericDataAccess.AddInParameter(this.comm, "?P_sku", DbType.String, this._oAsn_partida.Sku);
             GenericDataAccess.AddInParameter(this.comm, "?P_tarima", DbType.Int32, this._oAsn_partida.Tarima);
             GenericDataAccess.AddInParameter(this.comm, "?P_caja", DbType.Int32, this._oAsn_partida.Caja);
             GenericDataAccess.AddInParameter(this.comm, "?P_pieza", DbType.Int32, this._oAsn_partida.Pieza);
@@ -51,6 +52,7 @@ namespace logisticaModel.process
                     o.Id_asn = entero;
                     entero = 0;
                 }
+                o.Sku = dr["sku"].ToString();
                 if (dr["tarima"] != DBNull.Value)
                 {
                     int.TryParse(dr["tarima"].ToString(), out entero);
