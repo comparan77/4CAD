@@ -8,6 +8,7 @@ using logisticaModel.process;
 using logisticaModel.controller.process;
 using logisticaModel.catalog;
 using logisticaModel.controller.catalog;
+using System.IO;
 
 namespace logistica.handlers
 {
@@ -61,6 +62,12 @@ namespace logistica.handlers
                 case "lst":
                     o = new Asn();
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Asn>().ToList());
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Asn>(jsonData);
+                    ProcessCtrl.asnAdd(o);
+                    response = JsonConvert.SerializeObject(true);
                     break;
                 default:
                     break;

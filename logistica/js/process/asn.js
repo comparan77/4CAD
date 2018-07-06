@@ -8,10 +8,14 @@ var Asn = function () {
 
     var grdCatalog;
     var tabCatalog;
+    var id_catalog;
     var id_bodega;
     var id_transporte;
 
     this.Init = function () {
+
+        id_catalog = {
+        };
 
         fillgrdCatalog();
         tabCatalog = new TabCatalog({
@@ -40,20 +44,7 @@ var Asn = function () {
     }
 
     function saveData() {
-        CatalogosModel.catalogosLstAllBy(
-                'cortina',
-                { key: id_bodega },
-                function (data) {
-                    grdCatalog.DataBind(data, function () {
-                        tabCatalog.changeListTab();
 
-                    });
-                    //console.log(id_bodega);
-                },
-                function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
-                }
-            );
     }
 
     function parametersGet() {
@@ -63,75 +54,56 @@ var Asn = function () {
         };
     }
 
-    function fillgrdCatalog() {
-        grdCatalog = new DataGrid({
-            idtable: 'grdCatalog',
-            dataKey: 'Id',
-            callBackRowFill: function (tr, obj) {
-
-                td = document.createElement('td');
-                field = document.createTextNode(obj.Nombre);
-                td.appendChild(field);
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                field = document.createTextNode(obj.IsActive == true ? 'Si' : 'No');
-                td.appendChild(field);
-                tr.appendChild(td);
-
-            },
-            callBackRowClick: function (tbl, id) {
-                CatalogosModel.catalogosSltById(
-                    'cortina',
-                    { key: id },
-                    function (data) {
-                        var nombre = data.Nombre;
-
-                        $('#txt_nombre').val(nombre);
-
-                        tabCatalog.validateOptActive(data.IsActive);
-
-                        tabCatalog.changeAdmonTab(id);
-                    },
-                    function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
-                    }
-                );
-            }
-        });
-
-        CatalogosModel.catalogosLstAllBy(
-            'cortina',
-            { key: id_bodega },
-            function (data) {
-                grdCatalog.DataBind(data, function (data) {
-                });
-            },
-            function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            }
-        );
-    }
-
     function initControls() {
-        loadCatalogs(['bodega', 'transporte']);
+        loadCatalogs(['cliente', 'bodega', 'transporte', 'aduana'], loadedCatalogs);
         $('#txt_fecha').datepicker({
             language: 'es',
             startDate: new Date(),
             autoclose: true
         })
 
-        //initializeEvents();
+        initializeEvents();
     }
 
-    function loadCatalogs(arr_catalog, loaded) {
+    function loadedCatalogs() {
+        fillMercanciaByCliente();
+    }
+
+    function fillMercanciaByCliente() {
+        CatalogosModel.catalogosLstAllBy('mercancia', { pk: id_catalog.id_cliente }, function (data) {
+            var dataMap = $.map(data, function (obj) {
+                obj.id = obj.Id; // replace pk with your identifier
+                obj.text = obj.Sku;
+                obj.nombre = obj.Nombre;
+                return obj;
+            });
+
+            $('#ddl_cliente_mercancia').select2({
+                tags: "true",
+                placeholder: "Selecciona una opción",
+                data: dataMap,
+                theme: "classic"
+            });
+
+            var id_value = $('#ddl_cliente_mercancia').select2('data')[0].Id;
+
+            id_catalog["id_cliente_mercancia"] = id_value;
+            ddl_cliente_mercancia_change();
+        });
+    }
+
+    function ddl_cliente_mercancia_change() {
+
+    }
+
+    function loadCatalogs(arr_catalog, callback, loaded) {
         if (loaded == undefined) {
             loaded = 0;
         }
         if (loaded < arr_catalog.length) {
 
             var catalog = arr_catalog[loaded];
-            console.log(catalog);
+
             CatalogosModel.catalogosLst(catalog, function (data) {
                 var dataMap = $.map(data, function (obj) {
                     obj.id = obj.Id; // replace pk with your identifier
@@ -148,19 +120,14 @@ var Asn = function () {
 
                 var id_value = $('#ddl_' + catalog).select2('data')[0].Id;
 
-                switch (catalog) {
-                    case "bodega":
-                        id_bodega = id_value;
-                        break;
-                    case "transporte":
-                        id_transporte = id_value;
-                        break;
-                }
+                id_catalog["id_" + catalog] = id_value;
+
                 loaded++;
-                loadCatalogs(arr_catalog, loaded);
+                loadCatalogs(arr_catalog, callback, loaded);
 
             });
-
+        } else {
+            if (callback) callback();
         }
     }
 
@@ -242,6 +209,28 @@ var Asn = function () {
         },
         function (jqXHR, textStatus) {
             alert("Request failed: " + textStatus);
+        });
+    }
+
+    function initializeEvents() {
+        change_radio_tipo();
+        btn_add_click();
+    }
+
+    function btn_add_click() {
+        $('#btn_add').click(function () {
+            
+        });
+    }
+
+    function change_radio_tipo() {
+        $('input[type=radio][name=tipo]').change(function () {
+            if (this.value == 'nacional') {
+                $('#div_extranjero').addClass('hidden');
+            }
+            else if (this.value = 'extranjero') {
+                $('#div_extranjero').removeClass('hidden');
+            }
         });
     }
 

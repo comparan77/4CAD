@@ -14,7 +14,33 @@ namespace logisticaModel.controller.process
     {
         #region Asn
 
-        
+        public static void asnAdd(Asn o)
+        {
+            IDbTransaction tran = null;
+            AsnMng oMng = new AsnMng() { O_Asn = o };
+            Asn_partidaMng oAPMng = new Asn_partidaMng();
+            try
+            {
+                string folio = CatalogoCtrl.getFolio(enumTipo.PRF, tran);
+                o.Folio = folio;
+                oMng.add(tran);
+
+                foreach (Asn_partida item in o.PLstPartida)
+                {
+                    item.Id_asn = o.Id;
+                    oAPMng.O_Asn_partida = item;
+                    oAPMng.add(tran);
+                }
+
+                GenericDataAccess.CommitTransaction(tran);
+            }
+            catch
+            {
+                if (tran != null)
+                    GenericDataAccess.RollbackTransaction(tran);
+                throw;
+            }
+        }
 
         #endregion
 

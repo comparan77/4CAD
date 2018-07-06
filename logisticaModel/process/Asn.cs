@@ -31,6 +31,7 @@ namespace logisticaModel.process
         public int? Pallet { get { return _pallet; } set { _pallet = value; } }
         public int? Caja { get { return _caja; } set { _caja = value; } }
         public int? Pieza { get { return _pieza; } set { _pieza = value; } }
+        public List<Asn_partida> PLstPartida { get; set; }
         #endregion
 
         #region Constructores

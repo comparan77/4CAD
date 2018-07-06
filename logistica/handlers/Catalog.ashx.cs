@@ -31,6 +31,9 @@ namespace logistica.handlers
             {
                 switch (op)
                 {
+                    case "aduana":
+                        response = aduana(context);
+                        break;
                     case "bodega":
                         response = bodega(context);
                         break;
@@ -71,7 +74,48 @@ namespace logistica.handlers
                 context.Response.Write(JsonConvert.SerializeObject(e.Message));
             }
             context.Response.Write(response);
-        }    
+        }
+
+        private string aduana(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Aduana o = new Aduana();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Aduana>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Aduana>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Aduana>().ToList());
+                    break;
+                case "dlt":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogEnabled(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
 
         private string bodega(HttpContext context)
         {
@@ -262,6 +306,9 @@ namespace logistica.handlers
                     o = JsonConvert.DeserializeObject<Cliente>(jsonData);
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Cliente>().ToList());
                     break;
                 case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Cliente>().ToList());

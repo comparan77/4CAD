@@ -60,6 +60,12 @@
                     </div>
                     
                     <div class="form-group">
+                        <label for="ddl_cliente">Cliente
+                            <select id="ddl_cliente" style="width: 100%" class="form-control"></select>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
                         <label for="ddl_bodega">Almac&eacute;n
                             <select id="ddl_bodega" style="width: 100%" class="form-control"></select>
                         </label>
@@ -74,6 +80,89 @@
                         <label for="ddl_transporte">Almac&eacute;n
                             <select id="ddl_transporte" style="width: 100%" class="form-control"></select>
                         </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            <input id="nacional" name="tipo" checked="" type="radio" value="nacional" />
+                            Nacional
+                        </label>
+                        <label class="radio-inline">
+                            <input id="extranjero" name="tipo" type="radio" value="extranjero" />
+                            Extranjero
+                        </label>
+                    </div>
+
+                    <div id="div_extranjero" class="hidden">
+
+                        <div class="form-group">
+                            <label for="ddl_aduana">Almac&eacute;n
+                                <select id="ddl_aduana" style="width: 100%" class="form-control"></select>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txt_patente">Patente</label>
+                            <input type="text" maxlength="4" class="form-control" id="txt_patente" placeholder="Patente">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txt_documento">Documento</label>
+                            <input type="text" maxlength="6" class="form-control" id="txt_documento" placeholder="Documento">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_sello">Sello</label>
+                        <input type="text" class="form-control" id="txt_sello" placeholder="Sello">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_operador">Transportista</label>
+                        <input type="text" class="form-control" id="txt_operador" placeholder="Nombre del transportista">
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Partidas
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th align="center">
+                                                No
+                                            </th>
+                                            <th align="center">
+                                                <select id="ddl_cliente_mercancia"></select>
+                                                <hr />
+                                                <label>SKU</label>
+                                            </th>
+                                            <th align="center">
+                                                <input type="number" min="0" id="txt_tarima" />
+                                                <hr />
+                                                <label>Tarimas</label>
+                                            </th>
+                                            <th align="center">
+                                                <input type="number" min="0" id="txt_caja" />
+                                                <hr />
+                                                <label>Cajas</label>
+                                            </th>
+                                            <th align="center">
+                                                <input type="number" min="0" id="txt_pieza" />
+                                                <hr />
+                                                <label>Piezas</label>
+                                            </th>
+                                            <th>
+                                                <button type="button" id="btn_add" class="btn-link">+</button>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="button" id="btn_save" class="btn btn-primary">Guardar</button>

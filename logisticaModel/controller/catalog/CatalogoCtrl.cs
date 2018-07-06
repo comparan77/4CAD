@@ -51,8 +51,11 @@ namespace logisticaModel.controller.catalog
                 errMsg = "No existe la asginación de folios para ";
                 switch (tipo)
                 {
-                    case enumTipo.SER:
-                        errMsg = errMsg + " el Concepto de Servicios";
+                    case enumTipo.ASN:
+                        errMsg = errMsg + " el Concepto de Advanced Shipping Notice";
+                        break;
+                    case enumTipo.PRF:
+                        errMsg = errMsg + " el Concepto de Proforma";
                         break;
                     default:
                         break;

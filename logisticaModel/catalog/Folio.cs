@@ -7,7 +7,7 @@ namespace logisticaModel.catalog
 {
     public enum enumTipo
     {
-        SER //Servicio
+        ASN //Advanced Shipping Notice
         , PRF //Proforma
     }
     public class Folio
