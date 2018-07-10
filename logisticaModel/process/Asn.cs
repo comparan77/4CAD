@@ -16,7 +16,6 @@ namespace logisticaModel.process
         protected int? _id_bodega;
         protected DateTime? _fecha_hora;
         protected int? _id_transporte;
-        protected string _sello;
         protected string _operador;
         protected int? _pallet;
         protected int? _caja;
@@ -33,7 +32,6 @@ namespace logisticaModel.process
         public int? Id_bodega { get { return _id_bodega; } set { _id_bodega = value; } }
         public DateTime? Fecha_hora { get { return _fecha_hora; } set { _fecha_hora = value; } }
         public int? Id_transporte { get { return _id_transporte; } set { _id_transporte = value; } }
-        public string Sello { get { return _sello; } set { _sello = value; } }
         public string Operador { get { return _operador; } set { _operador = value; } }
         public int? Pallet { get { return _pallet; } set { _pallet = value; } }
         public int? Caja { get { return _caja; } set { _caja = value; } }
@@ -51,7 +49,6 @@ namespace logisticaModel.process
             this._id_bodega = null;
             this._fecha_hora = null;
             this._id_transporte = null;
-            this._sello = null;
             this._operador = null;
             this._pallet = null;
             this._caja = null;
@@ -66,5 +63,7 @@ namespace logisticaModel.process
         public string BodegaNombre { get; set; }
         public string TransporteNombre { get; set; }
         public Cortina_disponible PCortinaAsignada { get; set; }
+        public string CortinaNombre { get; set; }
+        public List<Asn_transporte_sello> PLstTranSello { get; set; }
     }
 }

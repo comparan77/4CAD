@@ -36,6 +36,7 @@ namespace logisticaModel.controller.process
             IDbTransaction tran = null;
             AsnMng oMng = new AsnMng() { O_Asn = o };
             Asn_partidaMng oAPMng = new Asn_partidaMng();
+            Asn_transporte_selloMng oATSMng = new Asn_transporte_selloMng();
             try
             {
                 tran = GenericDataAccess.BeginTransaction();
@@ -49,6 +50,13 @@ namespace logisticaModel.controller.process
                     item.Id_asn = o.Id;
                     oAPMng.O_Asn_partida = item;
                     oAPMng.add(tran);
+                }
+
+                foreach (Asn_transporte_sello itemSello in o.PLstTranSello)
+                {
+                    itemSello.Id_asn = o.Id;
+                    oATSMng.O_Asn_transporte_sellos = itemSello;
+                    oATSMng.add(tran);
                 }
 
                 GenericDataAccess.CommitTransaction(tran);

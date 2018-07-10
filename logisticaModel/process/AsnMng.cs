@@ -38,7 +38,6 @@ namespace logisticaModel.process
             GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oAsn.Id_bodega);
             GenericDataAccess.AddInParameter(this.comm, "?P_fecha_hora", DbType.DateTime, this._oAsn.Fecha_hora);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, this._oAsn.Id_transporte);
-            GenericDataAccess.AddInParameter(this.comm, "?P_sello", DbType.String, this._oAsn.Sello);
             GenericDataAccess.AddInParameter(this.comm, "?P_operador", DbType.String, this._oAsn.Operador);
             GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, this._oAsn.Pallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_caja", DbType.Int32, this._oAsn.Caja);
@@ -92,7 +91,6 @@ namespace logisticaModel.process
                 {
                     o.Id_transporte = null;
                 }
-                o.Sello = dr["sello"].ToString();
                 o.Operador = dr["operador"].ToString();
                 if (dr["pallet"] != DBNull.Value)
                 {

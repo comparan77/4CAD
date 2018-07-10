@@ -64,6 +64,9 @@ namespace logistica.handlers
                     case "transporte":
                         response = transporte(context);
                         break;
+                    case "transporte_tipo":
+                        response = transporte_tipo(context);
+                        break;
                     case "vendor":
                         response = vendor(context);
                         break;
@@ -559,6 +562,59 @@ namespace logistica.handlers
                     break;
                 case "lstAll":
                     response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Transporte>().ToList());
+                    break;
+                case "enb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogEnabled(o);
+                    o.IsActive = true;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "dsb":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogDisabled(o);
+                    o.IsActive = false;
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string transporte_tipo(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Transporte_tipo o = new Transporte_tipo();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Transporte_tipo>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Transporte_tipo>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Transporte_tipo>().ToList());
+                    break;
+                case "lstAll":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Transporte_tipo>().ToList());
                     break;
                 case "enb":
                     if (context.Request["key"] != null)

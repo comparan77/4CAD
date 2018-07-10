@@ -87,6 +87,12 @@ namespace logistica.handlers
                     foreach (Asn item in lstAsn)
                     {
                         item.PCortinaAsignada = RecepcionCtrl.cortinaGetByAsn(item.Id);
+                        if (item.PCortinaAsignada.Id_cortina > 0)
+                        {
+                            Cortina oCortina = new Cortina() { Id = item.PCortinaAsignada.Id_cortina };
+                            CatalogoCtrl.catalogSelById(oCortina);
+                            item.CortinaNombre = oCortina.Nombre;
+                        }
                     }
                     response = JsonConvert.SerializeObject(lstAsn);
                     break;

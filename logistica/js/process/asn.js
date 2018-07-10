@@ -13,6 +13,8 @@ var Asn = function () {
     var id_transporte;
     var arrPartidas = [];
     var arrTotal = [];
+    var arrTransporteTipo = [];
+    var PLstTranSello = [];
 
     this.Init = function () {
 
@@ -46,7 +48,12 @@ var Asn = function () {
     }
 
     function initControls() {
-        loadCatalogs(['cliente', 'bodega', 'transporte', 'aduana'], loadedCatalogs);
+
+        $('#txt_hora').clockpicker({
+            autoclose : true
+        });
+
+        loadCatalogs(['cliente', 'bodega', 'transporte', 'aduana', 'transporte_tipo'], loadedCatalogs);
         $('#txt_fecha').datepicker({
             language: 'es',
             startDate: new Date(),
@@ -108,6 +115,8 @@ var Asn = function () {
                     obj.text = obj.Nombre;
                     if (catalog == 'aduana') {
                         obj.clave = obj.Clave;
+                    } else if (catalog == 'transporte_tipo') {
+                        obj.TransTipo = { caja1: obj.Requiere_caja1, caja2: obj.Requiere_caja2, caja3: obj.Requiere_caja3 };
                     }
                     return obj;
                 });
@@ -154,19 +163,30 @@ var Asn = function () {
     }
 
     function parametersGet() {
+
+        $('#tbody_sellos').children('tr').each(function (i, obj) {
+            PLstTranSello.push({
+                Id: 0,
+                Id_asn: 0,
+                Contenedor: $(this).children(':nth-child(2)').children('input').val(),
+                Sello: $(this).children(':nth-child(3)').children('input').val()
+            });
+        });
+
         return {
             Id_cliente: id_catalog.id_cliente,
             Folio: '',
             Referencia: $('#ddl_aduana').select2('data')[0].clave + $('#txt_patente').val() + $('#txt_documento').val(),
             Id_bodega: id_catalog.id_bodega,
-            Fecha_hora: id_catalog.fecha,
+            Fecha_hora: id_catalog.fecha + ' ' + $('#txt_hora').val(),
             Id_transporte: id_catalog.id_transporte,
             Sello: $('#txt_sello').val(),
             Operador: $('#txt_operador').val(),
             Pallet: arrTotal[0].tarima,
             Caja: arrTotal[0].caja,
             Pieza: arrTotal[0].pieza,
-            PLstPartida: arrPartidas
+            PLstPartida: arrPartidas,
+            PLstTranSello: PLstTranSello
         };
     }
 
@@ -251,6 +271,36 @@ var Asn = function () {
         change_radio_tipo();
         btn_add_click();
         txt_tarima_blur();
+        change_transporte_tipo();
+    }
+
+    function change_transporte_tipo() {
+        $('#ddl_transporte_tipo').on('select2:select', function (e) {
+            //console.log(JSON.stringify($('#ddl_transporte_tipo').select2('data')[0].TransTipo));
+            var arrTipo = [];
+            var TransTipo = $('#ddl_transporte_tipo').select2('data')[0].TransTipo;
+            var rowNum = 1;
+            if (TransTipo.caja1)
+                arrTipo.push({ id: rowNum++ });
+            if (TransTipo.caja2)
+                arrTipo.push({ id: rowNum++ });
+            if (TransTipo.caja3)
+                arrTipo.push({ id: rowNum++ });
+
+            //console.log(JSON.stringify(TransTipo));
+
+            Common.fillTableBody('tbody_sellos', arrTipo, 'id', function (tr, obj) {
+                var td = document.createElement('td');
+                var txt_caja = document.createElement('input');
+                td.appendChild(txt_caja);
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                var txt_sello = document.createElement('input');
+                td.appendChild(txt_sello);
+                tr.appendChild(td);
+            });
+        });
     }
 
     function txt_tarima_blur() {

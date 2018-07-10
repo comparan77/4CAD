@@ -2,6 +2,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <link href="../../vendor/datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
     <link href="../../vendor/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../vendor/clockpicker/bootstrap-clockpicker.min.css" rel="stylesheet"
+        type="text/css" />
     <script src="../../vendor/datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="../../vendor/datepicker/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
     <script src="../../vendor/select2/select2.min.js" type="text/javascript"></script>
@@ -14,6 +16,7 @@
     <script src="../../js/webcontrols/datagrid.js" type="text/javascript"></script>
     <script src="../../js/webcontrols/monthPicker.js" type="text/javascript"></script>
     <script src="../../vendor/moment/moment.min.js" type="text/javascript"></script>
+    <script src="../../vendor/clockpicker/bootstrap-clockpicker.min.js" type="text/javascript"></script>
     <script src="../../js/webcontrols/tabCatalog.js" type="text/javascript"></script>
     <script src="../../js/process/asn.js" type="text/javascript"></script>
 </asp:Content>
@@ -77,14 +80,52 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="txt_fecha">Fecha</label>
+                        <label for="txt_fecha">Fecha y Hora</label>
                         <input type="text" class="form-control" id="txt_fecha" placeholder="Fecha">
                     </div>
 
                     <div class="form-group">
-                        <label for="ddl_transporte">Almac&eacute;n
+                        <div class="input-group clockpicker">
+                            <input type="text" id="txt_hora" class="form-control" value="09:30">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddl_transporte">Transporte
                             <select id="ddl_transporte" style="width: 100%" class="form-control"></select>
                         </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddl_transporte_tipo">Tipo de Transporte
+                            <select id="ddl_transporte_tipo" style="width: 100%" class="form-control">
+                                <option></option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Sellos
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>No</td>
+                                                <td>Contenedor / Caja</td>
+                                                <td>Sello</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_sellos"></tbody>
+                                    </table>
+                                </div>
+                            </div>
                     </div>
 
                     <div class="form-group">
@@ -102,7 +143,9 @@
 
                         <div class="form-group">
                             <label for="ddl_aduana">Aduana
-                                <select id="ddl_aduana" style="width: 100%" class="form-control"></select>
+                                <select id="ddl_aduana" style="width: 100%" class="form-control">
+                                
+                                </select>
                             </label>
                         </div>
 
@@ -116,11 +159,6 @@
                             <input type="text" maxlength="6" class="form-control" id="txt_documento" placeholder="Documento">
                         </div>
 
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txt_sello">Sello</label>
-                        <input type="text" class="form-control" id="txt_sello" placeholder="Sello">
                     </div>
 
                     <div class="form-group">

@@ -180,6 +180,30 @@ namespace logisticaModel.process
             }
         }
 
+        public void fillLstByAsn(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Asn_partida");
+                addParameters(5);
+                if (trans == null)
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                else
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                this._lst = new List<Asn_partida>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Asn_partida o = new Asn_partida();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

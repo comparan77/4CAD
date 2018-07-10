@@ -26,11 +26,14 @@ var Recepcion = function () {
     function initializeEvents() {
         tab_admin_tab();
         btn_asignar_cortina_click();
+        li_calendario_click();
     }
 
     function li_calendario_click() {
         $('#li_calendario').click(function () {
-            initCalendar();
+            $('#nav_asn_folio').addClass('hidden');
+            $('#calendar_asn').removeClass('hidden');
+            $('#div_folio_info').addClass('hidden');
         });
     }
 
@@ -39,6 +42,7 @@ var Recepcion = function () {
         $('#btn_asignar_cortina').unbind('click').click(function () {
             oCortDisp.Id = 0;
             oCortDisp.Id_cortina = $('#ddl_cortina').select2('data')[0].Id;
+            var nombreCortina = $('#ddl_cortina').select2('data')[0].text;
             console.log(JSON.stringify(oCortDisp));
             $(this).html('Asignando la cortina ...');
             $(this).addClass('disabled');
@@ -54,6 +58,7 @@ var Recepcion = function () {
 
                     asn_event.color = '';
                     asn_event.cortinaAsignada = data;
+                    asn_event.cortinaNombre = nombreCortina;
 
                     $('#calendar_asn').fullCalendar('updateEvent', asn_event);
                 },
@@ -97,6 +102,7 @@ var Recepcion = function () {
             axisFormat: 'HH:mm',
             minTime: '06:00:00',
             maxTime: '24:59:59',
+            height: 450,
             events: function (start, end, timezone, callback) {
                 fillAsn(moment(start).format('YYYY-MM-DD'), callback);
             },
@@ -108,9 +114,9 @@ var Recepcion = function () {
                     alert('El ASN ya ha sido asignado la cortina: ');
             },
             eventRender: function (event, element) {
-                console.log(JSON.stringify(event.cortinaAsignada));
+
                 element.qtip({
-                    content: '<br />Cortina 1',
+                    content: '<br />' + event.cortinaAsignada.Id == 0 ? 'Sin cortina asignada' : event.cortinaNombre,
                     style: {
                         background: 'black',
                         color: '#FFFFFF'
@@ -194,7 +200,8 @@ var Recepcion = function () {
                     start: obj.Fecha_hora.replace('T', ' '),
                     //end: moment(obj.Fecha_hora).format('YYYY-MM-DD HH:mm:ss')
                     color: obj.PCortinaAsignada.Id_cortina > 0 ? '' : 'orange',
-                    cortinaAsignada: obj.PCortinaAsignada
+                    cortinaAsignada: obj.PCortinaAsignada,
+                    cortinaNombre: obj.CortinaNombre == null ? '' : obj.CortinaNombre
                     //folioOC: obj.folio_orden_carga.indexOf('OCA') >= 0 ? obj.folio_orden_carga : '',
                     //idOC: obj.id_orden_carga
                 });
