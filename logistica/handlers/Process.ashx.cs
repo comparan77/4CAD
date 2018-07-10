@@ -9,6 +9,8 @@ using logisticaModel.controller.process;
 using logisticaModel.catalog;
 using logisticaModel.controller.catalog;
 using System.IO;
+using logisticaModel.operation.warehouse;
+using logisticaModel.controller.warehouse;
 
 namespace logistica.handlers
 {
@@ -59,9 +61,34 @@ namespace logistica.handlers
             Asn o = null;
             switch (option)
             {
+                case "sltById":
+                    o = new Asn() { Id = Convert.ToInt32(context.Request["key"]) };
+                    CatalogoCtrl.catalogSelById(o);
+                    Cliente oC = new Cliente() { Id = o.Id_cliente };
+                    CatalogoCtrl.catalogSelById(oC);
+                    o.ClienteNombre = oC.Nombre;
+                    if (o.Id_bodega != null)
+                    {
+                        Bodega oB = new Bodega() { Id = (int)o.Id_bodega };
+                        CatalogoCtrl.catalogSelById(oB);
+                        o.BodegaNombre = oB.Nombre;
+                    }
+                    if (o.Id_transporte != null)
+                    {
+                        Transporte oT = new Transporte() { Id = (int)o.Id_transporte };
+                        CatalogoCtrl.catalogSelById(oT);
+                        o.TransporteNombre = oT.Nombre;
+                    }
+                    response = JsonConvert.SerializeObject(o);
+                    break;
                 case "lst":
                     o = new Asn();
-                    response = JsonConvert.SerializeObject(ProcessCtrl.asnLst());
+                    List<Asn> lstAsn = ProcessCtrl.asnLst();
+                    foreach (Asn item in lstAsn)
+                    {
+                        item.PCortinaAsignada = RecepcionCtrl.cortinaGetByAsn(item.Id);
+                    }
+                    response = JsonConvert.SerializeObject(lstAsn);
                     break;
                 case "add":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();

@@ -36,13 +36,15 @@ namespace logisticaModel.process
             GenericDataAccess.AddInParameter(this.comm, "?P_folio", DbType.String, this._oAsn.Folio);
             GenericDataAccess.AddInParameter(this.comm, "?P_referencia", DbType.String, this._oAsn.Referencia);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oAsn.Id_bodega);
-            GenericDataAccess.AddInParameter(this.comm, "?P_fecha", DbType.DateTime, this._oAsn.Fecha);
+            GenericDataAccess.AddInParameter(this.comm, "?P_fecha_hora", DbType.DateTime, this._oAsn.Fecha_hora);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_transporte", DbType.Int32, this._oAsn.Id_transporte);
             GenericDataAccess.AddInParameter(this.comm, "?P_sello", DbType.String, this._oAsn.Sello);
             GenericDataAccess.AddInParameter(this.comm, "?P_operador", DbType.String, this._oAsn.Operador);
             GenericDataAccess.AddInParameter(this.comm, "?P_pallet", DbType.Int32, this._oAsn.Pallet);
             GenericDataAccess.AddInParameter(this.comm, "?P_caja", DbType.Int32, this._oAsn.Caja);
             GenericDataAccess.AddInParameter(this.comm, "?P_pieza", DbType.Int32, this._oAsn.Pieza);
+            GenericDataAccess.AddInParameter(this.comm, "?P_descargada", DbType.Boolean, this._oAsn.Descargada);
+            GenericDataAccess.AddInParameter(this.comm, "?P_fecha_hora_descarga", DbType.DateTime, this._oAsn.Fecha_hora_descarga);
         }
 
         protected void BindByDataRow(DataRow dr, Asn o)
@@ -70,15 +72,15 @@ namespace logisticaModel.process
                 {
                     o.Id_bodega = null;
                 }
-                if (dr["fecha"] != DBNull.Value)
+                if (dr["fecha_hora"] != DBNull.Value)
                 {
-                    DateTime.TryParse(dr["fecha"].ToString(), out fecha);
-                    o.Fecha = fecha;
+                    DateTime.TryParse(dr["fecha_hora"].ToString(), out fecha);
+                    o.Fecha_hora = fecha;
                     fecha = default(DateTime);
                 }
                 else
                 {
-                    o.Fecha = null;
+                    o.Fecha_hora = null;
                 }
                 if (dr["id_transporte"] != DBNull.Value)
                 {
@@ -121,6 +123,22 @@ namespace logisticaModel.process
                 else
                 {
                     o.Pieza = null;
+                }
+                if (dr["descargada"] != DBNull.Value)
+                {
+                    bool.TryParse(dr["descargada"].ToString(), out logica);
+                    o.Descargada = logica;
+                    logica = false;
+                }
+                if (dr["fecha_hora_descarga"] != DBNull.Value)
+                {
+                    DateTime.TryParse(dr["fecha_hora_descarga"].ToString(), out fecha);
+                    o.Fecha_hora_descarga = fecha;
+                    fecha = default(DateTime);
+                }
+                else
+                {
+                    o.Fecha_hora_descarga = null;
                 }
             }
             catch
@@ -236,7 +254,7 @@ namespace logisticaModel.process
             try
             {
                 this.comm = GenericDataAccess.CreateCommand(
-                    "select a.id, a.folio, a.fecha, c.nombre cliente, a.referencia, a.pallet, a.caja, a.pieza from asn a " +
+                    "select a.id, a.folio, a.fecha_hora, c.nombre cliente, a.referencia, a.pallet, a.caja, a.pieza, a.descargada from asn a " +
                     "left join cliente c on c.id = a.id_cliente");
 
                 this.dt = GenericDataAccess.ExecuteSelectCommand(this.comm);
@@ -246,12 +264,13 @@ namespace logisticaModel.process
                     {
                         id = result.Field<Int32>("id"),
                         folio = result.Field<string>("folio"),
-                        fecha = result.Field<DateTime>("fecha"),
+                        fecha = result.Field<DateTime>("fecha_hora"),
                         cliente = result.Field<string>("cliente"),
                         referencia = result.Field<string>("referencia"),
                         pallet = result.Field<Int32>("pallet"),
                         caja = result.Field<Int32>("caja"),
-                        pieza = result.Field<Int32>("pieza")
+                        pieza = result.Field<Int32>("pieza"),
+                        descargada = result.Field<Boolean>("descargada")
                     };
 
                 foreach (var item in qry)
@@ -260,12 +279,13 @@ namespace logisticaModel.process
                     {
                         Id = item.id,
                         Folio = item.folio,
-                        Fecha = item.fecha,
+                        Fecha_hora = item.fecha,
                         ClienteNombre = item.cliente,
                         Referencia = item.referencia,
                         Pallet = item.pallet,
                         Caja = item.caja,
-                        Pieza = item.pieza
+                        Pieza = item.pieza,
+                        Descargada = item.descargada
                     };
                     this._lst.Add(o);
                 }

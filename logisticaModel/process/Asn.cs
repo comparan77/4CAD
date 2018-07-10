@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using logisticaModel.operation.warehouse;
 
 namespace logisticaModel.process
 {
@@ -13,13 +14,15 @@ namespace logisticaModel.process
         protected string _folio;
         protected string _referencia;
         protected int? _id_bodega;
-        protected DateTime? _fecha;
+        protected DateTime? _fecha_hora;
         protected int? _id_transporte;
         protected string _sello;
         protected string _operador;
         protected int? _pallet;
         protected int? _caja;
         protected int? _pieza;
+        protected bool _descargada;
+        protected DateTime? _fecha_hora_descarga;
         #endregion
 
         #region Propiedades
@@ -28,15 +31,15 @@ namespace logisticaModel.process
         public string Folio { get { return _folio; } set { _folio = value; } }
         public string Referencia { get { return _referencia; } set { _referencia = value; } }
         public int? Id_bodega { get { return _id_bodega; } set { _id_bodega = value; } }
-        public DateTime? Fecha { get { return _fecha; } set { _fecha = value; } }
+        public DateTime? Fecha_hora { get { return _fecha_hora; } set { _fecha_hora = value; } }
         public int? Id_transporte { get { return _id_transporte; } set { _id_transporte = value; } }
         public string Sello { get { return _sello; } set { _sello = value; } }
         public string Operador { get { return _operador; } set { _operador = value; } }
         public int? Pallet { get { return _pallet; } set { _pallet = value; } }
         public int? Caja { get { return _caja; } set { _caja = value; } }
         public int? Pieza { get { return _pieza; } set { _pieza = value; } }
-        public List<Asn_partida> PLstPartida { get; set; }
-        public string ClienteNombre { get; set; }
+        public bool Descargada { get { return _descargada; } set { _descargada = value; } }
+        public DateTime? Fecha_hora_descarga { get { return _fecha_hora_descarga; } set { _fecha_hora_descarga = value; } }
         #endregion
 
         #region Constructores
@@ -46,15 +49,22 @@ namespace logisticaModel.process
             this._folio = String.Empty;
             this._referencia = null;
             this._id_bodega = null;
-            this._fecha = null;
+            this._fecha_hora = null;
             this._id_transporte = null;
             this._sello = null;
             this._operador = null;
             this._pallet = null;
             this._caja = null;
             this._pieza = null;
+            this._descargada = false;
+            this._fecha_hora_descarga = null;
         }
-
         #endregion
+
+        public List<Asn_partida> PLstPartida { get; set; }
+        public string ClienteNombre { get; set; }
+        public string BodegaNombre { get; set; }
+        public string TransporteNombre { get; set; }
+        public Cortina_disponible PCortinaAsignada { get; set; }
     }
 }

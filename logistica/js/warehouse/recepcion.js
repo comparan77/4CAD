@@ -1,14 +1,15 @@
 ﻿/// <reference path="almacenModel.js" />
-/// <reference path="../catalogos/catalogosModel.js" />
-/// <reference path="../common.js" />
-
-var dataCteMcia = [];
-var timerUploadCSV;
+/// <reference path="../process/procesosModel.js" />
+/// <reference path="../catalog/catalogosModel.js" />
 
 var Recepcion = function () {
 
+    var oCortDisp = { Id_usuario: 1 };
+
     this.Init = function () {
-        callCortinaOcupada(verificaCortinaOcupada);
+
+        $('#asn').tab('show');
+
         fileUploadAjax = new AjaxInputUpload({
             content: 'fileUploadAjax',
             fileAccept: '.csv',
@@ -18,272 +19,47 @@ var Recepcion = function () {
         });
 
         fileUploadAjax.open();
-    }
 
-    function verificaCortinaOcupada(data) {
-        $('#pnl_ddl').addClass('hidden');
-        $('#pnl_lbl').addClass('hidden');
-        $('#div_cortina_ocupada').addClass('hidden');
-        switch (typeof (data)) {
-            case 'object':
-                if (data.Id != 0) {
-                    $('#pnl_lbl').removeClass('hidden');
-                    $('#div_cortina_ocupada').removeClass('hidden');
-                    fillControls(data);
-                    loadMercanciaCliente($('#hf_id_cliente').val(), fillDataMercanciaCliente);
-                    //console.log(JSON.stringify(data));
-                    $('#txt_tarima_declarada').val(data.Por_recibir + data.Tarimas);
-                    fillTarimasData(data);
-                }
-                else {
-                    $('#pnl_ddl').removeClass('hidden');
-                }
-                break;
-            default:
-                console.log(data);
-        }
-        initControls();
-    }
-
-    function fillControls(data) {
-        $('#hf_id_cortina_disponible').val(data.Id);
-        $('#hf_id_cliente').val(data.Id_cliente);
-        $('#spn_cliente').html(data.Cliente);
-        $('#spn_bodega').html(data.Bodega);
-        $('#h4-action-des').html('Descargando en ' + data.Cortina + ' . . .');
-    }
-
-    function callCortinaOcupada(callback) {
-        AlmacenModel.recepcionCortinaVerificarUsuario(callback, function (jqXHR, textStatus) {
-            alert("Request failed: " + textStatus);
-        });
-    }
-
-    function initControls() {
-        loadCliente();
-        loadBodega();
         initializeEvents();
     }
 
-    function loadCliente() {
-
-        CatalogosModel.catalogosLstAll('cliente', function (data) {
-            var dataMap = $.map(data, function (obj) {
-                obj.id = obj.Id; // replace pk with your identifier
-                obj.text = obj.Nombre;
-                return obj;
-            });
-
-            $('#ddl_cliente').select2({
-                
-                placeholder: "Selecciona un cliente",
-                data: dataMap,
-                allowClear: true
-            });
-        });
-    }
-
-    function loadBodega() {
-
-        CatalogosModel.catalogosLstAll('bodega', function (data) {
-            var dataMap = $.map(data, function (obj) {
-                obj.id = obj.Id; // replace pk with your identifier
-                obj.text = obj.Nombre;
-                return obj;
-            });
-
-            $('#ddl_bodega').select2({
-                
-                placeholder: "Selecciona una bodega",
-                data: dataMap,
-                allowClear: true
-            });
-        });
-    }
-
-    function loadCortinaDisponible(id_bodega, callback) {
-        AlmacenModel.recepcionCortinaDispBodega({ pk: id_bodega }, callback, function (jqXHR, textStatus) {
-            alert("Request failed: " + textStatus);
-        });
-    }
-
-    function loadMercanciaCliente(id_cliente, callback) {
-
-        CatalogosModel.catalogosLstAllBy(
-            'mercancia',
-            { key: id_cliente },
-            callback
-       );
-    }
-
-    function fillDataMercanciaCliente(data) {
-        var dataMap = $.map(data, function (obj) {
-            obj.id = obj.Id; // replace pk with your identifier
-            obj.text = obj.Nombre;
-            return obj;
-        });
-        dataCteMcia = dataMap;
-        $('#ddl_mercancia_cliente').html('');
-
-        if ($('#ddl_mercancia_cliente').hasClass("select2-hidden-accessible")) {
-            // Destroy Select2
-            $('#ddl_mercancia_cliente').select2('destroy');
-            // Unbind the event
-            $('#ddl_mercancia_cliente').off('select2:select');
-        }
-
-        $('#ddl_mercancia_cliente').select2({
-            
-            placeholder: "Selecciona una mercancía",
-            data: dataCteMcia,
-            allowClear: true
-        });
-        $('#ddl_mercancia_cliente').val(null).trigger('change');
-        $('#ddl_mercancia_cliente').on('select2:select', function (e) {
-            var id_mercancia_cliente = $('#ddl_mercancia_cliente').select2('data')[0].Id;
-            $('#txt_pieza_x_caja').val($('#ddl_mercancia_cliente').select2('data')[0].Piezas_x_caja);
-            $('#txt_cajas_x_tarima').val($('#ddl_mercancia_cliente').select2('data')[0].Cajas_x_tarima);
-        });
-    }
-
     function initializeEvents() {
-        ddl_cliente_change();
-        ddl_bodega_change();
-        btn_tomar_cortina_click();
-        btn_liberar_cortina_click();
-        btn_tarima_descargada_click();
         tab_admin_tab();
+        btn_asignar_cortina_click();
     }
 
-    function ddl_cliente_change() {
-        $('#ddl_cliente').on('select2:select', function (e) {
-            loadMercanciaCliente($('#ddl_cliente').select2('data')[0].Id, fillDataMercanciaCliente);
+    function li_calendario_click() {
+        $('#li_calendario').click(function () {
+            initCalendar();
         });
     }
 
-    function ddl_bodega_change() {
-        $('#ddl_bodega').on('select2:select', function (e) {
-            $('#ddl_cortina').html('');
-            loadCortinaDisponible($('#ddl_bodega').select2('data')[0].Id, function (data) {
-                var option = '<option value="0">Selecciona una cortina</option>';
-                $.each(data, function (i, obj) {
-                    option += '<option value=' + obj.Id + '>' + obj.Nombre + '</option>';
-                });
-                $('#ddl_cortina').html(option);
-                $('#div_cortina').removeClass('hidden');
-            });
-        });
-    }
-
-    function btn_tomar_cortina_click() {
-        $('#btn_tomar_cortina').click(function () {
-
-            if ($('#ddl_cortina').val() == 0) return false;
-
+    function btn_asignar_cortina_click(asn_event) {
+        var btn = $('#btn_asignar_cortina');
+        $('#btn_asignar_cortina').unbind('click').click(function () {
+            oCortDisp.Id = 0;
+            oCortDisp.Id_cortina = $('#ddl_cortina').select2('data')[0].Id;
+            console.log(JSON.stringify(oCortDisp));
+            $(this).html('Asignando la cortina ...');
             $(this).addClass('disabled');
-            $(this).html('Tomando cortina ...');
-
-            var objCDisp = {
-                Id: 0,
-                Id_usuario: 1,
-                Id_cliente: $('#ddl_cliente').select2('data')[0].Id,
-                Cliente: $('#ddl_cliente').select2('data')[0].text,
-                Id_bodega: $('#ddl_bodega').select2('data')[0].Id,
-                Bodega: $('#ddl_bodega').select2('data')[0].text,
-                Id_cortina: $('#ddl_cortina').val(),
-                Cortina: $('#ddl_cortina option:selected').text(),
-                Por_recibir: 0,
-                Tarimas: 0
-            };
-
-            var btn = this;
-
-            AlmacenModel.recepcionCortinaTomar(JSON.stringify(objCDisp),
-            function (data) {
-
-                $('#pnl_ddl').addClass('hidden');
-                $('#pnl_lbl').removeClass('hidden');
-                $('#div_cortina').addClass('hidden');
-                $('#div_cortina_ocupada').removeClass('hidden');
-                fillControls(data);
-
-                $(btn).removeClass('disabled');
-                $(btn).html('Tomar Cortina');
-
-            }, function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            });
-        });
-    }
-
-    function btn_liberar_cortina_click() {
-        $('#btn_liberar_cortina').unbind('clikc').click(function () {
-
-            $(this).addClass('disabled');
-            $(this).html('Liberando cortina ...');
-
-            var btn = this;
-
-            AlmacenModel.recepcionCortinaLiberar({ pk: $('#hf_id_cortina_disponible').val() },
+            AlmacenModel.recepcionCortinaTomar(
+                JSON.stringify(oCortDisp),
                 function (data) {
-
+                    $(btn).html('Asignar Cortina');
                     $(btn).removeClass('disabled');
-                    $(btn).html('Liberar Cortina');
 
-                    $('#pnl_ddl').removeClass('hidden');
-                    $('#pnl_lbl').addClass('hidden');
-                    $('#div_cortina').removeClass('hidden');
-                    $('#div_cortina_ocupada').addClass('hidden');
+                    $('#nav_asn_folio').addClass('hidden');
+                    $('#calendar_asn').removeClass('hidden');
+                    $('#div_folio_info').addClass('hidden');
 
-                    $('#aspnetForm')[0].reset();
+                    asn_event.color = '';
+                    asn_event.cortinaAsignada = data;
+
+                    $('#calendar_asn').fullCalendar('updateEvent', asn_event);
                 },
-            function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            });
-        });
-    }
-
-    function fillTarimasData(data) {
-        $('#txt_tarima_descargada').val(data.Tarimas);
-        var tarimas_x_descargar = $('#txt_tarima_declarada').val() * 1;
-        tarimas_x_descargar = tarimas_x_descargar - data.Tarimas;
-        $('#txt_tarima_x_descargar').val(tarimas_x_descargar);
-    }
-
-    function calcularTarimas(callback) {
-        var objCDisp = {
-            Id: $('#hf_id_cortina_disponible').val(),
-            Id_usuario: 0,
-            Id_cliente: 0,
-            Cliente: '',
-            Id_bodega: 0,
-            Bodega: '',
-            Id_cortina: 0,
-            Cortina: '',
-            Por_recibir: $('#txt_tarima_declarada').val(),
-            Tarimas: 0
-        };
-
-        AlmacenModel.recepcionCortinaTarimaPush(JSON.stringify(objCDisp),
-            function (data) {
-                fillTarimasData(data);
-                if (callback) callback(data);
-            }, function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            });
-    }
-
-    function btn_tarima_descargada_click() {
-        $('#btn_tarima_descargada').click(function () {
-
-            $(this).addClass('disabled');
-            $(this).html('Agregando cortina descargada al sistema ...');
-            var btn = this;
-            calcularTarimas(function (data) {
-                $(btn).removeClass('disabled');
-                $(btn).html('Agergar tarima descargada');
-            });
-
+                function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
         });
     }
 
@@ -291,6 +67,10 @@ var Recepcion = function () {
         $('#adminTab').on('shown.bs.tab', function (e) {
             var tabSelect = $(e.target).attr('href');
             switch (tabSelect) {
+                case '#asn':
+                    fileUploadAjax.clearUploadStatus();
+                    initCalendar();
+                    break;
                 case '#imp':
                     fileUploadAjax.startUploadStatus();
                     break;
@@ -300,6 +80,129 @@ var Recepcion = function () {
 
             }
             //console.log($(e.target).attr('href'));
+        });
+    }
+
+    function initCalendar() {
+
+        $('#calendar_asn').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: false
+            },
+            themeSystem: 'bootstrap4',
+            locale: 'es',
+            defaultView: 'agendaWeek',
+            axisFormat: 'HH:mm',
+            minTime: '06:00:00',
+            maxTime: '24:59:59',
+            events: function (start, end, timezone, callback) {
+                fillAsn(moment(start).format('YYYY-MM-DD'), callback);
+            },
+            eventClick: function (calEvent, jsEvent, view) {
+                //alert(calEvent.title);
+                if (calEvent.cortinaAsignada.Id_cortina == 0)
+                    fillAsnByID(calEvent);
+                else
+                    alert('El ASN ya ha sido asignado la cortina: ');
+            },
+            eventRender: function (event, element) {
+                console.log(JSON.stringify(event.cortinaAsignada));
+                element.qtip({
+                    content: '<br />Cortina 1',
+                    style: {
+                        background: 'black',
+                        color: '#FFFFFF'
+                    },
+                    position: {
+                        corner: {
+                            target: 'center',
+                            tooltip: 'bottomMiddle'
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function fillAsnByID(asn_event) {
+
+        ProcesosModel.procesosSltById(
+        'asn',
+        { key: asn_event.id },
+        function (data) {
+
+            $('#nav_asn_folio').removeClass('hidden');
+            $('#calendar_asn').addClass('hidden');
+            $('#div_folio_info').removeClass('hidden');
+            $('#li_folio').html(asn_event.title);
+            $('#txt_cliente').val(data.ClienteNombre);
+            $('#txt_bodega').val(data.BodegaNombre);
+            $('#txt_referencia').val(data.Referencia);
+            $('#txt_transporte').val(data.TransporteNombre);
+            $('#txt_sello').val(data.Sello);
+            $('#txt_operador').val(data.Operador);
+            $('#txt_tarima').val(data.Pallet);
+            $('#txt_caja').val(data.Caja);
+            $('#txt_pieza').val(data.Pieza);
+
+            oCortDisp.Id_asn = asn_event.id;
+            oCortDisp.Tarima_x_recibir = data.Pallet;
+            oCortDisp.Tarima_recibida = 0;
+
+            AlmacenModel.recepcionCortinaDispBodega(
+                { pk: data.Id_bodega },
+                function (data) {
+                    fillDdlCortina(data, asn_event)
+                },
+                function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
+        },
+        function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+
+    function fillDdlCortina(data, asn_event) {
+        var dataMap = $.map(data, function (obj) {
+            obj.id = obj.Id; // replace pk with your identifier
+            obj.text = obj.Nombre;
+            return obj;
+        });
+
+        $('#ddl_cortina').select2({
+
+            placeholder: "Selecciona una cortina disponible",
+            data: dataMap
+        });
+
+        btn_asignar_cortina_click(asn_event);
+    }
+
+    function fillAsn(start, callback) {
+        ProcesosModel.procesosLst(
+        'asn',
+        function (data) {
+            var citasAsn = [];
+            $(data).each(function (i, obj) {
+
+                citasAsn.push({
+                    id: obj.Id,
+                    title: obj.Folio,
+                    start: obj.Fecha_hora.replace('T', ' '),
+                    //end: moment(obj.Fecha_hora).format('YYYY-MM-DD HH:mm:ss')
+                    color: obj.PCortinaAsignada.Id_cortina > 0 ? '' : 'orange',
+                    cortinaAsignada: obj.PCortinaAsignada
+                    //folioOC: obj.folio_orden_carga.indexOf('OCA') >= 0 ? obj.folio_orden_carga : '',
+                    //idOC: obj.id_orden_carga
+                });
+            });
+            callback(citasAsn);
+        },
+        function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
         });
     }
 }

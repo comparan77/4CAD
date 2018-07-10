@@ -124,7 +124,7 @@ namespace logisticaModel.controller.warehouse
             try
             {
                 Cortina_disponibleMng oMng = new Cortina_disponibleMng() { O_Cortina_disponible = o };
-                oMng.udt();
+                oMng.agregarTarima();
                 oMng.selById();
             }
             catch
@@ -132,6 +132,22 @@ namespace logisticaModel.controller.warehouse
 
                 throw;
             }
+        }
+
+        public static Cortina_disponible cortinaGetByAsn(int id_asn)
+        {
+            Cortina_disponible o = new Cortina_disponible() { Id_asn = id_asn };
+            try
+            {
+                Cortina_disponibleMng oMng = new Cortina_disponibleMng() { O_Cortina_disponible = o };
+                oMng.selByIdAsn();
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return o;
         }
 
         #endregion

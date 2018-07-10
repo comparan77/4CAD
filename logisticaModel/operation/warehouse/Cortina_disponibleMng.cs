@@ -33,14 +33,10 @@ namespace logisticaModel.operation.warehouse
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oCortina_disponible.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_usuario", DbType.Int32, this._oCortina_disponible.Id_usuario);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oCortina_disponible.Id_cliente);
-            GenericDataAccess.AddInParameter(this.comm, "?P_cliente", DbType.String, this._oCortina_disponible.Cliente);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_bodega", DbType.Int32, this._oCortina_disponible.Id_bodega);
-            GenericDataAccess.AddInParameter(this.comm, "?P_bodega", DbType.String, this._oCortina_disponible.Bodega);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_cortina", DbType.Int32, this._oCortina_disponible.Id_cortina);
-            GenericDataAccess.AddInParameter(this.comm, "?P_cortina", DbType.String, this._oCortina_disponible.Cortina);
-            GenericDataAccess.AddInParameter(this.comm, "?P_por_recibir", DbType.Int32, this._oCortina_disponible.Por_recibir);
-            GenericDataAccess.AddInParameter(this.comm, "?P_tarimas", DbType.Int32, this._oCortina_disponible.Tarimas);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_asn", DbType.Int32, this._oCortina_disponible.Id_asn);
+            GenericDataAccess.AddInParameter(this.comm, "?P_tarima_x_recibir", DbType.Int32, this._oCortina_disponible.Tarima_x_recibir);
+            GenericDataAccess.AddInParameter(this.comm, "?P_tarima_recibida", DbType.Int32, this._oCortina_disponible.Tarima_recibida);
         }
 
         protected void BindByDataRow(DataRow dr, Cortina_disponible o)
@@ -56,27 +52,30 @@ namespace logisticaModel.operation.warehouse
                     o.Id_usuario = entero;
                     entero = 0;
                 }
-                if (dr["id_cliente"] != DBNull.Value)
-                {
-                    int.TryParse(dr["id_cliente"].ToString(), out entero);
-                    o.Id_cliente = entero;
-                    entero = 0;
-                }
-                o.Cliente = dr["cliente"].ToString();
-                if (dr["id_bodega"] != DBNull.Value)
-                {
-                    int.TryParse(dr["id_bodega"].ToString(), out entero);
-                    o.Id_bodega = entero;
-                    entero = 0;
-                }
-                o.Bodega = dr["bodega"].ToString();
                 if (dr["id_cortina"] != DBNull.Value)
                 {
                     int.TryParse(dr["id_cortina"].ToString(), out entero);
                     o.Id_cortina = entero;
                     entero = 0;
                 }
-                o.Cortina = dr["cortina"].ToString();
+                if (dr["id_asn"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_asn"].ToString(), out entero);
+                    o.Id_asn = entero;
+                    entero = 0;
+                }
+                if (dr["tarima_x_recibir"] != DBNull.Value)
+                {
+                    int.TryParse(dr["tarima_x_recibir"].ToString(), out entero);
+                    o.Tarima_x_recibir = entero;
+                    entero = 0;
+                }
+                if (dr["tarima_recibida"] != DBNull.Value)
+                {
+                    int.TryParse(dr["tarima_recibida"].ToString(), out entero);
+                    o.Tarima_recibida = entero;
+                    entero = 0;
+                }
                 if (dr["inicio"] != DBNull.Value)
                 {
                     DateTime.TryParse(dr["inicio"].ToString(), out fecha);
@@ -88,18 +87,6 @@ namespace logisticaModel.operation.warehouse
                     DateTime.TryParse(dr["fin"].ToString(), out fecha);
                     o.Fin = fecha;
                     fecha = default(DateTime);
-                }
-                if (dr["tarimas"] != DBNull.Value)
-                {
-                    int.TryParse(dr["tarimas"].ToString(), out entero);
-                    o.Tarimas = entero;
-                    entero = 0;
-                }
-                if (dr["por_recibir"] != DBNull.Value)
-                {
-                    int.TryParse(dr["por_recibir"].ToString(), out entero);
-                    o.Por_recibir = entero;
-                    entero = 0;
                 }
             }
             catch
@@ -210,7 +197,7 @@ namespace logisticaModel.operation.warehouse
             }
         }
 
-        internal void liberar(IDbTransaction trans = null)
+        internal void agregarTarima(IDbTransaction trans = null)
         {
             try
             {
@@ -220,6 +207,48 @@ namespace logisticaModel.operation.warehouse
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
                     GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        internal void liberar(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cortina_disponible");
+                addParameters(6);
+                if (trans == null)
+                    GenericDataAccess.ExecuteNonQuery(this.comm);
+                else
+                    GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void selByIdAsn(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cortina_disponible");
+                addParameters(7);
+                if (trans == null)
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                else
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oCortina_disponible);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                
             }
             catch
             {

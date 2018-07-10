@@ -56,6 +56,8 @@ var Asn = function () {
             id_catalog.fecha = fecha_asn;
         });
 
+        id_catalog.fecha = moment(new Date()).format('YYYY-MM-DD');
+
         initializeEvents();
     }
 
@@ -157,7 +159,7 @@ var Asn = function () {
             Folio: '',
             Referencia: $('#ddl_aduana').select2('data')[0].clave + $('#txt_patente').val() + $('#txt_documento').val(),
             Id_bodega: id_catalog.id_bodega,
-            Fecha: id_catalog.fecha,
+            Fecha_hora: id_catalog.fecha,
             Id_transporte: id_catalog.id_transporte,
             Sello: $('#txt_sello').val(),
             Operador: $('#txt_operador').val(),
@@ -180,7 +182,7 @@ var Asn = function () {
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                field = document.createTextNode(moment(obj.Fecha).format('DD-MM-YYYY'));
+                field = document.createTextNode(moment(obj.Fecha_hora).format('DD-MM-YYYY'));
                 td.appendChild(field);
                 tr.appendChild(td);
 
@@ -206,6 +208,11 @@ var Asn = function () {
 
                 td = document.createElement('td');
                 field = document.createTextNode(obj.Pieza);
+                td.appendChild(field);
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                field = document.createTextNode(obj.Descargada == true ? 'Si' : 'No');
                 td.appendChild(field);
                 tr.appendChild(td);
 

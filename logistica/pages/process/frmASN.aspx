@@ -52,6 +52,7 @@
                                 <th>Tarimas</th>
                                 <th>Cajas</th>
                                 <th>Piezas</th>
+                                <th>Descargada</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -76,7 +77,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="txt_fecha">Fecha Inicial</label>
+                        <label for="txt_fecha">Fecha</label>
                         <input type="text" class="form-control" id="txt_fecha" placeholder="Fecha">
                     </div>
 

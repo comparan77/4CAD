@@ -85,7 +85,11 @@ var ProcesosModel = (function () {
 
         procesosAdd: function (tabla, obj, callback, error) {
             procesosAjax("POST", "json", tabla, obj, 'add', callback, error);
-        }
+        },
+
+        procesosSltById: function (catalogo, obj, callback, error) {
+            procesosAjax("POST", "json", catalogo, obj, 'sltById', callback, error);
+        },
 
     };
 
