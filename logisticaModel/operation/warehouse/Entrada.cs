@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using logisticaModel.process;
 
 namespace logisticaModel.operation.warehouse
 {
@@ -48,5 +49,7 @@ namespace logisticaModel.operation.warehouse
             this._calidad = String.Empty;
         }
         #endregion
+
+        public Asn PAsn { get; set; }
     }
 }

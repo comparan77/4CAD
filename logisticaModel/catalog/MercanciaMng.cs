@@ -193,6 +193,32 @@ namespace logisticaModel.catalog
             }
         }
 
+        public void selBySkuCliente(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_mercancia");
+                addParameters(5);
+                if (trans == null)
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                else
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                if (dt.Rows.Count == 1)
+                {
+                    DataRow dr = dt.Rows[0];
+                    BindByDataRow(dr, this._oMercancia);
+                }
+                else if (dt.Rows.Count > 1)
+                    throw new Exception("Error de integridad");
+                else
+                    throw new Exception("No existe información para el registro solicitado");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public void fillLstTarifaByServicio(int id_cliente, int id_servicio)
         {
             try

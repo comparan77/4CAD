@@ -43,7 +43,7 @@ var Recepcion = function () {
             oCortDisp.Id = 0;
             oCortDisp.Id_cortina = $('#ddl_cortina').select2('data')[0].Id;
             var nombreCortina = $('#ddl_cortina').select2('data')[0].text;
-            console.log(JSON.stringify(oCortDisp));
+            
             $(this).html('Asignando la cortina ...');
             $(this).addClass('disabled');
             AlmacenModel.recepcionCortinaTomar(

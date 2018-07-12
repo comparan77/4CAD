@@ -69,6 +69,61 @@ namespace logisticaModel.controller.process
             }
         }
 
+        public static void asnSetDescargada(Asn oAsn, IDbTransaction tran)
+        {
+            try
+            {
+                AsnMng oMng = new AsnMng() { O_Asn = oAsn };
+                oMng.setDescargada(tran);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Asn Partidas
+
+        public static List<Asn_partida> AsnPartidaLstByAsn(int id_asn)
+        {
+            List<Asn_partida> lst = new List<Asn_partida>();
+            try
+            {
+                Asn_partidaMng oMng = new Asn_partidaMng() { O_Asn_partida = new Asn_partida() { Id_asn = id_asn } };
+                oMng.fillLstByAsn();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
+        #region Asn Transporte sellos
+
+        public static List<Asn_transporte_sello> AsnTranspSelloLstByAsn(int id_asn)
+        {
+            List<Asn_transporte_sello> lst = new List<Asn_transporte_sello>();
+            try
+            {
+                Asn_transporte_selloMng oMng = new Asn_transporte_selloMng() { O_Asn_transporte_sellos = new Asn_transporte_sello() { Id_asn = id_asn } };
+                oMng.fillLstByAsn();
+                lst = oMng.Lst;
+            }
+            catch
+            {
+
+                throw;
+            }
+            return lst;
+        }
+
         #endregion
 
         #region Proforma

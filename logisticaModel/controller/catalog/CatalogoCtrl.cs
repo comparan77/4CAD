@@ -297,5 +297,25 @@ namespace logisticaModel.controller.catalog
         }
 
         #endregion
+
+        #region Mercancia
+
+        public static Mercancia mercanciaBySkuCliente(string sku, int id_cliente)
+        {
+            Mercancia o = new Mercancia() { Sku = sku, Id_cliente = id_cliente };
+            try
+            {
+                MercanciaMng oMng = new MercanciaMng() { O_Mercancia = o };
+                oMng.selBySkuCliente();
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return o;
+        }
+
+        #endregion
     }
 }

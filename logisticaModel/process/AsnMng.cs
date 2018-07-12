@@ -295,5 +295,22 @@ namespace logisticaModel.process
         }
 
         #endregion
+
+        internal void setDescargada(IDbTransaction trans)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Asn");
+                addParameters(5);
+                if (trans == null)
+                    GenericDataAccess.ExecuteNonQuery(this.comm);
+                else
+                    GenericDataAccess.ExecuteNonQuery(this.comm, trans);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

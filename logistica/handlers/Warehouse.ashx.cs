@@ -101,6 +101,12 @@ namespace logistica.handlers
                     RecepcionCtrl.ResultShowed();
                     response = JsonConvert.SerializeObject(true);
                     break;
+                case "entradaAddLst":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    List<Entrada> lstEnt = JsonConvert.DeserializeObject<List<Entrada>>(jsonData);
+                    RecepcionCtrl.entradaAddLst(lstEnt);
+                    response = JsonConvert.SerializeObject(true);
+                    break;
                 //case "add":
                 //    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
                 //    oCDisp = JsonConvert.DeserializeObject<Cortina>(jsonData);

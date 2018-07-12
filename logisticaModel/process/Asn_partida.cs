@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using logisticaModel.catalog;
 
 namespace logisticaModel.process
 {
@@ -35,5 +36,7 @@ namespace logisticaModel.process
             this._pieza = 0;
         }
         #endregion
+
+        public Mercancia PMercancia { get; set; }
     }
 }

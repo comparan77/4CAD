@@ -7,6 +7,9 @@ using System.Data;
 using logisticaModel.catalog;
 using logisticaModel.controller.catalog;
 using System.Globalization;
+using Model;
+using logisticaModel.controller.process;
+using logisticaModel.process;
 
 namespace logisticaModel.controller.warehouse
 {
@@ -16,6 +19,41 @@ namespace logisticaModel.controller.warehouse
         private static int csvProc = 0;
         private static bool csvIsResultShowed = true;
         private static List<Entrada> _lstProc = new List<Entrada>();
+
+        #region Entrada
+
+        public static void entradaAddLst(List<Entrada> lst)
+        {
+            IDbTransaction tran = null;
+            try
+            {
+                EntradaMng oMng = new EntradaMng();
+                Asn oAsn = lst.First().PAsn;
+                tran = GenericDataAccess.BeginTransaction();
+
+                foreach (Entrada item in lst)
+                {
+                    oMng.O_Entrada = item;
+                    oMng.add(tran);
+
+                    RecepcionCtrl.cortinaTarimaPush(item.PAsn.PCortinaAsignada, tran);
+                }
+
+                RecepcionCtrl.cortinaLiberar(oAsn.PCortinaAsignada.Id, tran);
+                ProcessCtrl.asnSetDescargada(oAsn, tran);
+                GenericDataAccess.CommitTransaction(tran);
+
+            }
+            catch
+            {
+                if (tran != null)
+                    GenericDataAccess.RollbackTransaction(tran);
+                throw;
+            }
+        }
+
+        #endregion
+
         #region Cortina
 
         public static List<Cortina_disponible> cortinaLst()
@@ -119,13 +157,13 @@ namespace logisticaModel.controller.warehouse
             return lst;
         }
 
-        public static void cortinaTarimaPush(Cortina_disponible o)
+        public static void cortinaTarimaPush(Cortina_disponible o, IDbTransaction tran = null)
         {
             try
             {
                 Cortina_disponibleMng oMng = new Cortina_disponibleMng() { O_Cortina_disponible = o };
-                oMng.agregarTarima();
-                oMng.selById();
+                oMng.agregarTarima(tran);
+                oMng.selById(tran);
             }
             catch
             {
