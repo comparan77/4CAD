@@ -49,7 +49,5 @@ namespace logisticaModel.operation.warehouse
             this._calidad = String.Empty;
         }
         #endregion
-
-        public Asn PAsn { get; set; }
     }
 }

@@ -49,6 +49,7 @@
                                 <th>UPC</th>
                                 <th>Descripción</th>
                                 <th>Precio</th>
+                                <th>Rotaci&oacute;n</th>
                                <%-- <th>CajasXTarima</th>
                                 <th>PiezasXCaja</th>--%>
                             </tr>
@@ -85,6 +86,14 @@
                     <div class="form-group">
                         <label for="txt_cajas_x_tarima">Cajas x tarima</label>
                         <input type="text" class="form-control" id="txt_cajas_x_tarima" placeholder="Cajas x tarima">
+                    </div>
+                    <div class="form-group">
+                        <label for="ddl_rotacion">Tipo de rotaci&oacute;n
+                            <select id="ddl_rotacion" style="width: 100%" class="form-control">
+                            <option></option>
+                            </select>
+                            
+                        </label>
                     </div>
                     <button type="button" id="btn_save" class="btn btn-primary">Guardar</button>
                 </div>

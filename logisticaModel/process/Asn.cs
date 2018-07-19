@@ -65,5 +65,6 @@ namespace logisticaModel.process
         public Cortina_disponible PCortinaAsignada { get; set; }
         public string CortinaNombre { get; set; }
         public List<Asn_transporte_sello> PLstTranSello { get; set; }
+        public List<Entrada> PLstEntrada { get; set; }
     }
 }

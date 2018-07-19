@@ -86,7 +86,7 @@
 
                     <div class="form-group">
                         <div class="input-group clockpicker">
-                            <input type="text" id="txt_hora" class="form-control" value="09:30">
+                            <input type="text" id="txt_hora" class="form-control" value="">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
                             </span>
@@ -149,6 +149,10 @@
                             </label>
                         </div>
 
+                        <div class="form-group">
+                            <label for="txt_anio">A&ntilde;o</label>
+                            <input type="text" maxlength="4" class="form-control" id="txt_anio" placeholder="Año">
+                        </div>
                         <div class="form-group">
                             <label for="txt_patente">Patente</label>
                             <input type="text" maxlength="4" class="form-control" id="txt_patente" placeholder="Patente">

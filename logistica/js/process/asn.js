@@ -16,6 +16,8 @@ var Asn = function () {
     var arrTransporteTipo = [];
     var PLstTranSello = [];
 
+    var EsPedimento = false;
+
     this.Init = function () {
 
         id_catalog = {
@@ -50,8 +52,12 @@ var Asn = function () {
     function initControls() {
 
         $('#txt_hora').clockpicker({
-            autoclose : true
+            autoclose: true,
+            'default': new Date().getHours() + ':' + new Date().getMinutes()
         });
+
+        $('#txt_anio').val(moment(new Date()).format('YYYY'));
+
 
         loadCatalogs(['cliente', 'bodega', 'transporte', 'aduana', 'transporte_tipo'], loadedCatalogs);
         $('#txt_fecha').datepicker({
@@ -115,6 +121,7 @@ var Asn = function () {
                     obj.text = obj.Nombre;
                     if (catalog == 'aduana') {
                         obj.clave = obj.Clave;
+                        obj.text = obj.Clave + ' - ' + obj.Nombre;
                     } else if (catalog == 'transporte_tipo') {
                         obj.TransTipo = { caja1: obj.Requiere_caja1, caja2: obj.Requiere_caja2, caja3: obj.Requiere_caja3 };
                     }
@@ -173,10 +180,15 @@ var Asn = function () {
             });
         });
 
+        var ref = '';
+        if (EsPedimento) {
+            ref = $('#ddl_aduana').select2('data')[0].clave + '-' + $('#txt_patente').val() + '-' + $('#txt_anio').val().substr(3) + $('#txt_documento').val();
+        }
+
         return {
             Id_cliente: id_catalog.id_cliente,
             Folio: '',
-            Referencia: $('#ddl_aduana').select2('data')[0].clave + $('#txt_patente').val() + $('#txt_documento').val(),
+            Referencia: ref,
             Id_bodega: id_catalog.id_bodega,
             Fecha_hora: id_catalog.fecha + ' ' + $('#txt_hora').val(),
             Id_transporte: id_catalog.id_transporte,
@@ -365,11 +377,13 @@ var Asn = function () {
 
     function change_radio_tipo() {
         $('input[type=radio][name=tipo]').change(function () {
+            EsPedimento = false;
             if (this.value == 'nacional') {
                 $('#div_extranjero').addClass('hidden');
             }
             else if (this.value = 'extranjero') {
                 $('#div_extranjero').removeClass('hidden');
+                EsPedimento = true;
             }
         });
     }

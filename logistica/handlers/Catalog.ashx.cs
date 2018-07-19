@@ -46,6 +46,12 @@ namespace logistica.handlers
                     case "cliente":
                         response = cliente(context);
                         break;
+                    case "cliente_regimen":
+                        response = cliente_regimen(context);
+                        break;
+                    case "cliente_mercancia_rotacion":
+                        response = mercancia_rotacion(context);
+                        break;
                     case "mercancia":
                         response = mercancia(context);
                         break;
@@ -296,18 +302,19 @@ namespace logistica.handlers
                         int.TryParse(context.Request["key"], out id);
                     o.Id = id;
                     CatalogoCtrl.catalogSelById(o);
+                    o.PLstCteReg = CatalogoCtrl.clienteRegLstByCte(o.Id);
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "add":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
                     o = JsonConvert.DeserializeObject<Cliente>(jsonData);
-                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    CatalogoCtrl.clienteAdd(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "udt":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
                     o = JsonConvert.DeserializeObject<Cliente>(jsonData);
-                    CatalogoCtrl.catalogUdt(o);
+                    CatalogoCtrl.clienteUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "lst":
@@ -338,10 +345,10 @@ namespace logistica.handlers
             return response;
         }
 
-        private string mercancia(HttpContext context)
+        private string cliente_regimen(HttpContext context)
         {
             option = context.Request["opt"].ToString();
-            Mercancia o = new Mercancia();
+            Cliente_regimen o = new Cliente_regimen();
             switch (option)
             {
                 case "sltById":
@@ -353,18 +360,105 @@ namespace logistica.handlers
                     break;
                 case "add":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    o = JsonConvert.DeserializeObject<Mercancia>(jsonData);
+                    o = JsonConvert.DeserializeObject<Cliente_regimen>(jsonData);
                     o.Id = CatalogoCtrl.catalogAdd(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "udt":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
-                    o = JsonConvert.DeserializeObject<Mercancia>(jsonData);
+                    o = JsonConvert.DeserializeObject<Cliente_regimen>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Cliente_regimen>().ToList());
+                    break;
+                case "lstAll":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetAllLst(o).Cast<Cliente_regimen>().ToList());
+                    break;
+                
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string mercancia_rotacion(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Cliente_mercancia_rotacion o = new Cliente_mercancia_rotacion();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Cliente_mercancia_rotacion>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Cliente_mercancia_rotacion>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Cliente_mercancia_rotacion>().ToList());
+                    break;
+                case "lstAll":
+                    List<Cliente_mercancia_rotacion> lst = CatalogoCtrl.catalogGetLst(o).Cast<Cliente_mercancia_rotacion>().ToList();
+                    if (context.Request["pk"] != null)
+                    {
+                        key = context.Request["pk"].ToString();
+                        //lst = lst.FindAll(p => p.Id_cliente == Convert.ToInt32(key));
+                    }
+                    response = JsonConvert.SerializeObject(lst);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string mercancia(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Cliente_mercancia o = new Cliente_mercancia();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Cliente_mercancia>(jsonData);
                     CatalogoCtrl.catalogUdt(o);
                     response = JsonConvert.SerializeObject(o);
                     break;
                 case "lstAll":
-                    List<Mercancia> lst = CatalogoCtrl.catalogGetLst(o).Cast<Mercancia>().ToList();
+                    List<Cliente_mercancia> lst = CatalogoCtrl.catalogGetLst(o).Cast<Cliente_mercancia>().ToList();
+                    foreach (Cliente_mercancia itemCM in lst)
+                    {
+                        Cliente_mercancia_rotacion oCMR = new Cliente_mercancia_rotacion() { Id = itemCM.Id_rotacion };
+                        CatalogoCtrl.catalogSelById(oCMR);
+                        itemCM.PRotacion = oCMR;
+                    }
                     if (context.Request["pk"] != null)
                     {
                         key = context.Request["pk"].ToString();

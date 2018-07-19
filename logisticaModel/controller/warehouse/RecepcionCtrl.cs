@@ -22,21 +22,20 @@ namespace logisticaModel.controller.warehouse
 
         #region Entrada
 
-        public static void entradaAddLst(List<Entrada> lst)
+        public static void entradaAddAsn(Asn oAsn)
         {
             IDbTransaction tran = null;
             try
             {
                 EntradaMng oMng = new EntradaMng();
-                Asn oAsn = lst.First().PAsn;
                 tran = GenericDataAccess.BeginTransaction();
 
-                foreach (Entrada item in lst)
+                foreach (Entrada item in oAsn.PLstEntrada)
                 {
                     oMng.O_Entrada = item;
                     oMng.add(tran);
 
-                    RecepcionCtrl.cortinaTarimaPush(item.PAsn.PCortinaAsignada, tran);
+                    RecepcionCtrl.cortinaTarimaPush(oAsn.PCortinaAsignada, tran);
                 }
 
                 RecepcionCtrl.cortinaLiberar(oAsn.PCortinaAsignada.Id, tran);

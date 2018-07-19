@@ -7,23 +7,23 @@ using Model;
 
 namespace logisticaModel.catalog
 {
-    internal class MercanciaMng: Crud
+    internal class Cliente_mercanciaMng: Crud
     {
         #region Campos
-        protected Mercancia _oMercancia;
-        protected List<Mercancia> _lst;
+        protected Cliente_mercancia _oCliente_mercancia;
+        protected List<Cliente_mercancia> _lst;
         #endregion
 
         #region Propiedades
-        public Mercancia O_Mercancia { get { return _oMercancia; } set { _oMercancia = value; } }
-        public List<Mercancia> Lst { get { return _lst; } set { _lst = value; } }
+        public Cliente_mercancia O_Cliente_mercancia { get { return _oCliente_mercancia; } set { _oCliente_mercancia = value; } }
+        public List<Cliente_mercancia> Lst { get { return _lst; } set { _lst = value; } }
         #endregion
 
         #region Constructores
-        public MercanciaMng()
+        public Cliente_mercanciaMng()
         {
-            this._oMercancia = new Mercancia();
-            this._lst = new List<Mercancia>();
+            this._oCliente_mercancia = new Cliente_mercancia();
+            this._lst = new List<Cliente_mercancia>();
         }
         #endregion
 
@@ -31,17 +31,18 @@ namespace logisticaModel.catalog
         protected override void addParameters(int opcion)
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
-            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oMercancia.Id);
-            GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oMercancia.Id_cliente);
-            GenericDataAccess.AddInParameter(this.comm, "?P_sku", DbType.String, this._oMercancia.Sku);
-            GenericDataAccess.AddInParameter(this.comm, "?P_upc", DbType.Int32, this._oMercancia.Upc);
-            GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oMercancia.Nombre);
-            GenericDataAccess.AddInParameter(this.comm, "?P_precio", DbType.Decimal, this._oMercancia.Precio);
-            GenericDataAccess.AddInParameter(this.comm, "?P_piezas_x_caja", DbType.Int32, this._oMercancia.Piezas_x_caja);
-            GenericDataAccess.AddInParameter(this.comm, "?P_cajas_x_tarima", DbType.Int32, this._oMercancia.Cajas_x_tarima);
+            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oCliente_mercancia.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oCliente_mercancia.Id_cliente);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_rotacion", DbType.Int32, this._oCliente_mercancia.Id_rotacion);
+            GenericDataAccess.AddInParameter(this.comm, "?P_sku", DbType.String, this._oCliente_mercancia.Sku);
+            GenericDataAccess.AddInParameter(this.comm, "?P_upc", DbType.Int32, this._oCliente_mercancia.Upc);
+            GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oCliente_mercancia.Nombre);
+            GenericDataAccess.AddInParameter(this.comm, "?P_precio", DbType.Decimal, this._oCliente_mercancia.Precio);
+            GenericDataAccess.AddInParameter(this.comm, "?P_piezas_x_caja", DbType.Int32, this._oCliente_mercancia.Piezas_x_caja);
+            GenericDataAccess.AddInParameter(this.comm, "?P_cajas_x_tarima", DbType.Int32, this._oCliente_mercancia.Cajas_x_tarima);
         }
 
-        protected void BindByDataRow(DataRow dr, Mercancia o)
+        protected void BindByDataRow(DataRow dr, Cliente_mercancia o)
         {
             try
             {
@@ -54,6 +55,12 @@ namespace logisticaModel.catalog
                     o.Id_cliente = entero;
                     entero = 0;
                 }
+                if (dr["id_rotacion"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_rotacion"].ToString(), out entero);
+                    o.Id_rotacion = entero;
+                    entero = 0;
+                }
                 o.Sku = dr["sku"].ToString();
                 if (dr["upc"] != DBNull.Value)
                 {
@@ -64,13 +71,9 @@ namespace logisticaModel.catalog
                 o.Nombre = dr["nombre"].ToString();
                 if (dr["precio"] != DBNull.Value)
                 {
-                    float.TryParse(dr["precio"].ToString(), out flotante);
-                    o.Precio = flotante;
-                    flotante = 0;
-                }
-                else
-                {
-                    o.Precio = 0;
+                    decimal.TryParse(dr["precio"].ToString(), out decimal_num);
+                    o.Precio = decimal_num;
+                    decimal_num = 0;
                 }
                 if (dr["piezas_x_caja"] != DBNull.Value)
                 {
@@ -101,10 +104,10 @@ namespace logisticaModel.catalog
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 else
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
-                this._lst = new List<Mercancia>();
+                this._lst = new List<Cliente_mercancia>();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Mercancia o = new Mercancia();
+                    Cliente_mercancia o = new Cliente_mercancia();
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
@@ -128,7 +131,7 @@ namespace logisticaModel.catalog
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oMercancia);
+                    BindByDataRow(dr, this._oCliente_mercancia);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -151,7 +154,7 @@ namespace logisticaModel.catalog
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
                     GenericDataAccess.ExecuteNonQuery(this.comm, trans);
-                this._oMercancia.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+                this._oCliente_mercancia.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
             {
@@ -206,7 +209,7 @@ namespace logisticaModel.catalog
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oMercancia);
+                    BindByDataRow(dr, this.O_Cliente_mercancia);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -247,7 +250,7 @@ namespace logisticaModel.catalog
 
                 foreach (var item in qry)
                 {
-                    Mercancia o = new Mercancia()
+                    Cliente_mercancia o = new Cliente_mercancia()
                     {
                         Id = item.id,
                         Sku = item.sku,
@@ -287,7 +290,7 @@ namespace logisticaModel.catalog
 
                 foreach (var item in qry)
                 {
-                    Mercancia o = new Mercancia()
+                    Cliente_mercancia o = new Cliente_mercancia()
                     {
                         Id = 0,
                         Sku = item.sku,

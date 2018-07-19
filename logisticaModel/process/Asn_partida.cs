@@ -37,6 +37,6 @@ namespace logisticaModel.process
         }
         #endregion
 
-        public Mercancia PMercancia { get; set; }
+        public Cliente_mercancia PMercancia { get; set; }
     }
 }

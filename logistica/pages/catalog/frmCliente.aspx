@@ -1,8 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="frmCliente.aspx.cs" Inherits="logistica.pages.catalog.frmCliente" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <link href="../../vendor/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <script src="../../vendor/datatables/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="../../vendor/datatables-plugins/dataTables.bootstrap.min.js" type="text/javascript"></script>
     <script src="../../vendor/datatables-responsive/dataTables.responsive.js" type="text/javascript"></script>
+    <script src="../../vendor/select2/select2.min.js" type="text/javascript"></script>
     <script src="../../js/common.js" type="text/javascript"></script>
     <script src="../../js/catalog/catalogosModel.js" type="text/javascript"></script>
     <script src="../../js/webcontrols/datagrid.js" type="text/javascript"></script>
@@ -63,6 +65,18 @@
                         <label for="txt_direccion">Raz&oacute;n Social</label>
                         <input type="text" class="form-control" id="txt_razon" placeholder="Razón del cliente">
                     </div>
+                    <div class="form-group">
+                        <label for="txt_numero">N&uacute;mero</label>
+                        <input type="text" class="form-control" id="txt_numero" placeholder="Número">
+                    </div>
+                    <div class="form-group">
+                        <label for="ddl_regimen">R&eacute;gimen
+                            <select id="ddl_regimen" style="width: 100%" class="form-control" multiple="multiple">
+                            </select>
+                            
+                        </label>
+                    </div>
+
                     <div class="form-group">
                         <div id="div_active_opt" class="btn-group btn-group-toggle" data-toggle="buttons">
                           <label class="btn btn-secondary active">

@@ -9,6 +9,8 @@ using System.Data;
 using logisticaModel.operation.warehouse;
 using logisticaModel.controller.warehouse;
 using logisticaModel.catalog;
+using logisticaModel.process;
+using logisticaModel.controller.process;
 
 namespace logistica.handlers
 {
@@ -101,10 +103,17 @@ namespace logistica.handlers
                     RecepcionCtrl.ResultShowed();
                     response = JsonConvert.SerializeObject(true);
                     break;
-                case "entradaAddLst":
+                case "entradaAddAsn":
                     jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
                     List<Entrada> lstEnt = JsonConvert.DeserializeObject<List<Entrada>>(jsonData);
-                    RecepcionCtrl.entradaAddLst(lstEnt);
+                    Asn oAsn = ProcessCtrl.asnGetAllById(Convert.ToInt32(context.Request["pk"]));
+                    foreach (Entrada itemE in lstEnt)
+                    {
+                        itemE.Fecha = DateTime.Now;
+                        itemE.Mercancia = oAsn.PLstPartida.Find(p => p.PMercancia.Sku == itemE.Sku).PMercancia.Nombre;
+                    }
+                    oAsn.PLstEntrada = lstEnt;  
+                    RecepcionCtrl.entradaAddAsn(oAsn);
                     response = JsonConvert.SerializeObject(true);
                     break;
                 //case "add":

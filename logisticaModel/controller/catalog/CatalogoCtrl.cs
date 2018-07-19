@@ -6,6 +6,7 @@ using logisticaModel.catalog;
 using System.Data;
 using System.Reflection;
 using System.Collections;
+using Model;
 
 namespace logisticaModel.controller.catalog
 {
@@ -140,7 +141,7 @@ namespace logisticaModel.controller.catalog
             return (IList)instanceLst;
         }
 
-        public static int catalogAdd(object o)
+        public static int catalogAdd(object o, IDbTransaction trans = null)
         {
             Type tipoCatalogo = o.GetType();
             object objCatalogo = Activator.CreateInstance(tipoCatalogo);
@@ -152,7 +153,7 @@ namespace logisticaModel.controller.catalog
                 PropertyInfo propObj = tipoMng.GetProperty("O_" + tipoCatalogo.Name);
                 MethodInfo add = tipoMng.GetMethod("add");
                 propObj.SetValue(objMng, Convert.ChangeType(o, propObj.PropertyType), null);
-                add.Invoke(objMng, new object[] { null });
+                add.Invoke(objMng, new object[] { trans });
             }
             catch
             {
@@ -161,7 +162,7 @@ namespace logisticaModel.controller.catalog
             return (int)propId.GetValue(o, null);
         }
 
-        public static void catalogUdt(object o)
+        public static void catalogUdt(object o, IDbTransaction trans = null)
         {
             Type tipoCatalogo = o.GetType();
             object objCatalogo = Activator.CreateInstance(tipoCatalogo);
@@ -172,7 +173,7 @@ namespace logisticaModel.controller.catalog
                 PropertyInfo propObj = tipoMng.GetProperty("O_" + tipoCatalogo.Name);
                 MethodInfo add = tipoMng.GetMethod("udt");
                 propObj.SetValue(objMng, Convert.ChangeType(o, propObj.PropertyType), null);
-                add.Invoke(objMng, new object[] { null });
+                add.Invoke(objMng, new object[] { trans });
             }
             catch
             {
@@ -224,6 +225,83 @@ namespace logisticaModel.controller.catalog
 
         #endregion
 
+        #region Cliente
+
+        public static void clienteAdd(Cliente o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                catalogAdd(o, trans);
+                foreach (Cliente_regimen itemCR in o.PLstCteReg)
+                {
+                    Cliente_reg_cte oCRC = new Cliente_reg_cte() { Id_cliente = o.Id, Id_cliente_regimen = itemCR.Id };
+                    catalogAdd(oCRC, trans);
+                }
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if(trans !=null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        public static void clienteUdt(Cliente o)
+        {
+            IDbTransaction trans = null;
+            try
+            {
+                trans = GenericDataAccess.BeginTransaction();
+                catalogUdt(o, trans);
+                Cliente_reg_cteMng oCRCteMng = new Cliente_reg_cteMng() { O_Cliente_reg_cte = new Cliente_reg_cte() { Id_cliente = o.Id } };
+                oCRCteMng.dltByCte(trans);
+                foreach (Cliente_regimen itemCR in o.PLstCteReg)
+                {
+                    Cliente_reg_cte oCRC = new Cliente_reg_cte() { Id_cliente = o.Id, Id_cliente_regimen = itemCR.Id };
+                    catalogAdd(oCRC, trans);
+                }
+                GenericDataAccess.CommitTransaction(trans);
+            }
+            catch
+            {
+                if (trans != null)
+                    GenericDataAccess.RollbackTransaction(trans);
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Cliente Regimen
+
+        public static List<Cliente_regimen> clienteRegLstByCte(int id_cliente)
+        {
+            List<Cliente_regimen> lst = new List<Cliente_regimen>();
+            try
+            {
+                Cliente_reg_cteMng oMng = new Cliente_reg_cteMng() { O_Cliente_reg_cte = new Cliente_reg_cte() { Id_cliente = id_cliente } };
+                oMng.fillLstByCte();
+
+                foreach (Cliente_reg_cte itemCRC in oMng.Lst)
+                {
+                    Cliente_regimen o = new Cliente_regimen() { Id = itemCRC.Id_cliente_regimen };
+                    catalogSelById(o);
+                    lst.Add(o);
+                }
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return lst;
+        }
+
+        #endregion
+
         #region Servicio
 
         public static Servicio ServicioSelById(int id)
@@ -264,12 +342,12 @@ namespace logisticaModel.controller.catalog
             return lst;
         }
 
-        public static List<Mercancia> tarifaClienteMercanciaServicio(int id_cliente, int id_servicio)
+        public static List<Cliente_mercancia> tarifaClienteMercanciaServicio(int id_cliente, int id_servicio)
         {
-            List<Mercancia> lst = new List<Mercancia>();
+            List<Cliente_mercancia> lst = new List<Cliente_mercancia>();
             try
             {
-                MercanciaMng oMng = new MercanciaMng();
+                Cliente_mercanciaMng oMng = new Cliente_mercanciaMng();
                 oMng.fillLstTarifaByServicio(id_cliente, id_servicio);
                 lst = oMng.Lst;
             }
@@ -280,12 +358,12 @@ namespace logisticaModel.controller.catalog
             return lst;
         }
 
-        public static List<Mercancia> noTarifaClienteMercanciaServicio(int id_cliente, int id_servicio)
+        public static List<Cliente_mercancia> noTarifaClienteMercanciaServicio(int id_cliente, int id_servicio)
         {
-            List<Mercancia> lst = new List<Mercancia>();
+            List<Cliente_mercancia> lst = new List<Cliente_mercancia>();
             try
             {
-                MercanciaMng oMng = new MercanciaMng();
+                Cliente_mercanciaMng oMng = new Cliente_mercanciaMng();
                 oMng.fillLstNoTarifaByServicio(id_cliente, id_servicio);
                 lst = oMng.Lst;
             }
@@ -300,12 +378,12 @@ namespace logisticaModel.controller.catalog
 
         #region Mercancia
 
-        public static Mercancia mercanciaBySkuCliente(string sku, int id_cliente)
+        public static Cliente_mercancia mercanciaBySkuCliente(string sku, int id_cliente)
         {
-            Mercancia o = new Mercancia() { Sku = sku, Id_cliente = id_cliente };
+            Cliente_mercancia o = new Cliente_mercancia() { Sku = sku, Id_cliente = id_cliente };
             try
             {
-                MercanciaMng oMng = new MercanciaMng() { O_Mercancia = o };
+                Cliente_mercanciaMng oMng = new Cliente_mercanciaMng() { O_Cliente_mercancia = o };
                 oMng.selBySkuCliente();
             }
             catch

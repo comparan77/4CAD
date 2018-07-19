@@ -7,12 +7,62 @@ using Model;
 using System.Data;
 using logisticaModel.catalog;
 using logisticaModel.controller.catalog;
+using logisticaModel.controller.warehouse;
 
 namespace logisticaModel.controller.process
 {
     public class ProcessCtrl
     {
         #region Asn
+
+        public static Asn asnGetAllById(int id_asn)
+        {
+            Asn o = new Asn() { Id = id_asn };
+            try
+            {
+                CatalogoCtrl.catalogSelById(o);
+                Cliente oC = new Cliente() { Id = o.Id_cliente };
+                CatalogoCtrl.catalogSelById(oC);
+                o.ClienteNombre = oC.Nombre;
+                if (o.Id_bodega != null)
+                {
+                    Bodega oB = new Bodega() { Id = (int)o.Id_bodega };
+                    CatalogoCtrl.catalogSelById(oB);
+                    o.BodegaNombre = oB.Nombre;
+                }
+                if (o.Id_transporte != null)
+                {
+                    Transporte oT = new Transporte() { Id = (int)o.Id_transporte };
+                    CatalogoCtrl.catalogSelById(oT);
+                    o.TransporteNombre = oT.Nombre;
+                }
+                if (o.Id_bodega != null)
+                {
+                    Bodega oB = new Bodega() { Id = (int)o.Id_bodega };
+                    CatalogoCtrl.catalogSelById(oB);
+                    o.BodegaNombre = oB.Nombre;
+                }
+                o.PCortinaAsignada = RecepcionCtrl.cortinaGetByAsn(o.Id);
+                if (o.PCortinaAsignada.Id_cortina > 0)
+                {
+                    Cortina oCDisp = new Cortina() { Id = o.PCortinaAsignada.Id_cortina };
+                    CatalogoCtrl.catalogSelById(oCDisp);
+                    o.CortinaNombre = oCDisp.Nombre;
+                }
+                o.PLstPartida = ProcessCtrl.AsnPartidaLstByAsn(o.Id);
+                foreach (Asn_partida itemAP in o.PLstPartida)
+                {
+                    itemAP.PMercancia = CatalogoCtrl.mercanciaBySkuCliente(itemAP.Sku, o.Id_cliente);
+                }
+                o.PLstTranSello = ProcessCtrl.AsnTranspSelloLstByAsn(o.Id);
+            }
+            catch
+            {
+                
+                throw;
+            }
+            return o;
+        }
 
         public static List<Asn> asnLst()
         {

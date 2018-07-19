@@ -7,23 +7,23 @@ using Model;
 
 namespace logisticaModel.catalog
 {
-    internal class ClienteMng: Crud
+    internal class Cliente_reg_cteMng: Crud
     {
         #region Campos
-        protected Cliente _oCliente;
-        protected List<Cliente> _lst;
+        protected Cliente_reg_cte _oCliente_reg_cte;
+        protected List<Cliente_reg_cte> _lst;
         #endregion
 
         #region Propiedades
-        public Cliente O_Cliente { get { return _oCliente; } set { _oCliente = value; } }
-        public List<Cliente> Lst { get { return _lst; } set { _lst = value; } }
+        public Cliente_reg_cte O_Cliente_reg_cte { get { return _oCliente_reg_cte; } set { _oCliente_reg_cte = value; } }
+        public List<Cliente_reg_cte> Lst { get { return _lst; } set { _lst = value; } }
         #endregion
 
         #region Constructores
-        public ClienteMng()
+        public Cliente_reg_cteMng()
         {
-            this._oCliente = new Cliente();
-            this._lst = new List<Cliente>();
+            this._oCliente_reg_cte = new Cliente_reg_cte();
+            this._lst = new List<Cliente_reg_cte>();
         }
         #endregion
 
@@ -31,37 +31,29 @@ namespace logisticaModel.catalog
         protected override void addParameters(int opcion)
         {
             GenericDataAccess.AddInParameter(this.comm, "?P_opcion", DbType.Int32, opcion);
-            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oCliente.Id);
-            GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oCliente.Nombre);
-            GenericDataAccess.AddInParameter(this.comm, "?P_rfc", DbType.String, this._oCliente.Rfc);
-            GenericDataAccess.AddInParameter(this.comm, "?P_razon", DbType.String, this._oCliente.Razon);
-            GenericDataAccess.AddInParameter(this.comm, "?P_numero", DbType.Int32, this._oCliente.Numero);
+            GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oCliente_reg_cte.Id);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oCliente_reg_cte.Id_cliente);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente_regimen", DbType.Int32, this._oCliente_reg_cte.Id_cliente_regimen);
         }
 
-        protected void BindByDataRow(DataRow dr, Cliente o)
+        protected void BindByDataRow(DataRow dr, Cliente_reg_cte o)
         {
             try
             {
                 int.TryParse(dr["id"].ToString(), out entero);
                 o.Id = entero;
                 entero = 0;
-                int.TryParse(dr["id"].ToString(), out entero);
-                o.Id = entero;
-                entero = 0;
-                o.Nombre = dr["nombre"].ToString();
-                o.Rfc = dr["rfc"].ToString();
-                o.Razon = dr["razon"].ToString();
-                if (dr["numero"] != DBNull.Value)
+                if (dr["id_cliente"] != DBNull.Value)
                 {
-                    int.TryParse(dr["numero"].ToString(), out entero);
-                    o.Numero = entero;
+                    int.TryParse(dr["id_cliente"].ToString(), out entero);
+                    o.Id_cliente = entero;
                     entero = 0;
                 }
-                if (dr["IsActive"] != DBNull.Value)
+                if (dr["id_cliente_regimen"] != DBNull.Value)
                 {
-                    bool.TryParse(dr["IsActive"].ToString(), out logica);
-                    o.IsActive = logica;
-                    logica = false;
+                    int.TryParse(dr["id_cliente_regimen"].ToString(), out entero);
+                    o.Id_cliente_regimen = entero;
+                    entero = 0;
                 }
             }
             catch
@@ -74,16 +66,16 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
                 addParameters(0);
                 if (trans == null)
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
                 else
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
-                this._lst = new List<Cliente>();
+                this._lst = new List<Cliente_reg_cte>();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Cliente o = new Cliente();
+                    Cliente_reg_cte o = new Cliente_reg_cte();
                     BindByDataRow(dr, o);
                     this._lst.Add(o);
                 }
@@ -98,7 +90,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
                 addParameters(1);
                 if (trans == null)
                     this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
@@ -107,7 +99,7 @@ namespace logisticaModel.catalog
                 if (dt.Rows.Count == 1)
                 {
                     DataRow dr = dt.Rows[0];
-                    BindByDataRow(dr, this._oCliente);
+                    BindByDataRow(dr, this._oCliente_reg_cte);
                 }
                 else if (dt.Rows.Count > 1)
                     throw new Exception("Error de integridad");
@@ -124,13 +116,13 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
                 addParameters(2);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
                     GenericDataAccess.ExecuteNonQuery(this.comm, trans);
-                this._oCliente.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
+                this._oCliente_reg_cte.Id = Convert.ToInt32(GenericDataAccess.getParameterValue(comm, "?P_id"));
             }
             catch
             {
@@ -142,7 +134,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
                 addParameters(3);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
@@ -159,7 +151,7 @@ namespace logisticaModel.catalog
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
                 addParameters(4);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
@@ -172,12 +164,38 @@ namespace logisticaModel.catalog
             }
         }
 
-        public void active(IDbTransaction trans = null)
+        #endregion
+
+        public void fillLstByCte(IDbTransaction trans = null)
         {
             try
             {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
                 addParameters(5);
+                if (trans == null)
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
+                else
+                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
+                this._lst = new List<Cliente_reg_cte>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Cliente_reg_cte o = new Cliente_reg_cte();
+                    BindByDataRow(dr, o);
+                    this._lst.Add(o);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void dltByCte(IDbTransaction trans = null)
+        {
+            try
+            {
+                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente_reg_cte");
+                addParameters(6);
                 if (trans == null)
                     GenericDataAccess.ExecuteNonQuery(this.comm);
                 else
@@ -188,31 +206,5 @@ namespace logisticaModel.catalog
                 throw;
             }
         }
-
-
-        public void fillAllLst(IDbTransaction trans = null)
-        {
-            try
-            {
-                this.comm = GenericDataAccess.CreateCommandSP("sp_Cliente");
-                addParameters(6);
-                if (trans == null)
-                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm);
-                else
-                    this.dt = GenericDataAccess.ExecuteSelectCommand(comm, trans);
-                this._lst = new List<Cliente>();
-                foreach (DataRow dr in dt.Rows)
-                {
-                    Cliente o = new Cliente();
-                    BindByDataRow(dr, o);
-                    this._lst.Add(o);
-                }
-            }
-            catch
-            {
-                throw;
-            }
-        }
-        #endregion
     }
 }

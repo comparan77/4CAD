@@ -12,6 +12,7 @@ namespace logisticaModel.catalog
         protected string _nombre;
         protected string _rfc;
         protected string _razon;
+        protected int _numero;
         protected bool _IsActive;
         #endregion
 
@@ -20,8 +21,8 @@ namespace logisticaModel.catalog
         public string Nombre { get { return _nombre; } set { _nombre = value; } }
         public string Rfc { get { return _rfc; } set { _rfc = value; } }
         public string Razon { get { return _razon; } set { _razon = value; } }
+        public int Numero { get { return _numero; } set { _numero = value; } }
         public bool IsActive { get { return _IsActive; } set { _IsActive = value; } }
-        public float ProformaPorAplicarTotal { get; set; }
         #endregion
 
         #region Constructores
@@ -30,8 +31,12 @@ namespace logisticaModel.catalog
             this._nombre = String.Empty;
             this._rfc = String.Empty;
             this._razon = String.Empty;
+            this._numero = 0;
             this._IsActive = false;
         }
         #endregion
+
+        public float ProformaPorAplicarTotal { get; set; }
+        public List<Cliente_regimen> PLstCteReg { get; set; }
     }
 }

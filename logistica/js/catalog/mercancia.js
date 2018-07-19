@@ -62,7 +62,8 @@ var Mercancia = function () {
             Nombre: $('#txt_nombre').val(),
             Precio: $('#txt_precio').val(),
             Piezas_x_caja: $('#txt_piezas_x_caja').val(),
-            Cajas_x_tarima: $('#txt_cajas_x_tarima').val()
+            Cajas_x_tarima: $('#txt_cajas_x_tarima').val(),
+            Id_rotacion: $('#ddl_rotacion').val()
         };
     }
 
@@ -92,15 +93,10 @@ var Mercancia = function () {
                 td.appendChild(field);
                 tr.appendChild(td);
 
-//                td = document.createElement('td');
-//                field = document.createTextNode(obj.Cajas_x_tarima);
-//                td.appendChild(field);
-//                tr.appendChild(td);
-
-//                td = document.createElement('td');
-//                field = document.createTextNode(obj.Piezas_x_caja);
-//                td.appendChild(field);
-//                tr.appendChild(td);
+                td = document.createElement('td');
+                field = document.createTextNode(obj.PRotacion.Nombre);
+                td.appendChild(field);
+                tr.appendChild(td);
 
             },
             callBackRowClick: function (tbl, id) {
@@ -115,6 +111,7 @@ var Mercancia = function () {
                         var precio = data.Precio;
                         var piezas_x_caja = data.Piezas_x_caja;
                         var cajas_x_tarima = data.Cajas_x_tarima;
+                        var Id_rotacion = data.Id_rotacion;
 
                         $('#txt_sku').val(sku);
                         $('#txt_upc').val(upc);
@@ -122,7 +119,7 @@ var Mercancia = function () {
                         $('#txt_precio').val(precio);
                         $('#txt_piezas_x_caja').val(piezas_x_caja);
                         $('#txt_cajas_x_tarima').val(cajas_x_tarima);
-
+                        $('#ddl_rotacion').val(Id_rotacion).trigger('change');
                         tabCatalog.validateOptActive(data.IsActive);
 
                         tabCatalog.changeAdmonTab(id);
@@ -139,6 +136,7 @@ var Mercancia = function () {
             { key: id_cliente },
             function (data) {
                 grdCatalog.DataBind(data, function (data) {
+                    fillDdlRotacion();
                 });
             },
             function (jqXHR, textStatus) {
@@ -147,9 +145,31 @@ var Mercancia = function () {
         );
     }
 
+
     function initControls() {
         loadCliente();
         initializeEvents();
+    }
+
+    function fillDdlRotacion() {
+        CatalogosModel.catalogosLst('cliente_mercancia_rotacion',
+            function (data) {
+                var dataMap = $.map(data, function (obj) {
+                    obj.id = obj.Id; // replace pk with your identifier
+                    obj.text = obj.Nombre;
+                    return obj;
+                });
+
+                $('#ddl_rotacion').select2({
+                    placeholder: "Selecciona una opción",
+                    data: dataMap,
+                    theme: "classic"
+                });
+
+            },
+            function (err, text) {
+            }
+        );
     }
 
     function loadCliente() {
@@ -162,7 +182,7 @@ var Mercancia = function () {
             });
 
             $('#ddl_cliente').select2({
-                
+
                 placeholder: "Selecciona un cliente",
                 data: dataMap
             });
