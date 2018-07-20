@@ -102,3 +102,37 @@ Common.fillTableBody = function (id_table_body, data, datakey, callbackRowAdd, c
     }
     if (callbackFill) callbackFill();
 }
+
+//Es necesario tener el plugin select2 y jquery
+Common.fillSelect2 = function (arr_catalog, callbackMap, callback, loaded) {
+    if (loaded == undefined) {
+        loaded = 0;
+    }
+    if (loaded < arr_catalog.length) {
+
+        var catalog = arr_catalog[loaded][0];
+        var ddlControl = arr_catalog[loaded][1]
+        
+        CatalogosModel.catalogosLst(catalog, function (data) {
+            var dataMap = $.map(data, function (obj) {
+                obj.id = obj.Id; // replace pk with your identifier
+                obj.text = obj.Nombre;
+                if (callbackMap) callbackMap(obj, catalog);
+                return obj;
+            });
+
+            $('#' + ddlControl).select2({
+
+                placeholder: "Selecciona una opción",
+                data: dataMap,
+                theme: "classic"
+            });
+
+            loaded++;
+            Common.fillSelect2(arr_catalog, callbackMap, callback, loaded);
+
+        });
+    } else {
+        if (callback) callback();
+    }
+}

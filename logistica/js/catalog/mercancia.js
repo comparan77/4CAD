@@ -63,7 +63,8 @@ var Mercancia = function () {
             Precio: $('#txt_precio').val(),
             Piezas_x_caja: $('#txt_piezas_x_caja').val(),
             Cajas_x_tarima: $('#txt_cajas_x_tarima').val(),
-            Id_rotacion: $('#ddl_rotacion').val()
+            Id_rotacion: $('#ddl_rotacion').val(),
+            Id_unidad_empaque: $('#ddl_unidad_empaque').val()
         };
     }
 
@@ -112,6 +113,7 @@ var Mercancia = function () {
                         var piezas_x_caja = data.Piezas_x_caja;
                         var cajas_x_tarima = data.Cajas_x_tarima;
                         var Id_rotacion = data.Id_rotacion;
+                        var Id_unidad_empaque = data.Id_unidad_empaque;
 
                         $('#txt_sku').val(sku);
                         $('#txt_upc').val(upc);
@@ -120,6 +122,8 @@ var Mercancia = function () {
                         $('#txt_piezas_x_caja').val(piezas_x_caja);
                         $('#txt_cajas_x_tarima').val(cajas_x_tarima);
                         $('#ddl_rotacion').val(Id_rotacion).trigger('change');
+                        $('#ddl_unidad_empaque').val(Id_unidad_empaque).trigger('change');
+
                         tabCatalog.validateOptActive(data.IsActive);
 
                         tabCatalog.changeAdmonTab(id);
@@ -136,7 +140,11 @@ var Mercancia = function () {
             { key: id_cliente },
             function (data) {
                 grdCatalog.DataBind(data, function (data) {
-                    fillDdlRotacion();
+                    Common.fillSelect2([['cliente_mercancia_rotacion', 'ddl_rotacion'], ['mercancia_unidad_empaque', 'ddl_unidad_empaque']],
+                    null,
+                    function () {
+
+                    });
                 });
             },
             function (jqXHR, textStatus) {
@@ -151,42 +159,8 @@ var Mercancia = function () {
         initializeEvents();
     }
 
-    function fillDdlRotacion() {
-        CatalogosModel.catalogosLst('cliente_mercancia_rotacion',
-            function (data) {
-                var dataMap = $.map(data, function (obj) {
-                    obj.id = obj.Id; // replace pk with your identifier
-                    obj.text = obj.Nombre;
-                    return obj;
-                });
-
-                $('#ddl_rotacion').select2({
-                    placeholder: "Selecciona una opción",
-                    data: dataMap,
-                    theme: "classic"
-                });
-
-            },
-            function (err, text) {
-            }
-        );
-    }
-
     function loadCliente() {
-
-        CatalogosModel.catalogosLstAll('cliente', function (data) {
-            var dataMap = $.map(data, function (obj) {
-                obj.id = obj.Id; // replace pk with your identifier
-                obj.text = obj.Nombre;
-                return obj;
-            });
-
-            $('#ddl_cliente').select2({
-
-                placeholder: "Selecciona un cliente",
-                data: dataMap
-            });
-
+        Common.fillSelect2([['cliente', 'ddl_cliente']], null, function () {
             id_cliente = $('#ddl_cliente').select2('data')[0].Id;
             fillgrdCatalog();
         });

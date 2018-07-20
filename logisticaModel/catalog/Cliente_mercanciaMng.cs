@@ -34,6 +34,7 @@ namespace logisticaModel.catalog
             GenericDataAccess.AddInOutParameter(this.comm, "?P_id", DbType.Int32, this._oCliente_mercancia.Id);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_cliente", DbType.Int32, this._oCliente_mercancia.Id_cliente);
             GenericDataAccess.AddInParameter(this.comm, "?P_id_rotacion", DbType.Int32, this._oCliente_mercancia.Id_rotacion);
+            GenericDataAccess.AddInParameter(this.comm, "?P_id_unidad_empaque", DbType.Int32, this._oCliente_mercancia.Id_unidad_empaque);
             GenericDataAccess.AddInParameter(this.comm, "?P_sku", DbType.String, this._oCliente_mercancia.Sku);
             GenericDataAccess.AddInParameter(this.comm, "?P_upc", DbType.Int32, this._oCliente_mercancia.Upc);
             GenericDataAccess.AddInParameter(this.comm, "?P_nombre", DbType.String, this._oCliente_mercancia.Nombre);
@@ -59,6 +60,12 @@ namespace logisticaModel.catalog
                 {
                     int.TryParse(dr["id_rotacion"].ToString(), out entero);
                     o.Id_rotacion = entero;
+                    entero = 0;
+                }
+                if (dr["id_unidad_empaque"] != DBNull.Value)
+                {
+                    int.TryParse(dr["id_unidad_empaque"].ToString(), out entero);
+                    o.Id_unidad_empaque = entero;
                     entero = 0;
                 }
                 o.Sku = dr["sku"].ToString();

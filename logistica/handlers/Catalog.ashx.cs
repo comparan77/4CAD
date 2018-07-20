@@ -55,6 +55,9 @@ namespace logistica.handlers
                     case "mercancia":
                         response = mercancia(context);
                         break;
+                    case "mercancia_unidad_empaque":
+                        response = mercancia_unidad_empaque(context);
+                        break;
                     case "servicio":
                         response = servicio(context);
                         break;
@@ -413,6 +416,49 @@ namespace logistica.handlers
                     break;
                 case "lstAll":
                     List<Cliente_mercancia_rotacion> lst = CatalogoCtrl.catalogGetLst(o).Cast<Cliente_mercancia_rotacion>().ToList();
+                    if (context.Request["pk"] != null)
+                    {
+                        key = context.Request["pk"].ToString();
+                        //lst = lst.FindAll(p => p.Id_cliente == Convert.ToInt32(key));
+                    }
+                    response = JsonConvert.SerializeObject(lst);
+                    break;
+                default:
+                    break;
+            }
+            return response;
+        }
+
+        private string mercancia_unidad_empaque(HttpContext context)
+        {
+            option = context.Request["opt"].ToString();
+            Mercancia_unidad_empaque o = new Mercancia_unidad_empaque();
+            switch (option)
+            {
+                case "sltById":
+                    if (context.Request["key"] != null)
+                        int.TryParse(context.Request["key"], out id);
+                    o.Id = id;
+                    CatalogoCtrl.catalogSelById(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "add":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Mercancia_unidad_empaque>(jsonData);
+                    o.Id = CatalogoCtrl.catalogAdd(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "udt":
+                    jsonData = new StreamReader(context.Request.InputStream).ReadToEnd();
+                    o = JsonConvert.DeserializeObject<Mercancia_unidad_empaque>(jsonData);
+                    CatalogoCtrl.catalogUdt(o);
+                    response = JsonConvert.SerializeObject(o);
+                    break;
+                case "lst":
+                    response = JsonConvert.SerializeObject(CatalogoCtrl.catalogGetLst(o).Cast<Mercancia_unidad_empaque>().ToList());
+                    break;
+                case "lstAll":
+                    List<Mercancia_unidad_empaque> lst = CatalogoCtrl.catalogGetLst(o).Cast<Mercancia_unidad_empaque>().ToList();
                     if (context.Request["pk"] != null)
                     {
                         key = context.Request["pk"].ToString();

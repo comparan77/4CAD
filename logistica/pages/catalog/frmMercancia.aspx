@@ -95,6 +95,14 @@
                             
                         </label>
                     </div>
+                    <div class="form-group">
+                        <label for="ddl_unidad_empaque">Tipo de rotaci&oacute;n
+                            <select id="ddl_unidad_empaque" style="width: 100%" class="form-control">
+                            <option></option>
+                            </select>
+                            
+                        </label>
+                    </div>
                     <button type="button" id="btn_save" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
