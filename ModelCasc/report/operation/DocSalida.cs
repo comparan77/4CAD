@@ -41,9 +41,9 @@ namespace ModelCasc.report.operation
                 reporte.SetDataSource(ds.Tables["auduniemb"]);
 
                 #region Datos de la entrada
-                reporte.SetParameterValue("cliente", oS.PCliente.Razon);
+                //reporte.SetParameterValue("cliente", oS.PCliente.Razon);
                 reporte.SetParameterValue("fecha", oS.Fecha.ToString("dd \\de MMM \\de yyyy", ci));
-                reporte.SetParameterValue("folio_oc", oSOC.Folio_orden_carga);
+                reporte.SetParameterValue("folio", oSOC.Folio_orden_carga);
                 #endregion
 
                 #region Documentos Salida
@@ -65,10 +65,10 @@ namespace ModelCasc.report.operation
                     }
                 }
 
-                if (sbCompartida.Length == 0)
-                    reporte.SetParameterValue("referencia", oS.Referencia);
-                else
-                    reporte.SetParameterValue("referencia", oS.Referencia + ", " + sbCompartida.ToString().Substring(0, sbCompartida.ToString().Length - 2));
+                //if (sbCompartida.Length == 0)
+                //    reporte.SetParameterValue("referencia", oS.Referencia);
+                //else
+                //    reporte.SetParameterValue("referencia", oS.Referencia + ", " + sbCompartida.ToString().Substring(0, sbCompartida.ToString().Length - 2));
 
                 #endregion
 
@@ -100,7 +100,7 @@ namespace ModelCasc.report.operation
 
                 reporte.SetParameterValue("operador", oS.Operador);
                 //reporte.SetParameterValue("usuario", oS.PUsuario.Nombre);
-                reporte.SetParameterValue("vigilante", oS.Vigilante);
+                //reporte.SetParameterValue("vigilante", oS.Vigilante);
 
                 #endregion
 
@@ -387,8 +387,8 @@ namespace ModelCasc.report.operation
                     }
                 }
                 fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                getSalidaOCTransCondicion(fileName, TemplatePath[1], o, oS, ds);
-                files.Add(fileName);
+                //getSalidaOCTransCondicion(fileName, TemplatePath[1], o, oS, ds);
+                //files.Add(fileName);
 
                 DocConcat.ConcatPdfFiles(files.ToArray(), FilePath);
             }

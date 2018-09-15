@@ -483,13 +483,13 @@ namespace ModelCasc.operation
 
                 oE.Ubicacion = oE.PBodega.Nombre + " " + oE.Cortina;
 
-                //Cliente oC = new Cliente();
-                //ClienteMng oCMng = new ClienteMng();
-                //oC.Id = oE.Id_cliente;
-                //oCMng.O_Cliente = oC;
-                //oCMng.selById();
-                //oE.PCliente = oC;
-                //oE.ClienteNombre = oC.Nombre;
+                Cliente oC = new Cliente();
+                ClienteMng oCMng = new ClienteMng();
+                oC.Id = oE.Id_cliente;
+                oCMng.O_Cliente = oC;
+                oCMng.selById();
+                oE.PCliente = oC;
+                oE.ClienteNombre = oC.Nombre;
 
                 Entrada_documentoMng oEDMng = new Entrada_documentoMng();
                 oED.Id_entrada = oE.Id;
@@ -1360,7 +1360,7 @@ namespace ModelCasc.operation
             DataTable dtReviewFile = new DataTable();
             try
             {
-                DataTable dtImport = Model.CommonFunctions.ImportXls(path, " where " + Globals.REFERENCIA_NAME_XLS_FONDEO + " is not null");
+                DataTable dtImport = Model.CommonFunctions.ImportXls(path, " where " + Globals.REFERENCIA_NAME_XLS_FONDEO_LIV + " is not null");
                 dtImport.Columns.Add("fecha", typeof(DateTime));
                 dtImport.Columns.Add("importador", typeof(string));
                 dtImport.Columns.Add("aduana", typeof(string));

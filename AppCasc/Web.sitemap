@@ -68,6 +68,17 @@
     <!--<siteMapNode roles="Super, Contabilidad" title="Facturacion">
       <siteMapNode url="~/facturacion/procesaFacturaExcel.aspx" title="Excel->Avon"  description="Genera el archivo de Avon" />
     </siteMapNode>-->
+	<siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super, EjecutivoAux" title="Liverpool">
+		<siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
+      <siteMapNode url="~/operation/frmPreArribo.aspx" title="Pre-Carga"  description="Precarga de información" />
+      <siteMapNode url="~/operation/frmInventario.aspx" title="Inf. Arribo"  description="Información del Arribo" />
+      <siteMapNode url="~/operation/frmMaquila.aspx" title="Maquila"  description="Maquila" />
+      <siteMapNode url="~/operation/frmTrafico.aspx" title="Tráfico"  description="Control del Tráfico" />
+      <siteMapNode url="~/operation/frmRemision.aspx" title="Remisión"  description="Remisión" />
+      <siteMapNode url="~/operation/frmOrdenCarga.aspx" title="Orden de Carga"  description="Orden de Carga" />
+      <siteMapNode url="~/operation/frmRR.aspx" title="Registro RR"  description="Registro RR" />
+      <siteMapNode url="~/operation/frmInventoryManagment.aspx" title="Administración"  description="Administración" />
+	</siteMapNode>
     <siteMapNode roles="Ejecutivo, GteAlmacen, GteMaquila, Super, EjecutivoAux" title="Logística">
       <!--<siteMapNode url="~/operation/frmFondeo.aspx" title="Fondeos"  description="Carga de fondeos" />
       <siteMapNode url="~/operation/frmPreArribo.aspx" title="Pre-Carga"  description="Precarga de información" />

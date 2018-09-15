@@ -305,6 +305,7 @@ namespace AppCasc.operation.embarques
         private void fillControlsToOC(Salida_orden_carga oSOC)
         {
             #region Bodega Ubicacion
+            ControlsMng.fillBodega(ddlBodega);
             ddlBodega.SelectedValue = oSOC.Id_bodega_ubicacion.ToString();
             ControlsMng.fillCortinaByBodega(ddlCortina, Convert.ToInt32(ddlBodega.SelectedValue));
             #endregion
